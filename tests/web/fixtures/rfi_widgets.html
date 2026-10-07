@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Widgets</title></head>
+<body>
+<form id="w" novalidate>
+  <fieldset>
+    <legend>Certifications held</legend>
+    <label><input type="checkbox" name="certs" value="iso27001"> ISO 27001</label>
+    <label><input type="checkbox" name="certs" value="soc2"> SOC 2</label>
+    <label><input type="checkbox" name="certs" value="pci"> PCI DSS</label>
+  </fieldset>
+  <label for="regions">Operating regions</label>
+  <select id="regions" name="regions" multiple>
+    <option value="apac">APAC</option><option value="emea">EMEA</option><option value="amer">Americas</option>
+  </select>
+  <fieldset>
+    <legend>Preselected by the template</legend>
+    <label><input type="radio" name="tier" value="gold" checked> Gold</label>
+    <label><input type="radio" name="tier" value="silver"> Silver</label>
+  </fieldset>
+  <label for="code">Registration code</label>
+  <input id="code" name="code" pattern="[A-Z]{3}-[0-9]{4}" maxlength="8" required>
+  <button type="submit">Send</button>
+</form>
+<iframe id="fr" srcdoc="<label for='fe'>Frame email</label><input id='fe' type='email' name='fe'>"></iframe>
+</body></html>

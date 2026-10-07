@@ -5,17 +5,19 @@ build-backend = "hatchling.build"
 [project]
 name = "formfill-poc"
 version = "0.1.0"
-description = "Minimal proof of concept: match JSON source data to PDF form fields, validate, fill, and verify -- abstaining instead of guessing when a field can't be confidently resolved."
+description = "Fill forms from JSON source data, abstaining (REVIEW) instead of guessing. Legacy PDF proof of concept (formfill/*.py) plus the web-form pipeline foundation (formfill/web/)."
 requires-python = ">=3.11"
 dependencies = [
     "pypdf>=5.0",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0"]
+web = ["playwright>=1.45"]
+dev = ["pytest>=8.0", "reportlab>=4.0", "playwright>=1.45"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["formfill"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["browser: needs Playwright and a Chromium build (skipped automatically when unavailable)"]

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Vendor RFI</title></head>
+<body>
+<h1>Vendor questionnaire</h1>
+<form id="rfi" novalidate>
+  <h2>Company details</h2>
+  <label for="org">Organization name *</label>
+  <input id="org" name="org" required maxlength="20">
+
+  <label for="ft">Number of full-time employees</label>
+  <input id="ft" name="ft" type="number" min="0" aria-describedby="ft-help">
+  <span id="ft-help">Whole numbers only</span>
+
+  <label>Security contact email <input name="sec_email" type="email" required></label>
+
+  <label id="web-l" for="web">Website</label>
+  <input id="web" name="web" type="url" aria-labelledby="web-l">
+
+  <label for="founded">Founded</label>
+  <input id="founded" name="founded" type="date">
+
+  <label for="country">Country</label>
+  <select id="country" name="country">
+    <option value="">-- choose --</option>
+    <option value="IN">India</option>
+    <option value="US">United States</option>
+  </select>
+
+  <fieldset>
+    <legend>Do you hold ISO 27001 certification?</legend>
+    <label><input type="radio" name="iso" value="yes"> Yes</label>
+    <label><input type="radio" name="iso" value="no"> No</label>
+  </fieldset>
+
+  <h2>Privacy</h2>
+  <fieldset>
+    <legend>Does GDPR apply to your organization?</legend>
+    <label><input type="radio" name="gdpr" value="yes"> Yes</label>
+    <label><input type="radio" name="gdpr" value="no"> No</label>
+  </fieldset>
+  <div id="dpo-wrap" hidden>
+    <label for="dpo">DPO name</label>
+    <input id="dpo" name="dpo">
+  </div>
+
+  <h2>Controls</h2>
+  <label for="ir">Describe your incident response process</label>
+  <textarea id="ir" name="ir"></textarea>
+
+  <label><input type="checkbox" name="agree"> I confirm the answers are accurate</label>
+
+  <button type="submit">Submit</button>
+</form>
+<div id="done" hidden>Thank you, your response was received</div>
+<script>
+  document.getElementById('rfi').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!e.target.checkValidity()) { e.target.reportValidity(); return; }
+    document.getElementById('done').hidden = false;
+  });
+  document.querySelectorAll('input[name=gdpr]').forEach(r => r.addEventListener('change', () => {
+    document.getElementById('dpo-wrap').hidden = document.querySelector('input[name=gdpr]:checked').value !== 'yes';
+  }));
+</script>
+</body></html>

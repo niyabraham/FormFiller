@@ -1,0 +1,14 @@
+{
+  "company": {
+    "name": "Acme Corp",
+    "employees": 250,
+    "full_time": 210,
+    "contractors": 40,
+    "website_url": "https://acme.example",
+    "country": "India",
+    "founded": "2009-03-14"
+  },
+  "security": { "contact": { "email": "security@acme.example" } },
+  "certifications": { "iso_27001": true },
+  "privacy": { "gdpr_applicable": true, "dpo_name": "A. Rao" }
+}

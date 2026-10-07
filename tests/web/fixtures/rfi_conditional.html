@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Conditional RFI</title></head>
+<body>
+<form id="f" novalidate>
+  <fieldset>
+    <legend>Does GDPR apply to you?</legend>
+    <label><input type="radio" name="gdpr" value="yes"> Yes</label>
+    <label><input type="radio" name="gdpr" value="no"> No</label>
+  </fieldset>
+  <div id="dpo-wrap" hidden>
+    <label for="dpo">DPO name</label>
+    <input id="dpo" name="dpo" required>
+  </div>
+  <label for="fax">Fax number</label>
+  <input id="fax" name="fax" disabled>
+  <fieldset id="never" hidden>
+    <label for="x">Never shown question</label><input id="x" name="x">
+  </fieldset>
+</form>
+<script>
+  document.querySelectorAll('input[name=gdpr]').forEach(r => r.addEventListener('change', () => {
+    document.getElementById('dpo-wrap').hidden = document.querySelector('input[name=gdpr]:checked').value !== 'yes';
+  }));
+</script>
+</body></html>

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Strict</title></head>
+<body>
+<!-- No novalidate: the browser itself refuses to submit invalid values. -->
+<form id="s">
+  <label for="code">Registration code</label>
+  <input id="code" name="code" required pattern="[A-Z]{3}-[0-9]{4}">
+  <button type="submit">Send</button>
+</form>
+<div id="ok" hidden>Registration accepted</div>
+<script>
+  document.getElementById('s').addEventListener('submit', e => { e.preventDefault(); document.getElementById('ok').hidden = false; });
+</script>
+</body></html>
