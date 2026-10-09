@@ -1,0 +1,253 @@
+{
+  "case": "c06_option_mapping",
+  "description": "Source value must be mapped onto the form's own option list.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "c1",
+      "question": "Country",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "US",
+      "source": "company.country",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "the guide's example: 'United States' -> option 'US'"
+    },
+    {
+      "control": "c2",
+      "question": "Country of registration",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "US",
+      "source": "company.country",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "c3",
+      "question": "Country (exact option text)",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "United States",
+      "source": "company.country",
+      "tags": [
+        "option_mapping",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "band",
+      "question": "Number of employees (band)",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "51-250",
+      "source": "company.employees",
+      "tags": [
+        "option_mapping",
+        "derivation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "250 falls in the 51-250 band; a deterministic range check, not a guess"
+    },
+    {
+      "control": "ind",
+      "question": "Industry",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "saas",
+      "source": "company.industry",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "btype",
+      "question": "Business type",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "pvt",
+      "source": "company.business_type",
+      "tags": [
+        "option_mapping",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "cur",
+      "question": "Reporting currency",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "USD",
+      "source": "company.currency",
+      "tags": [
+        "option_mapping",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "reg",
+      "question": "Operating regions",
+      "kind": "checkbox_group",
+      "expect": "ANSWER",
+      "answer": [
+        "na",
+        "eu"
+      ],
+      "source": "company.regions",
+      "tags": [
+        "option_mapping",
+        "multi_value",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "reg2",
+      "question": "Countries where you operate",
+      "kind": "checkbox_group",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "option_mapping",
+        "multi_value"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "source holds regions, form wants countries: 'North America' cannot be mapped to a listed country"
+    },
+    {
+      "control": "state",
+      "question": "State",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "CA",
+      "source": "company.state",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "lang",
+      "question": "Language",
+      "kind": "select",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "option_mapping",
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'English' fits two options"
+    },
+    {
+      "control": "tz",
+      "question": "Timezone",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "Asia/Kolkata",
+      "source": "company.timezone",
+      "tags": [
+        "option_mapping",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "ncountries",
+      "question": "Number of countries you operate in",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 2,
+      "source": "company.countries_of_operation",
+      "tags": [
+        "derivation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "count of a list in the source"
+    }
+  ]
+}

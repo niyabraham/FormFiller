@@ -1,0 +1,195 @@
+{
+  "case": "c09_narrative",
+  "description": "Free-text questions: direct answer present, composition required, or nothing relevant.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "n1",
+      "question": "Describe your incident response process.",
+      "kind": "textarea",
+      "expect": "ANSWER",
+      "answer": "Incidents are triaged by the on-call security engineer within 15 minutes, escalated to the CISO for severity 1, and customers are notified within 72 hours.",
+      "source": "incident_response.process",
+      "tags": [
+        "narrative",
+        "direct_text"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n2",
+      "question": "Provide a summary of your information security program.",
+      "kind": "textarea",
+      "expect": "ANSWER",
+      "answer": "ISO 27001 certified ISMS; annual third-party penetration tests; SSO and MFA enforced.",
+      "source": "security.overview",
+      "tags": [
+        "narrative",
+        "direct_text"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "one dedicated overview field exists"
+    },
+    {
+      "control": "n3",
+      "question": "Describe your encryption practices.",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative",
+        "composition"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "would need composing at-rest and in-transit values into prose; policy forbids composing"
+    },
+    {
+      "control": "n4",
+      "question": "What encryption standard do you use for data at rest?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "AES-256",
+      "source": "security.encryption.at_rest",
+      "tags": [
+        "narrative",
+        "short_text"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n5",
+      "question": "Briefly describe your company.",
+      "kind": "textarea",
+      "expect": "ANSWER",
+      "answer": "Acme builds logistics software for mid-size manufacturers.",
+      "source": "company.description",
+      "tags": [
+        "narrative",
+        "direct_text"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n6",
+      "question": "Describe how you handle vendor risk management.",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n7",
+      "question": "Who is your incident response point of contact?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "soc@acme.example",
+      "source": "incident_response.contact",
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n8",
+      "question": "What is your incident notification SLA (hours)?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 72,
+      "source": "incident_response.sla_hours",
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n9",
+      "question": "Date of last incident response test",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2025-09-12",
+      "source": "incident_response.last_test_date",
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n10",
+      "question": "Describe your incident response process and your breach notification timeline.",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative",
+        "compound",
+        "composition"
+      ],
+      "trap": "compound",
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "two asks; would need composing the process text and the 72-hour SLA"
+    }
+  ]
+}

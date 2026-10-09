@@ -1,0 +1,9 @@
+{
+  "company_name": "Acme Corp",
+  "website": "https://acme.example",
+  "employees": 250,
+  "country": "India",
+  "contact_email": "ops@acme.example",
+  "sso_supported": true,
+  "gdpr_applicable": true
+}

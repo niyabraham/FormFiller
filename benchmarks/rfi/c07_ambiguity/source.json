@@ -1,0 +1,31 @@
+{
+  "company": {
+    "employees": 250,
+    "name": "Acme Corp",
+    "email": "ops@acme.example"
+  },
+  "subsidiary": {
+    "employees": 80,
+    "name": "Acme Labs"
+  },
+  "applicant": {
+    "name": "Jane Doe",
+    "email": "jane@acme.example"
+  },
+  "revenue": {
+    "2023": 9000000,
+    "2024": 12000000
+  },
+  "address": {
+    "billing": "PO Box 44, Mumbai",
+    "mailing": "12 MG Road, Bengaluru"
+  },
+  "contact_email": "ops@acme.example",
+  "billing_email": "ops@acme.example",
+  "tax": {
+    "gst_number": "29ABCDE1234F1Z5",
+    "pan": "ABCDE1234F"
+  },
+  "account_manager": "Ravi Menon",
+  "has_account_manager": true
+}

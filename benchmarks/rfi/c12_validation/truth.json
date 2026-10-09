@@ -1,0 +1,254 @@
+{
+  "case": "c12_validation",
+  "description": "Source values that violate (or can be coerced into) the control's constraints.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "emp",
+      "question": "Number of employees",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.employees",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'about 200' is not a number"
+    },
+    {
+      "control": "fd",
+      "question": "Founded",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2009-03-14",
+      "source": "company.founded",
+      "tags": [
+        "validation",
+        "transformation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'14 March 2009' is an unambiguous date, convertible without guessing"
+    },
+    {
+      "control": "inc",
+      "question": "Incorporated",
+      "kind": "date",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "ambiguous_format"
+      ],
+      "trap": null,
+      "invalid_source": "company.incorporated",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "03/04/2009 is 3 April or 4 March: ambiguous, REVIEW"
+    },
+    {
+      "control": "web",
+      "question": "Website",
+      "kind": "url",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.website",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "no scheme: https vs http is not known"
+    },
+    {
+      "control": "mail",
+      "question": "Contact email",
+      "kind": "email",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.contact_email",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "regcode",
+      "question": "Registration code",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.registration_code",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "legal",
+      "question": "Legal name",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.legal_name",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "48 chars into a 30-char field; never truncate"
+    },
+    {
+      "control": "growth",
+      "question": "Revenue growth (%)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.revenue_growth_percent",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "tier",
+      "question": "Tier",
+      "kind": "select",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.tier",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "phone",
+      "question": "Phone",
+      "kind": "tel",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "validation",
+        "invalid_source"
+      ],
+      "trap": null,
+      "invalid_source": "company.phone",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "hyphens violate the field pattern; do not reformat silently"
+    },
+    {
+      "control": "ticker",
+      "question": "Stock ticker",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "ACME",
+      "source": "company.stock_ticker",
+      "tags": [
+        "validation",
+        "boundary"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "staff",
+      "question": "Staff count",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1200,
+      "source": "company.staff_count",
+      "tags": [
+        "validation",
+        "transformation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'1,200' parses to 1200"
+    },
+    {
+      "control": "rating",
+      "question": "Average rating",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 4.5,
+      "source": "company.average_rating",
+      "tags": [
+        "validation",
+        "transformation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    }
+  ]
+}

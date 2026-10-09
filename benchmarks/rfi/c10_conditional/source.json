@@ -1,0 +1,19 @@
+{
+  "privacy": {
+    "gdpr_applicable": true,
+    "dpo_name": "A. Rao",
+    "dpo_email": "dpo@acme.example",
+    "dpo_phone": "+91 80 5550 7777"
+  },
+  "payments": {
+    "processes_card_data": true,
+    "pci_level": "Level 2"
+  },
+  "security": {
+    "has_ciso": true,
+    "ciso_name": "Priya Nair"
+  },
+  "company": {
+    "subsidiaries_exist": false
+  }
+}

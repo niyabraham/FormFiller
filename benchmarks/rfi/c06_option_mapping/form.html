@@ -1,0 +1,23 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>c06_option_mapping</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>c06_option_mapping</h1><form>
+<div class="row"><label for="q1">Country</label><select name="c1" id="q1"><option value="">Select...</option><option value="US">US</option><option value="GB">United Kingdom</option><option value="CA">Canada</option></select></div>
+<div class="row"><label for="q2">Country of registration</label><select name="c2" id="q2"><option value="">Select...</option><option value="US">United States of America</option><option value="GB">United Kingdom</option></select></div>
+<div class="row"><label for="q3">Country (exact option text)</label><select name="c3" id="q3"><option value="">Select...</option><option value="United States">United States</option><option value="India">India</option></select></div>
+<div class="row"><label for="q4">Number of employees (band)</label><select name="band" id="q4"><option value="">Select...</option><option value="1-50">1-50</option><option value="51-250">51-250</option><option value="251-1000">251-1000</option><option value="1000+">1000+</option></select></div>
+<div class="row"><label for="q5">Industry</label><select name="ind" id="q5"><option value="">Select...</option><option value="saas">SaaS / Software</option><option value="fin">Financial services</option><option value="health">Healthcare</option></select></div>
+<div class="row"><label for="q6">Business type</label><select name="btype" id="q6"><option value="">Select...</option><option value="pvt">Private limited company</option><option value="pub">Public limited company</option><option value="llp">LLP</option></select></div>
+<div class="row"><fieldset><legend>Reporting currency</legend><label class="opt"><input type="radio" name="cur" value="USD"> USD</label><label class="opt"><input type="radio" name="cur" value="EUR"> EUR</label><label class="opt"><input type="radio" name="cur" value="INR"> INR</label></fieldset></div>
+<div class="row"><fieldset><legend>Operating regions</legend><label class="opt"><input type="checkbox" name="reg" value="na"> North America</label><label class="opt"><input type="checkbox" name="reg" value="eu"> Europe</label><label class="opt"><input type="checkbox" name="reg" value="apac"> Asia Pacific</label></fieldset></div>
+<div class="row"><fieldset><legend>Countries where you operate</legend><label class="opt"><input type="checkbox" name="reg2" value="India"> India</label><label class="opt"><input type="checkbox" name="reg2" value="United States"> United States</label><label class="opt"><input type="checkbox" name="reg2" value="Germany"> Germany</label></fieldset></div>
+<div class="row"><label for="q10">State</label><select name="state" id="q10"><option value="">Select...</option><option value="CA">California</option><option value="NY">New York</option></select></div>
+<div class="row"><label for="q11">Language</label><select name="lang" id="q11"><option value="">Select...</option><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option></select></div>
+<div class="row"><label for="q12">Timezone</label><select name="tz" id="q12"><option value="">Select...</option><option value="Asia/Kolkata">(UTC+05:30) India Standard Time</option><option value="Europe/London">(UTC+00:00) London</option></select></div>
+<div class="row"><label for="q13">Number of countries you operate in</label><input type="number" name="ncountries" id="q13"></div>
+</form><script></script></body></html>

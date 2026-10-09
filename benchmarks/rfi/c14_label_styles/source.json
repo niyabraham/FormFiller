@@ -1,0 +1,12 @@
+{
+  "company_name": "Acme Corp",
+  "website": "https://acme.example",
+  "employees": 250,
+  "contact_email": "ops@acme.example",
+  "country": "India",
+  "industry": "Software",
+  "phone": "+91 80 5550 1234",
+  "founded": "2009-03-14",
+  "legal_name": "Acme Corporation Pvt Ltd",
+  "city": "Bengaluru"
+}

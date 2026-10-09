@@ -1,0 +1,236 @@
+{
+  "case": "c01_easy_exact",
+  "description": "Label wording equals the JSON key. Every deterministic matcher should pass.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "company_name",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company_name",
+      "tags": [
+        "easy",
+        "text"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "website",
+      "question": "Website",
+      "kind": "url",
+      "expect": "ANSWER",
+      "answer": "https://acme.example",
+      "source": "website",
+      "tags": [
+        "easy",
+        "url"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "employees",
+      "question": "Number of employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "employees",
+      "tags": [
+        "easy",
+        "number"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "founded",
+      "question": "Founded",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2009-03-14",
+      "source": "founded",
+      "tags": [
+        "easy",
+        "date"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "country",
+      "question": "Country",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "India",
+      "source": "country",
+      "tags": [
+        "easy",
+        "dropdown"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "contact_email",
+      "question": "Contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ops@acme.example",
+      "source": "contact_email",
+      "tags": [
+        "easy",
+        "email"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "phone",
+      "question": "Phone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "+91 80 5550 1234",
+      "source": "phone",
+      "tags": [
+        "easy",
+        "phone"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sso_supported",
+      "question": "SSO supported",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "sso_supported",
+      "tags": [
+        "easy",
+        "boolean",
+        "radio"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "newsletter_opt_in",
+      "question": "Newsletter opt in",
+      "kind": "checkbox",
+      "expect": "ANSWER",
+      "answer": true,
+      "source": "newsletter_opt_in",
+      "tags": [
+        "easy",
+        "checkbox"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "plan_tier",
+      "question": "Plan tier",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "Enterprise",
+      "source": "plan_tier",
+      "tags": [
+        "easy",
+        "dropdown"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "description",
+      "question": "Description",
+      "kind": "textarea",
+      "expect": "ANSWER",
+      "answer": "B2B logistics software",
+      "source": "description",
+      "tags": [
+        "easy",
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "fax",
+      "question": "Fax",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "easy",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "no fax value anywhere in the source"
+    }
+  ]
+}

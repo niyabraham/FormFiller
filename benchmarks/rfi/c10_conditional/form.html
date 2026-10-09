@@ -1,0 +1,29 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>c10_conditional</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>c10_conditional</h1><form>
+<div class="row"><fieldset><legend>GDPR applicable</legend><label class="opt"><input type="radio" name="gdpr" value="yes"> Yes</label><label class="opt"><input type="radio" name="gdpr" value="no"> No</label></fieldset></div>
+<div class="cond" data-when="gdpr" data-eq="yes" hidden><div class="row"><label for="q2">Who is your Data Protection Officer?</label><input type="text" name="dpo" id="q2"></div></div>
+<div class="cond" data-when="gdpr" data-eq="yes" hidden><div class="row"><label for="q3">DPO email</label><input type="email" name="dpo_email" id="q3"></div></div>
+<div class="cond" data-when="gdpr" data-eq="no" hidden><div class="row"><label for="q4">Reason GDPR does not apply</label><textarea name="gdpr_reason" id="q4" rows=3></textarea></div></div>
+<div class="row"><fieldset><legend>Does your company process payment card data?</legend><label class="opt"><input type="radio" name="card" value="yes"> Yes</label><label class="opt"><input type="radio" name="card" value="no"> No</label></fieldset></div>
+<div class="cond" data-when="card" data-eq="yes" hidden><div class="row"><label for="q6">PCI DSS compliance level</label><select name="pci" id="q6"><option value="">Select...</option><option value="level1">Level 1</option><option value="level2">Level 2</option><option value="level3">Level 3</option><option value="level4">Level 4</option></select></div></div>
+<div class="cond" data-when="pci" data-eq="level1" hidden><div class="row"><label for="q7">Name of your Qualified Security Assessor</label><input type="text" name="qsa" id="q7"></div></div>
+<div class="row"><fieldset><legend>Do you have a designated CISO?</legend><label class="opt"><input type="radio" name="ciso" value="yes"> Yes</label><label class="opt"><input type="radio" name="ciso" value="no"> No</label></fieldset></div>
+<div class="cond" data-when="ciso" data-eq="yes" hidden><div class="row"><label for="q9">CISO name</label><input type="text" name="ciso_name" id="q9"></div></div>
+<div class="row"><fieldset><legend>Do you have subsidiaries?</legend><label class="opt"><input type="radio" name="subs" value="yes"> Yes</label><label class="opt"><input type="radio" name="subs" value="no"> No</label></fieldset></div>
+<div class="cond" data-when="subs" data-eq="yes" hidden><div class="row"><label for="q11">List your subsidiaries</label><textarea name="sub_list" id="q11" rows=3></textarea></div></div>
+<div class="row"><fieldset><legend>Is your organization subject to the EU General Data Protection Regulation (GDPR)?</legend><label class="opt"><input type="radio" name="gdpr2" value="yes"> Yes</label><label class="opt"><input type="radio" name="gdpr2" value="no"> No</label></fieldset></div>
+<div class="cond" data-when="gdpr2" data-eq="yes" hidden><div class="row"><label for="q13">DPO contact phone</label><input type="tel" name="dpo_phone" id="q13"></div></div>
+</form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+function sync(){document.querySelectorAll('.cond').forEach(w=>{w.hidden=val(w.dataset.when)!==w.dataset.eq})}
+document.addEventListener('change',sync);document.addEventListener('input',sync);sync();
+</script></body></html>

@@ -1,0 +1,138 @@
+{
+  "case": "c11_multistep",
+  "description": "Three-step wizard: step 2 hidden in the DOM, step 3 rendered only after Next.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "company_name",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company_name",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "website",
+      "question": "Website",
+      "kind": "url",
+      "expect": "ANSWER",
+      "answer": "https://acme.example",
+      "source": "website",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "employees",
+      "question": "Number of employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "employees",
+      "tags": [
+        "multistep",
+        "hidden_in_dom"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "step panel is in the DOM but hidden until Next is clicked"
+    },
+    {
+      "control": "country",
+      "question": "Country",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "India",
+      "source": "country",
+      "tags": [
+        "multistep",
+        "hidden_in_dom"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": ""
+    },
+    {
+      "control": "contact_email",
+      "question": "Contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ops@acme.example",
+      "source": "contact_email",
+      "tags": [
+        "multistep",
+        "hidden_in_dom"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": ""
+    },
+    {
+      "control": "sso_supported",
+      "question": "SSO supported",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "sso_supported",
+      "tags": [
+        "multistep",
+        "not_in_dom"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "step 3 does not exist in the DOM until Next is clicked twice"
+    },
+    {
+      "control": "gdpr_applicable",
+      "question": "GDPR applicable",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "gdpr_applicable",
+      "tags": [
+        "multistep",
+        "not_in_dom"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": ""
+    }
+  ]
+}

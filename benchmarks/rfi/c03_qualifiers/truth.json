@@ -1,0 +1,229 @@
+{
+  "case": "c03_qualifiers",
+  "description": "Sibling values that differ only by a scope word. Related values must not be confused.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "ft",
+      "question": "Number of full-time employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 210,
+      "source": "workforce.full_time_employees",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "ctr",
+      "question": "Number of contractors",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 40,
+      "source": "workforce.contractors",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "tot",
+      "question": "How many employees do you have in total?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "workforce.employees",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "pt",
+      "question": "Number of part-time employees",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "qualifier",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "only full-time and total exist; part-time is not derivable"
+    },
+    {
+      "control": "prod",
+      "question": "Number of production employees",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "qualifier",
+        "missing",
+        "unlisted_qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'production' scope is absent from the source; the total is a different answer"
+    },
+    {
+      "control": "act",
+      "question": "Number of active customers",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "qualifier",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "source has total and enterprise customers, not active ones"
+    },
+    {
+      "control": "cust",
+      "question": "How many customers do you have?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1800,
+      "source": "customers.total",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "key is literally 'total'"
+    },
+    {
+      "control": "ent",
+      "question": "Number of enterprise customers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 120,
+      "source": "customers.enterprise",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "scn",
+      "question": "Security contact name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Priya Nair",
+      "source": "security.contact.name",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sce",
+      "question": "Security contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "security@acme.example",
+      "source": "security.contact.email",
+      "tags": [
+        "qualifier",
+        "contacts"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "three emails exist but only one is a security contact: answerable"
+    },
+    {
+      "control": "bce",
+      "question": "Billing contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "billing@acme.example",
+      "source": "contacts.billing.email",
+      "tags": [
+        "qualifier",
+        "contacts"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "int",
+      "question": "Number of interns",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 5,
+      "source": "workforce.interns",
+      "tags": [
+        "qualifier"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    }
+  ]
+}

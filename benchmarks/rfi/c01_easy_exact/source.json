@@ -1,0 +1,13 @@
+{
+  "company_name": "Acme Corp",
+  "website": "https://acme.example",
+  "employees": 250,
+  "founded": "2009-03-14",
+  "country": "India",
+  "contact_email": "ops@acme.example",
+  "phone": "+91 80 5550 1234",
+  "sso_supported": true,
+  "newsletter_opt_in": true,
+  "plan_tier": "Enterprise",
+  "description": "B2B logistics software"
+}

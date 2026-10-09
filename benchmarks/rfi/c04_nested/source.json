@@ -1,0 +1,43 @@
+{
+  "organization": {
+    "profile": {
+      "names": {
+        "legal": "Acme Corporation Pvt Ltd",
+        "brand": "Acme"
+      },
+      "address": {
+        "hq": {
+          "street": "12 MG Road",
+          "city": "Bengaluru",
+          "postal_code": "560001"
+        },
+        "billing": {
+          "street": "PO Box 44",
+          "city": "Mumbai",
+          "postal_code": "400001"
+        }
+      }
+    },
+    "leadership": [
+      {
+        "role": "CEO",
+        "name": "Ravi Menon",
+        "email": "ravi@acme.example"
+      },
+      {
+        "role": "CISO",
+        "name": "Priya Nair",
+        "email": "priya@acme.example"
+      }
+    ]
+  },
+  "compliance": {
+    "certifications": [
+      "ISO 27001",
+      "SOC 2"
+    ],
+    "audits": {
+      "last_soc2_date": "2025-11-30"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "policies": {
+    "infosec_policy": {
+      "exists": true,
+      "last_reviewed": "2026-01-15"
+    },
+    "bcp_dr": {
+      "exists": true,
+      "last_tested": "2025-10-02"
+    },
+    "security_awareness_training": {
+      "frequency": "annual",
+      "completion_rate_percent": 98
+    }
+  },
+  "access": {
+    "mfa": {
+      "remote_access": true,
+      "admin_accounts": true
+    },
+    "sso": {
+      "enabled": true,
+      "protocols": [
+        "SAML",
+        "OIDC"
+      ]
+    },
+    "access_reviews": {
+      "frequency": "quarterly"
+    }
+  },
+  "encryption": {
+    "at_rest": {
+      "enabled": true,
+      "algorithm": "AES-256"
+    },
+    "in_transit": {
+      "enabled": true,
+      "protocol": "TLS 1.2+"
+    }
+  },
+  "incident": {
+    "has_plan": true,
+    "breach_last_3_years": false,
+    "contact": "soc@acme.example"
+  },
+  "vendor_management": {
+    "subprocessors_list_url": "https://acme.example/subprocessors"
+  },
+  "compliance": {
+    "soc2": {
+      "type": "II",
+      "report_available_under_nda": true
+    },
+    "iso27001": {
+      "certified": true,
+      "expiry": "2027-06-30"
+    }
+  },
+  "pentest": {
+    "frequency": "annual",
+    "last_date": "2025-11-10"
+  },
+  "hr": {
+    "background_checks": true
+  }
+}

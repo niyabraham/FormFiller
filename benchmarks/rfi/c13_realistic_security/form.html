@@ -1,0 +1,43 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>c13_realistic_security</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>c13_realistic_security</h1><form>
+<h2>A. Risk governance</h2>
+<div class="row"><fieldset><legend>A.1 Do you have a documented information security policy?</legend><label class="opt"><input type="radio" name="A1" value="yes"> Yes</label><label class="opt"><input type="radio" name="A1" value="no"> No</label><label class="opt"><input type="radio" name="A1" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q2">A.2 When was the information security policy last reviewed?</label><input type="date" name="A2" id="q2"></div>
+<h2>B. Data encryption</h2>
+<div class="row"><fieldset><legend>B.1 Do you encrypt data at rest?</legend><label class="opt"><input type="radio" name="B1" value="yes"> Yes</label><label class="opt"><input type="radio" name="B1" value="no"> No</label><label class="opt"><input type="radio" name="B1" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q4">B.2 What encryption algorithm is used for data at rest?</label><input type="text" name="B2" id="q4"></div>
+<div class="row"><fieldset><legend>B.3 Do you encrypt data in transit?</legend><label class="opt"><input type="radio" name="B3" value="yes"> Yes</label><label class="opt"><input type="radio" name="B3" value="no"> No</label><label class="opt"><input type="radio" name="B3" value="na"> N/A</label></fieldset></div>
+<h2>C. Identity and access</h2>
+<div class="row"><fieldset><legend>C.1 Is multi-factor authentication (MFA) used for remote access?</legend><label class="opt"><input type="radio" name="C1" value="yes"> Yes</label><label class="opt"><input type="radio" name="C1" value="no"> No</label><label class="opt"><input type="radio" name="C1" value="na"> N/A</label></fieldset></div>
+<div class="row"><fieldset><legend>C.2 Is MFA enforced for administrator accounts?</legend><label class="opt"><input type="radio" name="C2" value="yes"> Yes</label><label class="opt"><input type="radio" name="C2" value="no"> No</label><label class="opt"><input type="radio" name="C2" value="na"> N/A</label></fieldset></div>
+<div class="row"><fieldset><legend>C.3 Do you support single sign-on (SSO)?</legend><label class="opt"><input type="radio" name="C3" value="yes"> Yes</label><label class="opt"><input type="radio" name="C3" value="no"> No</label><label class="opt"><input type="radio" name="C3" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q9">C.4 How often are user access reviews performed?</label><select name="C4" id="q9"><option value="">Select...</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="annual">Annually</option><option value="never">Never</option></select></div>
+<h2>D. Incident management</h2>
+<div class="row"><fieldset><legend>D.1 Do you have an incident response plan?</legend><label class="opt"><input type="radio" name="D1" value="yes"> Yes</label><label class="opt"><input type="radio" name="D1" value="no"> No</label><label class="opt"><input type="radio" name="D1" value="na"> N/A</label></fieldset></div>
+<div class="row"><fieldset><legend>D.2 Have you experienced a data breach in the last three years?</legend><label class="opt"><input type="radio" name="D2" value="yes"> Yes</label><label class="opt"><input type="radio" name="D2" value="no"> No</label><label class="opt"><input type="radio" name="D2" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q12">D.3 Who is your incident response point of contact?</label><input type="text" name="D3" id="q12"></div>
+<h2>E. Business continuity</h2>
+<div class="row"><fieldset><legend>E.1 Do you maintain a tested business continuity and disaster recovery plan?</legend><label class="opt"><input type="radio" name="E1" value="yes"> Yes</label><label class="opt"><input type="radio" name="E1" value="no"> No</label><label class="opt"><input type="radio" name="E1" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q14">E.2 Date of last disaster recovery test</label><input type="date" name="E2" id="q14"></div>
+<h2>F. People</h2>
+<div class="row"><fieldset><legend>F.1 Do all employees complete security awareness training annually?</legend><label class="opt"><input type="radio" name="F1" value="yes"> Yes</label><label class="opt"><input type="radio" name="F1" value="no"> No</label><label class="opt"><input type="radio" name="F1" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q16">F.2 Security awareness training completion rate (%)</label><input type="number" name="F2" id="q16"></div>
+<h2>G. Compliance</h2>
+<div class="row"><fieldset><legend>G.1 Do you perform background checks on employees?</legend><label class="opt"><input type="radio" name="G1" value="yes"> Yes</label><label class="opt"><input type="radio" name="G1" value="no"> No</label><label class="opt"><input type="radio" name="G1" value="na"> N/A</label></fieldset></div>
+<div class="row"><fieldset><legend>G.2 Can you share your most recent SOC 2 Type II report under NDA?</legend><label class="opt"><input type="radio" name="G2" value="yes"> Yes</label><label class="opt"><input type="radio" name="G2" value="no"> No</label><label class="opt"><input type="radio" name="G2" value="na"> N/A</label></fieldset></div>
+<div class="row"><fieldset><legend>G.3 Are you ISO 27001 certified?</legend><label class="opt"><input type="radio" name="G3" value="yes"> Yes</label><label class="opt"><input type="radio" name="G3" value="no"> No</label><label class="opt"><input type="radio" name="G3" value="na"> N/A</label></fieldset></div>
+<div class="row"><label for="q20">G.4 ISO 27001 certificate expiry date</label><input type="date" name="G4" id="q20"></div>
+<h2>H. Vendor management</h2>
+<div class="row"><label for="q21">H.1 Link to your sub-processor list</label><input type="url" name="H1" id="q21"></div>
+<h2>J. Vulnerability management</h2>
+<div class="row"><label for="q22">J.1 Penetration testing frequency</label><select name="J1" id="q22"><option value="">Select...</option><option value="quarterly">Quarterly</option><option value="semiannual">Semi-annual</option><option value="annual">Annual</option><option value="none">None</option></select></div>
+<div class="row"><label for="q23">J.2 Date of last penetration test</label><input type="date" name="J2" id="q23"></div>
+<div class="row"><label for="q24">J.3 Upload your most recent penetration test report</label><input type="file" name="J3" id="q24"></div>
+</form><script></script></body></html>

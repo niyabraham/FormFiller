@@ -1,0 +1,61 @@
+{
+  "case": "sub_optional_unresolved",
+  "description": "optional question unresolved; required ones answered",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "company_name",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company_name",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "contact_email",
+      "question": "Contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ops@acme.example",
+      "source": "contact_email",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "fax",
+      "question": "Fax",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    }
+  ]
+}

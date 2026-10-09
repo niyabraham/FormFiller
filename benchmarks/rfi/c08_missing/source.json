@@ -1,0 +1,25 @@
+{
+  "company": {
+    "name": "Acme Corp",
+    "employees": 250,
+    "registration_number": "U72900KA2009PTC123456",
+    "countries": [
+      "India",
+      "Singapore"
+    ],
+    "website": "https://acme.example",
+    "phone": "+91 80 5550 1234"
+  },
+  "certifications": {
+    "iso_27001": true,
+    "soc2_type": "Type II"
+  },
+  "security": {
+    "contact_email": "security@acme.example",
+    "incident_contact_phone": "+91 80 5550 9999"
+  },
+  "insurance": {
+    "provider": "Beazley",
+    "coverage_usd": 5000000
+  }
+}

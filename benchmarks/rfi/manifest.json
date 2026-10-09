@@ -1,0 +1,166 @@
+{
+  "benchmark_version": "1.0.0",
+  "split": "dev",
+  "cases": [
+    {
+      "id": "c01_easy_exact",
+      "kind": "extraction",
+      "description": "Label wording equals the JSON key. Every deterministic matcher should pass.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c02_paraphrase",
+      "kind": "extraction",
+      "description": "Same facts asked in different words; keys are not worded like the questions.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c03_qualifiers",
+      "kind": "extraction",
+      "description": "Sibling values that differ only by a scope word. Related values must not be confused.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c04_nested",
+      "kind": "extraction",
+      "description": "Deep paths, repeated sub-objects (hq/billing), lists of objects, section headings.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c05_boolean",
+      "kind": "extraction",
+      "description": "Yes/No questions worded many ways, plus a negation trap and CAIQ-style Yes/No/NA.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c06_option_mapping",
+      "kind": "extraction",
+      "description": "Source value must be mapped onto the form's own option list.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c07_ambiguity",
+      "kind": "extraction",
+      "description": "Two or more plausible values. The safe outcome is REVIEW unless the question disambiguates.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c08_missing",
+      "kind": "extraction",
+      "description": "Answer not in the source, plus near-miss keys that tempt a false positive.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c09_narrative",
+      "kind": "extraction",
+      "description": "Free-text questions: direct answer present, composition required, or nothing relevant.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c10_conditional",
+      "kind": "extraction",
+      "description": "Fields revealed by earlier answers, two-level chains, hidden-must-stay-hidden, and a conditional whose trigger is worded as a paraphrase.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c11_multistep",
+      "kind": "extraction",
+      "description": "Three-step wizard: step 2 hidden in the DOM, step 3 rendered only after Next.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c12_validation",
+      "kind": "extraction",
+      "description": "Source values that violate (or can be coerced into) the control's constraints.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c13_realistic_security",
+      "kind": "extraction",
+      "description": "SIG/CAIQ-style page: ID-prefixed labels, domain sections, Yes/No/NA, engineer-style nested source whose booleans are named `exists`/`enabled`.",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "c14_label_styles",
+      "kind": "extraction",
+      "description": "The same easy facts, but each label is attached to its control a different way.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c15_custom_widgets",
+      "kind": "extraction",
+      "description": "Controls that are not native inputs (ARIA widgets, contenteditable, open shadow DOM, file upload).",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "c16_dynamic_inputs",
+      "kind": "extraction",
+      "description": "Native inputs that behave dynamically: read-only picker, input mask, late options, enabled-by-answer.",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "sub_ok",
+      "kind": "submission",
+      "description": "all required answered, in-page success message",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "CONFIRMED",
+      "expected_status": "SUBMITTED"
+    },
+    {
+      "id": "sub_required_missing",
+      "kind": "submission",
+      "description": "a required question has no source value",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "SKIPPED",
+      "expected_status": "NEEDS_REVIEW"
+    },
+    {
+      "id": "sub_attestation_required",
+      "kind": "submission",
+      "description": "required attestation checkbox must never be auto-ticked",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "SKIPPED",
+      "expected_status": "NEEDS_REVIEW"
+    },
+    {
+      "id": "sub_server_reject",
+      "kind": "submission",
+      "description": "portal rejects the submission with an error message",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "UNCONFIRMED",
+      "expected_status": "SUBMITTED_UNCONFIRMED",
+      "note": "the correct behaviour is to NOT report success; the page's error text is not read"
+    },
+    {
+      "id": "sub_delayed_confirmation",
+      "kind": "submission",
+      "description": "success message appears after ~1.2 s",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "CONFIRMED",
+      "expected_status": "SUBMITTED"
+    },
+    {
+      "id": "sub_navigates_away",
+      "kind": "submission",
+      "description": "submit navigates to a separate confirmation page",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "CONFIRMED",
+      "expected_status": "SUBMITTED"
+    },
+    {
+      "id": "sub_optional_unresolved",
+      "kind": "submission",
+      "description": "optional question unresolved; required ones answered",
+      "source_style": "form-aligned",
+      "success_text": "Thank you, your response was received",
+      "expected_outcome": "CONFIRMED",
+      "expected_status": "SUBMITTED"
+    }
+  ]
+}

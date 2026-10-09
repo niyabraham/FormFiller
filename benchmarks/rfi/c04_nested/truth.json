@@ -1,0 +1,198 @@
+{
+  "case": "c04_nested",
+  "description": "Deep paths, repeated sub-objects (hq/billing), lists of objects, section headings.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "hq_street",
+      "question": "Street",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "12 MG Road",
+      "source": "organization.profile.address.hq.street",
+      "tags": [
+        "nested",
+        "section"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "hq_city",
+      "question": "City",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Bengaluru",
+      "source": "organization.profile.address.hq.city",
+      "tags": [
+        "nested",
+        "section"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "bill_street",
+      "question": "Street",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "PO Box 44",
+      "source": "organization.profile.address.billing.street",
+      "tags": [
+        "nested",
+        "section"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "bill_pc",
+      "question": "Postal code",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "400001",
+      "source": "organization.profile.address.billing.postal_code",
+      "tags": [
+        "nested",
+        "section"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "legal",
+      "question": "Legal name of the company",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corporation Pvt Ltd",
+      "source": "organization.profile.names.legal",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "brand",
+      "question": "Brand name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme",
+      "source": "organization.profile.names.brand",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "ciso",
+      "question": "CISO name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Priya Nair",
+      "source": "organization.leadership.1.name",
+      "tags": [
+        "nested",
+        "list_by_value"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "role is a VALUE inside a list of objects, not a key"
+    },
+    {
+      "control": "ceo",
+      "question": "CEO email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ravi@acme.example",
+      "source": "organization.leadership.0.email",
+      "tags": [
+        "nested",
+        "list_by_value"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "soc_date",
+      "question": "Date of last SOC 2 audit",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2025-11-30",
+      "source": "compliance.audits.last_soc2_date",
+      "tags": [
+        "nested",
+        "tokenisation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'SOC 2' vs 'soc2'"
+    },
+    {
+      "control": "certs",
+      "question": "Which certifications do you hold?",
+      "kind": "checkbox_group",
+      "expect": "ANSWER",
+      "answer": [
+        "iso27001",
+        "soc2"
+      ],
+      "source": "compliance.certifications",
+      "tags": [
+        "nested",
+        "multi_value"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    }
+  ]
+}

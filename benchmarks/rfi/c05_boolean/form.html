@@ -1,0 +1,24 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>c05_boolean</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>c05_boolean</h1><form>
+<div class="row"><fieldset><legend>Do you support SSO?</legend><label class="opt"><input type="radio" name="sso1" value="yes"> Yes</label><label class="opt"><input type="radio" name="sso1" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is SSO supported?</legend><label class="opt"><input type="radio" name="sso2" value="yes"> Yes</label><label class="opt"><input type="radio" name="sso2" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Does your platform provide SSO?</legend><label class="opt"><input type="radio" name="sso3" value="yes"> Yes</label><label class="opt"><input type="radio" name="sso3" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is multi-factor authentication (MFA) required for all users?</legend><label class="opt"><input type="radio" name="mfa1" value="yes"> Yes</label><label class="opt"><input type="radio" name="mfa1" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is MFA enforced for administrators?</legend><label class="opt"><input type="radio" name="mfa2" value="yes"> Yes</label><label class="opt"><input type="radio" name="mfa2" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is MFA optional?</legend><label class="opt"><input type="radio" name="mfa3" value="yes"> Yes</label><label class="opt"><input type="radio" name="mfa3" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is data encrypted at rest?</legend><label class="opt"><input type="radio" name="enc1" value="yes"> Yes</label><label class="opt"><input type="radio" name="enc1" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Do you encrypt data in transit?</legend><label class="opt"><input type="radio" name="enc2" value="yes"> Yes</label><label class="opt"><input type="radio" name="enc2" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Do you have cyber insurance?</legend><label class="opt"><input type="radio" name="ins" value="yes"> Yes</label><label class="opt"><input type="radio" name="ins" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is customer data stored exclusively in the EU?</legend><label class="opt"><input type="radio" name="eu" value="yes"> Yes</label><label class="opt"><input type="radio" name="eu" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Does GDPR apply to your organization?</legend><label class="opt"><input type="radio" name="gdpr" value="yes"> Yes</label><label class="opt"><input type="radio" name="gdpr" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Do you use sub-processors?</legend><label class="opt"><input type="radio" name="sub" value="yes"> Yes</label><label class="opt"><input type="radio" name="sub" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q13">Are penetration tests performed at least annually?</label><select name="pen" id="q13"><option value="">Select...</option><option value="yes">Yes</option><option value="no">No</option><option value="na">N/A</option></select></div>
+<div class="row"><label class="opt"><input type="checkbox" name="sso4" value="yes"> Single sign-on is supported</label></div>
+</form><script></script></body></html>

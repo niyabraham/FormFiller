@@ -1,0 +1,20 @@
+{
+  "company": {
+    "country": "United States",
+    "employees": 250,
+    "industry": "Software as a Service",
+    "state": "California",
+    "currency": "USD",
+    "business_type": "Private limited company",
+    "regions": [
+      "North America",
+      "Europe"
+    ],
+    "timezone": "Asia/Kolkata",
+    "language": "English",
+    "countries_of_operation": [
+      "India",
+      "Singapore"
+    ]
+  }
+}

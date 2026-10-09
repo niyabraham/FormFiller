@@ -1,0 +1,18 @@
+{
+  "incident_response": {
+    "process": "Incidents are triaged by the on-call security engineer within 15 minutes, escalated to the CISO for severity 1, and customers are notified within 72 hours.",
+    "contact": "soc@acme.example",
+    "sla_hours": 72,
+    "last_test_date": "2025-09-12"
+  },
+  "security": {
+    "overview": "ISO 27001 certified ISMS; annual third-party penetration tests; SSO and MFA enforced.",
+    "encryption": {
+      "at_rest": "AES-256",
+      "in_transit": "TLS 1.2+"
+    }
+  },
+  "company": {
+    "description": "Acme builds logistics software for mid-size manufacturers."
+  }
+}

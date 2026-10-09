@@ -1,0 +1,23 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>c08_missing</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>c08_missing</h1><form>
+<div class="row"><label for="q1">VAT / Tax ID</label><input type="text" name="vat" id="q1"></div>
+<div class="row"><label for="q2">Registration number</label><input type="text" name="regno" id="q2"></div>
+<div class="row"><fieldset><legend>Do you hold PCI DSS certification?</legend><label class="opt"><input type="radio" name="pci" value="yes"> Yes</label><label class="opt"><input type="radio" name="pci" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Do you hold SOC 2 Type II certification?</legend><label class="opt"><input type="radio" name="soc2" value="yes"> Yes</label><label class="opt"><input type="radio" name="soc2" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q5">Incident response contact phone</label><input type="tel" name="irphone" id="q5"></div>
+<div class="row"><label for="q6">Incident response contact email</label><input type="email" name="iremail" id="q6"></div>
+<div class="row"><label for="q7">Cyber insurance provider</label><input type="text" name="insprov" id="q7"></div>
+<div class="row"><label for="q8">Cyber insurance coverage amount (USD)</label><input type="number" name="inscov" id="q8"></div>
+<div class="row"><label for="q9">Date of last penetration test</label><input type="date" name="pentest" id="q9"></div>
+<div class="row"><label for="q10">Name of external auditor</label><input type="text" name="auditor" id="q10"></div>
+<div class="row"><label for="q11">Parent company name</label><input type="text" name="parent" id="q11"></div>
+<div class="row"><label for="q12">Company name</label><input type="text" name="coname" id="q12"></div>
+<div class="row"><label for="q13">Website of parent company</label><input type="url" name="parentweb" id="q13"></div>
+</form><script></script></body></html>

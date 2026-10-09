@@ -1,0 +1,266 @@
+{
+  "case": "c02_paraphrase",
+  "description": "Same facts asked in different words; keys are not worded like the questions.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "w1",
+      "question": "How many employees are currently employed by your organization?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "company.workforce_size",
+      "tags": [
+        "paraphrase",
+        "synonym",
+        "spec_example"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "the guide's own paraphrase example"
+    },
+    {
+      "control": "w2",
+      "question": "What is the size of your workforce?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "company.workforce_size",
+      "tags": [
+        "paraphrase",
+        "synonym"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w3",
+      "question": "Total staff headcount",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "company.workforce_size",
+      "tags": [
+        "paraphrase",
+        "synonym"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w4",
+      "question": "Number of personnel",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "company.workforce_size",
+      "tags": [
+        "paraphrase",
+        "synonym"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "hq",
+      "question": "In which city is your headquarters located?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Bengaluru",
+      "source": "company.hq_city",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "est",
+      "question": "In what year was your company established?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 2009,
+      "source": "company.year_established",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "rev",
+      "question": "What was your annual revenue?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 12000000,
+      "source": "company.annual_revenue_usd",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "legal",
+      "question": "Registered legal entity name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corporation Pvt Ltd",
+      "source": "company.legal_name",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "dba",
+      "question": "Company trading name / DBA",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme",
+      "source": "company.trading_name",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "tel",
+      "question": "Main telephone number",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "+91 80 5550 1234",
+      "source": "company.main_phone",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "supp",
+      "question": "Customer support contact e-mail",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "help@acme.example",
+      "source": "company.support_email",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sla",
+      "question": "Guaranteed availability (SLA %)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 99.9,
+      "source": "company.uptime_sla_percent",
+      "tags": [
+        "paraphrase",
+        "synonym"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "availability = uptime"
+    },
+    {
+      "control": "dc1",
+      "question": "Number of data centres",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 3,
+      "source": "company.data_centres",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "dc2",
+      "question": "How many data centers do you operate?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 3,
+      "source": "company.data_centres",
+      "tags": [
+        "paraphrase",
+        "spelling"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "US spelling of 'centres'"
+    }
+  ]
+}

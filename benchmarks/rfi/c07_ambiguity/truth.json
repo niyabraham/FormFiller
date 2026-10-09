@@ -1,0 +1,287 @@
+{
+  "case": "c07_ambiguity",
+  "description": "Two or more plausible values. The safe outcome is REVIEW unless the question disambiguates.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "e1",
+      "question": "How many employees does the organization have?",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous",
+        "spec_example",
+        "disputed"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "spec: company.employees (250) vs subsidiary.employees (80). 'the organization' may or may not include the subsidiary; the guide's rule is REVIEW unless evidence disambiguates. DISPUTED label: a reader could reasonably say 250 (the filing entity); REVIEW follows the spec and is the conservative reading"
+    },
+    {
+      "control": "e2",
+      "question": "How many employees?",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "e3",
+      "question": "How many employees does the subsidiary have?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 80,
+      "source": "subsidiary.employees",
+      "tags": [
+        "ambiguous",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "n1",
+      "question": "Name",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "company, subsidiary and applicant names all exist"
+    },
+    {
+      "control": "n2",
+      "question": "Name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Jane Doe",
+      "source": "applicant.name",
+      "tags": [
+        "ambiguous",
+        "section"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "m1",
+      "question": "Email",
+      "kind": "email",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "a neutral heading follows the Applicant block, so no section evidence applies"
+    },
+    {
+      "control": "r1",
+      "question": "Revenue",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "2023 and 2024 values; year not stated"
+    },
+    {
+      "control": "r2",
+      "question": "Revenue for 2024",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 12000000,
+      "source": "revenue.2024",
+      "tags": [
+        "ambiguous",
+        "numeric_key"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "a1",
+      "question": "Address",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "billing and mailing both exist"
+    },
+    {
+      "control": "a2",
+      "question": "Mailing address",
+      "kind": "textarea",
+      "expect": "ANSWER",
+      "answer": "12 MG Road, Bengaluru",
+      "source": "address.mailing",
+      "tags": [
+        "ambiguous",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "b1",
+      "question": "Billing email address",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ops@acme.example",
+      "source": "billing_email",
+      "tags": [
+        "ambiguous",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "t1",
+      "question": "Tax registration number",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "GST number and PAN are different registrations"
+    },
+    {
+      "control": "t2",
+      "question": "GST number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "29ABCDE1234F1Z5",
+      "source": "tax.gst_number",
+      "tags": [
+        "ambiguous",
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "am",
+      "question": "Do you have an account manager?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "has_account_manager",
+      "tags": [
+        "ambiguous",
+        "type_tie"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "a boolean flag and a name share the same words; a yes/no question can only be answered by the flag"
+    },
+    {
+      "control": "c1",
+      "question": "Company email address",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ops@acme.example",
+      "source": "company.email",
+      "tags": [
+        "ambiguous",
+        "same_value_two_paths"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "company.email and contact_email hold the same value"
+    }
+  ]
+}

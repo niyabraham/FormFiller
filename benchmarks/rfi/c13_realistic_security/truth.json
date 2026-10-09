@@ -1,0 +1,462 @@
+{
+  "case": "c13_realistic_security",
+  "description": "SIG/CAIQ-style page: ID-prefixed labels, domain sections, Yes/No/NA, engineer-style nested source whose booleans are named `exists`/`enabled`.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "A1",
+      "question": "A.1 Do you have a documented information security policy?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "policies.infosec_policy.exists",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "bool_in_parent"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "A2",
+      "question": "A.2 When was the information security policy last reviewed?",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2026-01-15",
+      "source": "policies.infosec_policy.last_reviewed",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "B1",
+      "question": "B.1 Do you encrypt data at rest?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "encryption.at_rest.enabled",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "bool_in_parent"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "B2",
+      "question": "B.2 What encryption algorithm is used for data at rest?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "AES-256",
+      "source": "encryption.at_rest.algorithm",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "B3",
+      "question": "B.3 Do you encrypt data in transit?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "encryption.in_transit.enabled",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "bool_in_parent"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "C1",
+      "question": "C.1 Is multi-factor authentication (MFA) used for remote access?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "access.mfa.remote_access",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "acronym_in_parens"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "C2",
+      "question": "C.2 Is MFA enforced for administrator accounts?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "access.mfa.admin_accounts",
+      "tags": [
+        "realistic",
+        "yes_no_na"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "C3",
+      "question": "C.3 Do you support single sign-on (SSO)?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "access.sso.enabled",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "bool_in_parent",
+        "acronym_in_parens"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "C4",
+      "question": "C.4 How often are user access reviews performed?",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "quarterly",
+      "source": "access.access_reviews.frequency",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "D1",
+      "question": "D.1 Do you have an incident response plan?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "incident.has_plan",
+      "tags": [
+        "realistic",
+        "yes_no_na"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "D2",
+      "question": "D.2 Have you experienced a data breach in the last three years?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "incident.breach_last_3_years",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "number_word"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "D3",
+      "question": "D.3 Who is your incident response point of contact?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "soc@acme.example",
+      "source": "incident.contact",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "E1",
+      "question": "E.1 Do you maintain a tested business continuity and disaster recovery plan?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "policies.bcp_dr.exists",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "bool_in_parent"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "E2",
+      "question": "E.2 Date of last disaster recovery test",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2025-10-02",
+      "source": "policies.bcp_dr.last_tested",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "F1",
+      "question": "F.1 Do all employees complete security awareness training annually?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "realistic",
+        "judgement"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "frequency is annual but completion is 98%: 'all' needs a human decision"
+    },
+    {
+      "control": "F2",
+      "question": "F.2 Security awareness training completion rate (%)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 98,
+      "source": "policies.security_awareness_training.completion_rate_percent",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "G1",
+      "question": "G.1 Do you perform background checks on employees?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "hr.background_checks",
+      "tags": [
+        "realistic",
+        "yes_no_na"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "G2",
+      "question": "G.2 Can you share your most recent SOC 2 Type II report under NDA?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "compliance.soc2.report_available_under_nda",
+      "tags": [
+        "realistic",
+        "yes_no_na"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "G3",
+      "question": "G.3 Are you ISO 27001 certified?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "compliance.iso27001.certified",
+      "tags": [
+        "realistic",
+        "yes_no_na",
+        "bool_in_parent"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "G4",
+      "question": "G.4 ISO 27001 certificate expiry date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2027-06-30",
+      "source": "compliance.iso27001.expiry",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "H1",
+      "question": "H.1 Link to your sub-processor list",
+      "kind": "url",
+      "expect": "ANSWER",
+      "answer": "https://acme.example/subprocessors",
+      "source": "vendor_management.subprocessors_list_url",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "J1",
+      "question": "J.1 Penetration testing frequency",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "annual",
+      "source": "pentest.frequency",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "J2",
+      "question": "J.2 Date of last penetration test",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2025-11-10",
+      "source": "pentest.last_date",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "J3",
+      "question": "J.3 Upload your most recent penetration test report",
+      "kind": "file",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "realistic",
+        "file_upload"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "a document must be attached by a person; it should still be surfaced for review"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "case": "c10_conditional",
+  "description": "Fields revealed by earlier answers, two-level chains, hidden-must-stay-hidden, and a conditional whose trigger is worded as a paraphrase.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "gdpr",
+      "question": "GDPR applicable",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "privacy.gdpr_applicable",
+      "tags": [
+        "conditional_trigger"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "dpo",
+      "question": "Who is your Data Protection Officer?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "A. Rao",
+      "source": "privacy.dpo_name",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "gdpr",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "the guide's conditional example"
+    },
+    {
+      "control": "dpo_email",
+      "question": "DPO email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "dpo@acme.example",
+      "source": "privacy.dpo_email",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "gdpr",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "gdpr_reason",
+      "question": "Reason GDPR does not apply",
+      "kind": "textarea",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "conditional",
+        "stays_hidden"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "gdpr",
+        "no"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "card",
+      "question": "Does your company process payment card data?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "payments.processes_card_data",
+      "tags": [
+        "conditional_trigger"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "pci",
+      "question": "PCI DSS compliance level",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "level2",
+      "source": "payments.pci_level",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "card",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "qsa",
+      "question": "Name of your Qualified Security Assessor",
+      "kind": "text",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "conditional",
+        "stays_hidden",
+        "two_level"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "pci",
+        "level1"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "ciso",
+      "question": "Do you have a designated CISO?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.has_ciso",
+      "tags": [
+        "conditional_trigger"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "ciso_name",
+      "question": "CISO name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Priya Nair",
+      "source": "security.ciso_name",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "ciso",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "subs",
+      "question": "Do you have subsidiaries?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "company.subsidiaries_exist",
+      "tags": [
+        "conditional_trigger"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sub_list",
+      "question": "List your subsidiaries",
+      "kind": "textarea",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "conditional",
+        "stays_hidden"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "subs",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "gdpr2",
+      "question": "Is your organization subject to the EU General Data Protection Regulation (GDPR)?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "privacy.gdpr_applicable",
+      "tags": [
+        "conditional_trigger",
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "dpo_phone",
+      "question": "DPO contact phone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "+91 80 5550 7777",
+      "source": "privacy.dpo_phone",
+      "tags": [
+        "conditional",
+        "cascade"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "gdpr2",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "revealed only if the paraphrased trigger above is answered"
+    }
+  ]
+}

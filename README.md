@@ -357,10 +357,9 @@ formfill-poc/
 │   ├── test_end_to_end.py
 │   │
 │   ├── web/                    # Web form tests
-│   │   ├── test_retrieve_plan.py    # Retrieval + planning policy (31 tests)
-│   │   ├── test_validate_result.py  # Validation + result status (24 tests)
+│   │   ├── test_retrieve_plan.py    # Retrieval + planning policy (16 tests)
+│   │   ├── test_validate_result.py  # Validation + result status (16 tests)
 │   │   ├── test_browser.py          # End-to-end browser integration (16 tests)
-│   │   ├── conftest.py              # Playwright fixtures
 │   │   └── fixtures/                # Test HTML forms
 │   │       ├── rfi_basic.html
 │   │       ├── rfi_conditional.html
@@ -573,6 +572,19 @@ The most important principle demonstrated by this PoC is:
 This provides a foundation for introducing AI capabilities without making the entire system dependent on AI correctness, and enables human oversight at critical decision points.
 
 ---
+
+## 15b. Phase 2 — Baseline Evaluation
+
+A local benchmark (`benchmarks/rfi/`, 23 cases, 213 questions, explicit ground truth) measures where the
+deterministic pipeline fails. No AI components were added.
+
+```
+python tools/build_benchmark.py     # regenerate fixtures
+python tools/evaluate_baseline.py   # run + write benchmarks/rfi/results/
+pytest tests/evaluation
+```
+
+Results and recommendation: `docs/PHASE2_EVALUATION.md`.
 
 ## 16. Documentation
 

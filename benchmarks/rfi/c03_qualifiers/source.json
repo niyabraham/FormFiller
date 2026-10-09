@@ -1,0 +1,26 @@
+{
+  "workforce": {
+    "employees": 250,
+    "full_time_employees": 210,
+    "contractors": 40,
+    "interns": 5
+  },
+  "customers": {
+    "total": 1800,
+    "enterprise": 120
+  },
+  "security": {
+    "contact": {
+      "name": "Priya Nair",
+      "email": "security@acme.example"
+    }
+  },
+  "contacts": {
+    "billing": {
+      "email": "billing@acme.example"
+    },
+    "general": {
+      "email": "info@acme.example"
+    }
+  }
+}

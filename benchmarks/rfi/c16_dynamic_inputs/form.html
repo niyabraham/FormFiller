@@ -1,0 +1,27 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>c16_dynamic_inputs</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>c16_dynamic_inputs</h1><form>
+<div class="row"><label for="q1">Company name</label><input type="text" name="company_name" id="q1"></div>
+<div class="row"><label for="q2">Contract start date</label><input type="text" name="start_date" readonly id="q2"></div>
+<div class="row"><label for="q3">Mobile phone</label><input type="tel" name="mobile_phone" data-mask="phone" id="q3"></div>
+<div class="row"><label for="q4">Region</label><select name="region" data-async id="q4"><option value="">Select...</option></select></div>
+<div class="row"><fieldset><legend>Account manager assigned</legend><label class="opt"><input type="radio" name="has_am" value="yes"> Yes</label><label class="opt"><input type="radio" name="has_am" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q6">Account manager name</label><input type="text" name="account_manager" disabled data-enable-when="has_am" data-enable-eq="yes" id="q6"></div>
+</form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+
+function syncEnable(){document.querySelectorAll('[data-enable-when]').forEach(e=>{e.disabled=val(e.dataset.enableWhen)!==e.dataset.enableEq})}
+document.addEventListener('change',syncEnable);document.addEventListener('input',syncEnable);syncEnable();
+
+document.querySelectorAll('input[data-mask]').forEach(i=>i.addEventListener('input',()=>{
+ const d=i.value.replace(/\D/g,'').slice(0,10);
+ i.value=d.length>6?d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6):d.length>3?d.slice(0,3)+'-'+d.slice(3):d}));
+const ASYNC=[["region", [["EMEA", "EMEA"], ["APAC", "APAC"]]]];setTimeout(()=>{for(const [n,o] of ASYNC){const s=document.querySelector('[name="'+n+'"]');for(const [v,t] of o){const x=document.createElement('option');x.value=v;x.textContent=t;s.appendChild(x)}}},600);</script></body></html>

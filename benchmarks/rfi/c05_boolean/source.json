@@ -1,0 +1,16 @@
+{
+  "security": {
+    "sso_supported": true,
+    "mfa_required": true,
+    "mfa_enforced_admins": true,
+    "encryption_at_rest": true,
+    "encryption_in_transit": true,
+    "pen_test_annual": true,
+    "data_resident_in_eu": false,
+    "uses_subprocessors": true,
+    "has_cyber_insurance": false
+  },
+  "privacy": {
+    "gdpr_applicable": true
+  }
+}

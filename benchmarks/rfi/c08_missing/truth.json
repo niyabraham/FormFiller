@@ -1,0 +1,244 @@
+{
+  "case": "c08_missing",
+  "description": "Answer not in the source, plus near-miss keys that tempt a false positive.",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "vat",
+      "question": "VAT / Tax ID",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "only a company registration number exists"
+    },
+    {
+      "control": "regno",
+      "question": "Registration number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "U72900KA2009PTC123456",
+      "source": "company.registration_number",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "pci",
+      "question": "Do you hold PCI DSS certification?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "soc2",
+      "question": "Do you hold SOC 2 Type II certification?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "certifications.soc2_type",
+      "tags": [
+        "derivation"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "soc2_type = 'Type II' states which SOC 2 report they hold"
+    },
+    {
+      "control": "irphone",
+      "question": "Incident response contact phone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "+91 80 5550 9999",
+      "source": "security.incident_contact_phone",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "iremail",
+      "question": "Incident response contact email",
+      "kind": "email",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing",
+        "false_positive_risk"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "the source has a security contact email, not an incident-response one: a different role"
+    },
+    {
+      "control": "insprov",
+      "question": "Cyber insurance provider",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Beazley",
+      "source": "insurance.provider",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "inscov",
+      "question": "Cyber insurance coverage amount (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 5000000,
+      "source": "insurance.coverage_usd",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "pentest",
+      "question": "Date of last penetration test",
+      "kind": "date",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "auditor",
+      "question": "Name of external auditor",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "parent",
+      "question": "Parent company name",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing",
+        "false_positive_risk"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Acme Corp is the company itself, not its parent"
+    },
+    {
+      "control": "coname",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company.name",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "parentweb",
+      "question": "Website of parent company",
+      "kind": "url",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing",
+        "false_positive_risk"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "company.website belongs to the company, not the parent"
+    }
+  ]
+}

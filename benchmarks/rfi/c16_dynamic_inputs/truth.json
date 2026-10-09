@@ -1,0 +1,122 @@
+{
+  "case": "c16_dynamic_inputs",
+  "description": "Native inputs that behave dynamically: read-only picker, input mask, late options, enabled-by-answer.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "company_name",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company_name",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "start_date",
+      "question": "Contract start date",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "2026-01-15",
+      "source": "start_date",
+      "tags": [
+        "browser_execution",
+        "readonly_datepicker"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "read-only box filled by a date-picker popup in real portals"
+    },
+    {
+      "control": "mobile_phone",
+      "question": "Mobile phone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "555-000-1234",
+      "source": "mobile_phone",
+      "tags": [
+        "browser_execution",
+        "masked_input"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "the page's input mask rewrites 5550001234 to 555-000-1234; the form should hold the masked value"
+    },
+    {
+      "control": "region",
+      "question": "Region",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "EMEA",
+      "source": "region",
+      "tags": [
+        "browser_execution",
+        "async_options"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "options are inserted ~600 ms after load"
+    },
+    {
+      "control": "has_am",
+      "question": "Account manager assigned",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "account_manager_assigned",
+      "tags": [
+        "conditional_trigger"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "account_manager",
+      "question": "Account manager name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Ravi Menon",
+      "source": "account_manager",
+      "tags": [
+        "browser_execution",
+        "enabled_later"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": [
+        "has_am",
+        "yes"
+      ],
+      "step": 1,
+      "note": "control is disabled until the previous answer is given"
+    }
+  ]
+}

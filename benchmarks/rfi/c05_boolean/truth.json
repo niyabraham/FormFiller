@@ -1,0 +1,268 @@
+{
+  "case": "c05_boolean",
+  "description": "Yes/No questions worded many ways, plus a negation trap and CAIQ-style Yes/No/NA.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "sso1",
+      "question": "Do you support SSO?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.sso_supported",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sso2",
+      "question": "Is SSO supported?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.sso_supported",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sso3",
+      "question": "Does your platform provide SSO?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.sso_supported",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "mfa1",
+      "question": "Is multi-factor authentication (MFA) required for all users?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.mfa_required",
+      "tags": [
+        "boolean_wording",
+        "acronym_in_parens"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "mfa2",
+      "question": "Is MFA enforced for administrators?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.mfa_enforced_admins",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "mfa3",
+      "question": "Is MFA optional?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "security.mfa_required",
+      "tags": [
+        "boolean_wording",
+        "negation",
+        "disputed"
+      ],
+      "trap": "negation",
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "DISPUTED label: polarity is inverted (source says MFA is required, so 'optional' is NO), but 'required' has no stated scope (cf. mfa_enforced_admins). Answering 'yes' is wrong under either label; REVIEW would also be acceptable"
+    },
+    {
+      "control": "enc1",
+      "question": "Is data encrypted at rest?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.encryption_at_rest",
+      "tags": [
+        "boolean_wording",
+        "morphology"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "enc2",
+      "question": "Do you encrypt data in transit?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.encryption_in_transit",
+      "tags": [
+        "boolean_wording",
+        "morphology"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "ins",
+      "question": "Do you have cyber insurance?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "security.has_cyber_insurance",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "eu",
+      "question": "Is customer data stored exclusively in the EU?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "security.data_resident_in_eu",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "gdpr",
+      "question": "Does GDPR apply to your organization?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "privacy.gdpr_applicable",
+      "tags": [
+        "boolean_wording"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sub",
+      "question": "Do you use sub-processors?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.uses_subprocessors",
+      "tags": [
+        "boolean_wording",
+        "morphology"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "pen",
+      "question": "Are penetration tests performed at least annually?",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "security.pen_test_annual",
+      "tags": [
+        "boolean_wording",
+        "yes_no_na"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "sso4",
+      "question": "Single sign-on is supported",
+      "kind": "checkbox",
+      "expect": "ANSWER",
+      "answer": true,
+      "source": "security.sso_supported",
+      "tags": [
+        "boolean_wording",
+        "checkbox",
+        "synonym"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "spelled-out form of the SSO acronym"
+    }
+  ]
+}

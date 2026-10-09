@@ -1,0 +1,17 @@
+{
+  "company": {
+    "employees": "about 200",
+    "founded": "14 March 2009",
+    "incorporated": "03/04/2009",
+    "website": "acme.com",
+    "contact_email": "ops [at] acme.example",
+    "registration_code": "abc-12",
+    "legal_name": "Acme Corporation International Holdings Limited",
+    "revenue_growth_percent": 140,
+    "tier": "Atlantis",
+    "phone": "080-5550-1234",
+    "stock_ticker": "ACME",
+    "staff_count": "1,200",
+    "average_rating": "4.5"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "company": {
+    "workforce_size": 250,
+    "hq_city": "Bengaluru",
+    "year_established": 2009,
+    "annual_revenue_usd": 12000000,
+    "legal_name": "Acme Corporation Pvt Ltd",
+    "trading_name": "Acme",
+    "main_phone": "+91 80 5550 1234",
+    "support_email": "help@acme.example",
+    "uptime_sla_percent": 99.9,
+    "data_centres": 3
+  }
+}

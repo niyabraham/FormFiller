@@ -1,0 +1,138 @@
+{
+  "case": "c15_custom_widgets",
+  "description": "Controls that are not native inputs (ARIA widgets, contenteditable, open shadow DOM, file upload).",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "w_name",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company_name",
+      "tags": [
+        "control"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w_sso",
+      "question": "Do you support SSO?",
+      "kind": "custom_radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "sso_supported",
+      "tags": [
+        "custom_widget",
+        "aria_radio"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w_country",
+      "question": "Country",
+      "kind": "custom_combobox",
+      "expect": "ANSWER",
+      "answer": "India",
+      "source": "country",
+      "tags": [
+        "custom_widget",
+        "aria_combobox"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w_news",
+      "question": "Newsletter opt in",
+      "kind": "custom_switch",
+      "expect": "ANSWER",
+      "answer": true,
+      "source": "newsletter_opt_in",
+      "tags": [
+        "custom_widget",
+        "aria_switch"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w_desc",
+      "question": "Describe your business",
+      "kind": "custom_editable",
+      "expect": "ANSWER",
+      "answer": "B2B logistics software",
+      "source": "description",
+      "tags": [
+        "custom_widget",
+        "contenteditable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w_shadow",
+      "question": "Company website",
+      "kind": "shadow_text",
+      "expect": "ANSWER",
+      "answer": "https://acme.example",
+      "source": "company_website",
+      "tags": [
+        "custom_widget",
+        "shadow_dom"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "w_file",
+      "question": "Upload your SOC 2 report",
+      "kind": "file",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "file_upload"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "document upload: a person must attach it"
+    }
+  ]
+}

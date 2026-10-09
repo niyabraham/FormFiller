@@ -1,0 +1,233 @@
+{
+  "case": "c14_label_styles",
+  "description": "The same easy facts, but each label is attached to its control a different way.",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "s1",
+      "question": "Company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corp",
+      "source": "company_name",
+      "tags": [
+        "label_style"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s2",
+      "question": "Website",
+      "kind": "url",
+      "expect": "ANSWER",
+      "answer": "https://acme.example",
+      "source": "website",
+      "tags": [
+        "label_style"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s3",
+      "question": "Number of employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "employees",
+      "tags": [
+        "label_style"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s4",
+      "question": "Contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ops@acme.example",
+      "source": "contact_email",
+      "tags": [
+        "label_style"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s5",
+      "question": "Phone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "+91 80 5550 1234",
+      "source": "phone",
+      "tags": [
+        "label_style",
+        "placeholder_only"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s6",
+      "question": "Date founded",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2009-03-14",
+      "source": "founded",
+      "tags": [
+        "label_style",
+        "div_label"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s7",
+      "question": "Legal name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Acme Corporation Pvt Ltd",
+      "source": "legal_name",
+      "tags": [
+        "label_style",
+        "table_layout"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s8",
+      "question": "City",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Bengaluru",
+      "source": "city",
+      "tags": [
+        "label_style",
+        "broken_label_for"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s9",
+      "question": "1. Industry (required) *",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Software",
+      "source": "industry",
+      "tags": [
+        "label_style",
+        "numbered_label"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "s10",
+      "question": "Country",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "India",
+      "source": "country",
+      "tags": [
+        "label_style",
+        "div_label"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": ""
+    },
+    {
+      "control": "website_url",
+      "question": "Company website",
+      "kind": "url",
+      "expect": "ANSWER",
+      "answer": "https://acme.example",
+      "source": "website",
+      "tags": [
+        "label_style",
+        "div_label",
+        "semantic_name"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "label unreadable; the input name 'website_url' rescues retrieval"
+    },
+    {
+      "control": "employee_count",
+      "question": "How many people work for you?",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250,
+      "source": "employees",
+      "tags": [
+        "label_style",
+        "table_layout",
+        "semantic_name"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "label unreadable; name fallback answers via a different wording"
+    }
+  ]
+}
