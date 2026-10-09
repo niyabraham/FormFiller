@@ -76,6 +76,7 @@ class Candidate:
     path: str
     value: Any
     score: float
+    flags: list[str] = field(default_factory=list)  # why the score was capped (unexplained scope, polarity), for reviewers
 
 
 @dataclass

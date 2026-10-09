@@ -523,6 +523,9 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--case", help="run a single case id")
     ap.add_argument("--no-write", action="store_true")
+    ap.add_argument("--out-dir", type=Path, help="write baseline.json/failures.md here instead of benchmarks/rfi/results/ "
+                                                 "(the default location is the frozen Phase 2 record)")
+    ap.add_argument("--force-overwrite-baseline", action="store_true")
     args = ap.parse_args()
 
     manifest_doc = json.loads((BENCH / "manifest.json").read_text())
@@ -578,11 +581,14 @@ def main() -> int:
     print("failure classes:", report["failure_classes"])
     print("submission:", [(s["case"], s["outcome"], "OK" if s["ok"] else "MISMATCH") for s in subs])
     if not args.no_write and not args.case:
-        res = BENCH / "results"
-        res.mkdir(exist_ok=True)
+        res = (args.out_dir if args.out_dir else BENCH / "results").resolve()
+        if res == (BENCH / "results").resolve() and report["run"]["pipeline_dirty"] and not args.force_overwrite_baseline:
+            print("refusing to overwrite the frozen Phase 2 results with a modified pipeline; pass --out-dir DIR")
+            return 2
+        res.mkdir(parents=True, exist_ok=True)
         (res / "baseline.json").write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")
         (res / "failures.md").write_text(failure_markdown(failures, report["run"], report["failure_accounting"]), encoding="utf-8")
-        print(f"wrote {res.relative_to(ROOT)}/baseline.json and failures.md")
+        print(f"wrote {res}/baseline.json and failures.md")
     return 0
 
 

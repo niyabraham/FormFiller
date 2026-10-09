@@ -41,7 +41,8 @@ def _same_value(a: Any, b: Any) -> bool:
 
 
 def _alts(cands: list[Candidate], skip: int = 0) -> list[dict]:
-    return [{"source": c.path, "value": c.value, "score": c.score} for c in cands[skip:3 + skip]]
+    return [{"source": c.path, "value": c.value, "score": c.score, **({"flags": c.flags} if c.flags else {})}
+            for c in cands[skip:3 + skip]]
 
 
 def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
@@ -65,8 +66,9 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
 
     top = cands[0]
     if top.score < MIN_CONFIDENCE:
+        why = f" -- {'; '.join(top.flags)}" if top.flags else ""
         return review(
-            f"best candidate {top.path!r} is too weak (score {top.score:.2f} < {MIN_CONFIDENCE})", cands, top.score
+            f"best candidate {top.path!r} is too weak (score {top.score:.2f} < {MIN_CONFIDENCE}){why}", cands, top.score
         )
 
     if len(cands) > 1:

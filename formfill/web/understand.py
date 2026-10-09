@@ -31,8 +31,20 @@ _MODE = {
 def clean_question_text(label: str) -> str:
     text = re.sub(r"\s+", " ", label).strip()
     text = re.sub(r"\s*\*+\s*$", "", text)  # trailing required-asterisk
-    text = re.sub(r"\s*\((required|optional)\)\s*$", "", text, flags=re.I)
+    text = re.sub(r"\s*\((required|optional)\)\s*$", "", text, flags=re.IGNORECASE)
     return text.strip(" :")
+
+
+_ENUMERATOR = re.compile(r"^\s*(?:[A-Za-z]\.\d+(?:\.\d+)*|\d+(?:\.\d+)*)[.):]?\s+(?=\S)|^\s*[A-Za-z]\d+\.\s+(?=\S)")
+_DECORATION = re.compile(r"\s*[\[(]\s*(?:optional|required)\s*[\])]\s*|\s*[-\u2013\u2014:]\s*(?:optional|required)\s*$|^\s*(?:optional|required)\s*[-\u2013\u2014:]\s*", re.IGNORECASE)
+
+
+def concept_text(text: str) -> str:
+    """Question text minus form furniture that is not part of the question: leading
+    enumerators ("C.3", "1.2.1.") and optional/required decorations ("Phone - optional",
+    "Optional: Phone"). "Is MFA optional?" is a question and is left alone."""
+    text = _ENUMERATOR.sub("", text, count=1)
+    return _DECORATION.sub(" ", text).strip()
 
 
 def understand_control(control: Control) -> Question:
@@ -43,7 +55,7 @@ def understand_control(control: Control) -> Question:
         control=control,
         expected_type=_EXPECTED.get(control.kind, "string"),
         answer_mode=_MODE.get(control.kind, "single_value"),
-        concept_tokens=tokenize(text),
+        concept_tokens=tokenize(concept_text(text)),
     )
 
 
