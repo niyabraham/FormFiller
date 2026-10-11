@@ -1,0 +1,358 @@
+{
+  "case": "h09_retail_vendor",
+  "description": "Retailer vendor registration wizard with dynamically created step 2",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "v1",
+      "question": "Vendor Name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Pinecrest Pantry Co.",
+      "source": "Vendor Name",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "v2",
+      "question": "Vendor type",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "mfr",
+      "source": "Vendor Type",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Manufacturer -> mfr."
+    },
+    {
+      "control": "v3",
+      "question": "D-U-N-S Number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "117384920",
+      "source": "DUNS Number",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Variant spelling."
+    },
+    {
+      "control": "v4",
+      "question": "Number of SKUs offered",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 64,
+      "source": "Number of SKUs",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "v5",
+      "question": "Annual sales to retailers (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 4200000,
+      "source": "Annual Sales to Retailers (USD)",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "v6",
+      "question": "Payment terms requested",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "n45",
+      "source": "Payment Terms Requested",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Net 45 -> n45."
+    },
+    {
+      "control": "v7",
+      "question": "Street address",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "2210 Mill Race Road",
+      "source": "Street Address",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Direct."
+    },
+    {
+      "control": "v8",
+      "question": "State / Province",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "MN",
+      "source": "State",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "State name to code."
+    },
+    {
+      "control": "v9",
+      "question": "Country",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "US",
+      "source": "Country",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "United States -> US."
+    },
+    {
+      "control": "v10",
+      "question": "Contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "rob@pinecrestpantry.example",
+      "source": "Contact Email",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Direct."
+    },
+    {
+      "control": "v11",
+      "question": "Billing contact email",
+      "kind": "email",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Only a general contact; billing-specific absent."
+    },
+    {
+      "control": "v12",
+      "question": "Is the vendor a woman-owned business?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Women Owned",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Yes."
+    },
+    {
+      "control": "v13",
+      "question": "Is the vendor a small business (SBA)?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Small Business",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Yes."
+    },
+    {
+      "control": "v14",
+      "question": "Is your product line certified organic?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Certified Organic",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "False."
+    },
+    {
+      "control": "v14b",
+      "question": "Name of organic certifier",
+      "kind": "text",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "hidden"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "v14",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 3,
+      "note": "Hidden unless organic = yes."
+    },
+    {
+      "control": "v15",
+      "question": "Is the manufacturing facility allergen-free?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Allergen Free Facility",
+      "tags": [
+        "polarity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "False."
+    },
+    {
+      "control": "v16",
+      "question": "Has the vendor had a product recall in the last three years?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Recall In Last Three Years",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "No."
+    },
+    {
+      "control": "v17",
+      "question": "Is the vendor Fair Trade certified?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Not in data."
+    },
+    {
+      "control": "v18",
+      "question": "Number of warehouses",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 2,
+      "source": "Warehouse Count",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Direct."
+    },
+    {
+      "control": "v19",
+      "question": "I agree to the Vendor Code of Conduct",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Consent."
+    }
+  ]
+}

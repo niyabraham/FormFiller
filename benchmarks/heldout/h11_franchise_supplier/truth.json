@@ -1,0 +1,326 @@
+{
+  "case": "h11_franchise_supplier",
+  "description": "Restaurant franchise supplier approval; franchisor vs franchisee vs JV",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "f1",
+      "question": "Legal name of franchisee entity",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Alvarado Hospitality Group LLC",
+      "source": "franchisee.name",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Franchisee explicitly named."
+    },
+    {
+      "control": "f2",
+      "question": "Franchisor legal name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Brasa Grill Franchising LLC",
+      "source": "franchisor.name",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Franchisor explicitly named."
+    },
+    {
+      "control": "f3",
+      "question": "Number of employees",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous",
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Both franchisor (85) and franchisee (310) have employees; unscoped question genuinely ambiguous."
+    },
+    {
+      "control": "f4",
+      "question": "Number of employees of the franchisee",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 310,
+      "source": "franchisee.employees",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Entity-scoped."
+    },
+    {
+      "control": "f5",
+      "question": "Year founded",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous",
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Franchisor 2005 vs franchisee 2013."
+    },
+    {
+      "control": "f6",
+      "question": "Year the franchisor was founded",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 2005,
+      "source": "franchisor.year_founded",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Entity-scoped."
+    },
+    {
+      "control": "f7",
+      "question": "Name of franchise owner / principal",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Eduardo Alvarado",
+      "source": "franchisee.owner",
+      "tags": [
+        "related_entity",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Owner of franchisee."
+    },
+    {
+      "control": "f8",
+      "question": "Number of employees at the San Antonio store",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 42,
+      "source": "franchisee.locations.0.employees",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Location-scoped list item."
+    },
+    {
+      "control": "f9",
+      "question": "Employees at store #131",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 38,
+      "source": "franchisee.locations.1.employees",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Store 131 is Austin."
+    },
+    {
+      "control": "f10",
+      "question": "Number of employees at the Houston store",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No Houston store."
+    },
+    {
+      "control": "f11",
+      "question": "Opening date of store 114",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2018-05-07",
+      "source": "franchisee.locations.0.opened",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "f12",
+      "question": "States in which the franchisor operates",
+      "kind": "multiselect",
+      "expect": "ANSWER",
+      "answer": [
+        "TX",
+        "OK",
+        "LA"
+      ],
+      "source": "franchisor.states_operating",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Codes match option values."
+    },
+    {
+      "control": "f13",
+      "question": "Joint venture name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Brasa-Alvarado Development JV",
+      "source": "joint_venture.name",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "f14",
+      "question": "Franchisor's ownership percentage in the joint venture",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous",
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Split '60/40' does not say which party holds which."
+    },
+    {
+      "control": "f15",
+      "question": "Is the applicant a joint venture?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "related_entity",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Data has a JV object but never states the applicant's form."
+    },
+    {
+      "control": "f16",
+      "question": "Franchisee tax ID",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Not in data."
+    },
+    {
+      "control": "f17",
+      "question": "Describe the relationship between franchisor and franchisee",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative."
+    }
+  ]
+}

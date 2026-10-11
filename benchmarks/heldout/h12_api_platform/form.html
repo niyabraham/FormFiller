@@ -1,0 +1,32 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h12_api_platform</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h12_api_platform</h1><form>
+<h2>Product</h2>
+<div class="row"><label for="q1">Product name</label><input type="text" name="s1" id="q1"></div>
+<div class="row"><fieldset><legend>Hosting model</legend><label class="opt"><input type="radio" name="s2" value="single"> Single-tenant</label><label class="opt"><input type="radio" name="s2" value="multi"> Multi-tenant</label><label class="opt"><input type="radio" name="s2" value="onprem"> On-premises</label></fieldset></div>
+<div class="row"><label for="q3">SLA uptime target (%)</label><input type="number" name="s3" min="90" max="100" step="0.01" id="q3"></div>
+<h2>Capabilities</h2>
+<div class="row"><fieldset><legend>Does the product support single sign-on?</legend><label class="opt"><input type="radio" name="s4" value="yes"> Yes</label><label class="opt"><input type="radio" name="s4" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is SCIM provisioning unsupported?</legend><label class="opt"><input type="radio" name="s5" value="yes"> Yes</label><label class="opt"><input type="radio" name="s5" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is audit logging disabled by default?</legend><label class="opt"><input type="radio" name="s6" value="yes"> Yes</label><label class="opt"><input type="radio" name="s6" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q7">Audit log retention (days)</label><input type="number" name="s7" id="q7"></div>
+<div class="row"><fieldset><legend>Can customers export their data without vendor assistance?</legend><label class="opt"><input type="radio" name="s8" value="yes"> Yes</label><label class="opt"><input type="radio" name="s8" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Available export formats</legend><label class="opt"><input type="checkbox" name="s9" value="csv"> CSV</label><label class="opt"><input type="checkbox" name="s9" value="json"> JSON</label><label class="opt"><input type="checkbox" name="s9" value="xml"> XML</label><label class="opt"><input type="checkbox" name="s9" value="xlsx"> Excel</label></fieldset></div>
+<div class="row"><fieldset><legend>Is customer data stored outside the EU?</legend><label class="opt"><input type="radio" name="s10" value="yes"> Yes</label><label class="opt"><input type="radio" name="s10" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is offline mode available?</legend><label class="opt"><input type="radio" name="s11" value="yes"> Yes</label><label class="opt"><input type="radio" name="s11" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is a sandbox environment NOT offered?</legend><label class="opt"><input type="radio" name="s12" value="yes"> Yes</label><label class="opt"><input type="radio" name="s12" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q13">Supported mobile platforms</label><select name="s13" id="q13" multiple><option value="ios">iOS</option><option value="android">Android</option><option value="win">Windows Phone</option></select></div>
+<div class="row"><label for="q14">API rate limit (requests per minute)</label><input type="number" name="s14" id="q14"></div>
+<h2>Customers</h2>
+<div class="row"><label for="q15">Number of customers</label><input type="number" name="s15" id="q15"></div>
+<div class="row"><label for="q16">Number of customers in the healthcare sector</label><input type="number" name="s16" id="q16"></div>
+<div class="row"><label for="q17">Support availability</label><select name="s17" id="q17"><option value="">Select...</option><option value="bus">Business hours</option><option value="ext">Extended hours</option><option value="247">24x7</option></select></div>
+<div class="row"><label for="q18">Languages supported in the UI</label><select name="s18" id="q18" multiple><option value="en">English</option><option value="de">German</option><option value="fr">French</option><option value="ja">Japanese</option><option value="es">Spanish</option></select></div>
+<div class="row"><label for="q19">Describe your disaster recovery architecture</label><textarea name="s19" id="q19" rows=3></textarea></div>
+</form><script></script></body></html>

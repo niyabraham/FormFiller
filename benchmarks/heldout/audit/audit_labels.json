@@ -1,0 +1,2208 @@
+{
+ "labels": [
+  {
+   "case": "h01_saas_security",
+   "control": "vendor_name",
+   "decision": "ANSWER",
+   "value": "Brightloop Software Inc.",
+   "path": "company.legal_name",
+   "why": "Direct."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "q2",
+   "decision": "ANSWER",
+   "value": 412,
+   "path": "headcount.total",
+   "why": "Direct."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "q3",
+   "decision": "ANSWER",
+   "value": 57,
+   "path": "headcount.support",
+   "why": "Direct."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "q4",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Part-time count absent."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "q5",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "EMEA headcount absent."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "parent",
+   "decision": "ANSWER",
+   "value": "Halvorsen Holdings Ltd",
+   "path": "company.parent_company.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "mfa_all",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "security.mfa.enforced_for_all_users",
+   "why": "false maps to no."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "mfa_opt",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "security.mfa.enforced_for_admins",
+   "why": "Enforced for admins so not optional."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "pentest",
+   "decision": "ANSWER",
+   "value": "2026-02-17",
+   "path": "security.pen_test.last_date",
+   "why": "Direct."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "enc",
+   "decision": "ANSWER",
+   "value": "aes256",
+   "path": "security.encryption.at_rest",
+   "why": "Maps to option."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "soc",
+   "decision": "ANSWER",
+   "value": "t2",
+   "path": "security.soc2.type",
+   "why": "Maps to option."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "ciso",
+   "decision": "ANSWER",
+   "value": "ciso@brightloop.io",
+   "path": "security.ciso_email",
+   "why": "Direct."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "iso27001",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "No ISO data."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "ir",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h01_saas_security",
+   "control": "sub",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Only total sub-processors, not EU scope."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "legal",
+   "decision": "ANSWER",
+   "value": "Meridian Surgical Supplies LLC",
+   "path": "Supplier legal name",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "dba",
+   "decision": "ANSWER",
+   "value": "Meridian MedSupply",
+   "path": "Trading name",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "ein",
+   "decision": "ANSWER",
+   "value": "84-2917736",
+   "path": "Tax identification number (EIN)",
+   "why": "Direct, matches pattern."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "est",
+   "decision": "ANSWER",
+   "value": 2003,
+   "path": "Year established",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "staff",
+   "decision": "ANSWER",
+   "value": 86,
+   "path": "Number of employees",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "reps",
+   "decision": "ANSWER",
+   "value": 14,
+   "path": "Number of sales representatives",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "state",
+   "decision": "ANSWER",
+   "value": "IL",
+   "path": "Company registered state",
+   "why": "Illinois maps to IL."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "fda",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Is the company FDA registered?",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "fdanum",
+   "decision": "ANSWER",
+   "value": "3014482291",
+   "path": "FDA establishment registration number",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "mino",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Is the company a minority-owned business?",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "pli",
+   "decision": "ANSWER",
+   "value": 5000000,
+   "path": "Product liability insurance coverage (USD)",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "exp",
+   "decision": "ANSWER",
+   "value": "2027-04-30",
+   "path": "Insurance expiry date",
+   "why": "Direct."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "cats",
+   "decision": "ANSWER",
+   "value": [
+    "ortho",
+    "wound"
+   ],
+   "path": "Distributor of record for",
+   "why": "Maps to options."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "parent",
+   "decision": "ANSWER",
+   "value": "None",
+   "path": "Parent company",
+   "why": "Value given as None."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "subs",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Null in data."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "rns",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Absent."
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "control": "excl",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Certification/consent."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_name",
+   "decision": "ANSWER",
+   "value": "Kestrel Maritime Trading Pte Ltd",
+   "path": "entity.registered_name",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_reg",
+   "decision": "ANSWER",
+   "value": "201934118K",
+   "path": "entity.reg_no",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_inc",
+   "decision": "ANSWER",
+   "value": "2019-08-21",
+   "path": "entity.incorporation_date",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_country",
+   "decision": "ANSWER",
+   "value": "SGP",
+   "path": "entity.country_of_incorporation",
+   "why": "SG maps to SGP."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_zip",
+   "decision": "ANSWER",
+   "value": "048547",
+   "path": "entity.registered_address.postal_code",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_turn",
+   "decision": "ANSWER",
+   "value": 48200000,
+   "path": "entity.annual_turnover.amount",
+   "why": "FY2025 latest."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_cur",
+   "decision": "ANSWER",
+   "value": "usd",
+   "path": "entity.annual_turnover.currency",
+   "why": "Maps."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_turn_prev",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "FY2023 turnover absent."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_up",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Ultimate parent null."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_sig",
+   "decision": "ANSWER",
+   "value": "Mei Lin Tan",
+   "path": "authorised_signatories.0.name",
+   "why": "Single signatory."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_sigmail",
+   "decision": "ANSWER",
+   "value": "meilin@kestrelmaritime.sg",
+   "path": "authorised_signatories.0.email",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_ent_mail",
+   "decision": "ANSWER",
+   "value": "finance@kestrelmaritime.sg",
+   "path": "contact.email",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_bo_count",
+   "decision": "ANSWER",
+   "value": 2,
+   "path": "beneficial_owners",
+   "why": "Both owners hold 25% or more (55, 30)."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_pep",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "compliance.pep_exposure",
+   "why": "false."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_adv",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Negated question and scope (counterparties) not clearly covered."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_aml",
+   "decision": "ANSWER",
+   "value": "Joon Park",
+   "path": "compliance.aml_officer.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_sow",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h03_bank_kyc",
+   "control": "k_decl",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Declaration."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "lic",
+   "decision": "ANSWER",
+   "value": "CGC-1527734",
+   "path": "Company Information.Contractor license number",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "lic_st",
+   "decision": "ANSWER",
+   "value": "FL",
+   "path": "Company Information.License state",
+   "why": "Maps."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "yib",
+   "decision": "ANSWER",
+   "value": 17,
+   "path": "Company Information.Years in business",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "bond1",
+   "decision": "ANSWER",
+   "value": 12000000,
+   "path": "Company Information.Bonding capacity (single project)",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "bond2",
+   "decision": "ANSWER",
+   "value": 30000000,
+   "path": "Company Information.Bonding capacity (aggregate)",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "emr",
+   "decision": "ANSWER",
+   "value": 0.82,
+   "path": "Safety.EMR (current)",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "emr3",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Only prior year given, not three years ago."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "osha3",
+   "decision": "ANSWER",
+   "value": 4,
+   "path": "Safety.OSHA recordable incidents (last 3 years)",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "osha1",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "12-month figure absent."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "fatal",
+   "decision": "ANSWER",
+   "value": 0,
+   "path": "Safety.Fatalities (last 5 years)",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "wsp",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Safety.Has written safety program",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "tot",
+   "decision": "ANSWER",
+   "value": 240,
+   "path": "Workforce.Total employees",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "craft",
+   "decision": "ANSWER",
+   "value": 198,
+   "path": "Workforce.Craft employees",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "sal",
+   "decision": "ANSWER",
+   "value": 42,
+   "path": "Workforce.Salaried staff",
+   "why": "Direct."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "union",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Only affiliation None, no member count."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "nolit",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Litigation.Pending lawsuits",
+   "why": "0 pending means free."
+  },
+  {
+   "case": "h04_construction_prequal",
+   "control": "qc",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "pifn",
+   "decision": "ANSWER",
+   "value": "Amara",
+   "path": "pi.first_name",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "piln",
+   "decision": "ANSWER",
+   "value": "Okonkwo-Reyes",
+   "path": "pi.last_name",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "orcid",
+   "decision": "ANSWER",
+   "value": "0000-0002-4417-8893",
+   "path": "pi.orcid",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "rank",
+   "decision": "ANSWER",
+   "value": "assoc",
+   "path": "pi.rank",
+   "why": "Maps."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "title",
+   "decision": "ANSWER",
+   "value": "Low-Cost Sensor Networks for Urban Groundwater Monitoring",
+   "path": "project.title",
+   "why": "Within 120 chars."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "sd",
+   "decision": "ANSWER",
+   "value": "2027-01-01",
+   "path": "project.start_date",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "ed",
+   "decision": "ANSWER",
+   "value": "2029-12-31",
+   "path": "project.end_date",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "dur",
+   "decision": "ANSWER",
+   "value": 36,
+   "path": "project.duration_months",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "bud",
+   "decision": "ANSWER",
+   "value": 742500,
+   "path": "project.requested_budget.total",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "by2",
+   "decision": "ANSWER",
+   "value": 250500,
+   "path": "project.requested_budget.year2",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "by5",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Only 3 years of budget."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "idc",
+   "decision": "ANSWER",
+   "value": 52.5,
+   "path": "project.requested_budget.indirect_rate_pct",
+   "why": "Direct."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "hs",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "project.human_subjects",
+   "why": "false."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "csopt",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Cost share not required does not clearly mean optional."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "coi",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Two co-investigators for one field."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "inst_st",
+   "decision": "ANSWER",
+   "value": "OR",
+   "path": "institution.state",
+   "why": "Maps."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "kw",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "List needs joining; format ambiguous."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "abstract",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h05_university_grant",
+   "control": "cert",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Certification."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p1",
+   "decision": "ANSWER",
+   "value": "Hartwell & Pryce Architects LLP",
+   "path": "Proposer name",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p2m",
+   "decision": "ANSWER",
+   "value": "03",
+   "path": "Date established",
+   "why": "March maps to 03."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p3",
+   "decision": "ANSWER",
+   "value": "2009-03-14",
+   "path": "Retroactive date",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p4",
+   "decision": "ANSWER",
+   "value": 6,
+   "path": "Number of partners",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p5",
+   "decision": "ANSWER",
+   "value": 19,
+   "path": "Number of qualified architects",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p6",
+   "decision": "ANSWER",
+   "value": 41,
+   "path": "Total staff",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p7",
+   "decision": "ANSWER",
+   "value": 28,
+   "path": "Office locations.0.staff",
+   "why": "Leeds office."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p8",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "No London office in data."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p9",
+   "decision": "ANSWER",
+   "value": 6840000,
+   "path": "Gross fees last financial year",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p10",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Two years ago absent."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p11",
+   "decision": "ANSWER",
+   "value": 7200000,
+   "path": "Gross fees estimated current year",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p12",
+   "decision": "ANSWER",
+   "value": "5m",
+   "path": "Professional indemnity limit requested",
+   "why": "Maps."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p13",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Any claims in the last 5 years",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p14",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Subcontractors used",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p15",
+   "decision": "ANSWER",
+   "value": "8%",
+   "path": "Overseas work percentage",
+   "why": "Overseas as outside UK."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p16",
+   "decision": "ANSWER",
+   "value": "LS1 4AP",
+   "path": "Registered office postcode",
+   "why": "Direct."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p17",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "control": "p18",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Declaration."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_name",
+   "decision": "ANSWER",
+   "value": "Riverbend Community Health Initiative",
+   "path": "org.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_ein",
+   "decision": "ANSWER",
+   "value": "46-3381920",
+   "path": "org.ein",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_year",
+   "decision": "ANSWER",
+   "value": 2011,
+   "path": "org.year_registered",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_ft",
+   "decision": "ANSWER",
+   "value": 22,
+   "path": "people.staff_full_time",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_pt",
+   "decision": "ANSWER",
+   "value": 5,
+   "path": "people.staff_part_time",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_tot",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Total would need summing and may include volunteers; not stated."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_vol",
+   "decision": "ANSWER",
+   "value": 140,
+   "path": "people.volunteers",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_board",
+   "decision": "ANSWER",
+   "value": 9,
+   "path": "people.board_members",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_ind",
+   "decision": "ANSWER",
+   "value": 7,
+   "path": "people.independent_board_members",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_fye",
+   "decision": "ANSWER",
+   "value": "06",
+   "path": "finance.fiscal_year_end",
+   "why": "June maps to 06."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_rev",
+   "decision": "ANSWER",
+   "value": 3150000,
+   "path": "finance.total_revenue",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_gov",
+   "decision": "ANSWER",
+   "value": 38,
+   "path": "finance.government_funding_pct",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_aud",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "finance.audited",
+   "why": "true."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_audn",
+   "decision": "ANSWER",
+   "value": "Whitlock & Frame CPAs",
+   "path": "finance.audit_firm",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_coi",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "governance.conflict_of_interest_policy",
+   "why": "true."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_wb",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "governance.whistleblower_policy",
+   "why": "Has policy so does not lack."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_rpt",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "governance.has_no_related_party_transactions",
+   "why": "true inverted."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_fs",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Fiscal sponsor null."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_ch",
+   "decision": "ANSWER",
+   "value": "Riverbend Ohio",
+   "path": "affiliates.chapters.0.name",
+   "why": "Single chapter."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_ben",
+   "decision": "ANSWER",
+   "value": 18400,
+   "path": "programs.beneficiaries_last_year",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_ben2",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Previous year absent."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_mis",
+   "decision": "ANSWER",
+   "value": "Provide primary care outreach in rural Appalachia.",
+   "path": "org.mission",
+   "why": "Direct."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_toc",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "control": "n_fsup",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "File upload."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "dot",
+   "decision": "ANSWER",
+   "value": "2847731",
+   "path": "carrier.dotNumber",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "mc",
+   "decision": "ANSWER",
+   "value": "MC-913442",
+   "path": "carrier.mcNumber",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "scac",
+   "decision": "ANSWER",
+   "value": "TGFL",
+   "path": "carrier.scac",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "yf",
+   "decision": "ANSWER",
+   "value": 1998,
+   "path": "carrier.yearFounded",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "pu",
+   "decision": "ANSWER",
+   "value": 312,
+   "path": "carrier.fleet.powerUnits",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "tr",
+   "decision": "ANSWER",
+   "value": 640,
+   "path": "carrier.fleet.trailers",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "reefer",
+   "decision": "ANSWER",
+   "value": 120,
+   "path": "carrier.fleet.reeferTrailers",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "oo",
+   "decision": "ANSWER",
+   "value": 58,
+   "path": "carrier.fleet.ownerOperators",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "cd",
+   "decision": "ANSWER",
+   "value": 305,
+   "path": "carrier.drivers.companyDrivers",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "dr",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Total drivers ambiguous (team drivers overlap, owner-operators)."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "st",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Straight trucks absent."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "rating",
+   "decision": "ANSWER",
+   "value": "S",
+   "path": "carrier.safetyRating",
+   "why": "Maps."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "al",
+   "decision": "ANSWER",
+   "value": 1000000,
+   "path": "carrier.insurance.autoLiability.limit",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "cargo",
+   "decision": "ANSWER",
+   "value": 250000,
+   "path": "carrier.insurance.cargo.limit",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "cexp",
+   "decision": "ANSWER",
+   "value": "2027-01-15",
+   "path": "carrier.insurance.cargo.expires",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "haz",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "carrier.hazmatAuthorized",
+   "why": "false."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "eld",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "carrier.eld.enabled",
+   "why": "true."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "eldp",
+   "decision": "ANSWER",
+   "value": "Samsara",
+   "path": "carrier.eld.provider",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "omaha",
+   "decision": "ANSWER",
+   "value": 48,
+   "path": "carrier.terminals.0.doors",
+   "why": "Omaha terminal."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "dallas",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "No Dallas terminal."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "regions",
+   "decision": "ANSWER",
+   "value": [
+    "mw",
+    "sw"
+   ],
+   "path": "carrier.serviceRegions",
+   "why": "Maps."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "dph",
+   "decision": "ANSWER",
+   "value": "402-555-0166",
+   "path": "carrier.dispatchPhone",
+   "why": "Direct."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "broker",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "carrier.brokerAuthority",
+   "why": "false."
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "control": "w9",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "File upload."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v1",
+   "decision": "ANSWER",
+   "value": "Pinecrest Pantry Co.",
+   "path": "Vendor Name",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v2",
+   "decision": "ANSWER",
+   "value": "mfr",
+   "path": "Vendor Type",
+   "why": "Maps."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v3",
+   "decision": "ANSWER",
+   "value": "117384920",
+   "path": "DUNS Number",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v4",
+   "decision": "ANSWER",
+   "value": 64,
+   "path": "Number of SKUs",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v5",
+   "decision": "ANSWER",
+   "value": 4200000,
+   "path": "Annual Sales to Retailers (USD)",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v6",
+   "decision": "ANSWER",
+   "value": "n45",
+   "path": "Payment Terms Requested",
+   "why": "Maps."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v7",
+   "decision": "ANSWER",
+   "value": "2210 Mill Race Road",
+   "path": "Street Address",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v8",
+   "decision": "ANSWER",
+   "value": "MN",
+   "path": "State",
+   "why": "Maps."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v9",
+   "decision": "ANSWER",
+   "value": "US",
+   "path": "Country",
+   "why": "Maps."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v10",
+   "decision": "ANSWER",
+   "value": "rob@pinecrestpantry.example",
+   "path": "Contact Email",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v11",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "No billing email."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v12",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Women Owned",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v13",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Small Business",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v14",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Certified Organic",
+   "why": "false."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v15",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Allergen Free Facility",
+   "why": "false."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v16",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Recall In Last Three Years",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v17",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Fair Trade absent."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v18",
+   "decision": "ANSWER",
+   "value": 2,
+   "path": "Warehouse Count",
+   "why": "Direct."
+  },
+  {
+   "case": "h09_retail_vendor",
+   "control": "v19",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Agreement/consent."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g1",
+   "decision": "ANSWER",
+   "value": "Corvid Analytics Ltd",
+   "path": "supplier.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g2",
+   "decision": "ANSWER",
+   "value": "07894213",
+   "path": "supplier.company_number",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g3",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Source VAT has spaces and violates the GB\\d{9} pattern."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g4",
+   "decision": "ANSWER",
+   "value": "2009-03-14",
+   "path": "supplier.registered_on",
+   "why": "MM/DD/YYYY unambiguous since 14 cannot be a month."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g5",
+   "decision": "ANSWER",
+   "value": 10200000,
+   "path": "supplier.turnover.2025",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g6",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "FY2022 turnover absent."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g7",
+   "decision": "ANSWER",
+   "value": 64,
+   "path": "employees.count",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g8",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "supplier.sme_status",
+   "why": "true."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g9",
+   "decision": "ANSWER",
+   "value": "Corvid Group plc",
+   "path": "parent.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g10",
+   "decision": "ANSWER",
+   "value": "05512004",
+   "path": "parent.company_number",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g11",
+   "decision": "ANSWER",
+   "value": 10000000,
+   "path": "insurance.employers_liability.limit",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g12",
+   "decision": "ANSWER",
+   "value": "2026-08-31",
+   "path": "insurance.public_liability.expiry",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g13",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "modern_slavery_statement_published",
+   "why": "true."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g14",
+   "decision": "ANSWER",
+   "value": "plus",
+   "path": "cyber_essentials.level",
+   "why": "Maps."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g15",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Certificate number exceeds maxlength 12."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g16",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "conflicts_of_interest.exists",
+   "why": "false."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g17",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "subcontracting.planned",
+   "why": "true."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g18",
+   "decision": "ANSWER",
+   "value": 30,
+   "path": "subcontracting.max_percent",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g19",
+   "decision": "ANSWER",
+   "value": "+44 20 7946 0731",
+   "path": "bid_contact.phone",
+   "why": "Direct."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g20",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Bid value absent."
+  },
+  {
+   "case": "h10_gov_procurement",
+   "control": "g21",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Declaration."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f1",
+   "decision": "ANSWER",
+   "value": "Alvarado Hospitality Group LLC",
+   "path": "franchisee.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f2",
+   "decision": "ANSWER",
+   "value": "Brasa Grill Franchising LLC",
+   "path": "franchisor.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f3",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Ambiguous which entity."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f4",
+   "decision": "ANSWER",
+   "value": 310,
+   "path": "franchisee.employees",
+   "why": "Direct."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f5",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Ambiguous which entity."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f6",
+   "decision": "ANSWER",
+   "value": 2005,
+   "path": "franchisor.year_founded",
+   "why": "Direct."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f7",
+   "decision": "ANSWER",
+   "value": "Eduardo Alvarado",
+   "path": "franchisee.owner",
+   "why": "Direct."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f8",
+   "decision": "ANSWER",
+   "value": 42,
+   "path": "franchisee.locations.0.employees",
+   "why": "San Antonio store."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f9",
+   "decision": "ANSWER",
+   "value": 38,
+   "path": "franchisee.locations.1.employees",
+   "why": "Store 131."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f10",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "No Houston store."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f11",
+   "decision": "ANSWER",
+   "value": "2018-05-07",
+   "path": "franchisee.locations.0.opened",
+   "why": "Store 114."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f12",
+   "decision": "ANSWER",
+   "value": [
+    "TX",
+    "OK",
+    "LA"
+   ],
+   "path": "franchisor.states_operating",
+   "why": "Maps."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f13",
+   "decision": "ANSWER",
+   "value": "Brasa-Alvarado Development JV",
+   "path": "joint_venture.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f14",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Split 60/40 does not say which party is which."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f15",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Not stated whether applicant is the JV."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f16",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Absent."
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "control": "f17",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s1",
+   "decision": "ANSWER",
+   "value": "LedgerPoint",
+   "path": "Product.Name",
+   "why": "Direct."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s2",
+   "decision": "ANSWER",
+   "value": "multi",
+   "path": "Product.Hosting model",
+   "why": "Maps."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s3",
+   "decision": "ANSWER",
+   "value": 99.95,
+   "path": "Product.SLA uptime target (%)",
+   "why": "Direct."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s4",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Product.Supports SSO",
+   "why": "true."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s5",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Product.Supports SCIM provisioning",
+   "why": "false so unsupported yes."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s6",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Default state of audit logging not given."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s7",
+   "decision": "ANSWER",
+   "value": 400,
+   "path": "Product.Audit logging.retention_days",
+   "why": "Direct."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s8",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Product.Data export.self_service",
+   "why": "true."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s9",
+   "decision": "ANSWER",
+   "value": [
+    "csv",
+    "json"
+   ],
+   "path": "Product.Data export.formats",
+   "why": "Maps."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s10",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Product.Data stored outside the EU",
+   "why": "false."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s11",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Product.Offline mode.supported",
+   "why": "false."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s12",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Product.Sandbox environment.available",
+   "why": "Available so not NOT offered."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s13",
+   "decision": "ANSWER",
+   "value": [
+    "ios",
+    "android"
+   ],
+   "path": "Product.Mobile apps",
+   "why": "Maps."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s14",
+   "decision": "ANSWER",
+   "value": 600,
+   "path": "Product.API rate limit per minute",
+   "why": "Direct."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s15",
+   "decision": "ANSWER",
+   "value": 1850,
+   "path": "Product.Customer count",
+   "why": "Direct."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s16",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Healthcare breakdown absent."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s17",
+   "decision": "ANSWER",
+   "value": "247",
+   "path": "Product.Support hours",
+   "why": "Maps 24x7."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s18",
+   "decision": "ANSWER",
+   "value": [
+    "en",
+    "de",
+    "fr",
+    "ja"
+   ],
+   "path": "Product.Languages supported",
+   "why": "Maps."
+  },
+  {
+   "case": "h12_api_platform",
+   "control": "s19",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m1",
+   "decision": "ANSWER",
+   "value": "Zeller Precision Castings GmbH",
+   "path": "plant.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m2",
+   "decision": "ANSWER",
+   "value": "DE",
+   "path": "plant.location.country",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m3",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "plant.iatf_certified",
+   "why": "true."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m4",
+   "decision": "ANSWER",
+   "value": "2027-05-20",
+   "path": "plant.iso14001.expiry",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m5",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "ISO 45001 null."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m6",
+   "decision": "ANSWER",
+   "value": true,
+   "path": "plant.conflict_minerals.policy",
+   "why": "true."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m7",
+   "decision": "ANSWER",
+   "value": 520,
+   "path": "plant.employees.total",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m8",
+   "decision": "ANSWER",
+   "value": 410,
+   "path": "plant.employees.production",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m9",
+   "decision": "ANSWER",
+   "value": 45,
+   "path": "plant.employees.temp_agency",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m10",
+   "decision": "ANSWER",
+   "value": 18,
+   "path": "plant.employees.quality_dept",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m11",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Night shift headcount absent."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m12",
+   "decision": "ANSWER",
+   "value": 3,
+   "path": "plant.shifts_per_day",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m13",
+   "decision": "ANSWER",
+   "value": 38,
+   "path": "plant.ppm_last_year",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m14",
+   "decision": "ANSWER",
+   "value": 97.4,
+   "path": "plant.on_time_delivery_pct",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m15",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "plant.scope3_reporting",
+   "why": "false."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m16",
+   "decision": "ANSWER",
+   "value": "Aurelian Motors",
+   "path": "plant.customers_top.0.name",
+   "why": "Highest share."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m17",
+   "decision": "ANSWER",
+   "value": 34,
+   "path": "plant.customers_top.0.share_pct",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m18",
+   "decision": "ANSWER",
+   "value": "Zeller Familienstiftung",
+   "path": "plant.owner.name",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m19",
+   "decision": "ANSWER",
+   "value": "p.brandt@zeller-castings.example",
+   "path": "plant.quality_manager_email",
+   "why": "Direct."
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "control": "m20",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a1",
+   "decision": "ANSWER",
+   "value": "NorthStar Clinical Staffing",
+   "path": "Agency name",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a2",
+   "decision": "ANSWER",
+   "value": 74,
+   "path": "Headcount.Total internal staff",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a3",
+   "decision": "ANSWER",
+   "value": 31,
+   "path": "Headcount.Recruiters",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a4",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Certified recruiters absent."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a5",
+   "decision": "ANSWER",
+   "value": 1260,
+   "path": "Placements.Placements 2025",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a6",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "2023 absent."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a7",
+   "decision": "ANSWER",
+   "value": 412,
+   "path": "Placements.Active nurses on assignment",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a8",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Travel nurses absent."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a9",
+   "decision": "ANSWER",
+   "value": 11,
+   "path": "Branch offices.0.staff",
+   "why": "Newark."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a10",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "No Boston branch."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a11",
+   "decision": "ANSWER",
+   "value": [
+    "NY",
+    "NJ",
+    "PA"
+   ],
+   "path": "Licensed states",
+   "why": "Maps."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a12",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Worker classification.W-2 employees",
+   "why": "true."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a13",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Worker classification.1099 contractors",
+   "why": "false."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a14",
+   "decision": "ANSWER",
+   "value": "no",
+   "path": "Drug screening.required",
+   "why": "Required so not optional."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a15",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Background checks.Performed on all candidates",
+   "why": "true."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a16",
+   "decision": "ANSWER",
+   "value": 7,
+   "path": "Background checks.Lookback years",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a17",
+   "decision": "ANSWER",
+   "value": 24.5,
+   "path": "Markup (average %)",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a18",
+   "decision": "ANSWER",
+   "value": 1000000,
+   "path": "Malpractice insurance.per claim",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a19",
+   "decision": "ANSWER",
+   "value": "yes",
+   "path": "Joint Commission certified",
+   "why": "Direct."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a20",
+   "decision": "ANSWER",
+   "value": "PA",
+   "path": "Headquarters.State",
+   "why": "Maps."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a21",
+   "decision": "ANSWER",
+   "value": [
+    "ne",
+    "ma"
+   ],
+   "path": "Regions served",
+   "why": "Maps."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a22",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Would require computing growth; not stated."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a23",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Narrative absent."
+  },
+  {
+   "case": "h14_staffing_agency",
+   "control": "a24",
+   "decision": "REVIEW",
+   "value": null,
+   "path": null,
+   "why": "Authorisation/consent."
+  }
+ ]
+}

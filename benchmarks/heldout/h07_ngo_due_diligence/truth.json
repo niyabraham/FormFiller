@@ -1,0 +1,439 @@
+{
+  "case": "h07_ngo_due_diligence",
+  "description": "NGO donor due diligence questionnaire",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "n_name",
+      "question": "Organisation name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Riverbend Community Health Initiative",
+      "source": "org.name",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_ein",
+      "question": "Employer Identification Number (EIN)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "46-3381920",
+      "source": "org.ein",
+      "tags": [
+        "distractor",
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Parent org EIN; chapter EIN is a distractor."
+    },
+    {
+      "control": "n_year",
+      "question": "Year registered",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 2011,
+      "source": "org.year_registered",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_ft",
+      "question": "Number of full-time staff",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 22,
+      "source": "people.staff_full_time",
+      "tags": [
+        "scoped"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_pt",
+      "question": "Number of part-time staff",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 5,
+      "source": "people.staff_part_time",
+      "tags": [
+        "scoped"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Part-time key exists."
+    },
+    {
+      "control": "n_tot",
+      "question": "Total number of staff",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "composition",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No stored total; summing FT+PT is not stated as total and volunteers confuse scope."
+    },
+    {
+      "control": "n_vol",
+      "question": "Number of volunteers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 140,
+      "source": "people.volunteers",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_board",
+      "question": "Number of board members",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 9,
+      "source": "people.board_members",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_ind",
+      "question": "Number of independent directors",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 7,
+      "source": "people.independent_board_members",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Directors = board members."
+    },
+    {
+      "control": "n_fye",
+      "question": "Month in which your fiscal year ends",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "06",
+      "source": "finance.fiscal_year_end",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "June."
+    },
+    {
+      "control": "n_rev",
+      "question": "Total revenue, most recent fiscal year (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 3150000,
+      "source": "finance.total_revenue",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_gov",
+      "question": "Percentage of revenue from government sources",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 38,
+      "source": "finance.government_funding_pct",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_aud",
+      "question": "Were your financial statements audited by an independent firm?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "finance.audited",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "n_audn",
+      "question": "Name of auditor",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Whitlock & Frame CPAs",
+      "source": "finance.audit_firm",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_coi",
+      "question": "Does the organisation have a conflict of interest policy?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "governance.conflict_of_interest_policy",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "n_wb",
+      "question": "Does the organisation lack a whistleblower policy?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "governance.whistleblower_policy",
+      "tags": [
+        "polarity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Policy exists, so 'lack' is No."
+    },
+    {
+      "control": "n_rpt",
+      "question": "Were there any related-party transactions last fiscal year?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "governance.has_no_related_party_transactions",
+      "tags": [
+        "polarity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Key is 'has no' = True, so answer is No."
+    },
+    {
+      "control": "n_fs",
+      "question": "Name of fiscal sponsor",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "related_entity",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "fiscal_sponsor is null."
+    },
+    {
+      "control": "n_ch",
+      "question": "Name of affiliated chapter or branch",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Riverbend Ohio",
+      "source": "affiliates.chapters.0.name",
+      "tags": [
+        "related_entity",
+        "list",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only one chapter listed."
+    },
+    {
+      "control": "n_ben",
+      "question": "Beneficiaries served in the last year",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 18400,
+      "source": "programs.beneficiaries_last_year",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "n_ben2",
+      "question": "Beneficiaries served in the previous year",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only last year stored."
+    },
+    {
+      "control": "n_mis",
+      "question": "State your mission",
+      "kind": "textarea",
+      "expect": "ANSWER",
+      "answer": "Provide primary care outreach in rural Appalachia.",
+      "source": "org.mission",
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Ready-made mission text fully answers it."
+    },
+    {
+      "control": "n_toc",
+      "question": "Describe your theory of change",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative, nothing in data."
+    },
+    {
+      "control": "n_fsup",
+      "question": "Upload your latest audited financial statements",
+      "kind": "file",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "File upload; no file in data."
+    }
+  ]
+}

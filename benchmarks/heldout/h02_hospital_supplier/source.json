@@ -1,0 +1,24 @@
+{
+  "Supplier legal name": "Meridian Surgical Supplies LLC",
+  "Trading name": "Meridian MedSupply",
+  "Tax identification number (EIN)": "84-2917736",
+  "Year established": 2003,
+  "Number of employees": 86,
+  "Number of sales representatives": 14,
+  "Primary contact name": "Dolores Haines",
+  "Primary contact email": "dhaines@meridianmed.com",
+  "Primary contact phone": "312-555-0188",
+  "Company registered state": "Illinois",
+  "Is the company FDA registered?": "Yes",
+  "FDA establishment registration number": "3014482291",
+  "Is the company a minority-owned business?": "No",
+  "Product liability insurance coverage (USD)": 5000000,
+  "Insurance expiry date": "2027-04-30",
+  "Number of warehouses": 3,
+  "Distributor of record for": [
+    "Orthopedic implants",
+    "Wound care"
+  ],
+  "Parent company": "None",
+  "Subsidiaries": null
+}

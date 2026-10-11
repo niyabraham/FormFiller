@@ -1,0 +1,408 @@
+{
+  "case": "h10_gov_procurement",
+  "description": "Public-sector tender supplier questionnaire with constraints",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "g1",
+      "question": "Supplier name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Corvid Analytics Ltd",
+      "source": "supplier.name",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "g2",
+      "question": "Companies House registration number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "07894213",
+      "source": "supplier.company_number",
+      "tags": [
+        "date_constraint"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "8 digits fits pattern."
+    },
+    {
+      "control": "g3",
+      "question": "VAT registration number (format GB123456789)",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "date_constraint"
+      ],
+      "trap": null,
+      "invalid_source": "supplier.vat_number",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Stored with spaces and 10 digits, violating the required pattern."
+    },
+    {
+      "control": "g4",
+      "question": "Date of incorporation",
+      "kind": "date",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "date_constraint",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "JSON gives US-style 03/14/2009; an ISO date input needs a conversion, left for review as the checker cannot verify transformed dates."
+    },
+    {
+      "control": "g5",
+      "question": "Turnover, financial year 2025 (GBP)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 10200000,
+      "source": "supplier.turnover.2025",
+      "tags": [
+        "scoped",
+        "time",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Year key 2025."
+    },
+    {
+      "control": "g6",
+      "question": "Turnover, financial year 2022 (GBP)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only 2023-2025 stored."
+    },
+    {
+      "control": "g7",
+      "question": "Number of employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 64,
+      "source": "employees.count",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Meaningful parent plus 'count'."
+    },
+    {
+      "control": "g8",
+      "question": "Is the supplier an SME?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "supplier.sme_status",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "g9",
+      "question": "Immediate parent company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Corvid Group plc",
+      "source": "parent.name",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Parent object."
+    },
+    {
+      "control": "g10",
+      "question": "Immediate parent company registration number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "05512004",
+      "source": "parent.company_number",
+      "tags": [
+        "related_entity",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Parent-scoped, not the supplier's."
+    },
+    {
+      "control": "g11",
+      "question": "Employers' liability insurance limit (GBP)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 10000000,
+      "source": "insurance.employers_liability.limit",
+      "tags": [
+        "nested",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "EL vs PL distractor."
+    },
+    {
+      "control": "g12",
+      "question": "Public liability insurance expiry date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2026-08-31",
+      "source": "insurance.public_liability.expiry",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "g13",
+      "question": "Has the supplier published a Modern Slavery statement?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "modern_slavery_statement_published",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "g14",
+      "question": "Cyber Essentials level held",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "plus",
+      "source": "cyber_essentials.level",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Plus -> plus."
+    },
+    {
+      "control": "g15",
+      "question": "Cyber Essentials certificate number (max 12 characters)",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "date_constraint"
+      ],
+      "trap": null,
+      "invalid_source": "cyber_essentials.cert_number",
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Stored value is 17 characters, exceeding maxlength."
+    },
+    {
+      "control": "g16",
+      "question": "Are there any conflicts of interest in relation to this tender?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "conflicts_of_interest.exists",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "exists False."
+    },
+    {
+      "control": "g17",
+      "question": "Is subcontracting planned?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "subcontracting.planned",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "g18",
+      "question": "Maximum percentage of contract value to be subcontracted",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 30,
+      "source": "subcontracting.max_percent",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": [
+        "g17",
+        "yes"
+      ],
+      "step": 1,
+      "note": "Enabled after answering yes."
+    },
+    {
+      "control": "g18b",
+      "question": "Reason subcontracting is not planned",
+      "kind": "textarea",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "hidden"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "g17",
+        "no"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "Hidden; subcontracting is planned."
+    },
+    {
+      "control": "g19",
+      "question": "Bid contact telephone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "+44 20 7946 0731",
+      "source": "bid_contact.phone",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "g20",
+      "question": "Estimated total contract value you are bidding (GBP)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Not in data."
+    },
+    {
+      "control": "g21",
+      "question": "Statement of non-collusion",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Declaration."
+    }
+  ]
+}

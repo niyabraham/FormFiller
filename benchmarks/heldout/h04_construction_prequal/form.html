@@ -1,0 +1,38 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h04_construction_prequal</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h04_construction_prequal</h1><form>
+<div id="steps">
+<section data-step="1"><h2>Company</h2>
+<div class="row"><label for="q1">Contractor&#x27;s license number</label><input type="text" name="lic" id="q1"></div>
+<div class="row"><label for="q2">State of licensure</label><select name="lic_st" id="q2"><option value="">Select...</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="AL">Alabama</option></select></div>
+<div class="row"><label for="q3">Years in business</label><input type="number" name="yib" id="q3"></div>
+<div class="row"><label for="q4">Single project bonding capacity ($)</label><input type="number" name="bond1" id="q4"></div>
+<div class="row"><label for="q5">Aggregate bonding capacity ($)</label><input type="number" name="bond2" id="q5"></div><button type="button" class="next" data-next="2">Next</button></section>
+<section data-step="2" hidden><h2>Safety</h2>
+<div class="row"><label for="q6">Current Experience Modification Rate (EMR)</label><input type="number" name="emr" step="0.01" id="q6"></div>
+<div class="row"><label for="q7">EMR from three years ago</label><input type="number" name="emr3" id="q7"></div>
+<div class="row"><label for="q8">OSHA recordable incidents in the last 3 years</label><input type="number" name="osha3" id="q8"></div>
+<div class="row"><label for="q9">OSHA recordable incidents in the last 12 months</label><input type="number" name="osha1" id="q9"></div>
+<div class="row"><label for="q10">Number of fatalities in the last 5 years</label><input type="number" name="fatal" id="q10"></div>
+<div class="row"><fieldset><legend>Do you have a written safety program?</legend><label class="opt"><input type="radio" name="wsp" value="yes"> Yes</label><label class="opt"><input type="radio" name="wsp" value="no"> No</label></fieldset></div><button type="button" class="next" data-next="3">Next</button></section>
+<section data-step="3" hidden><h2>Workforce</h2>
+<div class="row"><label for="q12">Total workforce (all employees)</label><input type="number" name="tot" id="q12"></div>
+<div class="row"><label for="q13">Number of field craft employees</label><input type="number" name="craft" id="q13"></div>
+<div class="row"><label>Salaried office staff <input type="number" name="sal"></label></div>
+<div class="row"><label for="q15">Number of union members</label><input type="number" name="union" id="q15"></div>
+<div class="row"><fieldset><legend>Are you currently free of pending litigation?</legend><label class="opt"><input type="radio" name="nolit" value="yes"> Yes</label><label class="opt"><input type="radio" name="nolit" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q17">Describe your quality control program</label><textarea name="qc" id="q17" rows=3></textarea></div></section>
+</div>
+</form><script>
+document.addEventListener('click',e=>{const b=e.target.closest('.next');if(!b)return;const n=b.dataset.next;
+ let s=document.querySelector('section[data-step="'+n+'"]');
+ if(!s){const t=document.getElementById('tpl'+n);s=document.createElement('section');s.dataset.step=n;
+  s.appendChild(t.content.cloneNode(true));document.getElementById('steps').appendChild(s)}
+ s.hidden=false});
+</script></body></html>

@@ -1,0 +1,367 @@
+{
+  "case": "h13_manufacturing_quality",
+  "description": "Automotive supplier quality survey with custom widgets",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "m1",
+      "question": "Plant legal name",
+      "kind": "shadow_text",
+      "expect": "ANSWER",
+      "answer": "Zeller Precision Castings GmbH",
+      "source": "plant.name",
+      "tags": [
+        "custom_widget"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m2",
+      "question": "Country of plant",
+      "kind": "custom_combobox",
+      "expect": "ANSWER",
+      "answer": "DE",
+      "source": "plant.location.country",
+      "tags": [
+        "custom_widget",
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m3",
+      "question": "3.1 Is the plant IATF 16949 certified?",
+      "kind": "custom_radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "plant.iatf_certified",
+      "tags": [
+        "custom_widget"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "m4",
+      "question": "3.2 ISO 14001 certificate expiry date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2027-05-20",
+      "source": "plant.iso14001.expiry",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "m5",
+      "question": "3.3 ISO 45001 certificate expiry date",
+      "kind": "date",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "iso45001 is null."
+    },
+    {
+      "control": "m6",
+      "question": "Conflict minerals policy in place",
+      "kind": "custom_switch",
+      "expect": "ANSWER",
+      "answer": true,
+      "source": "plant.conflict_minerals.policy",
+      "tags": [
+        "custom_widget"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "m7",
+      "question": "Total employees (headcount)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 520,
+      "source": "plant.employees.total",
+      "tags": [
+        "nested",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m8",
+      "question": "Number of direct production workers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 410,
+      "source": "plant.employees.production",
+      "tags": [
+        "scoped",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Production."
+    },
+    {
+      "control": "m9",
+      "question": "Number of agency (temporary) workers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 45,
+      "source": "plant.employees.temp_agency",
+      "tags": [
+        "scoped",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Temp agency."
+    },
+    {
+      "control": "m10",
+      "question": "Quality department staff",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 18,
+      "source": "plant.employees.quality_dept",
+      "tags": [
+        "scoped"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m11",
+      "question": "Number of employees on the night shift",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Shift count is stored (3) but not staffing by shift."
+    },
+    {
+      "control": "m12",
+      "question": "Shifts per day",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 3,
+      "source": "plant.shifts_per_day",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m13",
+      "question": "Defect rate last year (PPM)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 38,
+      "source": "plant.ppm_last_year",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Acronym match."
+    },
+    {
+      "control": "m14",
+      "question": "On-time delivery rate (%)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 97.4,
+      "source": "plant.on_time_delivery_pct",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m15",
+      "question": "Do you report Scope 3 emissions?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "plant.scope3_reporting",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "False."
+    },
+    {
+      "control": "m16",
+      "question": "Name of largest customer",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Aurelian Motors",
+      "source": "plant.customers_top.0.name",
+      "tags": [
+        "scoped",
+        "list",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "34% is the larger share."
+    },
+    {
+      "control": "m17",
+      "question": "Share of sales to the largest customer (%)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 34,
+      "source": "plant.customers_top.0.share_pct",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m18",
+      "question": "Name of the owning entity",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Zeller Familienstiftung",
+      "source": "plant.owner.name",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Owner object."
+    },
+    {
+      "control": "m19",
+      "question": "Quality manager email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "p.brandt@zeller-castings.example",
+      "source": "plant.quality_manager_email",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "m20",
+      "question": "Describe your 8D corrective action process",
+      "kind": "custom_editable",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative."
+    }
+  ]
+}

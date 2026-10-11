@@ -1,0 +1,57 @@
+{
+  "Agency name": "NorthStar Clinical Staffing",
+  "Headcount": {
+    "Total internal staff": 74,
+    "Recruiters": 31,
+    "Account managers": 9
+  },
+  "Placements": {
+    "Placements 2025": 1260,
+    "Placements 2024": 1105,
+    "Active nurses on assignment": 412,
+    "Active allied health on assignment": 96
+  },
+  "Regions served": [
+    "Northeast",
+    "Mid-Atlantic"
+  ],
+  "Licensed states": [
+    "NY",
+    "NJ",
+    "PA"
+  ],
+  "Worker classification": {
+    "W-2 employees": true,
+    "1099 contractors": false
+  },
+  "Background checks": {
+    "Performed on all candidates": true,
+    "Lookback years": 7
+  },
+  "Drug screening": {
+    "required": true
+  },
+  "Markup (average %)": 24.5,
+  "Malpractice insurance": {
+    "per claim": 1000000,
+    "aggregate": 3000000
+  },
+  "Joint Commission certified": "Yes",
+  "Headquarters": {
+    "Street": "401 Market Street, Suite 900",
+    "City": "Philadelphia",
+    "State": "Pennsylvania"
+  },
+  "Branch offices": [
+    {
+      "city": "Newark",
+      "state": "NJ",
+      "staff": 11
+    },
+    {
+      "city": "Albany",
+      "state": "NY",
+      "staff": 8
+    }
+  ]
+}

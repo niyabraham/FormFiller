@@ -1,0 +1,34 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h02_hospital_supplier</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h02_hospital_supplier</h1><form>
+<h2>Supplier</h2>
+<div class="row"><label for="q1">Supplier legal name</label><input type="text" name="legal" required id="q1"></div>
+<div class="row"><input type="text" name="dba" placeholder="Trading name / DBA (optional)"></div>
+<div class="row"><label for="q3">Federal Tax ID (EIN)</label><input type="text" name="ein" pattern="\d{2}-\d{7}" id="q3"></div>
+<div class="row"><label for="q4">Year established</label><input type="number" name="est" min="1800" max="2026" id="q4"></div>
+<div class="row"><label for="q5">Number of staff</label><input type="number" name="staff" id="q5"></div>
+<div class="row"><label for="q6">Sales headcount</label><input type="number" name="reps" id="q6"></div>
+<div class="row"><label for="q7">Registered state</label><select name="state" id="q7"><option value="">Select...</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="WI">Wisconsin</option></select></div>
+<div class="row"><fieldset><legend>Is your company registered with the FDA?</legend><label class="opt"><input type="radio" name="fda" value="yes"> Yes</label><label class="opt"><input type="radio" name="fda" value="no"> No</label><label class="opt"><input type="radio" name="fda" value="na"> N/A</label></fieldset></div>
+<div class="cond" data-when="fda" data-eq="yes" hidden><div class="row"><label for="q9">FDA establishment registration number</label><input type="text" name="fdanum" id="q9"></div></div>
+<div class="row"><div class="q">Minority-owned business?</div><div><label class="opt"><input type="radio" name="mino" value="yes"> Yes</label><label class="opt"><input type="radio" name="mino" value="no"> No</label></div></div>
+<div class="row"><label for="q11">Product liability insurance limit (USD)</label><input type="number" name="pli" id="q11"></div>
+<div class="row"><label for="q12">Insurance expiry date</label><input type="date" name="exp" id="q12"></div>
+<div class="row"><fieldset><legend>Product categories you distribute</legend><label class="opt"><input type="checkbox" name="cats" value="ortho"> Orthopedic implants</label><label class="opt"><input type="checkbox" name="cats" value="wound"> Wound care</label><label class="opt"><input type="checkbox" name="cats" value="cardio"> Cardiology devices</label><label class="opt"><input type="checkbox" name="cats" value="dx"> Diagnostics</label></fieldset></div>
+<div class="row"><label for="q14">Parent company name</label><input type="text" name="parent" id="q14"></div>
+<div class="row"><label for="q15">Subsidiaries</label><input type="text" name="subs" id="q15"></div>
+<div class="row"><label for="q16">Number of employees holding a clinical licence</label><input type="number" name="rns" id="q16"></div>
+<div class="row"><label class="opt"><input type="checkbox" name="excl" value="yes"> We certify that we are not excluded from federal healthcare programs</label></div>
+</form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+function sync(){document.querySelectorAll('.cond').forEach(w=>{w.hidden=val(w.dataset.when)!==w.dataset.eq})}
+document.addEventListener('change',sync);document.addEventListener('input',sync);sync();
+</script></body></html>

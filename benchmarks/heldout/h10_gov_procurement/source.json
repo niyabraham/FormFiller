@@ -1,0 +1,49 @@
+{
+  "supplier": {
+    "name": "Corvid Analytics Ltd",
+    "company_number": "07894213",
+    "vat_number": "GB 214 8890 12",
+    "registered_on": "03/14/2009",
+    "turnover": {
+      "2023": 8100000,
+      "2024": 9350000,
+      "2025": 10200000
+    },
+    "sme_status": true
+  },
+  "employees": {
+    "count": 64
+  },
+  "insurance": {
+    "employers_liability": {
+      "limit": 10000000,
+      "expiry": "2027-09-30"
+    },
+    "public_liability": {
+      "limit": 5000000,
+      "expiry": "2026-08-31"
+    }
+  },
+  "modern_slavery_statement_published": true,
+  "cyber_essentials": {
+    "certified": true,
+    "level": "Plus",
+    "cert_number": "IASME-CEP-0098123"
+  },
+  "bid_contact": {
+    "name": "Hannah Whitcombe",
+    "email": "bids@corvid.example",
+    "phone": "+44 20 7946 0731"
+  },
+  "conflicts_of_interest": {
+    "exists": false
+  },
+  "subcontracting": {
+    "planned": true,
+    "max_percent": 30
+  },
+  "parent": {
+    "name": "Corvid Group plc",
+    "company_number": "05512004"
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h03_bank_kyc</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h03_bank_kyc</h1><form>
+<h2>Entity</h2>
+<div class="row"><label for="q1">Full registered name of the entity</label><input type="text" name="k_name" id="q1"></div>
+<div class="row"><span id="q2_l">Company registration number (UEN)</span><input type="text" name="k_reg" aria-labelledby="q2_l"></div>
+<div class="row"><label for="q3">Date of incorporation</label><input type="date" name="k_inc" id="q3"></div>
+<div class="row"><label for="q4">Country of incorporation</label><select name="k_country" id="q4"><option value="">Select...</option><option value="SGP">Singapore</option><option value="HKG">Hong Kong</option><option value="MYS">Malaysia</option><option value="ESP">Spain</option></select></div>
+<div class="row"><label for="q5">Postal code of registered address</label><input type="text" name="k_zip" pattern="\d{6}" id="q5"></div>
+<div class="row"><label for="q6">Annual turnover (latest financial year)</label><input type="number" name="k_turn" id="q6"></div>
+<div class="row"><label for="q7">Turnover currency</label><select name="k_cur" id="q7"><option value="">Select...</option><option value="eur">Euro</option><option value="sgd">Singapore Dollar</option><option value="usd">US Dollar</option></select></div>
+<div class="row"><label for="q8">Annual turnover (financial year 2023)</label><input type="number" name="k_turn_prev" id="q8"></div>
+<div class="row"><label for="q9">Name of ultimate parent company</label><input type="text" name="k_up" id="q9"></div>
+<div class="row"><label for="q10">Name of authorised signatory</label><input type="text" name="k_sig" id="q10"></div>
+<div class="row"><label for="q11">Authorised signatory&#x27;s email address</label><input type="email" name="k_sigmail" id="q11"></div>
+<div class="row"><label for="q12">Entity contact email</label><input type="email" name="k_ent_mail" id="q12"></div>
+<div class="row"><label for="q13">Number of beneficial owners holding 25% or more</label><input type="number" name="k_bo_count" id="q13"></div>
+<h2>Compliance</h2>
+<div class="row"><fieldset><legend>Is any beneficial owner a politically exposed person (PEP)?</legend><label class="opt"><input type="radio" name="k_pep" value="yes"> Yes</label><label class="opt"><input type="radio" name="k_pep" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is adverse media screening NOT performed on counterparties?</legend><label class="opt"><input type="radio" name="k_adv" value="yes"> Yes</label><label class="opt"><input type="radio" name="k_adv" value="no"> No</label></fieldset></div>
+<div class="row"><label>Name of AML compliance officer <input type="text" name="k_aml"></label></div>
+<div class="row"><label for="q17">Describe the source of wealth of the beneficial owners</label><textarea name="k_sow" id="q17" rows=3></textarea></div>
+<div class="row"><label class="opt"><input type="checkbox" name="k_decl" value="yes"> I declare the information above is true and complete</label></div>
+</form><script></script></body></html>

@@ -1,0 +1,360 @@
+{
+  "case": "h12_api_platform",
+  "description": "Software platform capability questionnaire; polarity-heavy",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "s1",
+      "question": "Product name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "LedgerPoint",
+      "source": "Product.Name",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "s2",
+      "question": "Hosting model",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "multi",
+      "source": "Product.Hosting model",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Multi-tenant SaaS -> multi."
+    },
+    {
+      "control": "s3",
+      "question": "SLA uptime target (%)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 99.95,
+      "source": "Product.SLA uptime target (%)",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "s4",
+      "question": "Does the product support single sign-on?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Product.Supports SSO",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "s5",
+      "question": "Is SCIM provisioning unsupported?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Product.Supports SCIM provisioning",
+      "tags": [
+        "polarity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Supports=False, so unsupported=Yes."
+    },
+    {
+      "control": "s6",
+      "question": "Is audit logging disabled by default?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "polarity",
+        "ambiguous",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Data says logging is currently enabled, not what the default is."
+    },
+    {
+      "control": "s7",
+      "question": "Audit log retention (days)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 400,
+      "source": "Product.Audit logging.retention_days",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "s8",
+      "question": "Can customers export their data without vendor assistance?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Product.Data export.self_service",
+      "tags": [
+        "nested",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "s9",
+      "question": "Available export formats",
+      "kind": "checkbox_group",
+      "expect": "ANSWER",
+      "answer": [
+        "csv",
+        "json"
+      ],
+      "source": "Product.Data export.formats",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Labels to values."
+    },
+    {
+      "control": "s10",
+      "question": "Is customer data stored outside the EU?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Product.Data stored outside the EU",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "False."
+    },
+    {
+      "control": "s11",
+      "question": "Is offline mode available?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Product.Offline mode.supported",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "supported False under meaningful parent."
+    },
+    {
+      "control": "s12",
+      "question": "Is a sandbox environment NOT offered?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Product.Sandbox environment.available",
+      "tags": [
+        "polarity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Available True so 'not offered' is No."
+    },
+    {
+      "control": "s13",
+      "question": "Supported mobile platforms",
+      "kind": "multiselect",
+      "expect": "ANSWER",
+      "answer": [
+        "ios",
+        "android"
+      ],
+      "source": "Product.Mobile apps.ios",
+      "tags": [
+        "option_mapping",
+        "composition",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Both ios and android True; Windows not listed."
+    },
+    {
+      "control": "s14",
+      "question": "API rate limit (requests per minute)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 600,
+      "source": "Product.API rate limit per minute",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "s15",
+      "question": "Number of customers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1850,
+      "source": "Product.Customer count",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "s16",
+      "question": "Number of customers in the healthcare sector",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only a total."
+    },
+    {
+      "control": "s17",
+      "question": "Support availability",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "247",
+      "source": "Product.Support hours",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "24x7 option."
+    },
+    {
+      "control": "s18",
+      "question": "Languages supported in the UI",
+      "kind": "multiselect",
+      "expect": "ANSWER",
+      "answer": [
+        "en",
+        "de",
+        "fr",
+        "ja"
+      ],
+      "source": "Product.Languages supported",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Codes map to options."
+    },
+    {
+      "control": "s19",
+      "question": "Describe your disaster recovery architecture",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative."
+    }
+  ]
+}

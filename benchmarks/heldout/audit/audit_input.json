@@ -1,0 +1,4354 @@
+{
+ "cases": [
+  {
+   "case": "h01_saas_security",
+   "source_json": {
+    "company": {
+     "legal_name": "Brightloop Software Inc.",
+     "founded": "2014-06-02",
+     "hq": {
+      "city": "Austin",
+      "state": "TX",
+      "country": "US"
+     },
+     "website": "https://www.brightloop.io",
+     "parent_company": {
+      "name": "Halvorsen Holdings Ltd",
+      "country": "GB"
+     }
+    },
+    "headcount": {
+     "total": 412,
+     "engineering": 168,
+     "support": 57,
+     "contractors": 31
+    },
+    "security": {
+     "mfa": {
+      "enforced_for_admins": true,
+      "enforced_for_all_users": false
+     },
+     "encryption": {
+      "at_rest": "AES-256",
+      "in_transit": "TLS 1.2+"
+     },
+     "pen_test": {
+      "last_date": "2026-02-17",
+      "vendor": "Cobalt Labs"
+     },
+     "soc2": {
+      "type": "Type II",
+      "report_period_end": "2025-12-31"
+     },
+     "ciso_email": "ciso@brightloop.io",
+     "incident_contact_phone": "+1 512 555 0147",
+     "data_residency_regions": [
+      "us-east",
+      "eu-west"
+     ],
+     "subprocessors_count": 19
+    }
+   },
+   "questions": [
+    {
+     "control": "vendor_name",
+     "question": "1.1 Legal name of vendor *",
+     "kind": "text",
+     "options": [],
+     "section": "1. Company",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "q2",
+     "question": "1.2 Total number of employees",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "q3",
+     "question": "1.3 Customer support personnel (headcount)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "q4",
+     "question": "1.4 Number of part-time employees",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "q5",
+     "question": "1.5 Number of employees located in EMEA",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "parent",
+     "question": "1.6 Name of parent company",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "mfa_all",
+     "question": "2.1 Is multi-factor authentication required for all users?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": "2. Security",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "mfa_opt",
+     "question": "2.2 Is MFA optional for administrator accounts?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "pentest",
+     "question": "2.3 Date of most recent penetration test",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "enc",
+     "question": "2.4 Encryption standard for data at rest",
+     "kind": "select",
+     "options": [
+      {
+       "value": "aes128",
+       "label": "AES-128"
+      },
+      {
+       "value": "aes256",
+       "label": "AES-256"
+      },
+      {
+       "value": "none",
+       "label": "None"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "soc",
+     "question": "2.5 SOC 2 report type",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "t1",
+       "label": "Type I"
+      },
+      {
+       "value": "t2",
+       "label": "Type II"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "ciso",
+     "question": "2.6 Security contact email (CISO)",
+     "kind": "email",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "iso27001",
+     "question": "2.7 Do you hold ISO 27001 certification?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      },
+      {
+       "value": "na",
+       "label": "N/A"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "ir",
+     "question": "2.8 Describe your incident response process",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "sub",
+     "question": "2.9 Number of sub-processors in the EU",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h02_hospital_supplier",
+   "source_json": {
+    "Supplier legal name": "Meridian Surgical Supplies LLC",
+    "Trading name": "Meridian MedSupply",
+    "Tax identification number (EIN)": "84-2917736",
+    "Year established": 2003,
+    "Number of employees": 86,
+    "Number of sales representatives": 14,
+    "Primary contact name": "Dolores Haines",
+    "Primary contact email": "dhaines@meridianmed.com",
+    "Primary contact phone": "312-555-0188",
+    "Company registered state": "Illinois",
+    "Is the company FDA registered?": "Yes",
+    "FDA establishment registration number": "3014482291",
+    "Is the company a minority-owned business?": "No",
+    "Product liability insurance coverage (USD)": 5000000,
+    "Insurance expiry date": "2027-04-30",
+    "Number of warehouses": 3,
+    "Distributor of record for": [
+     "Orthopedic implants",
+     "Wound care"
+    ],
+    "Parent company": "None",
+    "Subsidiaries": null
+   },
+   "questions": [
+    {
+     "control": "legal",
+     "question": "Supplier legal name",
+     "kind": "text",
+     "options": [],
+     "section": "Supplier",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "dba",
+     "question": "Trading name / DBA (optional)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "ein",
+     "question": "Federal Tax ID (EIN)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "pattern": "\\d{2}-\\d{7}"
+     }
+    },
+    {
+     "control": "est",
+     "question": "Year established",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "min": "1800",
+      "max": "2026"
+     }
+    },
+    {
+     "control": "staff",
+     "question": "Number of staff",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "reps",
+     "question": "Sales headcount",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "state",
+     "question": "Registered state",
+     "kind": "select",
+     "options": [
+      {
+       "value": "IL",
+       "label": "Illinois"
+      },
+      {
+       "value": "IN",
+       "label": "Indiana"
+      },
+      {
+       "value": "WI",
+       "label": "Wisconsin"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "fda",
+     "question": "Is your company registered with the FDA?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      },
+      {
+       "value": "na",
+       "label": "N/A"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "fdanum",
+     "question": "FDA establishment registration number",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": [
+      "fda",
+      "yes"
+     ],
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "mino",
+     "question": "Minority-owned business?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "pli",
+     "question": "Product liability insurance limit (USD)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "exp",
+     "question": "Insurance expiry date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "cats",
+     "question": "Product categories you distribute",
+     "kind": "checkbox_group",
+     "options": [
+      {
+       "value": "ortho",
+       "label": "Orthopedic implants"
+      },
+      {
+       "value": "wound",
+       "label": "Wound care"
+      },
+      {
+       "value": "cardio",
+       "label": "Cardiology devices"
+      },
+      {
+       "value": "dx",
+       "label": "Diagnostics"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "parent",
+     "question": "Parent company name",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "subs",
+     "question": "Subsidiaries",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "rns",
+     "question": "Number of employees holding a clinical licence",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "excl",
+     "question": "We certify that we are not excluded from federal healthcare programs",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h03_bank_kyc",
+   "source_json": {
+    "entity": {
+     "registered_name": "Kestrel Maritime Trading Pte Ltd",
+     "reg_no": "201934118K",
+     "incorporation_date": "2019-08-21",
+     "country_of_incorporation": "SG",
+     "registered_address": {
+      "line1": "18 Robinson Road",
+      "line2": "#12-03",
+      "postal_code": "048547",
+      "city": "Singapore"
+     },
+     "business_activity": "Dry bulk commodity trading",
+     "annual_turnover": {
+      "amount": 48200000,
+      "currency": "USD",
+      "fiscal_year": 2025
+     }
+    },
+    "beneficial_owners": [
+     {
+      "name": "Mei Lin Tan",
+      "ownership_pct": 55,
+      "nationality": "SG",
+      "pep": false
+     },
+     {
+      "name": "Rafael Ortega",
+      "ownership_pct": 30,
+      "nationality": "ES",
+      "pep": false
+     }
+    ],
+    "authorised_signatories": [
+     {
+      "name": "Mei Lin Tan",
+      "title": "Director",
+      "email": "meilin@kestrelmaritime.sg"
+     }
+    ],
+    "group": {
+     "ultimate_parent": null,
+     "subsidiaries": [
+      {
+       "name": "Kestrel Freight Ltd",
+       "country": "HK"
+      }
+     ]
+    },
+    "compliance": {
+     "sanctions_screening": true,
+     "adverse_media_screening": true,
+     "pep_exposure": false,
+     "aml_officer": {
+      "name": "Joon Park",
+      "email": "compliance@kestrelmaritime.sg"
+     }
+    },
+    "contact": {
+     "email": "finance@kestrelmaritime.sg",
+     "phone": "+65 6123 4567"
+    }
+   },
+   "questions": [
+    {
+     "control": "k_name",
+     "question": "Full registered name of the entity",
+     "kind": "text",
+     "options": [],
+     "section": "Entity",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_reg",
+     "question": "Company registration number (UEN)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_inc",
+     "question": "Date of incorporation",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_country",
+     "question": "Country of incorporation",
+     "kind": "select",
+     "options": [
+      {
+       "value": "SGP",
+       "label": "Singapore"
+      },
+      {
+       "value": "HKG",
+       "label": "Hong Kong"
+      },
+      {
+       "value": "MYS",
+       "label": "Malaysia"
+      },
+      {
+       "value": "ESP",
+       "label": "Spain"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_zip",
+     "question": "Postal code of registered address",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "pattern": "\\d{6}"
+     }
+    },
+    {
+     "control": "k_turn",
+     "question": "Annual turnover (latest financial year)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_cur",
+     "question": "Turnover currency",
+     "kind": "select",
+     "options": [
+      {
+       "value": "eur",
+       "label": "Euro"
+      },
+      {
+       "value": "sgd",
+       "label": "Singapore Dollar"
+      },
+      {
+       "value": "usd",
+       "label": "US Dollar"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_turn_prev",
+     "question": "Annual turnover (financial year 2023)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_up",
+     "question": "Name of ultimate parent company",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_sig",
+     "question": "Name of authorised signatory",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_sigmail",
+     "question": "Authorised signatory's email address",
+     "kind": "email",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_ent_mail",
+     "question": "Entity contact email",
+     "kind": "email",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_bo_count",
+     "question": "Number of beneficial owners holding 25% or more",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_pep",
+     "question": "Is any beneficial owner a politically exposed person (PEP)?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": "Compliance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_adv",
+     "question": "Is adverse media screening NOT performed on counterparties?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_aml",
+     "question": "Name of AML compliance officer",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_sow",
+     "question": "Describe the source of wealth of the beneficial owners",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "k_decl",
+     "question": "I declare the information above is true and complete",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h04_construction_prequal",
+   "source_json": {
+    "Company Information": {
+     "Company name": "Ridgeback Civil & Structural Inc.",
+     "Years in business": 17,
+     "Contractor license number": "CGC-1527734",
+     "License state": "Florida",
+     "Bonding capacity (single project)": 12000000,
+     "Bonding capacity (aggregate)": 30000000,
+     "Surety company": "Travelers Casualty"
+    },
+    "Safety": {
+     "EMR (current)": 0.82,
+     "EMR (prior year)": 0.91,
+     "OSHA recordable incidents (last 3 years)": 4,
+     "Fatalities (last 5 years)": 0,
+     "Has written safety program": "Yes"
+    },
+    "Workforce": {
+     "Total employees": 240,
+     "Craft employees": 198,
+     "Salaried staff": 42,
+     "Union affiliation": "None"
+    },
+    "Projects": {
+     "Largest project completed (USD)": 28500000,
+     "Number of projects completed last year": 23
+    },
+    "Litigation": {
+     "Pending lawsuits": 0
+    }
+   },
+   "questions": [
+    {
+     "control": "lic",
+     "question": "Contractor's license number",
+     "kind": "text",
+     "options": [],
+     "section": "Company",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "lic_st",
+     "question": "State of licensure",
+     "kind": "select",
+     "options": [
+      {
+       "value": "FL",
+       "label": "Florida"
+      },
+      {
+       "value": "GA",
+       "label": "Georgia"
+      },
+      {
+       "value": "AL",
+       "label": "Alabama"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "yib",
+     "question": "Years in business",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "bond1",
+     "question": "Single project bonding capacity ($)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "bond2",
+     "question": "Aggregate bonding capacity ($)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "emr",
+     "question": "Current Experience Modification Rate (EMR)",
+     "kind": "number",
+     "options": [],
+     "section": "Safety",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "step": "0.01"
+     }
+    },
+    {
+     "control": "emr3",
+     "question": "EMR from three years ago",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "osha3",
+     "question": "OSHA recordable incidents in the last 3 years",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "osha1",
+     "question": "OSHA recordable incidents in the last 12 months",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "fatal",
+     "question": "Number of fatalities in the last 5 years",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "wsp",
+     "question": "Do you have a written safety program?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "tot",
+     "question": "Total workforce (all employees)",
+     "kind": "number",
+     "options": [],
+     "section": "Workforce",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "craft",
+     "question": "Number of field craft employees",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "sal",
+     "question": "Salaried office staff",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "union",
+     "question": "Number of union members",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "nolit",
+     "question": "Are you currently free of pending litigation?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "qc",
+     "question": "Describe your quality control program",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h05_university_grant",
+   "source_json": {
+    "pi": {
+     "first_name": "Amara",
+     "last_name": "Okonkwo-Reyes",
+     "orcid": "0000-0002-4417-8893",
+     "department": "Environmental Engineering",
+     "email": "a.okonkwo@northvale.edu",
+     "rank": "associate_professor"
+    },
+    "project": {
+     "title": "Low-Cost Sensor Networks for Urban Groundwater Monitoring",
+     "start_date": "2027-01-01",
+     "end_date": "2029-12-31",
+     "duration_months": 36,
+     "requested_budget": {
+      "total": 742500,
+      "year1": 240000,
+      "year2": 250500,
+      "year3": 252000,
+      "indirect_rate_pct": 52.5
+     },
+     "human_subjects": false,
+     "animal_subjects": false,
+     "keywords": [
+      "groundwater",
+      "IoT",
+      "sensors"
+     ],
+     "co_investigators": [
+      {
+       "name": "Lars Velden",
+       "institution": "TU Delft"
+      },
+      {
+       "name": "Priya Nair",
+       "institution": "Northvale University"
+      }
+     ]
+    },
+    "institution": {
+     "name": "Northvale University",
+     "duns": "079812345",
+     "state": "Oregon",
+     "sponsored_programs_email": "osp@northvale.edu"
+    },
+    "cost_share": {
+     "required": false,
+     "amount": 0
+    }
+   },
+   "questions": [
+    {
+     "control": "pifn",
+     "question": "PI first name *",
+     "kind": "text",
+     "options": [],
+     "section": "Investigator",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "piln",
+     "question": "PI last name *",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "orcid",
+     "question": "ORCID iD (format 0000-0000-0000-0000)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "pattern": "\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]"
+     }
+    },
+    {
+     "control": "rank",
+     "question": "Academic rank",
+     "kind": "select",
+     "options": [
+      {
+       "value": "asst",
+       "label": "Assistant Professor"
+      },
+      {
+       "value": "assoc",
+       "label": "Associate Professor"
+      },
+      {
+       "value": "full",
+       "label": "Professor"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "title",
+     "question": "Project title (max 120 characters)",
+     "kind": "text",
+     "options": [],
+     "section": "Project",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "maxlength": "120"
+     }
+    },
+    {
+     "control": "sd",
+     "question": "Project start date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "ed",
+     "question": "Project end date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "dur",
+     "question": "Project duration (months)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "bud",
+     "question": "Total budget requested (USD)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "by2",
+     "question": "Budget requested for Year 2",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "by5",
+     "question": "Budget requested for Year 5",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "idc",
+     "question": "Indirect cost rate (%)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "hs",
+     "question": "Does the project involve human subjects?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "csopt",
+     "question": "Is cost sharing optional for this award?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "coi",
+     "question": "Co-investigator name",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "inst_st",
+     "question": "State of applicant institution",
+     "kind": "select",
+     "options": [
+      {
+       "value": "OR",
+       "label": "Oregon"
+      },
+      {
+       "value": "WA",
+       "label": "Washington"
+      },
+      {
+       "value": "CA",
+       "label": "California"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "kw",
+     "question": "Keywords",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "abstract",
+     "question": "Project summary (max 250 words)",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "cert",
+     "question": "I certify that all statements are accurate",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h06_insurance_proposal",
+   "source_json": {
+    "Proposer name": "Hartwell & Pryce Architects LLP",
+    "Trade or profession": "Architectural services",
+    "Date established": "14 March 2009",
+    "Number of partners": 6,
+    "Number of qualified architects": 19,
+    "Total staff": 41,
+    "Gross fees last financial year": 6840000,
+    "Gross fees estimated current year": 7200000,
+    "Largest single project value": 95000000,
+    "Professional indemnity limit requested": 5000000,
+    "Any claims in the last 5 years": "No",
+    "Retroactive date": "2009-03-14",
+    "Office locations": [
+     {
+      "city": "Leeds",
+      "staff": 28
+     },
+     {
+      "city": "Manchester",
+      "staff": 13
+     }
+    ],
+    "Subcontractors used": "Yes",
+    "Overseas work percentage": "8%",
+    "Registered office postcode": "LS1 4AP",
+    "Contact telephone": "0113 496 0127",
+    "Email": "insure@hartwellpryce.example"
+   },
+   "questions": [
+    {
+     "control": "p1",
+     "question": "1. Name of proposer",
+     "kind": "text",
+     "options": [],
+     "section": "About the firm",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p2m",
+     "question": "2. Month in which the business was established",
+     "kind": "select",
+     "options": [
+      {
+       "value": "01",
+       "label": "January"
+      },
+      {
+       "value": "02",
+       "label": "February"
+      },
+      {
+       "value": "03",
+       "label": "March"
+      },
+      {
+       "value": "04",
+       "label": "April"
+      },
+      {
+       "value": "05",
+       "label": "May"
+      },
+      {
+       "value": "06",
+       "label": "June"
+      },
+      {
+       "value": "07",
+       "label": "July"
+      },
+      {
+       "value": "08",
+       "label": "August"
+      },
+      {
+       "value": "09",
+       "label": "September"
+      },
+      {
+       "value": "10",
+       "label": "October"
+      },
+      {
+       "value": "11",
+       "label": "November"
+      },
+      {
+       "value": "12",
+       "label": "December"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p3",
+     "question": "3. Retroactive date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p4",
+     "question": "4. Number of partners / members",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p5",
+     "question": "5. Number of qualified architects",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p6",
+     "question": "6. Total headcount (all staff)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p7",
+     "question": "7. Number of staff in the Leeds office",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p8",
+     "question": "8. Number of staff in the London office",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p9",
+     "question": "9. Gross fees, last financial year (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": "Financials",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p10",
+     "question": "10. Gross fees, two financial years ago (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p11",
+     "question": "11. Estimated gross fees for the current year (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p12",
+     "question": "12. Limit of indemnity required",
+     "kind": "select",
+     "options": [
+      {
+       "value": "1m",
+       "label": "GBP 1,000,000"
+      },
+      {
+       "value": "2m",
+       "label": "GBP 2,000,000"
+      },
+      {
+       "value": "5m",
+       "label": "GBP 5,000,000"
+      },
+      {
+       "value": "10m",
+       "label": "GBP 10,000,000"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p13",
+     "question": "13. Have any claims been made against the firm in the last five years?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p14",
+     "question": "14. Do you engage sub-contractors?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p15",
+     "question": "15. Percentage of fees from work outside the UK",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p16",
+     "question": "16. Registered office postcode",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "maxlength": "8"
+     }
+    },
+    {
+     "control": "p17",
+     "question": "17. Describe any circumstances that may give rise to a claim",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "p18",
+     "question": "18. I declare that the statements are true",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h07_ngo_due_diligence",
+   "source_json": {
+    "org": {
+     "name": "Riverbend Community Health Initiative",
+     "type": "501c3",
+     "ein": "46-3381920",
+     "year_registered": 2011,
+     "mission": "Provide primary care outreach in rural Appalachia."
+    },
+    "people": {
+     "board_members": 9,
+     "independent_board_members": 7,
+     "staff_full_time": 22,
+     "staff_part_time": 5,
+     "volunteers": 140
+    },
+    "finance": {
+     "fiscal_year_end": "June",
+     "total_revenue": 3150000,
+     "government_funding_pct": 38,
+     "audited": true,
+     "audit_firm": "Whitlock & Frame CPAs",
+     "reserve_months": 4,
+     "program_expense_ratio": 0.81
+    },
+    "governance": {
+     "conflict_of_interest_policy": true,
+     "whistleblower_policy": true,
+     "has_no_related_party_transactions": true
+    },
+    "programs": {
+     "countries": [
+      "US"
+     ],
+     "beneficiaries_last_year": 18400
+    },
+    "contact": {
+     "executive_director": "Naomi Castellano",
+     "ed_email": "ncastellano@riverbendchi.org"
+    },
+    "affiliates": {
+     "fiscal_sponsor": null,
+     "chapters": [
+      {
+       "name": "Riverbend Ohio",
+       "ein": "46-3381920-1"
+      }
+     ]
+    }
+   },
+   "questions": [
+    {
+     "control": "n_name",
+     "question": "Organisation name",
+     "kind": "text",
+     "options": [],
+     "section": "Organisation",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_ein",
+     "question": "Employer Identification Number (EIN)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_year",
+     "question": "Year registered",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_ft",
+     "question": "Number of full-time staff",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_pt",
+     "question": "Number of part-time staff",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_tot",
+     "question": "Total number of staff",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_vol",
+     "question": "Number of volunteers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_board",
+     "question": "Number of board members",
+     "kind": "number",
+     "options": [],
+     "section": "Governance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_ind",
+     "question": "Number of independent directors",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_fye",
+     "question": "Month in which your fiscal year ends",
+     "kind": "select",
+     "options": [
+      {
+       "value": "01",
+       "label": "January"
+      },
+      {
+       "value": "02",
+       "label": "February"
+      },
+      {
+       "value": "03",
+       "label": "March"
+      },
+      {
+       "value": "04",
+       "label": "April"
+      },
+      {
+       "value": "05",
+       "label": "May"
+      },
+      {
+       "value": "06",
+       "label": "June"
+      },
+      {
+       "value": "07",
+       "label": "July"
+      },
+      {
+       "value": "08",
+       "label": "August"
+      },
+      {
+       "value": "09",
+       "label": "September"
+      },
+      {
+       "value": "10",
+       "label": "October"
+      },
+      {
+       "value": "11",
+       "label": "November"
+      },
+      {
+       "value": "12",
+       "label": "December"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_rev",
+     "question": "Total revenue, most recent fiscal year (USD)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_gov",
+     "question": "Percentage of revenue from government sources",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_aud",
+     "question": "Were your financial statements audited by an independent firm?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_audn",
+     "question": "Name of auditor",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_coi",
+     "question": "Does the organisation have a conflict of interest policy?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_wb",
+     "question": "Does the organisation lack a whistleblower policy?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_rpt",
+     "question": "Were there any related-party transactions last fiscal year?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_fs",
+     "question": "Name of fiscal sponsor",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_ch",
+     "question": "Name of affiliated chapter or branch",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_ben",
+     "question": "Beneficiaries served in the last year",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_ben2",
+     "question": "Beneficiaries served in the previous year",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_mis",
+     "question": "State your mission",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_toc",
+     "question": "Describe your theory of change",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "n_fsup",
+     "question": "Upload your latest audited financial statements",
+     "kind": "file",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h08_logistics_carrier",
+   "source_json": {
+    "carrier": {
+     "legalName": "Tallgrass Freight Lines, Inc.",
+     "dotNumber": "2847731",
+     "mcNumber": "MC-913442",
+     "scac": "TGFL",
+     "yearFounded": 1998,
+     "fleet": {
+      "powerUnits": 312,
+      "trailers": 640,
+      "ownerOperators": 58,
+      "reeferTrailers": 120
+     },
+     "drivers": {
+      "companyDrivers": 305,
+      "teamDrivers": 40
+     },
+     "safetyRating": "Satisfactory",
+     "insurance": {
+      "autoLiability": {
+       "limit": 1000000,
+       "expires": "2027-01-15"
+      },
+      "cargo": {
+       "limit": 250000,
+       "expires": "2027-01-15"
+      }
+     },
+     "hazmatAuthorized": false,
+     "terminals": [
+      {
+       "city": "Omaha",
+       "state": "NE",
+       "doors": 48
+      },
+      {
+       "city": "Kansas City",
+       "state": "MO",
+       "doors": 30
+      }
+     ],
+     "serviceRegions": [
+      "midwest",
+      "southwest"
+     ],
+     "eld": {
+      "enabled": true,
+      "provider": "Samsara"
+     },
+     "dispatchPhone": "402-555-0166",
+     "brokerAuthority": false
+    }
+   },
+   "questions": [
+    {
+     "control": "dot",
+     "question": "USDOT Number",
+     "kind": "text",
+     "options": [],
+     "section": "Carrier",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "mc",
+     "question": "MC / Docket number",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "scac",
+     "question": "SCAC code (4 letters)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "maxlength": "4"
+     }
+    },
+    {
+     "control": "yf",
+     "question": "Year founded",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "pu",
+     "question": "Number of power units (tractors)",
+     "kind": "number",
+     "options": [],
+     "section": "Fleet",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "tr",
+     "question": "Total trailers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "reefer",
+     "question": "Number of refrigerated trailers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "oo",
+     "question": "Number of owner-operators",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "cd",
+     "question": "Number of company drivers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "dr",
+     "question": "Total number of drivers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "st",
+     "question": "Number of straight trucks",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "rating",
+     "question": "FMCSA safety rating",
+     "kind": "select",
+     "options": [
+      {
+       "value": "S",
+       "label": "Satisfactory"
+      },
+      {
+       "value": "C",
+       "label": "Conditional"
+      },
+      {
+       "value": "U",
+       "label": "Unsatisfactory"
+      },
+      {
+       "value": "N",
+       "label": "Not rated"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "al",
+     "question": "Auto liability limit (USD)",
+     "kind": "number",
+     "options": [],
+     "section": "Insurance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "cargo",
+     "question": "Cargo insurance limit (USD)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "cexp",
+     "question": "Cargo insurance expiration date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "haz",
+     "question": "Are you authorized to haul hazardous materials?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      },
+      {
+       "value": "na",
+       "label": "N/A"
+      }
+     ],
+     "section": "Operations",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "eld",
+     "question": "Does your fleet use electronic logging devices (ELD)?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "eldp",
+     "question": "ELD provider",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": [
+      "eld",
+      "yes"
+     ],
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "omaha",
+     "question": "Number of dock doors at the Omaha terminal",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "dallas",
+     "question": "Number of dock doors at the Dallas terminal",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "regions",
+     "question": "Operating regions",
+     "kind": "checkbox_group",
+     "options": [
+      {
+       "value": "ne",
+       "label": "Northeast"
+      },
+      {
+       "value": "mw",
+       "label": "Midwest"
+      },
+      {
+       "value": "sw",
+       "label": "Southwest"
+      },
+      {
+       "value": "se",
+       "label": "Southeast"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "dph",
+     "question": "Dispatch phone",
+     "kind": "tel",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "broker",
+     "question": "Do you also hold freight broker authority?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "w9",
+     "question": "Attach W-9",
+     "kind": "file",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h09_retail_vendor",
+   "source_json": {
+    "Vendor Name": "Pinecrest Pantry Co.",
+    "Vendor Type": "Manufacturer",
+    "DUNS Number": "117384920",
+    "Federal Tax ID": "27-4410982",
+    "Primary Product Category": "Packaged snacks",
+    "Number of SKUs": 64,
+    "Annual Sales to Retailers (USD)": 4200000,
+    "Payment Terms Requested": "Net 45",
+    "Years in Business": 11,
+    "Street Address": "2210 Mill Race Road",
+    "City": "Duluth",
+    "State": "Minnesota",
+    "ZIP Code": "55802",
+    "Country": "United States",
+    "Contact Name": "Rob Lindqvist",
+    "Contact Email": "rob@pinecrestpantry.example",
+    "Contact Phone": "218-555-0132",
+    "Minority Owned": "No",
+    "Women Owned": "Yes",
+    "Small Business": "Yes",
+    "Certified Organic": false,
+    "Allergen Free Facility": false,
+    "Recall In Last Three Years": "No",
+    "Warehouse Count": 2
+   },
+   "questions": [
+    {
+     "control": "v1",
+     "question": "Vendor Name",
+     "kind": "text",
+     "options": [],
+     "section": "Vendor",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v2",
+     "question": "Vendor type",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "mfr",
+       "label": "Manufacturer"
+      },
+      {
+       "value": "dist",
+       "label": "Distributor"
+      },
+      {
+       "value": "broker",
+       "label": "Broker"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v3",
+     "question": "D-U-N-S Number",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v4",
+     "question": "Number of SKUs offered",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v5",
+     "question": "Annual sales to retailers (USD)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v6",
+     "question": "Payment terms requested",
+     "kind": "select",
+     "options": [
+      {
+       "value": "n30",
+       "label": "Net 30"
+      },
+      {
+       "value": "n45",
+       "label": "Net 45"
+      },
+      {
+       "value": "n60",
+       "label": "Net 60"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v7",
+     "question": "Street address",
+     "kind": "text",
+     "options": [],
+     "section": "Address and contact",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v8",
+     "question": "State / Province",
+     "kind": "select",
+     "options": [
+      {
+       "value": "MN",
+       "label": "Minnesota"
+      },
+      {
+       "value": "WI",
+       "label": "Wisconsin"
+      },
+      {
+       "value": "ND",
+       "label": "North Dakota"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v9",
+     "question": "Country",
+     "kind": "select",
+     "options": [
+      {
+       "value": "CA",
+       "label": "Canada"
+      },
+      {
+       "value": "US",
+       "label": "United States"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v10",
+     "question": "Contact email",
+     "kind": "email",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v11",
+     "question": "Billing contact email",
+     "kind": "email",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v12",
+     "question": "Is the vendor a woman-owned business?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": "Compliance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v13",
+     "question": "Is the vendor a small business (SBA)?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v14",
+     "question": "Is your product line certified organic?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v15",
+     "question": "Is the manufacturing facility allergen-free?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v16",
+     "question": "Has the vendor had a product recall in the last three years?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v17",
+     "question": "Is the vendor Fair Trade certified?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v18",
+     "question": "Number of warehouses",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "v19",
+     "question": "I agree to the Vendor Code of Conduct",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h10_gov_procurement",
+   "source_json": {
+    "supplier": {
+     "name": "Corvid Analytics Ltd",
+     "company_number": "07894213",
+     "vat_number": "GB 214 8890 12",
+     "registered_on": "03/14/2009",
+     "turnover": {
+      "2023": 8100000,
+      "2024": 9350000,
+      "2025": 10200000
+     },
+     "sme_status": true
+    },
+    "employees": {
+     "count": 64
+    },
+    "insurance": {
+     "employers_liability": {
+      "limit": 10000000,
+      "expiry": "2027-09-30"
+     },
+     "public_liability": {
+      "limit": 5000000,
+      "expiry": "2026-08-31"
+     }
+    },
+    "modern_slavery_statement_published": true,
+    "cyber_essentials": {
+     "certified": true,
+     "level": "Plus",
+     "cert_number": "IASME-CEP-0098123"
+    },
+    "bid_contact": {
+     "name": "Hannah Whitcombe",
+     "email": "bids@corvid.example",
+     "phone": "+44 20 7946 0731"
+    },
+    "conflicts_of_interest": {
+     "exists": false
+    },
+    "subcontracting": {
+     "planned": true,
+     "max_percent": 30
+    },
+    "parent": {
+     "name": "Corvid Group plc",
+     "company_number": "05512004"
+    }
+   },
+   "questions": [
+    {
+     "control": "g1",
+     "question": "Supplier name",
+     "kind": "text",
+     "options": [],
+     "section": "Supplier",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g2",
+     "question": "Companies House registration number",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "pattern": "\\d{8}"
+     }
+    },
+    {
+     "control": "g3",
+     "question": "VAT registration number (format GB123456789)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "pattern": "GB\\d{9}"
+     }
+    },
+    {
+     "control": "g4",
+     "question": "Date of incorporation",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g5",
+     "question": "Turnover, financial year 2025 (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g6",
+     "question": "Turnover, financial year 2022 (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g7",
+     "question": "Number of employees",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g8",
+     "question": "Is the supplier an SME?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      },
+      {
+       "value": "na",
+       "label": "N/A"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g9",
+     "question": "Immediate parent company name",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g10",
+     "question": "Immediate parent company registration number",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g11",
+     "question": "Employers' liability insurance limit (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": "Insurance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g12",
+     "question": "Public liability insurance expiry date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g13",
+     "question": "Has the supplier published a Modern Slavery statement?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g14",
+     "question": "Cyber Essentials level held",
+     "kind": "select",
+     "options": [
+      {
+       "value": "basic",
+       "label": "Cyber Essentials"
+      },
+      {
+       "value": "plus",
+       "label": "Cyber Essentials Plus"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g15",
+     "question": "Cyber Essentials certificate number (max 12 characters)",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "maxlength": "12"
+     }
+    },
+    {
+     "control": "g16",
+     "question": "Are there any conflicts of interest in relation to this tender?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g17",
+     "question": "Is subcontracting planned?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g18",
+     "question": "Maximum percentage of contract value to be subcontracted",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": [
+      "g17",
+      "yes"
+     ],
+     "html_constraints": {}
+    },
+    {
+     "control": "g19",
+     "question": "Bid contact telephone",
+     "kind": "tel",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g20",
+     "question": "Estimated total contract value you are bidding (GBP)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "g21",
+     "question": "Statement of non-collusion",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h11_franchise_supplier",
+   "source_json": {
+    "franchisor": {
+     "name": "Brasa Grill Franchising LLC",
+     "employees": 85,
+     "year_founded": 2005,
+     "states_operating": [
+      "TX",
+      "OK",
+      "LA"
+     ]
+    },
+    "franchisee": {
+     "name": "Alvarado Hospitality Group LLC",
+     "employees": 310,
+     "year_founded": 2013,
+     "owner": "Eduardo Alvarado",
+     "locations": [
+      {
+       "store_no": "114",
+       "city": "San Antonio",
+       "employees": 42,
+       "opened": "2018-05-07"
+      },
+      {
+       "store_no": "131",
+       "city": "Austin",
+       "employees": 38,
+       "opened": "2020-11-16"
+      }
+     ]
+    },
+    "joint_venture": {
+     "name": "Brasa-Alvarado Development JV",
+     "ownership_split": "60/40"
+    }
+   },
+   "questions": [
+    {
+     "control": "f1",
+     "question": "Legal name of franchisee entity",
+     "kind": "text",
+     "options": [],
+     "section": "Parties",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f2",
+     "question": "Franchisor legal name",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f3",
+     "question": "Number of employees",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f4",
+     "question": "Number of employees of the franchisee",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f5",
+     "question": "Year founded",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f6",
+     "question": "Year the franchisor was founded",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f7",
+     "question": "Name of franchise owner / principal",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f8",
+     "question": "Number of employees at the San Antonio store",
+     "kind": "number",
+     "options": [],
+     "section": "Stores",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f9",
+     "question": "Employees at store #131",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f10",
+     "question": "Number of employees at the Houston store",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f11",
+     "question": "Opening date of store 114",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f12",
+     "question": "States in which the franchisor operates",
+     "kind": "multiselect",
+     "options": [
+      {
+       "value": "TX",
+       "label": "Texas"
+      },
+      {
+       "value": "OK",
+       "label": "Oklahoma"
+      },
+      {
+       "value": "LA",
+       "label": "Louisiana"
+      },
+      {
+       "value": "NM",
+       "label": "New Mexico"
+      },
+      {
+       "value": "AR",
+       "label": "Arkansas"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f13",
+     "question": "Joint venture name",
+     "kind": "text",
+     "options": [],
+     "section": "Joint venture",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f14",
+     "question": "Franchisor's ownership percentage in the joint venture",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f15",
+     "question": "Is the applicant a joint venture?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f16",
+     "question": "Franchisee tax ID",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "f17",
+     "question": "Describe the relationship between franchisor and franchisee",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h12_api_platform",
+   "source_json": {
+    "Product": {
+     "Name": "LedgerPoint",
+     "Version": "7.4",
+     "Hosting model": "Multi-tenant SaaS",
+     "SLA uptime target (%)": 99.95,
+     "Supports SSO": true,
+     "Supports SCIM provisioning": false,
+     "Audit logging": {
+      "enabled": true,
+      "retention_days": 400
+     },
+     "Data export": {
+      "formats": [
+       "CSV",
+       "JSON"
+      ],
+      "self_service": true
+     },
+     "Data stored outside the EU": false,
+     "Offline mode": {
+      "supported": false
+     },
+     "Mobile apps": {
+      "ios": true,
+      "android": true
+     },
+     "API rate limit per minute": 600,
+     "Sandbox environment": {
+      "available": true
+     },
+     "Customer count": 1850,
+     "Largest customer seats": 22000,
+     "Support hours": "24x7",
+     "Languages supported": [
+      "en",
+      "de",
+      "fr",
+      "ja"
+     ]
+    }
+   },
+   "questions": [
+    {
+     "control": "s1",
+     "question": "Product name",
+     "kind": "text",
+     "options": [],
+     "section": "Product",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s2",
+     "question": "Hosting model",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "single",
+       "label": "Single-tenant"
+      },
+      {
+       "value": "multi",
+       "label": "Multi-tenant"
+      },
+      {
+       "value": "onprem",
+       "label": "On-premises"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s3",
+     "question": "SLA uptime target (%)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {
+      "min": "90",
+      "max": "100",
+      "step": "0.01"
+     }
+    },
+    {
+     "control": "s4",
+     "question": "Does the product support single sign-on?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": "Capabilities",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s5",
+     "question": "Is SCIM provisioning unsupported?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s6",
+     "question": "Is audit logging disabled by default?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s7",
+     "question": "Audit log retention (days)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s8",
+     "question": "Can customers export their data without vendor assistance?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s9",
+     "question": "Available export formats",
+     "kind": "checkbox_group",
+     "options": [
+      {
+       "value": "csv",
+       "label": "CSV"
+      },
+      {
+       "value": "json",
+       "label": "JSON"
+      },
+      {
+       "value": "xml",
+       "label": "XML"
+      },
+      {
+       "value": "xlsx",
+       "label": "Excel"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s10",
+     "question": "Is customer data stored outside the EU?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s11",
+     "question": "Is offline mode available?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s12",
+     "question": "Is a sandbox environment NOT offered?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s13",
+     "question": "Supported mobile platforms",
+     "kind": "multiselect",
+     "options": [
+      {
+       "value": "ios",
+       "label": "iOS"
+      },
+      {
+       "value": "android",
+       "label": "Android"
+      },
+      {
+       "value": "win",
+       "label": "Windows Phone"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s14",
+     "question": "API rate limit (requests per minute)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s15",
+     "question": "Number of customers",
+     "kind": "number",
+     "options": [],
+     "section": "Customers",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s16",
+     "question": "Number of customers in the healthcare sector",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s17",
+     "question": "Support availability",
+     "kind": "select",
+     "options": [
+      {
+       "value": "bus",
+       "label": "Business hours"
+      },
+      {
+       "value": "ext",
+       "label": "Extended hours"
+      },
+      {
+       "value": "247",
+       "label": "24x7"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s18",
+     "question": "Languages supported in the UI",
+     "kind": "multiselect",
+     "options": [
+      {
+       "value": "en",
+       "label": "English"
+      },
+      {
+       "value": "de",
+       "label": "German"
+      },
+      {
+       "value": "fr",
+       "label": "French"
+      },
+      {
+       "value": "ja",
+       "label": "Japanese"
+      },
+      {
+       "value": "es",
+       "label": "Spanish"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "s19",
+     "question": "Describe your disaster recovery architecture",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h13_manufacturing_quality",
+   "source_json": {
+    "plant": {
+     "name": "Zeller Precision Castings GmbH",
+     "location": {
+      "city": "Stuttgart",
+      "country": "DE"
+     },
+     "iatf_certified": true,
+     "iso14001": {
+      "certified": true,
+      "expiry": "2027-05-20"
+     },
+     "iso45001": null,
+     "employees": {
+      "total": 520,
+      "production": 410,
+      "quality_dept": 18,
+      "temp_agency": 45
+     },
+     "shifts_per_day": 3,
+     "annual_capacity_tonnes": 12000,
+     "ppm_last_year": 38,
+     "on_time_delivery_pct": 97.4,
+     "conflict_minerals": {
+      "policy": true
+     },
+     "scope3_reporting": false,
+     "customers_top": [
+      {
+       "name": "Aurelian Motors",
+       "share_pct": 34
+      },
+      {
+       "name": "Vantor Drives",
+       "share_pct": 21
+      }
+     ],
+     "owner": {
+      "name": "Zeller Familienstiftung",
+      "country": "DE"
+     },
+     "quality_manager_email": "p.brandt@zeller-castings.example",
+     "audit_contact": {
+      "phone": "+49 711 5550 214"
+     }
+    }
+   },
+   "questions": [
+    {
+     "control": "m1",
+     "question": "Plant legal name",
+     "kind": "shadow_text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m2",
+     "question": "Country of plant",
+     "kind": "custom_combobox",
+     "options": [
+      {
+       "value": "DE",
+       "label": "Germany"
+      },
+      {
+       "value": "FR",
+       "label": "France"
+      },
+      {
+       "value": "PL",
+       "label": "Poland"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m3",
+     "question": "3.1 Is the plant IATF 16949 certified?",
+     "kind": "custom_radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m4",
+     "question": "3.2 ISO 14001 certificate expiry date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m5",
+     "question": "3.3 ISO 45001 certificate expiry date",
+     "kind": "date",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m6",
+     "question": "Conflict minerals policy in place",
+     "kind": "custom_switch",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m7",
+     "question": "Total employees (headcount)",
+     "kind": "number",
+     "options": [],
+     "section": "Workforce",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m8",
+     "question": "Number of direct production workers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m9",
+     "question": "Number of agency (temporary) workers",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m10",
+     "question": "Quality department staff",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m11",
+     "question": "Number of employees on the night shift",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m12",
+     "question": "Shifts per day",
+     "kind": "number",
+     "options": [],
+     "section": "Performance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m13",
+     "question": "Defect rate last year (PPM)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m14",
+     "question": "On-time delivery rate (%)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m15",
+     "question": "Do you report Scope 3 emissions?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m16",
+     "question": "Name of largest customer",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m17",
+     "question": "Share of sales to the largest customer (%)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m18",
+     "question": "Name of the owning entity",
+     "kind": "text",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m19",
+     "question": "Quality manager email",
+     "kind": "email",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "m20",
+     "question": "Describe your 8D corrective action process",
+     "kind": "custom_editable",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  },
+  {
+   "case": "h14_staffing_agency",
+   "source_json": {
+    "Agency name": "NorthStar Clinical Staffing",
+    "Headcount": {
+     "Total internal staff": 74,
+     "Recruiters": 31,
+     "Account managers": 9
+    },
+    "Placements": {
+     "Placements 2025": 1260,
+     "Placements 2024": 1105,
+     "Active nurses on assignment": 412,
+     "Active allied health on assignment": 96
+    },
+    "Regions served": [
+     "Northeast",
+     "Mid-Atlantic"
+    ],
+    "Licensed states": [
+     "NY",
+     "NJ",
+     "PA"
+    ],
+    "Worker classification": {
+     "W-2 employees": true,
+     "1099 contractors": false
+    },
+    "Background checks": {
+     "Performed on all candidates": true,
+     "Lookback years": 7
+    },
+    "Drug screening": {
+     "required": true
+    },
+    "Markup (average %)": 24.5,
+    "Malpractice insurance": {
+     "per claim": 1000000,
+     "aggregate": 3000000
+    },
+    "Joint Commission certified": "Yes",
+    "Headquarters": {
+     "Street": "401 Market Street, Suite 900",
+     "City": "Philadelphia",
+     "State": "Pennsylvania"
+    },
+    "Branch offices": [
+     {
+      "city": "Newark",
+      "state": "NJ",
+      "staff": 11
+     },
+     {
+      "city": "Albany",
+      "state": "NY",
+      "staff": 8
+     }
+    ]
+   },
+   "questions": [
+    {
+     "control": "a1",
+     "question": "Agency name",
+     "kind": "text",
+     "options": [],
+     "section": "Agency",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a2",
+     "question": "Total number of personnel",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a3",
+     "question": "Number of recruiters",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a4",
+     "question": "Number of recruiters who are certified",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a5",
+     "question": "Number of placements in 2025",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a6",
+     "question": "Number of placements in 2023",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a7",
+     "question": "Nurses currently on assignment",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a8",
+     "question": "Travel nurses currently on assignment",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a9",
+     "question": "Staff at the Newark branch",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a10",
+     "question": "Staff at the Boston branch",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a11",
+     "question": "States where you hold staffing licences",
+     "kind": "multiselect",
+     "options": [
+      {
+       "value": "NY",
+       "label": "New York"
+      },
+      {
+       "value": "NJ",
+       "label": "New Jersey"
+      },
+      {
+       "value": "PA",
+       "label": "Pennsylvania"
+      },
+      {
+       "value": "CT",
+       "label": "Connecticut"
+      },
+      {
+       "value": "MD",
+       "label": "Maryland"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a12",
+     "question": "Do you employ workers on a W-2 basis?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": "Compliance",
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a13",
+     "question": "Do you use independent contractors (1099)?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a14",
+     "question": "Is drug screening optional for candidates?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a15",
+     "question": "Are background checks run on all candidates?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a16",
+     "question": "Background check lookback (years)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": [
+      "a15",
+      "yes"
+     ],
+     "html_constraints": {}
+    },
+    {
+     "control": "a17",
+     "question": "Average markup (%)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a18",
+     "question": "Malpractice limit per claim (USD)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a19",
+     "question": "Joint Commission certified?",
+     "kind": "radio",
+     "options": [
+      {
+       "value": "yes",
+       "label": "Yes"
+      },
+      {
+       "value": "no",
+       "label": "No"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a20",
+     "question": "Headquarters state",
+     "kind": "select",
+     "options": [
+      {
+       "value": "NY",
+       "label": "New York"
+      },
+      {
+       "value": "NJ",
+       "label": "New Jersey"
+      },
+      {
+       "value": "PA",
+       "label": "Pennsylvania"
+      },
+      {
+       "value": "CT",
+       "label": "Connecticut"
+      },
+      {
+       "value": "MD",
+       "label": "Maryland"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a21",
+     "question": "Regions served",
+     "kind": "checkbox_group",
+     "options": [
+      {
+       "value": "ne",
+       "label": "Northeast"
+      },
+      {
+       "value": "ma",
+       "label": "Mid-Atlantic"
+      },
+      {
+       "value": "se",
+       "label": "Southeast"
+      },
+      {
+       "value": "mw",
+       "label": "Midwest"
+      }
+     ],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a22",
+     "question": "Year-over-year growth in placements (%)",
+     "kind": "number",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a23",
+     "question": "Describe your float pool process",
+     "kind": "textarea",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    },
+    {
+     "control": "a24",
+     "question": "I authorise verification of the above",
+     "kind": "checkbox",
+     "options": [],
+     "section": null,
+     "shown_only_when": null,
+     "enabled_only_when": null,
+     "html_constraints": {}
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h06_insurance_proposal</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h06_insurance_proposal</h1><form>
+<h2>About the firm</h2>
+<div class="row"><label for="q1">1. Name of proposer</label><input type="text" name="p1" id="q1"></div>
+<div class="row"><label for="q2">2. Month in which the business was established</label><select name="p2m" id="q2"><option value="">Select...</option><option value="01">January</option><option value="02">February</option><option value="03">March</option><option value="04">April</option><option value="05">May</option><option value="06">June</option><option value="07">July</option><option value="08">August</option><option value="09">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
+<div class="row"><label for="q3">3. Retroactive date</label><input type="date" name="p3" id="q3"></div>
+<div class="row"><label for="q4">4. Number of partners / members</label><input type="number" name="p4" id="q4"></div>
+<div class="row"><label for="q5">5. Number of qualified architects</label><input type="number" name="p5" id="q5"></div>
+<div class="row"><label for="q6">6. Total headcount (all staff)</label><input type="number" name="p6" id="q6"></div>
+<div class="row"><label for="q7">7. Number of staff in the Leeds office</label><input type="number" name="p7" id="q7"></div>
+<div class="row"><label for="q8">8. Number of staff in the London office</label><input type="number" name="p8" id="q8"></div>
+<h2>Financials</h2>
+<div class="row"><label for="q9">9. Gross fees, last financial year (GBP)</label><input type="number" name="p9" id="q9"></div>
+<div class="row"><label for="q10">10. Gross fees, two financial years ago (GBP)</label><input type="number" name="p10" id="q10"></div>
+<div class="row"><label for="q11">11. Estimated gross fees for the current year (GBP)</label><input type="number" name="p11" id="q11"></div>
+<div class="row"><label for="q12">12. Limit of indemnity required</label><select name="p12" id="q12"><option value="">Select...</option><option value="1m">GBP 1,000,000</option><option value="2m">GBP 2,000,000</option><option value="5m">GBP 5,000,000</option><option value="10m">GBP 10,000,000</option></select></div>
+<div class="row"><fieldset><legend>13. Have any claims been made against the firm in the last five years?</legend><label class="opt"><input type="radio" name="p13" value="yes"> Yes</label><label class="opt"><input type="radio" name="p13" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>14. Do you engage sub-contractors?</legend><label class="opt"><input type="radio" name="p14" value="yes"> Yes</label><label class="opt"><input type="radio" name="p14" value="no"> No</label></fieldset></div>
+<div class="row"><table><tr><td>15. Percentage of fees from work outside the UK</td><td><input type="text" name="p15"></td></tr></table></div>
+<div class="row"><label for="q16">16. Registered office postcode</label><input type="text" name="p16" maxlength="8" id="q16"></div>
+<div class="row"><label for="q17">17. Describe any circumstances that may give rise to a claim</label><textarea name="p17" id="q17" rows=3></textarea></div>
+<div class="row"><label class="opt"><input type="checkbox" name="p18" value="yes"> 18. I declare that the statements are true</label></div>
+</form><script></script></body></html>

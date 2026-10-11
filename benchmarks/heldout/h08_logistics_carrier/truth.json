@@ -1,0 +1,471 @@
+{
+  "case": "h08_logistics_carrier",
+  "description": "Motor carrier onboarding; camelCase keys",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "dot",
+      "question": "USDOT Number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "2847731",
+      "source": "carrier.dotNumber",
+      "tags": [
+        "camelCase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "mc",
+      "question": "MC / Docket number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "MC-913442",
+      "source": "carrier.mcNumber",
+      "tags": [
+        "camelCase",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Docket = MC number."
+    },
+    {
+      "control": "scac",
+      "question": "SCAC code (4 letters)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "TGFL",
+      "source": "carrier.scac",
+      "tags": [
+        "camelCase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Fits maxlength."
+    },
+    {
+      "control": "yf",
+      "question": "Year founded",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1998,
+      "source": "carrier.yearFounded",
+      "tags": [
+        "camelCase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "pu",
+      "question": "Number of power units (tractors)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 312,
+      "source": "carrier.fleet.powerUnits",
+      "tags": [
+        "paraphrase",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Power units."
+    },
+    {
+      "control": "tr",
+      "question": "Total trailers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 640,
+      "source": "carrier.fleet.trailers",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "reefer",
+      "question": "Number of refrigerated trailers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 120,
+      "source": "carrier.fleet.reeferTrailers",
+      "tags": [
+        "scoped",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Reefer = refrigerated."
+    },
+    {
+      "control": "oo",
+      "question": "Number of owner-operators",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 58,
+      "source": "carrier.fleet.ownerOperators",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "cd",
+      "question": "Number of company drivers",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 305,
+      "source": "carrier.drivers.companyDrivers",
+      "tags": [
+        "scoped"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Company-driver key."
+    },
+    {
+      "control": "dr",
+      "question": "Total number of drivers",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Company and team drivers both stored with unclear overlap; no total."
+    },
+    {
+      "control": "st",
+      "question": "Number of straight trucks",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Not in data."
+    },
+    {
+      "control": "rating",
+      "question": "FMCSA safety rating",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "S",
+      "source": "carrier.safetyRating",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Satisfactory -> S."
+    },
+    {
+      "control": "al",
+      "question": "Auto liability limit (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1000000,
+      "source": "carrier.insurance.autoLiability.limit",
+      "tags": [
+        "nested",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Auto vs cargo distractor."
+    },
+    {
+      "control": "cargo",
+      "question": "Cargo insurance limit (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250000,
+      "source": "carrier.insurance.cargo.limit",
+      "tags": [
+        "nested",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Cargo."
+    },
+    {
+      "control": "cexp",
+      "question": "Cargo insurance expiration date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2027-01-15",
+      "source": "carrier.insurance.cargo.expires",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "haz",
+      "question": "Are you authorized to haul hazardous materials?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "carrier.hazmatAuthorized",
+      "tags": [
+        "camelCase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "False."
+    },
+    {
+      "control": "hazno",
+      "question": "HazMat endorsement number",
+      "kind": "text",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "hidden"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "haz",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "Hidden unless hazmat yes; carrier is not authorised."
+    },
+    {
+      "control": "eld",
+      "question": "Does your fleet use electronic logging devices (ELD)?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "carrier.eld.enabled",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "enabled True under eld."
+    },
+    {
+      "control": "eldp",
+      "question": "ELD provider",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Samsara",
+      "source": "carrier.eld.provider",
+      "tags": [
+        "conditional",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "eld",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "Shown when ELD=yes."
+    },
+    {
+      "control": "omaha",
+      "question": "Number of dock doors at the Omaha terminal",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 48,
+      "source": "carrier.terminals.0.doors",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "List item Omaha."
+    },
+    {
+      "control": "dallas",
+      "question": "Number of dock doors at the Dallas terminal",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No Dallas terminal."
+    },
+    {
+      "control": "regions",
+      "question": "Operating regions",
+      "kind": "checkbox_group",
+      "expect": "ANSWER",
+      "answer": [
+        "mw",
+        "sw"
+      ],
+      "source": "carrier.serviceRegions",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Maps to values."
+    },
+    {
+      "control": "dph",
+      "question": "Dispatch phone",
+      "kind": "tel",
+      "expect": "ANSWER",
+      "answer": "402-555-0166",
+      "source": "carrier.dispatchPhone",
+      "tags": [
+        "camelCase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "broker",
+      "question": "Do you also hold freight broker authority?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "carrier.brokerAuthority",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "False."
+    },
+    {
+      "control": "w9",
+      "question": "Attach W-9",
+      "kind": "file",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Needs a file; none in data."
+    }
+  ]
+}

@@ -1,0 +1,454 @@
+{
+  "case": "h14_staffing_agency",
+  "description": "Healthcare staffing agency MSP onboarding",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "a1",
+      "question": "Agency name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "NorthStar Clinical Staffing",
+      "source": "Agency name",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "a2",
+      "question": "Total number of personnel",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 74,
+      "source": "Headcount.Total internal staff",
+      "tags": [
+        "paraphrase",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Personnel = internal staff."
+    },
+    {
+      "control": "a3",
+      "question": "Number of recruiters",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 31,
+      "source": "Headcount.Recruiters",
+      "tags": [
+        "scoped",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Role-scoped."
+    },
+    {
+      "control": "a4",
+      "question": "Number of recruiters who are certified",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No credential split."
+    },
+    {
+      "control": "a5",
+      "question": "Number of placements in 2025",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1260,
+      "source": "Placements.Placements 2025",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Year-scoped."
+    },
+    {
+      "control": "a6",
+      "question": "Number of placements in 2023",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only 2024-2025."
+    },
+    {
+      "control": "a7",
+      "question": "Nurses currently on assignment",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 412,
+      "source": "Placements.Active nurses on assignment",
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Nurses vs allied health."
+    },
+    {
+      "control": "a8",
+      "question": "Travel nurses currently on assignment",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Travel is a narrower category not in data."
+    },
+    {
+      "control": "a9",
+      "question": "Staff at the Newark branch",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 11,
+      "source": "Branch offices.0.staff",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "List item."
+    },
+    {
+      "control": "a10",
+      "question": "Staff at the Boston branch",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No Boston branch."
+    },
+    {
+      "control": "a11",
+      "question": "States where you hold staffing licences",
+      "kind": "multiselect",
+      "expect": "ANSWER",
+      "answer": [
+        "NY",
+        "NJ",
+        "PA"
+      ],
+      "source": "Licensed states",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Codes."
+    },
+    {
+      "control": "a12",
+      "question": "Do you employ workers on a W-2 basis?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Worker classification.W-2 employees",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "a13",
+      "question": "Do you use independent contractors (1099)?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Worker classification.1099 contractors",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "False."
+    },
+    {
+      "control": "a14",
+      "question": "Is drug screening optional for candidates?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Drug screening.required",
+      "tags": [
+        "polarity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Required True -> optional No."
+    },
+    {
+      "control": "a15",
+      "question": "Are background checks run on all candidates?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Background checks.Performed on all candidates",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "True."
+    },
+    {
+      "control": "a16",
+      "question": "Background check lookback (years)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 7,
+      "source": "Background checks.Lookback years",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": [
+        "a15",
+        "yes"
+      ],
+      "step": 1,
+      "note": "Enabled once background checks = yes."
+    },
+    {
+      "control": "a17",
+      "question": "Average markup (%)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 24.5,
+      "source": "Markup (average %)",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "a18",
+      "question": "Malpractice limit per claim (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 1000000,
+      "source": "Malpractice insurance.per claim",
+      "tags": [
+        "nested",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Per-claim vs aggregate."
+    },
+    {
+      "control": "a19",
+      "question": "Joint Commission certified?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Joint Commission certified",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Yes."
+    },
+    {
+      "control": "a20",
+      "question": "Headquarters state",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "PA",
+      "source": "Headquarters.State",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Name to code."
+    },
+    {
+      "control": "a21",
+      "question": "Regions served",
+      "kind": "checkbox_group",
+      "expect": "ANSWER",
+      "answer": [
+        "ne",
+        "ma"
+      ],
+      "source": "Regions served",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Labels to values."
+    },
+    {
+      "control": "a22",
+      "question": "Year-over-year growth in placements (%)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "composition"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Not stored; would need computation."
+    },
+    {
+      "control": "a23",
+      "question": "Describe your float pool process",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative."
+    },
+    {
+      "control": "a24",
+      "question": "I authorise verification of the above",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Consent."
+    }
+  ]
+}

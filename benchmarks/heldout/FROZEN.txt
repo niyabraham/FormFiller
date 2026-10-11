@@ -1,0 +1,5 @@
+Held-out benchmark heldout-1.0.0 frozen BEFORE any pipeline was run on it.
+content digest (tools/evaluate_baseline.py benchmark_digest): 0d275842d567c759
+frozen at (UTC): 2026-10-10T14:12:25+00:00
+No label or fixture may change after this point. A genuine ground-truth defect is documented in docs/HELDOUT_EVALUATION.md;
+the original results stay in benchmarks/heldout/results/ for audit.

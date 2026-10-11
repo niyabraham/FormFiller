@@ -1,0 +1,348 @@
+{
+  "case": "h05_university_grant",
+  "description": "University research grant application",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "pifn",
+      "question": "PI first name *",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Amara",
+      "source": "pi.first_name",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "piln",
+      "question": "PI last name *",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Okonkwo-Reyes",
+      "source": "pi.last_name",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "orcid",
+      "question": "ORCID iD (format 0000-0000-0000-0000)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "0000-0002-4417-8893",
+      "source": "pi.orcid",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct; pattern satisfied."
+    },
+    {
+      "control": "rank",
+      "question": "Academic rank",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "assoc",
+      "source": "pi.rank",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "associate_professor -> Associate Professor option."
+    },
+    {
+      "control": "title",
+      "question": "Project title (max 120 characters)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Low-Cost Sensor Networks for Urban Groundwater Monitoring",
+      "source": "project.title",
+      "tags": [
+        "date_constraint"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "56 chars, within limit."
+    },
+    {
+      "control": "sd",
+      "question": "Project start date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2027-01-01",
+      "source": "project.start_date",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "ed",
+      "question": "Project end date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2029-12-31",
+      "source": "project.end_date",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "dur",
+      "question": "Project duration (months)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 36,
+      "source": "project.duration_months",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "bud",
+      "question": "Total budget requested (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 742500,
+      "source": "project.requested_budget.total",
+      "tags": [
+        "nested",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Total vs per-year distractors."
+    },
+    {
+      "control": "by2",
+      "question": "Budget requested for Year 2",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 250500,
+      "source": "project.requested_budget.year2",
+      "tags": [
+        "scoped",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Year-scoped key."
+    },
+    {
+      "control": "by5",
+      "question": "Budget requested for Year 5",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Project has 3 years; year 5 absent."
+    },
+    {
+      "control": "idc",
+      "question": "Indirect cost rate (%)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 52.5,
+      "source": "project.requested_budget.indirect_rate_pct",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "hs",
+      "question": "Does the project involve human subjects?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "project.human_subjects",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "False."
+    },
+    {
+      "control": "csopt",
+      "question": "Is cost sharing optional for this award?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "polarity",
+        "contestable",
+        "reconciled"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "required False -> optional yes. [RECONCILED to REVIEW before freeze: Blind labeller held that cost_share.required=false does not clearly mean 'optional'.]"
+    },
+    {
+      "control": "coi",
+      "question": "Co-investigator name",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous",
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Two co-investigators; unscoped question has two plausible values."
+    },
+    {
+      "control": "inst_st",
+      "question": "State of applicant institution",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "OR",
+      "source": "institution.state",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Oregon -> OR."
+    },
+    {
+      "control": "kw",
+      "question": "Keywords",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "composition",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "List must be composed into text; format unspecified."
+    },
+    {
+      "control": "abstract",
+      "question": "Project summary (max 250 words)",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative; none in data."
+    },
+    {
+      "control": "cert",
+      "question": "I certify that all statements are accurate",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Certification."
+    }
+  ]
+}

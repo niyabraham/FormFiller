@@ -1,0 +1,49 @@
+{
+  "org": {
+    "name": "Riverbend Community Health Initiative",
+    "type": "501c3",
+    "ein": "46-3381920",
+    "year_registered": 2011,
+    "mission": "Provide primary care outreach in rural Appalachia."
+  },
+  "people": {
+    "board_members": 9,
+    "independent_board_members": 7,
+    "staff_full_time": 22,
+    "staff_part_time": 5,
+    "volunteers": 140
+  },
+  "finance": {
+    "fiscal_year_end": "June",
+    "total_revenue": 3150000,
+    "government_funding_pct": 38,
+    "audited": true,
+    "audit_firm": "Whitlock & Frame CPAs",
+    "reserve_months": 4,
+    "program_expense_ratio": 0.81
+  },
+  "governance": {
+    "conflict_of_interest_policy": true,
+    "whistleblower_policy": true,
+    "has_no_related_party_transactions": true
+  },
+  "programs": {
+    "countries": [
+      "US"
+    ],
+    "beneficiaries_last_year": 18400
+  },
+  "contact": {
+    "executive_director": "Naomi Castellano",
+    "ed_email": "ncastellano@riverbendchi.org"
+  },
+  "affiliates": {
+    "fiscal_sponsor": null,
+    "chapters": [
+      {
+        "name": "Riverbend Ohio",
+        "ein": "46-3381920-1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "carrier": {
+    "legalName": "Tallgrass Freight Lines, Inc.",
+    "dotNumber": "2847731",
+    "mcNumber": "MC-913442",
+    "scac": "TGFL",
+    "yearFounded": 1998,
+    "fleet": {
+      "powerUnits": 312,
+      "trailers": 640,
+      "ownerOperators": 58,
+      "reeferTrailers": 120
+    },
+    "drivers": {
+      "companyDrivers": 305,
+      "teamDrivers": 40
+    },
+    "safetyRating": "Satisfactory",
+    "insurance": {
+      "autoLiability": {
+        "limit": 1000000,
+        "expires": "2027-01-15"
+      },
+      "cargo": {
+        "limit": 250000,
+        "expires": "2027-01-15"
+      }
+    },
+    "hazmatAuthorized": false,
+    "terminals": [
+      {
+        "city": "Omaha",
+        "state": "NE",
+        "doors": 48
+      },
+      {
+        "city": "Kansas City",
+        "state": "MO",
+        "doors": 30
+      }
+    ],
+    "serviceRegions": [
+      "midwest",
+      "southwest"
+    ],
+    "eld": {
+      "enabled": true,
+      "provider": "Samsara"
+    },
+    "dispatchPhone": "402-555-0166",
+    "brokerAuthority": false
+  }
+}

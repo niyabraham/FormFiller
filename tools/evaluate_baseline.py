@@ -24,7 +24,10 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parent.parent
+# ROOT is the code under test (its formfill/ package and its git history). It is the repository this
+# file lives in unless FORMFILL_PIPELINE_ROOT points at another checkout, so one evaluator can measure
+# several clean checkouts of the pipeline with identical measurement code.
+ROOT = Path(os.environ.get("FORMFILL_PIPELINE_ROOT") or Path(__file__).resolve().parent.parent).resolve()
 sys.path.insert(0, str(ROOT))
 
 from formfill.web.discover import discover
@@ -526,8 +529,13 @@ def main() -> int:
     ap.add_argument("--out-dir", type=Path, help="write baseline.json/failures.md here instead of benchmarks/rfi/results/ "
                                                  "(the default location is the frozen Phase 2 record)")
     ap.add_argument("--force-overwrite-baseline", action="store_true")
+    ap.add_argument("--bench-dir", type=Path, help="benchmark directory containing manifest.json and per-case folders "
+                                                   "(default: benchmarks/rfi of the code under test)")
     args = ap.parse_args()
 
+    global BENCH
+    if args.bench_dir:
+        BENCH = args.bench_dir.resolve()
     manifest_doc = json.loads((BENCH / "manifest.json").read_text())
     manifest = manifest_doc["cases"]
     if args.case:

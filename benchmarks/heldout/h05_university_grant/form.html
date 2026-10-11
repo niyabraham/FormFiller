@@ -1,0 +1,31 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h05_university_grant</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h05_university_grant</h1><form>
+<h2>Investigator</h2>
+<div class="row"><label for="q1">PI first name *</label><input type="text" name="pifn" required id="q1"></div>
+<div class="row"><label for="q2">PI last name *</label><input type="text" name="piln" required id="q2"></div>
+<div class="row"><label for="q3">ORCID iD (format 0000-0000-0000-0000)</label><input type="text" name="orcid" pattern="\d{4}-\d{4}-\d{4}-\d{3}[\dX]" id="q3"></div>
+<div class="row"><label for="q4">Academic rank</label><select name="rank" id="q4"><option value="">Select...</option><option value="asst">Assistant Professor</option><option value="assoc">Associate Professor</option><option value="full">Professor</option></select></div>
+<h2>Project</h2>
+<div class="row"><label for="q5">Project title (max 120 characters)</label><input type="text" name="title" maxlength="120" id="q5"></div>
+<div class="row"><label for="q6">Project start date</label><input type="date" name="sd" id="q6"></div>
+<div class="row"><label for="q7">Project end date</label><input type="date" name="ed" id="q7"></div>
+<div class="row"><label for="q8">Project duration (months)</label><input type="number" name="dur" id="q8"></div>
+<div class="row"><label for="q9">Total budget requested (USD)</label><input type="number" name="bud" id="q9"></div>
+<div class="row"><label for="q10">Budget requested for Year 2</label><input type="number" name="by2" id="q10"></div>
+<div class="row"><label for="q11">Budget requested for Year 5</label><input type="number" name="by5" id="q11"></div>
+<div class="row"><label for="q12">Indirect cost rate (%)</label><input type="number" name="idc" id="q12"></div>
+<div class="row"><fieldset><legend>Does the project involve human subjects?</legend><label class="opt"><input type="radio" name="hs" value="yes"> Yes</label><label class="opt"><input type="radio" name="hs" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is cost sharing optional for this award?</legend><label class="opt"><input type="radio" name="csopt" value="yes"> Yes</label><label class="opt"><input type="radio" name="csopt" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q15">Co-investigator name</label><input type="text" name="coi" id="q15"></div>
+<div class="row"><label for="q16">State of applicant institution</label><select name="inst_st" id="q16"><option value="">Select...</option><option value="OR">Oregon</option><option value="WA">Washington</option><option value="CA">California</option></select></div>
+<div class="row"><label for="q17">Keywords</label><input type="text" name="kw" id="q17"></div>
+<div class="row"><label for="q18">Project summary (max 250 words)</label><textarea name="abstract" id="q18" rows=3></textarea></div>
+<div class="row"><label class="opt"><input type="checkbox" name="cert" value="yes"> I certify that all statements are accurate</label></div>
+</form><script></script></body></html>

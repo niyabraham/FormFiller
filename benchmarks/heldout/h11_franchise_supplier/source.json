@@ -1,0 +1,36 @@
+{
+  "franchisor": {
+    "name": "Brasa Grill Franchising LLC",
+    "employees": 85,
+    "year_founded": 2005,
+    "states_operating": [
+      "TX",
+      "OK",
+      "LA"
+    ]
+  },
+  "franchisee": {
+    "name": "Alvarado Hospitality Group LLC",
+    "employees": 310,
+    "year_founded": 2013,
+    "owner": "Eduardo Alvarado",
+    "locations": [
+      {
+        "store_no": "114",
+        "city": "San Antonio",
+        "employees": 42,
+        "opened": "2018-05-07"
+      },
+      {
+        "store_no": "131",
+        "city": "Austin",
+        "employees": 38,
+        "opened": "2020-11-16"
+      }
+    ]
+  },
+  "joint_venture": {
+    "name": "Brasa-Alvarado Development JV",
+    "ownership_split": "60/40"
+  }
+}

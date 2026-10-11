@@ -1,0 +1,330 @@
+{
+  "case": "h06_insurance_proposal",
+  "description": "Professional indemnity proposal form",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "p1",
+      "question": "1. Name of proposer",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Hartwell & Pryce Architects LLP",
+      "source": "Proposer name",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p2m",
+      "question": "2. Month in which the business was established",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "03",
+      "source": "Date established",
+      "tags": [
+        "option_mapping",
+        "date_constraint"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "'14 March 2009' -> March."
+    },
+    {
+      "control": "p3",
+      "question": "3. Retroactive date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2009-03-14",
+      "source": "Retroactive date",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "p4",
+      "question": "4. Number of partners / members",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 6,
+      "source": "Number of partners",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p5",
+      "question": "5. Number of qualified architects",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 19,
+      "source": "Number of qualified architects",
+      "tags": [
+        "scoped"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p6",
+      "question": "6. Total headcount (all staff)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 41,
+      "source": "Total staff",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p7",
+      "question": "7. Number of staff in the Leeds office",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 28,
+      "source": "Office locations.0.staff",
+      "tags": [
+        "scoped",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "List item Leeds."
+    },
+    {
+      "control": "p8",
+      "question": "8. Number of staff in the London office",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No London entry."
+    },
+    {
+      "control": "p9",
+      "question": "9. Gross fees, last financial year (GBP)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 6840000,
+      "source": "Gross fees last financial year",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p10",
+      "question": "10. Gross fees, two financial years ago (GBP)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only last and estimated current year."
+    },
+    {
+      "control": "p11",
+      "question": "11. Estimated gross fees for the current year (GBP)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 7200000,
+      "source": "Gross fees estimated current year",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p12",
+      "question": "12. Limit of indemnity required",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "5m",
+      "source": "Professional indemnity limit requested",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "5,000,000 -> 5m band."
+    },
+    {
+      "control": "p13",
+      "question": "13. Have any claims been made against the firm in the last five years?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Any claims in the last 5 years",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No."
+    },
+    {
+      "control": "p14",
+      "question": "14. Do you engage sub-contractors?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Subcontractors used",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Yes."
+    },
+    {
+      "control": "p15",
+      "question": "15. Percentage of fees from work outside the UK",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "8%",
+      "source": "Overseas work percentage",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Stored as '8%' text."
+    },
+    {
+      "control": "p16",
+      "question": "16. Registered office postcode",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "LS1 4AP",
+      "source": "Registered office postcode",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "p17",
+      "question": "17. Describe any circumstances that may give rise to a claim",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative."
+    },
+    {
+      "control": "p18",
+      "question": "18. I declare that the statements are true",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Declaration."
+    }
+  ]
+}

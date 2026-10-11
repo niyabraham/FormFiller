@@ -1,0 +1,42 @@
+{
+  "Product": {
+    "Name": "LedgerPoint",
+    "Version": "7.4",
+    "Hosting model": "Multi-tenant SaaS",
+    "SLA uptime target (%)": 99.95,
+    "Supports SSO": true,
+    "Supports SCIM provisioning": false,
+    "Audit logging": {
+      "enabled": true,
+      "retention_days": 400
+    },
+    "Data export": {
+      "formats": [
+        "CSV",
+        "JSON"
+      ],
+      "self_service": true
+    },
+    "Data stored outside the EU": false,
+    "Offline mode": {
+      "supported": false
+    },
+    "Mobile apps": {
+      "ios": true,
+      "android": true
+    },
+    "API rate limit per minute": 600,
+    "Sandbox environment": {
+      "available": true
+    },
+    "Customer count": 1850,
+    "Largest customer seats": 22000,
+    "Support hours": "24x7",
+    "Languages supported": [
+      "en",
+      "de",
+      "fr",
+      "ja"
+    ]
+  }
+}
