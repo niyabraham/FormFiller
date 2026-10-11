@@ -48,7 +48,8 @@ def _option_equals(control, value: Any) -> bool:
 
 
 def _alts(cands: list[Candidate], skip: int = 0) -> list[dict]:
-    return [{"source": c.path, "value": c.value, "score": c.score, **({"flags": c.flags} if c.flags else {})}
+    return [{"source": c.path, "value": c.value, "score": c.score, **({"flags": c.flags} if c.flags else {}),
+             **({"evidence": c.evidence} if c.evidence else {})}
             for c in cands[skip:3 + skip]]
 
 
@@ -96,7 +97,7 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
 
     return AnswerPlanItem(
         **base, status="ANSWER", source=top.path, raw_value=top.value, answer=result.value,
-        confidence=min(1.0, top.score), alternatives=_alts(cands, skip=1),
+        confidence=min(1.0, top.score), alternatives=_alts(cands, skip=1), evidence=list(top.evidence),
     )
 
 

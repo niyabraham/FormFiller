@@ -79,6 +79,7 @@ class Candidate:
     value: Any
     score: float
     flags: list[str] = field(default_factory=list)  # why the score was capped (unexplained scope, polarity), for reviewers
+    evidence: list[str] = field(default_factory=list)  # context that set rivals aside (path / sibling-value evidence), for reviewers
 
 
 @dataclass
@@ -94,6 +95,7 @@ class AnswerPlanItem:
     confidence: float = 0.0
     reason: str | None = None  # why REVIEW
     alternatives: list[dict] = field(default_factory=list)  # other candidates, for the reviewer
+    evidence: list[str] = field(default_factory=list)  # for an ANSWER: the parent/sibling context that singled this candidate out
 
     def to_dict(self) -> dict:
         return asdict(self)
