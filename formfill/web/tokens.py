@@ -43,7 +43,14 @@ QUALIFIERS = {
 # Polarity markers. A question and the key it is matched to must carry the *same* markers: "Is MFA
 # optional?" must not read `mfa_required`, "Is SSO disabled?" must not read `sso_enabled`. Uncertain
 # cases are sent to REVIEW rather than inverted. ("no" is deliberately absent: "Registration No.")
-NEGATORS = {"not", "non", "optional", "disabled", "disable", "without", "unsupported", "never", "inapplicable"}
+NEGATORS = {"not", "non", "optional", "disabled", "disable", "without", "unsupported", "never", "inapplicable",
+            # Phase 3B-A: "Does the organisation lack a whistleblower policy?" read `whistleblower_policy: true`
+            # and answered "yes". Nothing is inverted: the marker only has to match on both sides, else REVIEW.
+            "lack", "lacking", "absence", "absent"}
+
+# A generic noun a key may leave implicit: `company.full_time` answers "full-time employees". Such a word is not
+# held against a key (see retrieve.assess_leaf); every other unexplained word is a modifier the key must carry.
+IMPLICIT_NOUNS = {"employee"}
 
 # "in total" widens a question: it is dropped unless the key carries "total" itself (customers.total).
 NEUTRAL = {"total"}
@@ -86,6 +93,32 @@ SYNONYMS: dict[str, list[str]] = {
     # the two inflections the Phase 2 benchmark demonstrated (supported/support, encrypted/encryption)
     "supported": ["support"], "encrypted": ["encryption"], "encrypt": ["encryption"],
 }
+
+
+# --- period scope (Phase 3B-A) -------------------------------------------------------------------
+# "Gross fees, two financial years ago" must not read `gross_fees_last_financial_year`. A period is a
+# point in time ("-2y" = two years back, "0y" = this year, "2024"), taken from the raw text of the question
+# and of the key path. "last name" is not a period: "last" only counts next to a period noun.
+_NUMBER_WORDS = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
+                 "eight": 8, "nine": 9, "ten": 10}
+_ADJ = r"(?:(?:financial|fiscal|calendar|tax|trading|accounting)\s+)?"
+_UNIT = r"(year|quarter|month)s?"
+_RELATIVE = re.compile(rf"\b(last|previous|prior|preceding|current|this|next)\s+{_ADJ}{_UNIT}\b")
+_AGO = re.compile(rf"\b(\d{{1,2}}|{'|'.join(_NUMBER_WORDS)})\s+{_ADJ}{_UNIT}\s+ago\b")
+_YEAR = re.compile(r"\b(?:19|20)\d\d\b")
+_SIGN = {"last": "-1", "previous": "-1", "prior": "-1", "preceding": "-1", "current": "0", "this": "0", "next": "+1"}
+
+
+def period_markers(text: str) -> frozenset[str]:
+    """Points in time named by `text`: {"-1y"} last year, {"-2y"} two years ago, {"0y"} this year,
+    {"+1y"} next year, {"2024"} a calendar year. A window ("the last 5 years") is not a point: empty."""
+    t = text.lower().replace("_", " ")
+    out = {f"{_SIGN[m.group(1)]}{m.group(2)[0]}" for m in _RELATIVE.finditer(t)}
+    for m in _AGO.finditer(t):
+        n = int(m.group(1)) if m.group(1).isdigit() else _NUMBER_WORDS[m.group(1)]
+        out.add(f"-{n}{m.group(2)[0]}")
+    out |= set(_YEAR.findall(t))
+    return frozenset(out)
 
 
 def _stem(token: str) -> str:

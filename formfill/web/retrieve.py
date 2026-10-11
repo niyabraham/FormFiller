@@ -21,7 +21,10 @@ plan.MIN_CONFIDENCE:
   * unexplained scope   -- a scope word ("parent", "production", ...) the key and its path lack, or
                            more than half of the question's words unexplained -> score <= 0.5
   * polarity            -- question and key carry different negation markers ("optional" vs
-                           "required", "disabled" vs "enabled") -> score <= 0.3
+                           "required", "disabled" vs "enabled", "lack" vs none) -> score <= 0.3
+  * period (3B-A)       -- the question names a point in time ("two financial years ago", "2023") that the
+                           key path does not carry, or carries differently -> score <= 0.3. "last"/"current"
+                           year may rely on a key that names no period.
 
 "Number of full-time employees": plain overlap ties `full_time` and
 `employees` (each explains one of two question tokens). The scope-word
@@ -34,13 +37,26 @@ from dataclasses import dataclass
 from typing import Any
 
 from formfill.web.models import Candidate, Question
-from formfill.web.tokens import NEGATORS, NEUTRAL, QUALIFIERS, SELF_REFERENCE, tokenize
+from formfill.web.tokens import (
+    IMPLICIT_NOUNS,
+    NEGATORS,
+    NEUTRAL,
+    QUALIFIERS,
+    SELF_REFERENCE,
+    period_markers,
+    tokenize,
+)
 
 SECTION_BONUS = 0.2
 QUALIFIER_PENALTY = 0.6
 UNEXPLAINED_CAP = 0.5  # must stay below plan.MIN_CONFIDENCE (asserted in tests)
 POLARITY_CAP = 0.3
-MIN_EXPLAINED_FRACTION = 0.5  # at least this share of the question's words must be explained by the key/path
+MIN_EXPLAINED_FRACTION = 0.5  # generic guard (Phase 3A): capped when FEWER than this share of the question's words is explained
+COUNT_MIN_EXPLAINED_FRACTION = 0.5  # counting questions (Phase 3B-A): capped when AT MOST this share is explained
+PERIOD_CAP = 0.3
+# a question may name these periods and rely on a key that says nothing about time (the latest/current value);
+# any other period ("two years ago", "2023", "next year") must be carried by the key.
+_IMPLICIT_PERIODS = {"-1y", "0y"}
 
 
 @dataclass
@@ -49,6 +65,7 @@ class Leaf:
     value: Any
     leaf_tokens: frozenset[str]
     parent_tokens: frozenset[str]
+    period: frozenset[str] = frozenset()  # points in time named by the key path ("last financial year", "2024")
 
 
 def index_source(data: Any) -> list[Leaf]:
@@ -80,6 +97,7 @@ def index_source(data: Any) -> list[Leaf]:
                 value=value,
                 leaf_tokens=frozenset(tokenize(named[-1])),
                 parent_tokens=frozenset(t for s in named[:-1] for t in tokenize(s)),
+                period=period_markers(" ".join(s for s in segments if not s.isdigit() or period_markers(s))),
             )
         )
 
@@ -87,7 +105,8 @@ def index_source(data: Any) -> list[Leaf]:
     return [leaf for leaf in leaves if leaf.leaf_tokens]
 
 
-def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf) -> tuple[float, list[str]]:
+def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
+                q_period: frozenset[str] = frozenset(), is_count: bool = False) -> tuple[float, list[str]]:
     """Score one leaf and say why it was capped, if it was."""
     # words like "total" widen a question; they only count when the key carries them too
     q_eff = q_tokens - (NEUTRAL - leaf.leaf_tokens - leaf.parent_tokens)
@@ -112,10 +131,24 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf) -> tup
     if scope_missing:
         flags.append(f"question scope {sorted(scope_missing)} is not in the key or its path")
         score = min(score, UNEXPLAINED_CAP)
+    elif is_count:
+        # A count of a narrower population is a different number ("Sales headcount" vs the total, "refrigerated
+        # trailers" vs all trailers), so for count questions exactly half explained is not enough. A generic noun the
+        # parent scope leaves implicit ("full-time employees" vs company.full_time) is not held against the key.
+        modifiers = unexplained - IMPLICIT_NOUNS
+        base = len(q_eff) - len(unexplained & IMPLICIT_NOUNS)
+        explained = base - len(modifiers)
+        if modifiers and explained / base <= COUNT_MIN_EXPLAINED_FRACTION:
+            flags.append(f"counting question: only {explained} of {base} words are explained by the key or its path "
+                         f"(unexplained modifier: {sorted(modifiers)})")
+            score = min(score, UNEXPLAINED_CAP)
     elif unexplained and (len(q_eff) - len(unexplained)) / len(q_eff) < MIN_EXPLAINED_FRACTION:
         flags.append(f"only {len(q_eff) - len(unexplained)} of {len(q_eff)} question words are explained by the key or its path "
                      f"(unexplained: {sorted(unexplained)})")
         score = min(score, UNEXPLAINED_CAP)
+    if q_period and (leaf.period and q_period != leaf.period or not leaf.period and q_period - _IMPLICIT_PERIODS):
+        flags.append(f"period differs: question names {sorted(q_period)}, key path names {sorted(leaf.period) or 'none'}")
+        score = min(score, PERIOD_CAP)
     neg_q, neg_l = q_tokens & NEGATORS, explained_by & NEGATORS
     if neg_q != neg_l:
         flags.append(f"polarity differs: question has {sorted(neg_q) or 'none'}, key path has {sorted(neg_l) or 'none'}")
@@ -123,8 +156,9 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf) -> tup
     return score, flags
 
 
-def score_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf) -> float:
-    return assess_leaf(q_tokens, section_tokens, leaf)[0]
+def score_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf, q_period: frozenset[str] = frozenset(),
+               is_count: bool = False) -> float:
+    return assess_leaf(q_tokens, section_tokens, leaf, q_period, is_count)[0]
 
 
 def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Candidate]:
@@ -132,7 +166,7 @@ def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Can
     section = set(tokenize(question.control.section))
     scored = []
     for leaf in leaves:
-        s, flags = assess_leaf(q, section, leaf)
+        s, flags = assess_leaf(q, section, leaf, question.period, question.is_count)
         if s > 0:
             scored.append((s, flags, leaf))
     scored.sort(key=lambda t: (-t[0], t[2].path))

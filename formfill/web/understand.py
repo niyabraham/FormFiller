@@ -14,7 +14,7 @@ from __future__ import annotations
 import re
 
 from formfill.web.models import Control, FormSchema, Question
-from formfill.web.tokens import tokenize
+from formfill.web.tokens import period_markers, tokenize
 
 _EXPECTED = {
     "text": "string", "textarea": "string", "number": "number", "date": "date",
@@ -39,6 +39,9 @@ _ENUMERATOR = re.compile(r"^\s*(?:[A-Za-z]\.\d+(?:\.\d+)*|\d+(?:\.\d+)*)[.):]?\s
 _DECORATION = re.compile(r"\s*[\[(]\s*(?:optional|required)\s*[\])]\s*|\s*[-\u2013\u2014:]\s*(?:optional|required)\s*$|^\s*(?:optional|required)\s*[-\u2013\u2014:]\s*", re.IGNORECASE)
 
 
+_COUNT = re.compile(r"\b(?:how\s+many|number\s+of|no\.\s*of|count\s+of|headcount|total\s+(?:number|count))\b", re.IGNORECASE)
+
+
 def concept_text(text: str) -> str:
     """Question text minus form furniture that is not part of the question: leading
     enumerators ("C.3", "1.2.1.") and optional/required decorations ("Phone - optional",
@@ -56,6 +59,8 @@ def understand_control(control: Control) -> Question:
         expected_type=_EXPECTED.get(control.kind, "string"),
         answer_mode=_MODE.get(control.kind, "single_value"),
         concept_tokens=tokenize(concept_text(text)),
+        is_count=bool(_COUNT.search(text)),
+        period=period_markers(concept_text(text)),
     )
 
 

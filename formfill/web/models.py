@@ -68,6 +68,8 @@ class Question:
     expected_type: str  # string|number|date|email|url|phone|boolean|choice|multi_choice
     answer_mode: str  # single_value|narrative|boolean|single_choice|multi_value
     concept_tokens: list[str] = field(default_factory=list)
+    is_count: bool = False  # asks for the size of a population ("Number of ...", "How many ...", "headcount")
+    period: frozenset[str] = frozenset()  # points in time the question names ("-2y" = two years ago), see tokens.period_markers
     semantic_type: str | None = None  # reserved for a later classifier/LLM stage
 
 
