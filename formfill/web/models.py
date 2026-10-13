@@ -55,6 +55,7 @@ class FormSchema:
     url: str
     title: str
     controls: list[Control]
+    notes: list[dict] = field(default_factory=list)  # why something could not be discovered (opaque widgets, ...)
 
     def to_dict(self) -> dict:
         return asdict(self)

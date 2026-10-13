@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from playwright.sync_api import Page
+from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
 from formfill.web.models import Control
 
@@ -24,6 +25,7 @@ els => {
   if (!els.length) return {found: false};
   const e = els[0]; const t = (e.type || '').toLowerCase(); const tag = e.tagName.toLowerCase();
   let value;
+  if (e.getAttribute('role') === 'combobox' && tag !== 'input' && tag !== 'select') { value = (e.textContent || '').replace(/\\s+/g, ' ').trim(); return {found: true, value, valid: true, message: ''}; }
   if (t === 'radio') { const c = els.find(x => x.checked); value = c ? c.value : null; }
   else if (t === 'checkbox') { value = els.length > 1 ? els.filter(x => x.checked).map(x => x.value) : e.checked; }
   else if (tag === 'select' && e.multiple) { value = Array.from(e.selectedOptions).map(o => o.value); }
@@ -52,6 +54,8 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
     kind = control.kind
     if kind in _TEXTLIKE:
         loc.fill(str(answer), timeout=timeout_ms)
+    elif kind == "combobox":
+        _fill_combobox(page, control, loc, answer, timeout_ms)
     elif kind == "select":
         loc.select_option(value=answer, timeout=timeout_ms)
     elif kind == "multiselect":
@@ -69,6 +73,35 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
             member.set_checked(member.get_attribute("value") in answer, timeout=timeout_ms)
     else:
         raise ValueError(f"unsupported control kind {kind!r}")
+
+
+def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: int) -> None:
+    """ARIA combobox: open it (type into it, if it is an input), pick the option whose text equals the answer,
+    and require the popup to close. Typing alone is not an answer: the app commits on selection."""
+    frame = page.frames[control.frame_index]
+    is_input = loc.evaluate("e => e.tagName === 'INPUT'")
+    if is_input:
+        loc.fill(str(answer), timeout=timeout_ms)
+    else:
+        loc.click(timeout=timeout_ms)
+    listbox = frame.locator("[role=listbox]:visible").first
+    try:
+        listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
+    except PlaywrightTimeout:
+        if is_input:
+            return  # free-text combobox with no popup: the typed text stays, read-back decides
+        raise ValueError("combobox opened no listbox") from None
+    want = str(answer).strip().casefold()
+    options = listbox.locator("[role=option]")
+    for i in range(options.count()):
+        opt = options.nth(i)
+        if opt.inner_text().strip().casefold() == want:
+            opt.click(timeout=timeout_ms)
+            break
+    else:
+        raise ValueError(f"no option {answer!r} in the combobox list")
+    if loc.get_attribute("aria-expanded") == "true":
+        raise ValueError("combobox list still open after selecting: selection not confirmed")
 
 
 def read_back(page: Page, control: Control) -> Observed:

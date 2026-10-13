@@ -1,0 +1,1261 @@
+{
+  "run": {
+    "pipeline_module": "/tmp/wt/formfill",
+    "evaluated_commit": "d3a132de393e51a457234757e686c16c190af94d",
+    "pipeline_dirty": false,
+    "pipeline_diff_sha256": null,
+    "mode": "no_policy",
+    "ground_truth_sha256": "23e91428f33f1545b96f7796274331534dff0bba87b8338922bd8be248ee3b10"
+  },
+  "summary": {
+    "fixtures": 17,
+    "crashed": 0,
+    "discovery_recall": [
+      33,
+      68
+    ],
+    "controls_found_only_after_navigation": [
+      0,
+      30
+    ],
+    "conditional_controls_found": [
+      0,
+      1
+    ],
+    "fill_success": [
+      31,
+      77
+    ],
+    "readback_verified": [
+      31,
+      77
+    ],
+    "app_committed": [
+      30,
+      77
+    ],
+    "silent_divergence": 1,
+    "values_lost": 4,
+    "planted_resets": [
+      0,
+      3
+    ],
+    "unsupported": [
+      0,
+      1
+    ],
+    "review_items_entered": 0,
+    "submission_attempts": 0,
+    "dialogs_accepted": 0,
+    "safe_stop_correct": [
+      0,
+      3
+    ]
+  },
+  "fixtures": [
+    {
+      "fixture": "wiz_hidden",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.3333333333333333,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "wiz_unmount",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.3333333333333333,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "wiz_async",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [],
+      "missed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.0,
+      "recall_by_step": {
+        "1": {
+          "found": 0,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [],
+      "verified": [],
+      "app_committed": [],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "wiz_route",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.3333333333333333,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "wiz_guard",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.3333333333333333,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "wiz_labels",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.3333333333333333,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "cond_sync",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "sub"
+      ],
+      "discovered": [
+        "name",
+        "sub"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name"
+      ],
+      "filled": [
+        "name"
+      ],
+      "verified": [
+        "name"
+      ],
+      "app_committed": [
+        "name"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "cond_async",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "discovered": [
+        "name",
+        "sector"
+      ],
+      "missed": [
+        "detail"
+      ],
+      "recall": 0.6666666666666666,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 1,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "filled": [
+        "name",
+        "sector"
+      ],
+      "verified": [
+        "name",
+        "sector"
+      ],
+      "app_committed": [
+        "name",
+        "sector"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "controlled",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "email",
+        "city"
+      ],
+      "discovered": [
+        "name",
+        "email",
+        "city"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 3,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "email",
+        "city"
+      ],
+      "filled": [
+        "name",
+        "email",
+        "city"
+      ],
+      "verified": [
+        "name",
+        "email",
+        "city"
+      ],
+      "app_committed": [
+        "name",
+        "email",
+        "city"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "enable_after",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "email",
+        "phone"
+      ],
+      "discovered": [
+        "email",
+        "phone"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "email",
+        "phone"
+      ],
+      "filled": [
+        "email"
+      ],
+      "verified": [
+        "email"
+      ],
+      "app_committed": [
+        "email"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "combobox",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "discovered": [
+        "name",
+        "industry"
+      ],
+      "missed": [
+        "country"
+      ],
+      "recall": 0.6666666666666666,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "filled": [
+        "name",
+        "industry"
+      ],
+      "verified": [
+        "name",
+        "industry"
+      ],
+      "app_committed": [
+        "name"
+      ],
+      "silent_divergence": [
+        "industry"
+      ],
+      "values_lost": [
+        "industry"
+      ],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "shadow_iframe",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email"
+      ],
+      "discovered": [
+        "name",
+        "email"
+      ],
+      "missed": [
+        "website"
+      ],
+      "recall": 0.6666666666666666,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email"
+      ],
+      "filled": [
+        "name",
+        "email"
+      ],
+      "verified": [
+        "name",
+        "email"
+      ],
+      "app_committed": [
+        "name",
+        "email"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [
+        "phone"
+      ],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "trap_submit",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "no_safe_next_control",
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "nav_dialog",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "dialog_on_navigation",
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    },
+    {
+      "fixture": "nav_reload",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [
+        "name",
+        "website"
+      ],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "document_navigation",
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [
+        "name",
+        "website"
+      ],
+      "notes": []
+    },
+    {
+      "fixture": "nav_reset",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "recall": 0.3333333333333333,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        },
+        "3": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [
+        "website"
+      ],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [
+        "website"
+      ],
+      "notes": []
+    },
+    {
+      "fixture": "attest",
+      "error": null,
+      "status": "FILLED",
+      "expected_discoverable": [
+        "name",
+        "city",
+        "certify",
+        "signer"
+      ],
+      "discovered": [
+        "name",
+        "city"
+      ],
+      "missed": [
+        "certify",
+        "signer"
+      ],
+      "recall": 0.5,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 0,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 2,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "city"
+      ],
+      "filled": [
+        "name",
+        "city"
+      ],
+      "verified": [
+        "name",
+        "city"
+      ],
+      "app_committed": [
+        "name",
+        "city"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": null,
+      "steps_visited": null,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": []
+    }
+  ]
+}

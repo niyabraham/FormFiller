@@ -46,7 +46,9 @@ CLASSES = ["form discovery problem", "question understanding problem", "retrieva
 
 _DOM_JS = """
 (name) => {
-  const els = [...document.querySelectorAll('[name="' + name + '"]')];
+  // open shadow roots included (Phase 3C: the pipeline now fills controls inside them, so the check must see them too)
+  const els = []; const walk = r => { r.querySelectorAll('[name="' + name + '"]').forEach(e => els.push(e)); r.querySelectorAll('*').forEach(h => { if (h.shadowRoot) walk(h.shadowRoot); }); };
+  walk(document);
   if (!els.length) return {found: false};
   const e = els[0], t = (e.type || '').toLowerCase(), tag = e.tagName.toLowerCase();
   let v;

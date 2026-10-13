@@ -1,0 +1,26 @@
+{
+  "note": "working-tree provenance for every run in this directory; 'before' runs used a clean git worktree of the base commit (pipeline_module shows the path), 'after' runs used the working tree.",
+  "base_commit": "d3a132de393e51a457234757e686c16c190af94d",
+  "branch": "phase3c-spa-browser-reliability",
+  "working_tree_pipeline": {
+    "pipeline_module": "/home/claude/niyabraham/formfiller/formfill",
+    "evaluated_commit": "d3a132de393e51a457234757e686c16c190af94d",
+    "pipeline_dirty": true,
+    "pipeline_diff_sha256": "f283a4de80c174c7c6521ecb8619f2bedda9758f39aad24f3e24febaaf395fef"
+  },
+  "tool_sha256": {
+    "tools/evaluate_spa.py": "96f22234a333318817c024a62014e40730baa561b49b52991db7b87dc7c77e3e",
+    "tools/evaluate_baseline.py": "5bbd07fe071d9b134dd00df37a739792b5e1f80d50eec713554d34505dc0a31e",
+    "tools/compare_runs.py": "638c9e8baf6076b72e17d979b4a1835026970f7c3a558a4d2ebdcc39073bf517",
+    "tools/compare_rankings.py": "f14d96d599fc2bc57b826a09a2fd482d1abb310f4ec8ba66b8b57794733c37bf"
+  },
+  "spa_ground_truth_sha256": "db4dd0db0e6f494431e6fbceab474842ff9b9a337d1f35611cc3fd5df98855ba",
+  "spa_fixtures_generator_sha256": "8801505c72ae2fe1f45fc31868192cfbaba78cbb2f00b6cd36fbbac9f0dea2eb",
+  "retrieval_files_unchanged_vs_base": true,
+  "historical_results_untouched": {
+    "committed_benchmark_results_unmodified (benchmarks/rfi/results, benchmarks/heldout)": true,
+    "earlier_uncommitted_round_outputs_left_as_written (spa/results/before, after, r2)": "not rewritten in this round (last modified 2026-10-12, before this round's changes)"
+  },
+  "evaluated_run_pipeline_diff_sha256": "2f0da73cd6d92c1640c3699c0f5a681380a9345bbf20fbce9461235f9add32fd",
+  "snapshot_note": "The r3 runs were made on the snapshot with pipeline_diff_sha256 = evaluated_run_pipeline_diff_sha256 (also recorded in spa_after/spa_results.json). A later documentation-only edit (docstrings in formfill/web/pipeline.py and steps.py) changed the working-tree hash to working_tree_pipeline.pipeline_diff_sha256; the AST of every formfill module was compared with the evaluated snapshot with docstrings removed and is identical, so no result is affected and no evaluation was re-run. Fresh test run after this edit: none (reported 391 passed, 2 xfailed is from the evaluated snapshot)."
+}
