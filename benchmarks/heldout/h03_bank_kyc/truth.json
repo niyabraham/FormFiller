@@ -1,0 +1,339 @@
+{
+  "case": "h03_bank_kyc",
+  "description": "Bank corporate KYC; lists of beneficial owners and signatories",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "k_name",
+      "question": "Full registered name of the entity",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Kestrel Maritime Trading Pte Ltd",
+      "source": "entity.registered_name",
+      "tags": [
+        "nested",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "k_reg",
+      "question": "Company registration number (UEN)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "201934118K",
+      "source": "entity.reg_no",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "k_inc",
+      "question": "Date of incorporation",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2019-08-21",
+      "source": "entity.incorporation_date",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "k_country",
+      "question": "Country of incorporation",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "SGP",
+      "source": "entity.country_of_incorporation",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "SG is Singapore -> SGP."
+    },
+    {
+      "control": "k_zip",
+      "question": "Postal code of registered address",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "048547",
+      "source": "entity.registered_address.postal_code",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct; leading zero preserved."
+    },
+    {
+      "control": "k_turn",
+      "question": "Annual turnover (latest financial year)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 48200000,
+      "source": "entity.annual_turnover.amount",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Amount under annual_turnover."
+    },
+    {
+      "control": "k_cur",
+      "question": "Turnover currency",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "usd",
+      "source": "entity.annual_turnover.currency",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "USD -> usd."
+    },
+    {
+      "control": "k_turn_prev",
+      "question": "Annual turnover (financial year 2023)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only FY2025 turnover present."
+    },
+    {
+      "control": "k_up",
+      "question": "Name of ultimate parent company",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "related_entity",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ultimate_parent is null."
+    },
+    {
+      "control": "k_sig",
+      "question": "Name of authorised signatory",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Mei Lin Tan",
+      "source": "authorised_signatories.0.name",
+      "tags": [
+        "related_entity",
+        "list"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Single signatory in the list."
+    },
+    {
+      "control": "k_sigmail",
+      "question": "Authorised signatory's email address",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "meilin@kestrelmaritime.sg",
+      "source": "authorised_signatories.0.email",
+      "tags": [
+        "related_entity",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Signatory-scoped; distinct from entity contact and AML mailbox."
+    },
+    {
+      "control": "k_ent_mail",
+      "question": "Entity contact email",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "finance@kestrelmaritime.sg",
+      "source": "contact.email",
+      "tags": [
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Entity-scoped mailbox."
+    },
+    {
+      "control": "k_bo_count",
+      "question": "Number of beneficial owners holding 25% or more",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "related_entity",
+        "derived"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Requires counting list entries; no stored count."
+    },
+    {
+      "control": "k_pep",
+      "question": "Is any beneficial owner a politically exposed person (PEP)?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "compliance.pep_exposure",
+      "tags": [
+        "related_entity"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "pep_exposure False (and both owners pep False)."
+    },
+    {
+      "control": "k_adv",
+      "question": "Is adverse media screening NOT performed on counterparties?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "polarity",
+        "reconciled"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Screening True, so 'not performed' is No. [RECONCILED to REVIEW before freeze: Blind labeller held that a negated question with a counterparty scope is not clearly answered by the screening flag.]"
+    },
+    {
+      "control": "k_aml",
+      "question": "Name of AML compliance officer",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Joon Park",
+      "source": "compliance.aml_officer.name",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "k_sow",
+      "question": "Describe the source of wealth of the beneficial owners",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative, nothing in data."
+    },
+    {
+      "control": "k_decl",
+      "question": "I declare the information above is true and complete",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Declaration."
+    }
+  ]
+}

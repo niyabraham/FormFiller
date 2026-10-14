@@ -1,0 +1,25 @@
+{
+  "base_commit": "1d1dbd0487f62b0e19db236d45e057c8a876d3f8",
+  "branch": "phase3d-widget-commitment (uncommitted)",
+  "before": "clean git worktree of the base commit, FORMFILL_PIPELINE_ROOT=<worktree> (3D fixtures + ground_truth_3d.json copied in, untracked); worktree removed afterwards",
+  "after_widget_provenance": {
+    "pipeline_module": "/home/claude/niyabraham/formfiller/formfill",
+    "evaluated_commit": "1d1dbd0487f62b0e19db236d45e057c8a876d3f8",
+    "pipeline_diff_sha256": "db7f24b647ad16aa08f0d50ee735d69fa4ec57a5138e3410a0ec37ba623b4cf2",
+    "ground_truth_3d_sha256": "ee64dc041e7980d45039ebddacba0908670e23038cb32903eb4f29a1c8655d4f",
+    "tool_sha256": "9fc59f87dcefa1ab5827366bed21b81cdd1ca72c09b8718a9be8c04572050d1c",
+    "fixtures_sha256": {
+      "w3d_blur_commit.html": "1ad70450130246cc80d22d166fd8839a82a639d6af8656eec6762a36fccac281",
+      "w3d_readonly_combobox.html": "03addf21bc5747a8da44b0084e7ab48e0cd0091e4e5aa56a73bca3faf1523661",
+      "w3d_styled_radio.html": "875b338a695001c730eadb07986460e52a501a087a24fba555854562331ef3a4"
+    }
+  },
+  "tool_sha256": {
+    "evaluate_widgets3d.py": "9fc59f87dcefa1ab5827366bed21b81cdd1ca72c09b8718a9be8c04572050d1c",
+    "evaluate_spa.py": "96f22234a333318817c024a62014e40730baa561b49b52991db7b87dc7c77e3e",
+    "evaluate_baseline.py": "5bbd07fe071d9b134dd00df37a739792b5e1f80d50eec713554d34505dc0a31e",
+    "compare_runs.py": "638c9e8baf6076b72e17d979b4a1835026970f7c3a558a4d2ebdcc39073bf517"
+  },
+  "execute_py_sha256": "49c9a8faef8d309f4ce9ab5acef6860c1c5218f6a20a47ef117a6f23da1a1227",
+  "tests_sha256": "f354966f52db7323aad7790b69b59d2e39578a95171afa526eb8a218baca9c84"
+}

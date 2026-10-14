@@ -1,0 +1,50 @@
+{
+  "pi": {
+    "first_name": "Amara",
+    "last_name": "Okonkwo-Reyes",
+    "orcid": "0000-0002-4417-8893",
+    "department": "Environmental Engineering",
+    "email": "a.okonkwo@northvale.edu",
+    "rank": "associate_professor"
+  },
+  "project": {
+    "title": "Low-Cost Sensor Networks for Urban Groundwater Monitoring",
+    "start_date": "2027-01-01",
+    "end_date": "2029-12-31",
+    "duration_months": 36,
+    "requested_budget": {
+      "total": 742500,
+      "year1": 240000,
+      "year2": 250500,
+      "year3": 252000,
+      "indirect_rate_pct": 52.5
+    },
+    "human_subjects": false,
+    "animal_subjects": false,
+    "keywords": [
+      "groundwater",
+      "IoT",
+      "sensors"
+    ],
+    "co_investigators": [
+      {
+        "name": "Lars Velden",
+        "institution": "TU Delft"
+      },
+      {
+        "name": "Priya Nair",
+        "institution": "Northvale University"
+      }
+    ]
+  },
+  "institution": {
+    "name": "Northvale University",
+    "duns": "079812345",
+    "state": "Oregon",
+    "sponsored_programs_email": "osp@northvale.edu"
+  },
+  "cost_share": {
+    "required": false,
+    "amount": 0
+  }
+}

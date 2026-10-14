@@ -84,13 +84,14 @@ def test_harness_scores_the_easy_case_perfectly(browser):
 @pytest.mark.browser
 def test_unsafe_answers_do_not_exceed_the_recorded_baseline(browser):
     """Regression guard, not a target: later phases may change coverage, but
-    must not add wrong automatic answers to this benchmark."""
+    must not add wrong automatic answers to this benchmark. Phase 2 recorded 5;
+    Phase 3A recorded 1 (the disputed organization-employees item), so 1 is the ceiling now."""
     import evaluate_baseline as ev
 
     recs = []
     for entry in (c for c in MANIFEST if c["kind"] == "extraction"):
         recs.extend(ev.run_case(browser, entry)[0])
-    assert ev.summarise(recs)["unsafe_answers"] <= 5
+    assert ev.summarise(recs)["unsafe_answers"] <= 1
 
 
 # --------------------------------------------------------------- recorded baseline

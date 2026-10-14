@@ -1,0 +1,313 @@
+{
+  "case": "h02_hospital_supplier",
+  "description": "Hospital supplier onboarding; form-aligned flat keys",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "legal",
+      "question": "Supplier legal name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Meridian Surgical Supplies LLC",
+      "source": "Supplier legal name",
+      "tags": [
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Exact key."
+    },
+    {
+      "control": "dba",
+      "question": "Trading name / DBA (optional)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Meridian MedSupply",
+      "source": "Trading name",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Synonym DBA."
+    },
+    {
+      "control": "ein",
+      "question": "Federal Tax ID (EIN)",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "84-2917736",
+      "source": "Tax identification number (EIN)",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Acronym match; pattern satisfied."
+    },
+    {
+      "control": "est",
+      "question": "Year established",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 2003,
+      "source": "Year established",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "staff",
+      "question": "Number of staff",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 86,
+      "source": "Number of employees",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Staff = employees."
+    },
+    {
+      "control": "reps",
+      "question": "Sales headcount",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 14,
+      "source": "Number of sales representatives",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Sales headcount = sales representatives."
+    },
+    {
+      "control": "state",
+      "question": "Registered state",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "IL",
+      "source": "Company registered state",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "State name to code option."
+    },
+    {
+      "control": "fda",
+      "question": "Is your company registered with the FDA?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Is the company FDA registered?",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Yes."
+    },
+    {
+      "control": "fdanum",
+      "question": "FDA establishment registration number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "3014482291",
+      "source": "FDA establishment registration number",
+      "tags": [
+        "conditional"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "fda",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "Shown after FDA=yes."
+    },
+    {
+      "control": "mino",
+      "question": "Minority-owned business?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "Is the company a minority-owned business?",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No."
+    },
+    {
+      "control": "pli",
+      "question": "Product liability insurance limit (USD)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 5000000,
+      "source": "Product liability insurance coverage (USD)",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "exp",
+      "question": "Insurance expiry date",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2027-04-30",
+      "source": "Insurance expiry date",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO."
+    },
+    {
+      "control": "cats",
+      "question": "Product categories you distribute",
+      "kind": "checkbox_group",
+      "expect": "ANSWER",
+      "answer": [
+        "ortho",
+        "wound"
+      ],
+      "source": "Distributor of record for",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Labels map to values."
+    },
+    {
+      "control": "parent",
+      "question": "Parent company name",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "ambiguous",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Data value is the placeholder 'None'; unclear if intended answer or no data."
+    },
+    {
+      "control": "subs",
+      "question": "Subsidiaries",
+      "kind": "text",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Null."
+    },
+    {
+      "control": "rns",
+      "question": "Number of employees holding a clinical licence",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only total and sales headcounts exist; credential-scoped count absent."
+    },
+    {
+      "control": "excl",
+      "question": "We certify that we are not excluded from federal healthcare programs",
+      "kind": "checkbox",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "declaration"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Attestation."
+    }
+  ]
+}

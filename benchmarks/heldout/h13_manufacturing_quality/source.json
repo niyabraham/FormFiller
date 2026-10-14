@@ -1,0 +1,47 @@
+{
+  "plant": {
+    "name": "Zeller Precision Castings GmbH",
+    "location": {
+      "city": "Stuttgart",
+      "country": "DE"
+    },
+    "iatf_certified": true,
+    "iso14001": {
+      "certified": true,
+      "expiry": "2027-05-20"
+    },
+    "iso45001": null,
+    "employees": {
+      "total": 520,
+      "production": 410,
+      "quality_dept": 18,
+      "temp_agency": 45
+    },
+    "shifts_per_day": 3,
+    "annual_capacity_tonnes": 12000,
+    "ppm_last_year": 38,
+    "on_time_delivery_pct": 97.4,
+    "conflict_minerals": {
+      "policy": true
+    },
+    "scope3_reporting": false,
+    "customers_top": [
+      {
+        "name": "Aurelian Motors",
+        "share_pct": 34
+      },
+      {
+        "name": "Vantor Drives",
+        "share_pct": 21
+      }
+    ],
+    "owner": {
+      "name": "Zeller Familienstiftung",
+      "country": "DE"
+    },
+    "quality_manager_email": "p.brandt@zeller-castings.example",
+    "audit_contact": {
+      "phone": "+49 711 5550 214"
+    }
+  }
+}

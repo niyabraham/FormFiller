@@ -1,0 +1,889 @@
+{
+  "wiz_hidden": {
+    "desc": "3-step wizard, later steps present but hidden in the DOM (control: the easy case)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_unmount": {
+    "desc": "3-step wizard; each step is mounted on demand and the previous one removed, answers kept in app state",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_async": {
+    "desc": "3-step wizard; each step renders after an async fetch (400 ms) behind a loading placeholder",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_route": {
+    "desc": "3-step wizard with URL routing (?step=N) and a Back button; same document, history API",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_guard": {
+    "desc": "Next stays disabled until the step's required fields are valid (guard); validation fires on input",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_labels": {
+    "desc": "Step button is labelled 'Continue' in a nav, not 'Next' (safe-label allow list must cover it)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "cond_sync": {
+    "desc": "Follow-up question appears immediately after an earlier answer (hidden attr toggled)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "sub"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "sub": null,
+      "parent": null
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "sub": "Is the company a subsidiary of another company?",
+      "parent": "Parent company name"
+    }
+  },
+  "cond_async": {
+    "desc": "Industry follow-up is rendered 350 ms after the trigger answer (async-created control)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "sector"
+        ]
+      },
+      {
+        "step": 1,
+        "after": "sector",
+        "discoverable": [
+          "detail"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "sector": "Manufacturing",
+      "detail": "Leeds"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "sector": "Industry sector",
+      "detail": "Headquarters city"
+    }
+  },
+  "controlled": {
+    "desc": "React-style controlled inputs: the DOM value is overwritten from app state unless a real input event fires",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "email",
+          "city"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "email": "info@acme-robotics.example",
+      "city": "Leeds"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "email": "Contact email",
+      "city": "Headquarters city"
+    }
+  },
+  "enable_after": {
+    "desc": "Phone field is disabled until a contact email has been entered",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      }
+    ],
+    "expected": {
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "email": "Contact email",
+      "phone": "Contact phone number"
+    }
+  },
+  "combobox": {
+    "desc": "ARIA comboboxes: a button-style listbox and a typeahead input whose options live in a body-level popup",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "country",
+          "industry"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "country": "United Kingdom",
+      "industry": "Manufacturing"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "country": "Headquarters country",
+      "industry": "Industry sector"
+    }
+  },
+  "shadow_iframe": {
+    "desc": "Open shadow DOM, same-origin iframe and a closed shadow root (the closed one cannot be seen)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website",
+          "email",
+          "phone"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000"
+    },
+    "unsupported": {
+      "phone": "closed shadow root: the DOM is not reachable by any script outside the component"
+    },
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number"
+    }
+  },
+  "trap_submit": {
+    "desc": "A non-final step's only button is 'Submit application' (type=submit) - discovery must not press it",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "no_safe_next_control",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "nav_dialog": {
+    "desc": "Next opens a confirm() dialog ('Discard draft?'); the run must stop, not accept it",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "dialog_on_navigation",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "nav_reload": {
+    "desc": "Next triggers a full document reload that discards the page (answers are not persisted)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "document_navigation",
+    "resets": [
+      "name",
+      "website"
+    ],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "nav_reset": {
+    "desc": "Moving to step 2 silently clears step 1's website answer (planted reset); must be detected",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "email",
+          "phone"
+        ]
+      },
+      {
+        "step": 3,
+        "discoverable": [
+          "city",
+          "country"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [
+      "website"
+    ],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "attest": {
+    "desc": "Last step carries a certification checkbox and a signature name; both must stay REVIEW",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "city"
+        ]
+      },
+      {
+        "step": 2,
+        "discoverable": [
+          "certify",
+          "signer"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "city": "Leeds",
+      "certify": null,
+      "signer": null
+    },
+    "unsupported": {},
+    "stop": null,
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "city": "Headquarters city",
+      "certify": "I certify that the information provided is true and accurate",
+      "signer": "Authorised signatory full name"
+    }
+  },
+  "trap_submit_button": {
+    "desc": "Non-final step's Next is <button type=submit>Next</button> in a form; clicking it really submits (side effect counted)",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "submit_type_next_refused",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "trap_submit_input": {
+    "desc": "Non-final step's Next is <input type=submit value=Continue> in a form; clicking it really submits",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "submit_type_next_refused",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "trap_submit_default": {
+    "desc": "Next is a <button> with no type attribute inside a form (a submit button by HTML rules); clicking it really submits",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "submit_type_next_refused",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "spa_submit_type_intercepted": {
+    "desc": "Next is <button type=submit> but the app intercepts it (preventDefault) and navigates: default policy still refuses; opt-in policy may navigate",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "submit_type_next_refused",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_loading_forever": {
+    "desc": "First paint is a 'Loading...' placeholder (aria-busy, 3 s fetch); with a 600 ms settle timeout the page never settles",
+    "stages": [],
+    "expected": {},
+    "unsupported": {},
+    "stop": "page_not_settled",
+    "resets": [],
+    "policy": {
+      "settle_timeout_ms": 600
+    },
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_churn": {
+    "desc": "A live ticker re-renders every 40 ms, so the DOM is never quiet; with a 600 ms settle timeout the page never settles",
+    "stages": [],
+    "expected": {},
+    "unsupported": {},
+    "stop": "page_not_settled",
+    "resets": [],
+    "policy": {
+      "settle_timeout_ms": 600
+    },
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_churn_step2": {
+    "desc": "Step 1 is calm; after Next, step 2 starts a 40 ms ticker so the page never settles again: stop after Next, step 2 untouched",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example"
+    },
+    "unsupported": {},
+    "stop": "page_not_settled",
+    "resets": [],
+    "policy": {
+      "settle_timeout_ms": 600
+    },
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "trap_submit_image": {
+    "desc": "Next is <input type=image alt=Next> in a form (an image submit button); clicking it really submits",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "submit_type_next_refused",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  },
+  "wiz_unfamiliar_next": {
+    "desc": "Non-final step's Next is labelled 'Onward' (not on the allow list) and a real 'Submit application' button is visible on the same page",
+    "stages": [
+      {
+        "step": 1,
+        "discoverable": [
+          "name",
+          "website"
+        ]
+      }
+    ],
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "website": "https://acme-robotics.example",
+      "email": "info@acme-robotics.example",
+      "phone": "+44 20 7946 0000",
+      "city": "Leeds",
+      "country": "United Kingdom"
+    },
+    "unsupported": {},
+    "stop": "no_safe_next_control",
+    "resets": [],
+    "policy": {},
+    "labels": {
+      "name": "Legal company name",
+      "website": "Company website",
+      "email": "Contact email",
+      "phone": "Contact phone number",
+      "city": "Headquarters city",
+      "country": "Headquarters country"
+    }
+  }
+}

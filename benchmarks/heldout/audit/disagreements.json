@@ -1,0 +1,92 @@
+[
+ [
+  "h02_hospital_supplier",
+  "parent",
+  "Parent company name",
+  "REVIEW",
+  null,
+  null,
+  "ANSWER",
+  "None",
+  "Parent company",
+  "Value given as None.",
+  "Data value is the placeholder 'None'; unclear if intended answer or no data.",
+  true
+ ],
+ [
+  "h03_bank_kyc",
+  "k_bo_count",
+  "Number of beneficial owners holding 25% or more",
+  "REVIEW",
+  null,
+  null,
+  "ANSWER",
+  2,
+  "beneficial_owners",
+  "Both owners hold 25% or more (55, 30).",
+  "Requires counting list entries; no stored count.",
+  false
+ ],
+ [
+  "h03_bank_kyc",
+  "k_adv",
+  "Is adverse media screening NOT performed on counterparties?",
+  "ANSWER",
+  "no",
+  "compliance.adverse_media_screening",
+  "REVIEW",
+  null,
+  null,
+  "Negated question and scope (counterparties) not clearly covered.",
+  "Screening True, so 'not performed' is No.",
+  false
+ ],
+ [
+  "h05_university_grant",
+  "csopt",
+  "Is cost sharing optional for this award?",
+  "ANSWER",
+  "yes",
+  "cost_share.required",
+  "REVIEW",
+  null,
+  null,
+  "Cost share not required does not clearly mean optional.",
+  "required False -> optional yes.",
+  true
+ ],
+ [
+  "h10_gov_procurement",
+  "g4",
+  "Date of incorporation",
+  "REVIEW",
+  null,
+  null,
+  "ANSWER",
+  "2009-03-14",
+  "supplier.registered_on",
+  "MM/DD/YYYY unambiguous since 14 cannot be a month.",
+  "JSON gives US-style 03/14/2009; an ISO date input needs a conversion, left for review as the checker cannot verify transformed dates.",
+  true
+ ],
+ [
+  "h12_api_platform",
+  "s13",
+  "Supported mobile platforms",
+  "ANSWER",
+  [
+   "ios",
+   "android"
+  ],
+  "Product.Mobile apps.ios",
+  "ANSWER",
+  [
+   "ios",
+   "android"
+  ],
+  "Product.Mobile apps",
+  "Maps.",
+  "Both ios and android True; Windows not listed.",
+  true
+ ]
+]

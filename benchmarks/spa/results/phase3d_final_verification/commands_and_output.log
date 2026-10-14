@@ -1,0 +1,70 @@
+## git
+1d1dbd0487f62b0e19db236d45e057c8a876d3f8
+phase3d-widget-commitment
+Wed Oct 14 02:40:35 UTC 2026
+## python -m pytest -q --no-header -p no:cacheprovider
+........................................................................ [ 86%]
+.........................................................                [100%]
+415 passed, 2 xfailed in 148.79s (0:02:28)
+Wed Oct 14 02:43:04 UTC 2026
+## python demo.py
+Re-generating...
+
+Final verification: PASS
+Output: output/filled_form_final.pdf
+## python demo_web.py
+Describe your incident response process     REVIEW                          no matching value in the source data
+I confirm the answers are accurate          REVIEW                          attestation/consent checkbox: a human must confirm it, never auto-ticked
+DPO name                                    ANSWER  A. Rao                  privacy.dpo_name (1.00) ok
+
+Run status: NEEDS_REVIEW
+Artifacts: filled.png, result.json, trace.zip in output/web/
+## python tools/evaluate_widgets3d.py --out-dir <F>/widgets_after
+12 expected fields: fill_ok 12, dom_readback 12, app_state 12; conditional discovered+filled 3/3
+side-effect mismatches: none; unsettled-report mismatches: none
+  w3d_blur_commit                         0.64s {'city': (True, True, True), 'email': (True, True, True), 'name': (True, True, True)}
+  w3d_blur_commit?mode=revert             0.44s {'email': (True, True, None), 'name': (True, False, None)}
+  w3d_readonly_combobox                   0.22s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=dead         3.14s {'country': (False, False, None)}
+  w3d_styled_radio                        0.12s {'sector': (True, True, True)}
+  w3d_blur_commit?mode=delay              0.48s {'city': (True, True, True), 'name': (True, True, True)}
+  w3d_blur_commit?mode=churn              4.67s {'city': (True, True, True), 'email': (True, True, True), 'name': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap      0.18s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap_nav   0.2s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap_dead  1.64s {'country': (False, False, None)}
+## python tools/evaluate_spa.py --policy --out-dir <F>/spa_after
+ "mode": "policy",
+ "ground_truth_sha256": "db4dd0db0e6f494431e6fbceab474842ff9b9a337d1f35611cc3fd5df98855ba"
+}
+fixtures                                   26
+crashed                                    0
+discovery_recall                           [82, 82]
+controls_found_only_after_navigation       [30, 30]
+conditional_controls_found                 [1, 1]
+fill_success                               [79, 115]
+readback_verified                          [76, 115]
+app_committed                              [76, 115]
+silent_divergence                          3
+values_lost                                3
+planted_resets                             [3, 3]
+unsupported                                [1, 1]
+review_items_entered                       0
+stage_on_time                              [82, 82]
+stage_early                                0
+stage_late                                 0
+stage_missing                              0
+stage_unexpected                           0
+submit_events                              0
+submit_true_probe_submissions              0
+submit_true_probe_submit_events            0
+submit_true_probe_walks_reported_filled    0
+submission_attempts                        0
+dialogs_accepted                           0
+safe_stop_correct                          [12, 12]
+## python tools/evaluate_baseline.py --out-dir <F>/dev_after
+submission: [('sub_ok', 'CONFIRMED', 'OK'), ('sub_required_missing', 'SKIPPED', 'OK'), ('sub_attestation_required', 'SKIPPED', 'OK'), ('sub_server_reject', 'UNCONFIRMED', 'OK'), ('sub_delayed_confirmation', 'CONFIRMED', 'OK'), ('sub_navigates_away', 'CONFIRMED', 'OK'), ('sub_optional_unresolved', 'CONFIRMED', 'OK')]
+wrote /home/claude/niyabraham/formfiller/benchmarks/spa/results/phase3d_final_verification/dev_after/baseline.json and failures.md
+## python tools/evaluate_baseline.py --bench-dir benchmarks/heldout --out-dir <F>/heldout_after
+submission: []
+wrote /home/claude/niyabraham/formfiller/benchmarks/spa/results/phase3d_final_verification/heldout_after/baseline.json and failures.md
+DONE

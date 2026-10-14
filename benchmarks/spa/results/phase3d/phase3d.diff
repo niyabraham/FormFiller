@@ -1,0 +1,474 @@
+diff --git a/benchmarks/spa/fixtures/w3d_blur_commit.html b/benchmarks/spa/fixtures/w3d_blur_commit.html
+new file mode 100644
+index 0000000..3ae6b51
+--- /dev/null
++++ b/benchmarks/spa/fixtures/w3d_blur_commit.html
+@@ -0,0 +1,29 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><title>w3d_blur_commit</title>
++<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
++<body><h1>RFI supplier questionnaire</h1><div id="app">
++
++<div class="q"><label for="name">Legal company name</label><input id="name" type="text"></div>
++<div class="q"><label for="email">Contact email</label><input id="email" type="email"></div>
++<div id="slot"></div>
++<script>
++// Mimics SurveyJS textUpdateMode "onBlur": typing (input events) changes only the DOM; the app's state is written on blur.
++// ?mode=revert : the app rejects the committed value on blur and clears the field (a framework that normalises/resets).
++const mode = new URLSearchParams(location.search).get('mode');
++window.__state = {}; window.__commits = 0;
++function commit(key, el) {
++  if (mode === 'revert' && key === 'name') { el.value = ''; return; }
++  window.__state[key] = el.value; window.__commits++;
++  if (key === 'name') render();
++}
++function render() {
++  const slot = document.getElementById('slot');
++  const has = !!window.__state.name, cur = document.getElementById('city');
++  if (has && !cur) {  // visibleIf "{name} notempty": the question does not exist in the DOM until the answer is committed
++    slot.innerHTML = '<div class="q"><label for="city">Headquarters city</label><input id="city" type="text"></div>';
++    document.getElementById('city').addEventListener('blur', e => commit('city', e.target));
++  } else if (!has && cur) slot.innerHTML = '';
++}
++for (const k of ['name', 'email']) document.getElementById(k).addEventListener('blur', e => commit(k, e.target));
++</script>
++</div></body></html>
+diff --git a/benchmarks/spa/fixtures/w3d_readonly_combobox.html b/benchmarks/spa/fixtures/w3d_readonly_combobox.html
+new file mode 100644
+index 0000000..7a8d75e
+--- /dev/null
++++ b/benchmarks/spa/fixtures/w3d_readonly_combobox.html
+@@ -0,0 +1,27 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><title>w3d_readonly_combobox</title>
++<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
++<body><h1>RFI supplier questionnaire</h1><div id="app">
++
++<div class="q"><label id="cl">Headquarters country</label>
++  <div style="position:relative;display:inline-block">
++    <input id="country" role="combobox" readonly aria-controls="country_list" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="cl" placeholder="Select..." style="width:14rem">
++    <div id="cover" style="position:absolute;inset:0;cursor:pointer"></div>
++  </div></div>
++<script>
++window.__state = {}; const DEAD = new URLSearchParams(location.search).get('mode') === 'dead';
++const inp = document.getElementById('country'), OPTS = ['Germany', 'United Kingdom', 'United States'];
++function close() { const l = document.getElementById('country_list'); if (l) l.remove(); inp.setAttribute('aria-expanded', 'false'); }
++function open() {
++  if (document.getElementById('country_list')) return close();
++  const ul = document.createElement('ul'); ul.id = 'country_list'; ul.setAttribute('role', 'listbox'); ul.style.cssText = 'border:1px solid #888;list-style:none;padding:0;width:14rem';
++  for (const o of OPTS) { const li = document.createElement('li'); li.setAttribute('role', 'option'); li.textContent = o; li.style.padding = '.3rem';
++    li.addEventListener('click', () => { window.__state.country = o; inp.value = o; close(); }); ul.append(li); }
++  document.body.append(ul); inp.setAttribute('aria-expanded', 'true');
++}
++if (!DEAD) {  // ?mode=dead : a readonly combobox whose list can never be opened (no handlers): an unsupported widget
++  document.getElementById('cover').addEventListener('click', open);
++  inp.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'Enter') { e.preventDefault(); open(); } });
++}
++</script>
++</div></body></html>
+diff --git a/benchmarks/spa/fixtures/w3d_styled_radio.html b/benchmarks/spa/fixtures/w3d_styled_radio.html
+new file mode 100644
+index 0000000..f511471
+--- /dev/null
++++ b/benchmarks/spa/fixtures/w3d_styled_radio.html
+@@ -0,0 +1,19 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><title>w3d_styled_radio</title>
++<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
++<body><h1>RFI supplier questionnaire</h1><div id="app">
++
++<style>.opt{position:relative;display:flex;align-items:center;gap:.4rem;padding:.2rem 0}
++.opt input{position:absolute;width:1px;height:1px;margin:0;left:2px;top:50%;opacity:0}
++.opt .dec{position:relative;z-index:2;display:inline-block;width:1rem;height:1rem;border:2px solid #555;border-radius:50%}
++.opt input:checked + label .dec{background:#06c}</style>
++<div class="q" role="radiogroup" aria-labelledby="sl"><div id="sl">Industry sector</div>
++  <div class="opt"><input type="radio" name="sector" id="r1" value="Manufacturing"><label for="r1"><span class="dec"></span> Manufacturing</label></div>
++  <div class="opt"><input type="radio" name="sector" id="r2" value="Retail"><label for="r2"><span class="dec"></span> Retail</label></div>
++  <div class="opt"><input type="radio" name="sector" id="r3" value="Software"><label for="r3"><span class="dec"></span> Software</label></div>
++</div>
++<script>
++window.__state = {};
++document.querySelectorAll('input[name=sector]').forEach(r => r.addEventListener('change', () => { window.__state.sector = r.value; }));
++</script>
++</div></body></html>
+diff --git a/benchmarks/spa/ground_truth_3d.json b/benchmarks/spa/ground_truth_3d.json
+new file mode 100644
+index 0000000..3a7c8d7
+--- /dev/null
++++ b/benchmarks/spa/ground_truth_3d.json
+@@ -0,0 +1,34 @@
++{
++  "w3d_blur_commit": {
++    "desc": "text inputs commit app state on blur only; the City question exists only after Legal company name is committed",
++    "expected": {
++      "name": "Acme Robotics Ltd",
++      "email": "info@acme-robotics.example",
++      "city": "Leeds"
++    },
++    "conditional": [
++      "city"
++    ]
++  },
++  "w3d_blur_commit?mode=revert": {
++    "desc": "the app clears the field on blur: DOM and state both end empty; verification must NOT report success",
++    "expected": {},
++    "conditional": []
++  },
++  "w3d_readonly_combobox": {
++    "desc": "readonly ARIA combobox, cover element takes the pointer, portal listbox",
++    "expected": {
++      "country": "United Kingdom"
++    }
++  },
++  "w3d_readonly_combobox?mode=dead": {
++    "desc": "readonly combobox that never opens: must stop quickly with a clear reason",
++    "expected": {}
++  },
++  "w3d_styled_radio": {
++    "desc": "1x1 native radios under an overlaying decorator; selectable through the label",
++    "expected": {
++      "sector": "Manufacturing"
++    }
++  }
++}
+diff --git a/formfill/web/execute.py b/formfill/web/execute.py
+index 3c3881f..fa7fa19 100644
+--- a/formfill/web/execute.py
++++ b/formfill/web/execute.py
+@@ -10,6 +10,7 @@ same thing as a successful fill (the lesson of the PDF PoC's verifier).
+ 
+ from __future__ import annotations
+ 
++import contextlib
+ from dataclasses import dataclass
+ from typing import Any
+ 
+@@ -54,6 +55,7 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
+     kind = control.kind
+     if kind in _TEXTLIKE:
+         loc.fill(str(answer), timeout=timeout_ms)
++        _commit(page, control, loc, timeout_ms)
+     elif kind == "combobox":
+         _fill_combobox(page, control, loc, answer, timeout_ms)
+     elif kind == "select":
+@@ -63,7 +65,7 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
+     elif kind == "radio":
+         for member in loc.all():
+             if member.get_attribute("value") == answer:
+-                member.check(timeout=timeout_ms)
++                _select_radio(page, control, member, timeout_ms)
+                 return
+         raise ValueError(f"no radio option with value {answer!r}")
+     elif kind == "checkbox":
+@@ -75,22 +77,95 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
+         raise ValueError(f"unsupported control kind {kind!r}")
+ 
+ 
++_QUIET_JS = """
++quiet => new Promise(resolve => {
++  let last = performance.now(); const t0 = last;
++  const mo = new MutationObserver(() => { last = performance.now(); });
++  mo.observe(document, {subtree: true, childList: true, attributes: true, characterData: true});
++  const tick = () => { const now = performance.now();
++    if (now - last >= quiet || now - t0 >= 1500) { mo.disconnect(); resolve(); } else setTimeout(tick, 20); };
++  tick();
++})
++"""
++
++
++def _commit(page: Page, control: Control, loc, timeout_ms: int) -> None:
++    """Leave the field the way a person does, so frameworks that commit on blur/change record the answer, then let
++    the DOM go quiet (conditional questions render after the commit). Blur is a real focus change, not a synthetic
++    event. The DOM value afterwards is evidence of what the page holds, NOT proof the application recorded it."""
++    loc.blur(timeout=timeout_ms)
++    with contextlib.suppress(Exception):  # a frame that navigated away: nothing left to settle
++        page.frames[control.frame_index].evaluate(_QUIET_JS, 120)
++
++
++_RADIO_HIT_JS = """
++e => { const r = e.getBoundingClientRect(); if (!r.width && !r.height) return false;
++  const x = r.left + r.width / 2, y = r.top + r.height / 2;
++  const t = e.getRootNode().elementFromPoint(x, y); return t === e || e.contains(t); }
++"""
++
++
++def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None:
++    """Select one radio. A native input that is hit-testable is checked as before. A styled radio (tiny/hidden input
++    under a decorator that takes the pointer) is selected through its accessible label, the visible target a person
++    clicks. The result is verified by the checked state; nothing is set through JavaScript."""
++    if member.evaluate(_RADIO_HIT_JS):
++        member.check(timeout=timeout_ms)
++        return
++    label = member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element()
++    if label is None:
++        raise ValueError("unsupported styled radio: the native input is covered and it has no label to click")
++    label.click(timeout=timeout_ms)
++    if not member.is_checked():
++        raise ValueError("styled radio: clicking its label did not select it (selection not confirmed)")
++
++
++_OPEN_TIMEOUT_MS = 1500
++
++
++def _open_readonly_combobox(page: Page, control: Control, loc, frame, timeout_ms: int):
++    """A readonly combobox cannot be typed into. Open it the way a person does: click where it is drawn (a wrapper
++    usually sits over the input, so click the point rather than the element), then, if no list appeared, focus it and
++    press ArrowDown. Returns the visible listbox; raises a clear 'unsupported' error if neither opens one."""
++    wait = min(timeout_ms, _OPEN_TIMEOUT_MS)
++    listbox = frame.locator("[role=listbox]:visible").first
++    box = loc.bounding_box()
++    if box and box["width"] and box["height"]:
++        page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
++        try:
++            listbox.wait_for(state="visible", timeout=wait)
++            return listbox
++        except PlaywrightTimeout:
++            pass
++    loc.focus(timeout=timeout_ms)
++    page.keyboard.press("ArrowDown")
++    try:
++        listbox.wait_for(state="visible", timeout=wait)
++        return listbox
++    except PlaywrightTimeout:
++        raise ValueError("unsupported readonly combobox: it cannot be typed into and neither a click nor ArrowDown opened its option list") from None
++
++
+ def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: int) -> None:
+-    """ARIA combobox: open it (type into it, if it is an input), pick the option whose text equals the answer,
++    """ARIA combobox: open it (type into it, if it is an editable input), pick the option whose text equals the answer,
+     and require the popup to close. Typing alone is not an answer: the app commits on selection."""
+     frame = page.frames[control.frame_index]
+     is_input = loc.evaluate("e => e.tagName === 'INPUT'")
+-    if is_input:
++    readonly = bool(loc.evaluate("e => e.readOnly === true || e.getAttribute('aria-readonly') === 'true'")) if is_input else False
++    if readonly:
++        listbox = _open_readonly_combobox(page, control, loc, frame, timeout_ms)
++    elif is_input:
+         loc.fill(str(answer), timeout=timeout_ms)
+     else:
+         loc.click(timeout=timeout_ms)
+-    listbox = frame.locator("[role=listbox]:visible").first
+-    try:
+-        listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
+-    except PlaywrightTimeout:
+-        if is_input:
+-            return  # free-text combobox with no popup: the typed text stays, read-back decides
+-        raise ValueError("combobox opened no listbox") from None
++    if not readonly:
++        listbox = frame.locator("[role=listbox]:visible").first
++        try:
++            listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
++        except PlaywrightTimeout:
++            if is_input:
++                return  # free-text combobox with no popup: the typed text stays, read-back decides
++            raise ValueError("combobox opened no listbox") from None
+     want = str(answer).strip().casefold()
+     options = listbox.locator("[role=option]")
+     for i in range(options.count()):
+@@ -102,6 +177,8 @@ def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: i
+         raise ValueError(f"no option {answer!r} in the combobox list")
+     if loc.get_attribute("aria-expanded") == "true":
+         raise ValueError("combobox list still open after selecting: selection not confirmed")
++    if readonly and (loc.input_value() or "").strip().casefold() != want:
++        raise ValueError(f"readonly combobox shows {loc.input_value()!r} after selecting {answer!r}: selection not confirmed")
+ 
+ 
+ def read_back(page: Page, control: Control) -> Observed:
+diff --git a/tests/web/test_widgets_3d.py b/tests/web/test_widgets_3d.py
+new file mode 100644
+index 0000000..efd844e
+--- /dev/null
++++ b/tests/web/test_widgets_3d.py
+@@ -0,0 +1,89 @@
++"""Phase 3D: widget commitment and verification against SurveyJS-compatible local fixtures (benchmarks/spa/fixtures/w3d_*).
++
++Three separate things are asserted and must not be conflated:
++  DOM read-back   what the page's own elements hold afterwards (what the pipeline can observe in any app)
++  app state       what the application recorded (window.__state; only measurable because these fixtures expose it)
++  discovery       whether a conditional question that depends on a commit appeared and was answered
++Generic local fixtures say nothing about the reliability of any real portal."""
++
++import json
++import time
++from pathlib import Path
++
++import pytest
++
++from formfill.web.pipeline import run_form
++from formfill.web.steps import DiscoveryPolicy
++
++pytestmark = pytest.mark.browser
++
++BENCH = Path(__file__).resolve().parents[2] / "benchmarks" / "spa"
++SOURCE = json.loads((BENCH / "source.json").read_text())
++
++import sys
++
++sys.path.insert(0, str(BENCH.parents[1]))
++from benchmarks.spa.server import serve
++
++
++@pytest.fixture(scope="module")
++def base():
++    with serve() as url:
++        yield url
++
++
++@pytest.fixture
++def run(page, base):
++    def _run(fid, policy=False, **kw):
++        page.goto(f"{base}/{fid}")
++        res = run_form(page, SOURCE, policy=DiscoveryPolicy() if policy else None, **kw)
++        return res, page.evaluate("() => window.__state || {}"), page
++
++    return _run
++
++
++def by_label(res, text):
++    return next(i for i in res.items if text.lower() in i.plan.question.lower())
++
++
++@pytest.mark.parametrize("policy", [False, True])
++def test_blur_commit_reaches_app_state_and_reveals_conditional(run, policy):
++    res, state, page = run("w3d_blur_commit.html", policy=policy)
++    assert state == {"name": "Acme Robotics Ltd", "email": "info@acme-robotics.example", "city": "Leeds"}  # app state
++    assert all(by_label(res, k).verified for k in ("company name", "email", "city"))  # DOM read-back
++    assert page.input_value("#city") == "Leeds"  # conditional field discovered and filled
++
++
++def test_blur_revert_is_not_reported_as_success(run):
++    res, state, _ = run("w3d_blur_commit.html?mode=revert")
++    item = by_label(res, "company name")
++    assert not item.verified and "name" not in state
++
++
++def test_readonly_combobox_option_is_picked_and_committed(run):
++    res, state, page = run("w3d_readonly_combobox.html")
++    item = by_label(res, "country")
++    assert item.filled and item.verified
++    assert state["country"] == "United Kingdom" and page.input_value("#country") == "United Kingdom"
++
++
++def test_unopenable_readonly_combobox_stops_fast_with_clear_reason(run):
++    t0 = time.monotonic()
++    res, state, _ = run("w3d_readonly_combobox.html?mode=dead", timeout_ms=5000)
++    item = by_label(res, "country")
++    assert not item.filled and "readonly" in item.detail.lower() and "unsupported" in item.detail.lower()
++    assert time.monotonic() - t0 < 4.5 and "country" not in state
++
++
++def test_styled_radio_selected_through_label_not_forced(run):
++    res, state, page = run("w3d_styled_radio.html", timeout_ms=3000)
++    item = by_label(res, "sector")
++    assert item.filled and item.verified
++    assert state["sector"] == "Manufacturing" and page.is_checked("#r1") and not page.is_checked("#r2")
++
++
++def test_ordinary_and_controlled_inputs_unchanged(page, base):
++    for fid in ("controlled", "cond_sync", "combobox"):
++        page.goto(f"{base}/{fid}.html")
++        res = run_form(page, SOURCE)
++        assert any(i.verified for i in res.items), fid
+diff --git a/tools/evaluate_widgets3d.py b/tools/evaluate_widgets3d.py
+new file mode 100644
+index 0000000..d313079
+--- /dev/null
++++ b/tools/evaluate_widgets3d.py
+@@ -0,0 +1,97 @@
++"""Phase 3D widget evaluation on the local SurveyJS-compatible fixtures (benchmarks/spa/fixtures/w3d_*).
++
++    python tools/evaluate_widgets3d.py --out-dir benchmarks/spa/results/phase3d/after
++
++Four things are reported separately, per field, because they are different claims:
++  fill_ok       the pipeline's fill step reported no error
++  dom_readback  the pipeline's independent read of the page's own element matched the planned answer
++  app_state     the application's own record (window.__state, exposed by the fixture) holds the expected value.
++                Only measurable because the fixtures publish it; a real portal gives no such view.
++  discovered    a conditional question (one that exists only after an earlier answer is committed) was found and filled
++Generic local fixtures; this says nothing about the reliability of any real portal.
++Run against another checkout with FORMFILL_PIPELINE_ROOT=<path> (used for the 'before' run on a clean worktree).
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import subprocess
++import sys
++import time
++from pathlib import Path
++
++ROOT = Path(os.environ.get("FORMFILL_PIPELINE_ROOT", Path(__file__).resolve().parent.parent))
++sys.path.insert(0, str(ROOT))
++sys.path.append(str(Path(__file__).resolve().parent.parent))
++
++from playwright.sync_api import sync_playwright
++
++from benchmarks.spa.server import serve
++from formfill.web.pipeline import run_form
++
++BENCH = Path(__file__).resolve().parent.parent / "benchmarks" / "spa"
++LABEL = {"name": "company name", "email": "email", "city": "city", "country": "country", "sector": "sector"}
++
++
++def _git(*a):
++    return subprocess.run(["git", "-C", str(ROOT), *a], capture_output=True, text=True, check=False).stdout.strip()
++
++
++def sha(p: Path) -> str:
++    return hashlib.sha256(p.read_bytes()).hexdigest()
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--out-dir", type=Path, required=True)
++    args = ap.parse_args()
++    gt = json.loads((BENCH / "ground_truth_3d.json").read_text())
++    source = json.loads((BENCH / "source.json").read_text())
++    rows = []
++    with serve() as base, sync_playwright() as p:
++        b = p.chromium.launch(executable_path=os.environ.get("FORMFILL_CHROMIUM") or None)
++        for fid, spec in gt.items():
++            ctx = b.new_context()
++            page = ctx.new_page()
++            page.set_default_timeout(4000)
++            page.goto(f"{base}/{fid.replace('?', '.html?') if '?' in fid else fid + '.html'}")
++            t0 = time.monotonic()
++            res = run_form(page, source, timeout_ms=5000)
++            secs = round(time.monotonic() - t0, 2)
++            state = page.evaluate("() => window.__state || {}")
++            fields = {}
++            keys = set(spec["expected"]) | {k for k, l in LABEL.items() if any(l in i.plan.question.lower() for i in res.items)}
++            for key in sorted(keys):
++                item = next((i for i in res.items if LABEL[key] in i.plan.question.lower()), None)
++                exp = spec["expected"].get(key)
++                fields[key] = {"expected": exp, "present": item is not None,
++                               "fill_ok": bool(item and item.filled), "dom_readback": bool(item and item.verified),
++                               "app_state": (state.get(key) == exp) if exp is not None else None,
++                               "conditional": key in spec.get("conditional", []),
++                               "detail": (item.detail if item else "")[:160]}
++            rows.append({"fixture": fid, "desc": spec["desc"], "seconds": secs, "app_state": state, "fields": fields})
++            ctx.close()
++        b.close()
++    import formfill
++    diff = _git("diff", "HEAD", "--", "formfill") + "\n".join(
++        f"{u}:{sha(ROOT / u)}" for u in _git("ls-files", "--others", "--exclude-standard", "--", "formfill").splitlines())
++    prov = {"pipeline_module": str(Path(formfill.__file__).parent), "evaluated_commit": _git("rev-parse", "HEAD"),
++            "pipeline_diff_sha256": hashlib.sha256(diff.encode()).hexdigest() if diff.strip() else None,
++            "ground_truth_3d_sha256": sha(BENCH / "ground_truth_3d.json"), "tool_sha256": sha(Path(__file__)),
++            "fixtures_sha256": {f.name: sha(f) for f in sorted((BENCH / "fixtures").glob("w3d_*.html"))}}
++    args.out_dir.mkdir(parents=True, exist_ok=True)
++    (args.out_dir / "widget_results.json").write_text(json.dumps({"provenance": prov, "results": rows}, indent=2) + "\n")
++    tot = {m: sum(1 for r in rows for f in r["fields"].values() if f["expected"] is not None and f[m]) for m in ("fill_ok", "dom_readback", "app_state")}
++    n = sum(1 for r in rows for f in r["fields"].values() if f["expected"] is not None)
++    cond = [f for r in rows for f in r["fields"].values() if f["conditional"]]
++    print(f"{n} expected fields: fill_ok {tot['fill_ok']}, dom_readback {tot['dom_readback']}, app_state {tot['app_state']}; "
++          f"conditional discovered+filled {sum(f['fill_ok'] for f in cond)}/{len(cond)}")
++    for r in rows:
++        print(f"  {r['fixture']:38} {r['seconds']:5}s", {k: (f['fill_ok'], f['dom_readback'], f['app_state']) for k, f in r['fields'].items()})
++
++
++if __name__ == "__main__":
++    main()

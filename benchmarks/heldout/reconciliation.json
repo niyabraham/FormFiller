@@ -1,0 +1,16 @@
+{
+  "policy": "Applied BEFORE the benchmark was frozen and before any pipeline was run on it. The author's key was compared with an independent blind labelling (benchmarks/heldout/audit/). Where the two disagreed on ANSWER vs REVIEW the conservative label (REVIEW) was adopted. Disagreements where both said ANSWER (same value) were left unchanged.",
+  "audit_agreement": "266 of 272 questions agreed exactly (decision, value and path); 6 differed (see audit/disagreements.json).",
+  "changes": [
+    {"case": "h03_bank_kyc", "control": "k_adv", "original": {"expect": "ANSWER", "answer": "no", "source": "compliance.adverse_media_screening"},
+     "reconciled": {"expect": "REVIEW"}, "reason": "Blind labeller held that a negated question with a counterparty scope is not clearly answered by the screening flag."},
+    {"case": "h05_university_grant", "control": "csopt", "original": {"expect": "ANSWER", "answer": "yes", "source": "cost_share.required"},
+     "reconciled": {"expect": "REVIEW"}, "reason": "Blind labeller held that cost_share.required=false does not clearly mean 'optional'."}
+  ],
+  "disagreements_not_changed": [
+    {"case": "h02_hospital_supplier", "control": "parent", "why": "author REVIEW (value is the literal placeholder 'None'); auditor ANSWER; REVIEW already the conservative label"},
+    {"case": "h03_bank_kyc", "control": "k_bo_count", "why": "author REVIEW (needs counting a list); auditor ANSWER 2; REVIEW already conservative"},
+    {"case": "h10_gov_procurement", "control": "g4", "why": "author REVIEW (non-ISO date needs conversion); auditor ANSWER; REVIEW already conservative"},
+    {"case": "h12_api_platform", "control": "s13", "why": "both ANSWER with the same value; only the cited path differs (leaf vs parent); author's path kept"}
+  ]
+}

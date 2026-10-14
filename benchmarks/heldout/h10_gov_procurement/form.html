@@ -1,0 +1,43 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h10_gov_procurement</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h10_gov_procurement</h1><form>
+<h2>Supplier</h2>
+<div class="row"><label for="q1">Supplier name</label><input type="text" name="g1" id="q1"></div>
+<div class="row"><label for="q2">Companies House registration number</label><input type="text" name="g2" pattern="\d{8}" id="q2"></div>
+<div class="row"><label for="q3">VAT registration number (format GB123456789)</label><input type="text" name="g3" pattern="GB\d{9}" id="q3"></div>
+<div class="row"><label for="q4">Date of incorporation</label><input type="date" name="g4" id="q4"></div>
+<div class="row"><label for="q5">Turnover, financial year 2025 (GBP)</label><input type="number" name="g5" id="q5"></div>
+<div class="row"><label for="q6">Turnover, financial year 2022 (GBP)</label><input type="number" name="g6" id="q6"></div>
+<div class="row"><label for="q7">Number of employees</label><input type="number" name="g7" id="q7"></div>
+<div class="row"><fieldset><legend>Is the supplier an SME?</legend><label class="opt"><input type="radio" name="g8" value="yes"> Yes</label><label class="opt"><input type="radio" name="g8" value="no"> No</label><label class="opt"><input type="radio" name="g8" value="na"> N/A</label></fieldset></div>
+<div class="row"><input type="text" name="g9" aria-label="Immediate parent company name"></div>
+<div class="row"><label for="q10">Immediate parent company registration number</label><input type="text" name="g10" id="q10"></div>
+<h2>Insurance</h2>
+<div class="row"><label for="q11">Employers&#x27; liability insurance limit (GBP)</label><input type="number" name="g11" id="q11"></div>
+<div class="row"><label for="q12">Public liability insurance expiry date</label><input type="date" name="g12" id="q12"></div>
+<div class="row"><fieldset><legend>Has the supplier published a Modern Slavery statement?</legend><label class="opt"><input type="radio" name="g13" value="yes"> Yes</label><label class="opt"><input type="radio" name="g13" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q14">Cyber Essentials level held</label><select name="g14" id="q14"><option value="">Select...</option><option value="basic">Cyber Essentials</option><option value="plus">Cyber Essentials Plus</option></select></div>
+<div class="row"><label for="q15">Cyber Essentials certificate number (max 12 characters)</label><input type="text" name="g15" maxlength="12" id="q15"></div>
+<div class="row"><fieldset><legend>Are there any conflicts of interest in relation to this tender?</legend><label class="opt"><input type="radio" name="g16" value="yes"> Yes</label><label class="opt"><input type="radio" name="g16" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is subcontracting planned?</legend><label class="opt"><input type="radio" name="g17" value="yes"> Yes</label><label class="opt"><input type="radio" name="g17" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q18">Maximum percentage of contract value to be subcontracted</label><input type="number" name="g18" disabled data-enable-when="g17" data-enable-eq="yes" id="q18"></div>
+<div class="cond" data-when="g17" data-eq="no" hidden><div class="row"><label for="q19">Reason subcontracting is not planned</label><textarea name="g18b" id="q19" rows=3></textarea></div></div>
+<div class="row"><label for="q20">Bid contact telephone</label><input type="tel" name="g19" id="q20"></div>
+<div class="row"><label for="q21">Estimated total contract value you are bidding (GBP)</label><input type="number" name="g20" id="q21"></div>
+<div class="row"><label class="opt"><input type="checkbox" name="g21" value="yes"> Statement of non-collusion</label></div>
+</form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+function sync(){document.querySelectorAll('.cond').forEach(w=>{w.hidden=val(w.dataset.when)!==w.dataset.eq})}
+document.addEventListener('change',sync);document.addEventListener('input',sync);sync();
+
+function syncEnable(){document.querySelectorAll('[data-enable-when]').forEach(e=>{e.disabled=val(e.dataset.enableWhen)!==e.dataset.enableEq})}
+document.addEventListener('change',syncEnable);document.addEventListener('input',syncEnable);syncEnable();
+</script></body></html>

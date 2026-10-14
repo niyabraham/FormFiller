@@ -1,0 +1,92 @@
+{
+  "w3d_blur_commit": {
+    "desc": "text inputs commit app state on blur only; the City question exists only after Legal company name is committed",
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "email": "info@acme-robotics.example",
+      "city": "Leeds"
+    },
+    "conditional": [
+      "city"
+    ]
+  },
+  "w3d_blur_commit?mode=revert": {
+    "desc": "the app clears the field on blur: DOM and state both end empty; verification must NOT report success",
+    "expected": {},
+    "conditional": []
+  },
+  "w3d_readonly_combobox": {
+    "desc": "readonly ARIA combobox, cover element takes the pointer, portal listbox",
+    "expected": {
+      "country": "United Kingdom"
+    },
+    "side_effects_expected": {
+      "clicks": 0,
+      "submits": 0
+    }
+  },
+  "w3d_readonly_combobox?mode=dead": {
+    "desc": "readonly combobox that never opens: must stop quickly with a clear reason",
+    "expected": {},
+    "side_effects_expected": {
+      "clicks": 0,
+      "submits": 0
+    }
+  },
+  "w3d_styled_radio": {
+    "desc": "1x1 native radios under an overlaying decorator; selectable through the label",
+    "expected": {
+      "sector": "Manufacturing"
+    }
+  },
+  "w3d_blur_commit?mode=delay": {
+    "desc": "no email field; dependent city question renders 60 ms after the name commit (inside the 150 ms quiet window)",
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "city": "Leeds"
+    },
+    "conditional": [
+      "city"
+    ]
+  },
+  "w3d_blur_commit?mode=churn": {
+    "desc": "page re-renders every 30 ms forever: never settles; fill is reported with an UNSETTLED warning, status NEEDS_REVIEW (evaluator runs default 1500 ms cap)",
+    "expected": {
+      "name": "Acme Robotics Ltd",
+      "email": "info@acme-robotics.example",
+      "city": "Leeds"
+    },
+    "conditional": [
+      "city"
+    ],
+    "expect_unsettled": true
+  },
+  "w3d_readonly_combobox?mode=overlap": {
+    "desc": "a Submit button is drawn over the combobox centre: click refused, keyboard opens the list; the button must receive no click",
+    "expected": {
+      "country": "United Kingdom"
+    },
+    "side_effects_expected": {
+      "clicks": 0,
+      "submits": 0
+    }
+  },
+  "w3d_readonly_combobox?mode=overlap_nav": {
+    "desc": "a 'Continue' button is drawn over the combobox centre: click refused, keyboard opens the list; no click on the button",
+    "expected": {
+      "country": "United Kingdom"
+    },
+    "side_effects_expected": {
+      "clicks": 0,
+      "submits": 0
+    }
+  },
+  "w3d_readonly_combobox?mode=overlap_dead": {
+    "desc": "Submit button over the centre AND no keyboard support: safe unsupported stop, no click",
+    "expected": {},
+    "side_effects_expected": {
+      "clicks": 0,
+      "submits": 0
+    }
+  }
+}

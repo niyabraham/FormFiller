@@ -14,11 +14,15 @@ import re
 # Words that carry no meaning for matching (dropped on both sides).
 STOPWORDS = {
     "the", "a", "an", "of", "your", "you", "do", "does", "is", "are", "what", "how",
-    "many", "much", "please", "number", "total", "provide", "enter", "if", "any",
+    "many", "much", "please", "number", "provide", "enter", "if", "any",
     "for", "in", "to", "and", "or", "with", "on", "by", "our", "we", "us", "have",
-    "has", "list", "give", "state", "specify", "select", "choose", "which", "who",
-    "that", "this", "be", "at", "as", "from", "it", "its", "required", "optional",
+    "has", "list", "give", "specify", "select", "choose", "which", "who",
+    "that", "this", "be", "at", "as", "from", "it", "its", "required",
 }
+# Phase 3A: "total", "state" and "optional" are no longer stopwords. "total" and "state" are real
+# key names (customers.total, address.state); "optional" is polarity (see NEGATORS) -- dropping it
+# made "Is MFA optional?" identical to "Is MFA required?". "state" as an imperative verb ("Please
+# state your name") is still dropped, by context, in tokenize().
 
 # Scope words: if the question says "full-time employees", a key that does not
 # carry that scope (e.g. plain `employees`) answers a *different* question
@@ -30,7 +34,30 @@ QUALIFIERS = {
     "fulltime", "parttime", "permanent", "temporary", "annual", "legal", "registered",
     "billing", "mailing", "primary", "secondary", "previous", "former", "current",
     "headquarter", "trading",
+    # Phase 3A: words that narrow *which entity or population* is meant. A key that does not carry
+    # them answers a different question (the total, the company itself), so they must be explained.
+    "parent", "subsidiary", "affiliate", "holding", "ultimate", "sister",
+    "production", "domestic", "foreign", "international", "global", "regional",
 }
+
+# Polarity markers. A question and the key it is matched to must carry the *same* markers: "Is MFA
+# optional?" must not read `mfa_required`, "Is SSO disabled?" must not read `sso_enabled`. Uncertain
+# cases are sent to REVIEW rather than inverted. ("no" is deliberately absent: "Registration No.")
+NEGATORS = {"not", "non", "optional", "disabled", "disable", "without", "unsupported", "never", "inapplicable",
+            # Phase 3B-A: "Does the organisation lack a whistleblower policy?" read `whistleblower_policy: true`
+            # and answered "yes". Nothing is inverted: the marker only has to match on both sides, else REVIEW.
+            "lack", "lacking", "absence", "absent"}
+
+# A generic noun a key may leave implicit: `company.full_time` answers "full-time employees". Such a word is not
+# held against a key (see retrieve.assess_leaf); every other unexplained word is a modifier the key must carry.
+IMPLICIT_NOUNS = {"employee"}
+
+# "in total" widens a question: it is dropped unless the key carries "total" itself (customers.total).
+NEUTRAL = {"total"}
+# "your organization" / "company" is the form-filler referring to itself. It still scores (a key under
+# `company.` is better evidence), but a key that lacks it is not penalised for it. A genuinely different
+# entity is a QUALIFIERS word ("parent", "subsidiary"), which stays mandatory.
+SELF_REFERENCE = {"company"}
 
 # Phrase fixes applied before splitting.
 _PHRASES = [
@@ -38,7 +65,18 @@ _PHRASES = [
     (re.compile(r"\bfull[\s_-]?time\b"), "fulltime"),
     (re.compile(r"\bpart[\s_-]?time\b"), "parttime"),
     (re.compile(r"\bdate of birth\b"), "birth date"),
+    # spelled-out acronyms meet their short form on both sides (question text and JSON keys)
+    (re.compile(r"\bmulti[\s-]?factor(?:\s+authentication)?\b"), "mfa"),
+    (re.compile(r"\bsingle[\s-]?sign[\s-]?on\b"), "sso"),
+    (re.compile(r"\bdata protection officer\b"), "dpo"),
+    (re.compile(r"\bchief information security officer\b"), "ciso"),
+    (re.compile(r"\bpersonally identifiable information\b"), "pii"),
 ]
+
+# "State" the noun (address.state) vs "state" the imperative ("Please state your name").
+_STATE_VERB = re.compile(r"\bstate\b(?=\s+(?:the|your|our|how|whether|if|any|a|an|which|what|number|name|details?)\b)")
+_ACRONYM = re.compile(r"[A-Z][A-Z0-9]{1,6}")
+_NOT_ACRONYMS = {"optional", "required"}
 
 # canonical token <- surface tokens (applied after stemming). A value may
 # expand to several tokens.
@@ -51,12 +89,43 @@ SYNONYMS: dict[str, list[str]] = {
     "organization": ["company"], "organisation": ["company"], "org": ["company"],
     "firm": ["company"], "business": ["company"],
     "surname": ["last", "name"], "zip": ["postal"], "postcode": ["postal"],
+    "hq": ["headquarter"],
+    # the two inflections the Phase 2 benchmark demonstrated (supported/support, encrypted/encryption)
+    "supported": ["support"], "encrypted": ["encryption"], "encrypt": ["encryption"],
 }
+
+
+# --- period scope (Phase 3B-A) -------------------------------------------------------------------
+# "Gross fees, two financial years ago" must not read `gross_fees_last_financial_year`. A period is a
+# point in time ("-2y" = two years back, "0y" = this year, "2024"), taken from the raw text of the question
+# and of the key path. "last name" is not a period: "last" only counts next to a period noun.
+_NUMBER_WORDS = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
+                 "eight": 8, "nine": 9, "ten": 10}
+_ADJ = r"(?:(?:financial|fiscal|calendar|tax|trading|accounting)\s+)?"
+_UNIT = r"(year|quarter|month)s?"
+_RELATIVE = re.compile(rf"\b(last|previous|prior|preceding|current|this|next)\s+{_ADJ}{_UNIT}\b")
+_AGO = re.compile(rf"\b(\d{{1,2}}|{'|'.join(_NUMBER_WORDS)})\s+{_ADJ}{_UNIT}\s+ago\b")
+_YEAR = re.compile(r"\b(?:19|20)\d\d\b")
+_SIGN = {"last": "-1", "previous": "-1", "prior": "-1", "preceding": "-1", "current": "0", "this": "0", "next": "+1"}
+
+
+def period_markers(text: str) -> frozenset[str]:
+    """Points in time named by `text`: {"-1y"} last year, {"-2y"} two years ago, {"0y"} this year,
+    {"+1y"} next year, {"2024"} a calendar year. A window ("the last 5 years") is not a point: empty."""
+    t = text.lower().replace("_", " ")
+    out = {f"{_SIGN[m.group(1)]}{m.group(2)[0]}" for m in _RELATIVE.finditer(t)}
+    for m in _AGO.finditer(t):
+        n = int(m.group(1)) if m.group(1).isdigit() else _NUMBER_WORDS[m.group(1)]
+        out.add(f"-{n}{m.group(2)[0]}")
+    out |= set(_YEAR.findall(t))
+    return frozenset(out)
 
 
 def _stem(token: str) -> str:
     if len(token) > 4 and token.endswith("ies"):
         return token[:-3] + "y"
+    if len(token) > 4 and re.search(r"(?:ss|x|ch|sh)es$", token):
+        return token[:-2]  # processes -> process (was "processe"), branches -> branch; sizes/caches keep the plain rule
     if len(token) > 3 and token.endswith("s") and not token.endswith("ss"):
         return token[:-1]
     return token
@@ -67,12 +136,15 @@ def tokenize(text: str) -> list[str]:
     stem, expand synonyms. Order-preserving, duplicates removed. (List
     indices in JSON paths are skipped by the caller, not here.)"""
     text = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", text)  # camelCase -> camel Case
-    text = re.sub(r"\([^)]*\)", " ", text)  # parenthetical hints, e.g. "(DD/MM/YYYY)"
-    text = text.lower()
+    acronyms = [m.group(1).lower() for m in re.finditer(r"\(\s*([^)]*?)\s*\)", text)
+                if _ACRONYM.fullmatch(m.group(1)) and m.group(1).lower() not in _NOT_ACRONYMS]
+    text = re.sub(r"\([^)]*\)", " ", text)  # other parenthetical hints, e.g. "(DD/MM/YYYY)"
+    text = text.lower().replace("_", " ")  # snake_case: "_" is a word character, so \b would not fire
+    text = _STATE_VERB.sub(" ", text)
     for pattern, repl in _PHRASES:
         text = pattern.sub(repl, text)
     out: list[str] = []
-    for raw in re.split(r"[^a-z0-9]+", text):
+    for raw in re.split(r"[^a-z0-9]+", text) + acronyms:
         if not raw or raw in STOPWORDS:
             continue
         tok = _stem(raw)

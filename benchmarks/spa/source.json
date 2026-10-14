@@ -1,0 +1,16 @@
+{
+  "company": {
+    "legal_name": "Acme Robotics Ltd",
+    "website": "https://acme-robotics.example",
+    "industry_sector": "Manufacturing",
+    "year_founded": 2011
+  },
+  "contact": {
+    "email": "info@acme-robotics.example",
+    "phone": "+44 20 7946 0000"
+  },
+  "headquarters": {
+    "city": "Leeds",
+    "country": "United Kingdom"
+  }
+}

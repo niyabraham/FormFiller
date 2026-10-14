@@ -1,0 +1,45 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h08_logistics_carrier</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h08_logistics_carrier</h1><form>
+<h2>Carrier</h2>
+<div class="row"><label for="q1">USDOT Number</label><input type="text" name="dot" id="q1"></div>
+<div class="row"><label for="q2">MC / Docket number</label><input type="text" name="mc" id="q2"></div>
+<div class="row"><label for="q3">SCAC code (4 letters)</label><input type="text" name="scac" maxlength="4" id="q3"></div>
+<div class="row"><label for="q4">Year founded</label><input type="number" name="yf" id="q4"></div>
+<h2>Fleet</h2>
+<div class="row"><label for="q5">Number of power units (tractors)</label><input type="number" name="pu" id="q5"></div>
+<div class="row"><label for="q6">Total trailers</label><input type="number" name="tr" id="q6"></div>
+<div class="row"><label for="q7">Number of refrigerated trailers</label><input type="number" name="reefer" id="q7"></div>
+<div class="row"><label for="q8">Number of owner-operators</label><input type="number" name="oo" id="q8"></div>
+<div class="row"><label for="q9">Number of company drivers</label><input type="number" name="cd" id="q9"></div>
+<div class="row"><label for="q10">Total number of drivers</label><input type="number" name="dr" id="q10"></div>
+<div class="row"><label for="q11">Number of straight trucks</label><input type="number" name="st" id="q11"></div>
+<div class="row"><label for="q12">FMCSA safety rating</label><select name="rating" id="q12"><option value="">Select...</option><option value="S">Satisfactory</option><option value="C">Conditional</option><option value="U">Unsatisfactory</option><option value="N">Not rated</option></select></div>
+<h2>Insurance</h2>
+<div class="row"><label for="q13">Auto liability limit (USD)</label><input type="number" name="al" id="q13"></div>
+<div class="row"><label for="q14">Cargo insurance limit (USD)</label><input type="number" name="cargo" id="q14"></div>
+<div class="row"><label for="q15">Cargo insurance expiration date</label><input type="date" name="cexp" id="q15"></div>
+<h2>Operations</h2>
+<div class="row"><fieldset><legend>Are you authorized to haul hazardous materials?</legend><label class="opt"><input type="radio" name="haz" value="yes"> Yes</label><label class="opt"><input type="radio" name="haz" value="no"> No</label><label class="opt"><input type="radio" name="haz" value="na"> N/A</label></fieldset></div>
+<div class="cond" data-when="haz" data-eq="yes" hidden><div class="row"><label for="q17">HazMat endorsement number</label><input type="text" name="hazno" id="q17"></div></div>
+<div class="row"><fieldset><legend>Does your fleet use electronic logging devices (ELD)?</legend><label class="opt"><input type="radio" name="eld" value="yes"> Yes</label><label class="opt"><input type="radio" name="eld" value="no"> No</label></fieldset></div>
+<div class="cond" data-when="eld" data-eq="yes" hidden><div class="row"><label for="q19">ELD provider</label><input type="text" name="eldp" id="q19"></div></div>
+<div class="row"><label for="q20">Number of dock doors at the Omaha terminal</label><input type="number" name="omaha" id="q20"></div>
+<div class="row"><label for="q21">Number of dock doors at the Dallas terminal</label><input type="number" name="dallas" id="q21"></div>
+<div class="row"><fieldset><legend>Operating regions</legend><label class="opt"><input type="checkbox" name="regions" value="ne"> Northeast</label><label class="opt"><input type="checkbox" name="regions" value="mw"> Midwest</label><label class="opt"><input type="checkbox" name="regions" value="sw"> Southwest</label><label class="opt"><input type="checkbox" name="regions" value="se"> Southeast</label></fieldset></div>
+<div class="row"><label for="q23">Dispatch phone</label><input type="tel" name="dph" id="q23"></div>
+<div class="row"><fieldset><legend>Do you also hold freight broker authority?</legend><label class="opt"><input type="radio" name="broker" value="yes"> Yes</label><label class="opt"><input type="radio" name="broker" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q25">Attach W-9</label><input type="file" name="w9" id="q25"></div>
+<div class="row"><button type="submit">Submit</button></div><div id="msg"></div></form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+function sync(){document.querySelectorAll('.cond').forEach(w=>{w.hidden=val(w.dataset.when)!==w.dataset.eq})}
+document.addEventListener('change',sync);document.addEventListener('input',sync);sync();
+const form=document.forms[0],msg=document.getElementById('msg');form.addEventListener('submit',e=>{e.preventDefault();msg.textContent='Thank you, your response was received'});</script></body></html>

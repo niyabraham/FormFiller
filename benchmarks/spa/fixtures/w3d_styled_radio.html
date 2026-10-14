@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>w3d_styled_radio</title>
+<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
+<body><h1>RFI supplier questionnaire</h1><div id="app">
+
+<style>.opt{position:relative;display:flex;align-items:center;gap:.4rem;padding:.2rem 0}
+.opt input{position:absolute;width:1px;height:1px;margin:0;left:2px;top:50%;opacity:0}
+.opt .dec{position:relative;z-index:2;display:inline-block;width:1rem;height:1rem;border:2px solid #555;border-radius:50%}
+.opt input:checked + label .dec{background:#06c}</style>
+<div class="q" role="radiogroup" aria-labelledby="sl"><div id="sl">Industry sector</div>
+  <div class="opt"><input type="radio" name="sector" id="r1" value="Manufacturing"><label for="r1"><span class="dec"></span> Manufacturing</label></div>
+  <div class="opt"><input type="radio" name="sector" id="r2" value="Retail"><label for="r2"><span class="dec"></span> Retail</label></div>
+  <div class="opt"><input type="radio" name="sector" id="r3" value="Software"><label for="r3"><span class="dec"></span> Software</label></div>
+</div>
+<script>
+window.__state = {};
+document.querySelectorAll('input[name=sector]').forEach(r => r.addEventListener('change', () => { window.__state.sector = r.value; }));
+</script>
+</div></body></html>

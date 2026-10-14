@@ -55,6 +55,7 @@ class FormSchema:
     url: str
     title: str
     controls: list[Control]
+    notes: list[dict] = field(default_factory=list)  # why something could not be discovered (opaque widgets, ...)
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -68,6 +69,8 @@ class Question:
     expected_type: str  # string|number|date|email|url|phone|boolean|choice|multi_choice
     answer_mode: str  # single_value|narrative|boolean|single_choice|multi_value
     concept_tokens: list[str] = field(default_factory=list)
+    is_count: bool = False  # asks for the size of a population ("Number of ...", "How many ...", "headcount")
+    period: frozenset[str] = frozenset()  # points in time the question names ("-2y" = two years ago), see tokens.period_markers
     semantic_type: str | None = None  # reserved for a later classifier/LLM stage
 
 
@@ -76,6 +79,8 @@ class Candidate:
     path: str
     value: Any
     score: float
+    flags: list[str] = field(default_factory=list)  # why the score was capped (unexplained scope, polarity), for reviewers
+    evidence: list[str] = field(default_factory=list)  # context that set rivals aside (path / sibling-value evidence), for reviewers
 
 
 @dataclass
@@ -91,6 +96,7 @@ class AnswerPlanItem:
     confidence: float = 0.0
     reason: str | None = None  # why REVIEW
     alternatives: list[dict] = field(default_factory=list)  # other candidates, for the reviewer
+    evidence: list[str] = field(default_factory=list)  # for an ANSWER: the parent/sibling context that singled this candidate out
 
     def to_dict(self) -> dict:
         return asdict(self)

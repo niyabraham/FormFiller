@@ -12,10 +12,11 @@ Each discovered control is tagged with a `data-ff-id` attribute so the
 executor can find it again without brittle CSS paths. Re-discovery keeps
 existing ids (needed for conditional fields that appear later).
 
-Known limits (documented in docs/ARCHITECTURE_RESEARCH.md): closed shadow
-DOM, open shadow DOM is not traversed by this extractor, cross-origin
-iframes that Playwright cannot evaluate in are skipped, custom widgets
-without native inputs or ARIA roles are not seen.
+Known limits (documented in docs/ARCHITECTURE_RESEARCH.md and
+docs/PHASE3C_SPA_EVALUATION.md): closed shadow DOM is not readable (reported
+as an `opaque_custom_element` note), cross-origin iframes that Playwright
+cannot evaluate in are skipped, custom widgets without native inputs or ARIA
+roles are not seen. Open shadow roots and ARIA comboboxes are traversed.
 """
 
 from __future__ import annotations
@@ -32,11 +33,11 @@ _EXTRACT_JS = r"""
     try { return el.checkVisibility ? el.checkVisibility() : !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length); }
     catch (e) { return true; }
   };
-  const byIds = ids => (ids || '').split(/\s+/).filter(Boolean).map(i => document.getElementById(i)).filter(Boolean);
+  const byIds = (ids, el) => { const root = (el && el.getRootNode && el.getRootNode().getElementById) ? el.getRootNode() : document; return (ids || '').split(/\s+/).filter(Boolean).map(i => root.getElementById(i)).filter(Boolean); };
   const labelText = lab => { const c = lab.cloneNode(true); c.querySelectorAll('input,select,textarea,button').forEach(x => x.remove()); return txt(c); };
   const labelOf = el => {
     const lb = el.getAttribute('aria-labelledby');
-    if (lb) { const t = byIds(lb).map(txt).join(' ').trim(); if (t) return t; }
+    if (lb) { const t = byIds(lb, el).map(txt).join(' ').trim(); if (t) return t; }
     const al = el.getAttribute('aria-label'); if (al && al.trim()) return al.trim();
     if (el.labels && el.labels.length) { const t = Array.from(el.labels).map(labelText).join(' ').trim(); if (t) return t; }
     return '';
@@ -51,16 +52,22 @@ _EXTRACT_JS = r"""
   const sectionOf = el => {
     const fs = el.closest('fieldset'); const lg = fs && fs.querySelector('legend');
     if (lg && !el.matches('input[type=radio],input[type=checkbox]')) return txt(lg);
-    let cur = null;
-    for (const h of headings) { if (h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) cur = h; else break; }
+    let cur = null; const rn = el.getRootNode(); const anchor = rn && rn.host ? rn.host : el;  // a control inside a shadow root sits where its host sits
+    for (const h of headings) { if (h.compareDocumentPosition(anchor) & Node.DOCUMENT_POSITION_FOLLOWING) cur = h; else break; }
     return cur ? txt(cur) : '';
   };
   const formIndex = f => f ? Array.from(document.forms).indexOf(f) : -1;
 
-  let counter = 0;
-  document.querySelectorAll('[data-ff-id]').forEach(e => { const m = /c(\d+)$/.exec(e.dataset.ffId); if (m) counter = Math.max(counter, +m[1]); });
+  // ids must stay unique for the life of the page: a single-page app that unmounts one step and mounts the next
+  // would otherwise hand the same id to a different control.
+  const all = [];
+  const walk = root => { for (const e of root.children) { all.push(e); if (e.shadowRoot) walk(e.shadowRoot); walk(e); } };  // open shadow roots, in document order
+  walk(document);
+  let counter = window.__ffCounter || 0;
+  all.forEach(e => { const m = e.dataset && /c(\d+)$/.exec(e.dataset.ffId || ''); if (m) counter = Math.max(counter, +m[1]); });
 
-  const els = Array.from(document.querySelectorAll('input,select,textarea')).filter(e => !SKIP.has((e.type || '').toLowerCase()));
+  const isCombo = e => e.getAttribute('role') === 'combobox';
+  const els = all.filter(e => (e.matches('input,select,textarea') && !SKIP.has((e.type || '').toLowerCase())) || (isCombo(e) && !e.matches('select,textarea')));
   const seen = new Set(); const out = [];
   for (const el of els) {
     const type = (el.type || '').toLowerCase(); const tag = el.tagName.toLowerCase();
@@ -76,7 +83,9 @@ _EXTRACT_JS = r"""
     members.forEach(m => { m.dataset.ffId = id; });
 
     let kind, label, options = [], value = null;
-    if (tag === 'textarea') { kind = 'textarea'; label = labelOf(el); value = el.value; }
+    if (isCombo(el) && tag !== 'select') {  // ARIA combobox: options live in a popup, so the answer is picked, not typed
+      kind = 'combobox'; label = labelOf(el); value = tag === 'input' ? el.value : txt(el);
+    } else if (tag === 'textarea') { kind = 'textarea'; label = labelOf(el); value = el.value; }
     else if (tag === 'select') {
       kind = el.multiple ? 'multiselect' : 'select'; label = labelOf(el);
       options = Array.from(el.options).filter(o => !o.disabled && o.value !== '').map(o => ({ value: o.value, label: txt(o) }));
@@ -99,16 +108,28 @@ _EXTRACT_JS = r"""
     const num = a => { const v = el.getAttribute(a); return v === null || v === '' ? null : Number(v); };
     out.push({
       control_id: id, kind, label, name: el.name || null, html_id: el.id || null,
-      help_text: byIds(el.getAttribute('aria-describedby')).map(txt).join(' ').trim(),
+      help_text: byIds(el.getAttribute('aria-describedby'), el).map(txt).join(' ').trim(),
       section: sectionOf(el), placeholder: el.getAttribute('placeholder') || '',
       required: members.some(m => m.required || m.getAttribute('aria-required') === 'true'),
-      visible: members.some(visible), disabled: members.every(m => m.disabled),
+      visible: members.some(visible), disabled: members.every(m => m.disabled || m.getAttribute('aria-disabled') === 'true'),
       options, min: el.getAttribute('min'), max: el.getAttribute('max'), step: el.getAttribute('step'),
       minlength: num('minlength'), maxlength: num('maxlength'), pattern: el.getAttribute('pattern'),
       value, frame_index: frameIndex,
     });
   }
+  window.__ffCounter = counter;
   return out;
+}
+"""
+
+# Elements that look like encapsulated widgets whose inside we cannot read (a custom element with no open shadow
+# root and no light children: closed shadow root, or an empty component). Reported, never guessed at.
+_OPAQUE_JS = """
+() => {
+  const out = []; const walk = root => { for (const e of root.children) {
+    if (e.tagName.includes('-') && !e.shadowRoot && !e.children.length && !(e.textContent || '').trim()) out.push(e.tagName.toLowerCase());
+    if (e.shadowRoot) walk(e.shadowRoot); walk(e); } };
+  walk(document); return out;
 }
 """
 
@@ -130,6 +151,13 @@ def discover(page: Page) -> FormSchema:
     in document order. Hidden controls are included with `visible=False` so
     callers can tell "not asked" from "not present"."""
     controls: list[Control] = []
+    notes: list[dict] = []
     for i, frame in enumerate(page.frames):
         controls.extend(_extract(frame, i))
-    return FormSchema(url=page.url, title=page.title(), controls=controls)
+        try:
+            for tag in frame.evaluate(_OPAQUE_JS):
+                notes.append({"kind": "opaque_custom_element", "frame_index": i, "element": tag,
+                              "reason": "custom element exposes no readable shadow root (closed, or empty): its inner controls cannot be discovered"})
+        except Exception:  # noqa: BLE001 - detached / inaccessible frame
+            pass
+    return FormSchema(url=page.url, title=page.title(), controls=controls, notes=notes)

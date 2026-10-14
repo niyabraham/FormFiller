@@ -1,0 +1,321 @@
+{
+  "case": "h04_construction_prequal",
+  "description": "Subcontractor prequalification wizard (3 steps)",
+  "source_style": "form-aligned",
+  "questions": [
+    {
+      "control": "lic",
+      "question": "Contractor's license number",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "CGC-1527734",
+      "source": "Company Information.Contractor license number",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "lic_st",
+      "question": "State of licensure",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "FL",
+      "source": "Company Information.License state",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "State name to code."
+    },
+    {
+      "control": "yib",
+      "question": "Years in business",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 17,
+      "source": "Company Information.Years in business",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "bond1",
+      "question": "Single project bonding capacity ($)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 12000000,
+      "source": "Company Information.Bonding capacity (single project)",
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Single-project key."
+    },
+    {
+      "control": "bond2",
+      "question": "Aggregate bonding capacity ($)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 30000000,
+      "source": "Company Information.Bonding capacity (aggregate)",
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Aggregate key."
+    },
+    {
+      "control": "emr",
+      "question": "Current Experience Modification Rate (EMR)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 0.82,
+      "source": "Safety.EMR (current)",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Current rate."
+    },
+    {
+      "control": "emr3",
+      "question": "EMR from three years ago",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Only current and prior-year EMR stored."
+    },
+    {
+      "control": "osha3",
+      "question": "OSHA recordable incidents in the last 3 years",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 4,
+      "source": "Safety.OSHA recordable incidents (last 3 years)",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Matching window."
+    },
+    {
+      "control": "osha1",
+      "question": "OSHA recordable incidents in the last 12 months",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "time",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Window is not in data; 3-year total cannot be narrowed."
+    },
+    {
+      "control": "fatal",
+      "question": "Number of fatalities in the last 5 years",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 0,
+      "source": "Safety.Fatalities (last 5 years)",
+      "tags": [
+        "scoped",
+        "time"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Zero is a real value."
+    },
+    {
+      "control": "wsp",
+      "question": "Do you have a written safety program?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Safety.Has written safety program",
+      "tags": [],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 2,
+      "note": "Yes."
+    },
+    {
+      "control": "tot",
+      "question": "Total workforce (all employees)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 240,
+      "source": "Workforce.Total employees",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Total."
+    },
+    {
+      "control": "craft",
+      "question": "Number of field craft employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 198,
+      "source": "Workforce.Craft employees",
+      "tags": [
+        "scoped",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Craft = field craft."
+    },
+    {
+      "control": "sal",
+      "question": "Salaried office staff",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 42,
+      "source": "Workforce.Salaried staff",
+      "tags": [
+        "scoped",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Salaried staff."
+    },
+    {
+      "control": "union",
+      "question": "Number of union members",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "ambiguous"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Union affiliation is 'None' (text) and no count; count of members unknown."
+    },
+    {
+      "control": "nolit",
+      "question": "Are you currently free of pending litigation?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "yes",
+      "source": "Litigation.Pending lawsuits",
+      "tags": [
+        "polarity",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Zero pending lawsuits -> free of pending litigation."
+    },
+    {
+      "control": "qc",
+      "question": "Describe your quality control program",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 3,
+      "note": "Narrative."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h14_staffing_agency</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h14_staffing_agency</h1><form>
+<h2>Agency</h2>
+<div class="row"><label for="q1">Agency name</label><input type="text" name="a1" id="q1"></div>
+<div class="row"><label for="q2">Total number of personnel</label><input type="number" name="a2" id="q2"></div>
+<div class="row"><label for="q3">Number of recruiters</label><input type="number" name="a3" id="q3"></div>
+<div class="row"><label for="q4">Number of recruiters who are certified</label><input type="number" name="a4" id="q4"></div>
+<div class="row"><label for="q5">Number of placements in 2025</label><input type="number" name="a5" id="q5"></div>
+<div class="row"><label for="q6">Number of placements in 2023</label><input type="number" name="a6" id="q6"></div>
+<div class="row"><label for="q7">Nurses currently on assignment</label><input type="number" name="a7" id="q7"></div>
+<div class="row"><label for="q8">Travel nurses currently on assignment</label><input type="number" name="a8" id="q8"></div>
+<div class="row"><label for="q9">Staff at the Newark branch</label><input type="number" name="a9" id="q9"></div>
+<div class="row"><label for="q10">Staff at the Boston branch</label><input type="number" name="a10" id="q10"></div>
+<div class="row"><label for="q11">States where you hold staffing licences</label><select name="a11" id="q11" multiple><option value="NY">New York</option><option value="NJ">New Jersey</option><option value="PA">Pennsylvania</option><option value="CT">Connecticut</option><option value="MD">Maryland</option></select></div>
+<h2>Compliance</h2>
+<div class="row"><fieldset><legend>Do you employ workers on a W-2 basis?</legend><label class="opt"><input type="radio" name="a12" value="yes"> Yes</label><label class="opt"><input type="radio" name="a12" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Do you use independent contractors (1099)?</legend><label class="opt"><input type="radio" name="a13" value="yes"> Yes</label><label class="opt"><input type="radio" name="a13" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Is drug screening optional for candidates?</legend><label class="opt"><input type="radio" name="a14" value="yes"> Yes</label><label class="opt"><input type="radio" name="a14" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Are background checks run on all candidates?</legend><label class="opt"><input type="radio" name="a15" value="yes"> Yes</label><label class="opt"><input type="radio" name="a15" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q16">Background check lookback (years)</label><input type="number" name="a16" disabled data-enable-when="a15" data-enable-eq="yes" id="q16"></div>
+<div class="row"><label for="q17">Average markup (%)</label><input type="number" name="a17" id="q17"></div>
+<div class="row"><label for="q18">Malpractice limit per claim (USD)</label><input type="number" name="a18" id="q18"></div>
+<div class="row"><fieldset><legend>Joint Commission certified?</legend><label class="opt"><input type="radio" name="a19" value="yes"> Yes</label><label class="opt"><input type="radio" name="a19" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q20">Headquarters state</label><select name="a20" id="q20"><option value="">Select...</option><option value="NY">New York</option><option value="NJ">New Jersey</option><option value="PA">Pennsylvania</option><option value="CT">Connecticut</option><option value="MD">Maryland</option></select></div>
+<div class="row"><fieldset><legend>Regions served</legend><label class="opt"><input type="checkbox" name="a21" value="ne"> Northeast</label><label class="opt"><input type="checkbox" name="a21" value="ma"> Mid-Atlantic</label><label class="opt"><input type="checkbox" name="a21" value="se"> Southeast</label><label class="opt"><input type="checkbox" name="a21" value="mw"> Midwest</label></fieldset></div>
+<div class="row"><label for="q22">Year-over-year growth in placements (%)</label><input type="number" name="a22" id="q22"></div>
+<div class="row"><label for="q23">Describe your float pool process</label><textarea name="a23" id="q23" rows=3></textarea></div>
+<div class="row"><label class="opt"><input type="checkbox" name="a24" value="yes"> I authorise verification of the above</label></div>
+</form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+
+function syncEnable(){document.querySelectorAll('[data-enable-when]').forEach(e=>{e.disabled=val(e.dataset.enableWhen)!==e.dataset.enableEq})}
+document.addEventListener('change',syncEnable);document.addEventListener('input',syncEnable);syncEnable();
+</script></body></html>

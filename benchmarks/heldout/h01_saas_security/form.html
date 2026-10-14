@@ -1,0 +1,34 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h01_saas_security</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h01_saas_security</h1><form>
+<h2>1. Company</h2>
+<div class="row"><label for="q1">1.1 Legal name of vendor *</label><input type="text" name="vendor_name" required id="q1"></div>
+<div class="row"><label for="q2">1.2 Total number of employees</label><input type="number" name="q2" id="q2"></div>
+<div class="row"><label for="q3">1.3 Customer support personnel (headcount)</label><input type="number" name="q3" id="q3"></div>
+<div class="row"><label for="q4">1.4 Number of part-time employees</label><input type="number" name="q4" id="q4"></div>
+<div class="row"><label for="q5">1.5 Number of employees located in EMEA</label><input type="number" name="q5" id="q5"></div>
+<div class="row"><label for="q6">1.6 Name of parent company</label><input type="text" name="parent" id="q6"></div>
+<h2>2. Security</h2>
+<div class="row"><fieldset><legend>2.1 Is multi-factor authentication required for all users?</legend><label class="opt"><input type="radio" name="mfa_all" value="yes"> Yes</label><label class="opt"><input type="radio" name="mfa_all" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>2.2 Is MFA optional for administrator accounts?</legend><label class="opt"><input type="radio" name="mfa_opt" value="yes"> Yes</label><label class="opt"><input type="radio" name="mfa_opt" value="no"> No</label></fieldset></div>
+<div class="row"><label>2.3 Date of most recent penetration test <input type="date" name="pentest"></label></div>
+<div class="row"><label for="q10">2.4 Encryption standard for data at rest</label><select name="enc" id="q10"><option value="">Select...</option><option value="aes128">AES-128</option><option value="aes256">AES-256</option><option value="none">None</option></select></div>
+<div class="row"><fieldset><legend>2.5 SOC 2 report type</legend><label class="opt"><input type="radio" name="soc" value="t1"> Type I</label><label class="opt"><input type="radio" name="soc" value="t2"> Type II</label></fieldset></div>
+<div class="row"><input type="email" name="ciso" aria-label="2.6 Security contact email (CISO)"></div>
+<div class="row"><fieldset><legend>2.7 Do you hold ISO 27001 certification?</legend><label class="opt"><input type="radio" name="iso27001" value="yes"> Yes</label><label class="opt"><input type="radio" name="iso27001" value="no"> No</label><label class="opt"><input type="radio" name="iso27001" value="na"> N/A</label></fieldset></div>
+<div class="cond" data-when="iso27001" data-eq="yes" hidden><div class="row"><label for="q14">ISO 27001 certificate expiry</label><input type="date" name="iso_exp" id="q14"></div></div>
+<div class="row"><label for="q15">2.8 Describe your incident response process</label><textarea name="ir" id="q15" rows=3></textarea></div>
+<div class="row"><label for="q16">2.9 Number of sub-processors in the EU</label><input type="number" name="sub" id="q16"></div>
+</form><script>
+function val(n){const e=[...document.querySelectorAll('[name="'+n+'"]')];if(!e.length)return null;
+ const t=e[0].type;if(t==='radio'){const c=e.find(x=>x.checked);return c?c.value:null}
+ if(t==='checkbox')return e[0].checked?'yes':'no';return e[0].value}
+function sync(){document.querySelectorAll('.cond').forEach(w=>{w.hidden=val(w.dataset.when)!==w.dataset.eq})}
+document.addEventListener('change',sync);document.addEventListener('input',sync);sync();
+</script></body></html>

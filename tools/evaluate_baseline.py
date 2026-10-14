@@ -24,7 +24,10 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parent.parent
+# ROOT is the code under test (its formfill/ package and its git history). It is the repository this
+# file lives in unless FORMFILL_PIPELINE_ROOT points at another checkout, so one evaluator can measure
+# several clean checkouts of the pipeline with identical measurement code.
+ROOT = Path(os.environ.get("FORMFILL_PIPELINE_ROOT") or Path(__file__).resolve().parent.parent).resolve()
 sys.path.insert(0, str(ROOT))
 
 from formfill.web.discover import discover
@@ -43,7 +46,9 @@ CLASSES = ["form discovery problem", "question understanding problem", "retrieva
 
 _DOM_JS = """
 (name) => {
-  const els = [...document.querySelectorAll('[name="' + name + '"]')];
+  // open shadow roots included (Phase 3C: the pipeline now fills controls inside them, so the check must see them too)
+  const els = []; const walk = r => { r.querySelectorAll('[name="' + name + '"]').forEach(e => els.push(e)); r.querySelectorAll('*').forEach(h => { if (h.shadowRoot) walk(h.shadowRoot); }); };
+  walk(document);
   if (!els.length) return {found: false};
   const e = els[0], t = (e.type || '').toLowerCase(), tag = e.tagName.toLowerCase();
   let v;
@@ -523,8 +528,16 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--case", help="run a single case id")
     ap.add_argument("--no-write", action="store_true")
+    ap.add_argument("--out-dir", type=Path, help="write baseline.json/failures.md here instead of benchmarks/rfi/results/ "
+                                                 "(the default location is the frozen Phase 2 record)")
+    ap.add_argument("--force-overwrite-baseline", action="store_true")
+    ap.add_argument("--bench-dir", type=Path, help="benchmark directory containing manifest.json and per-case folders "
+                                                   "(default: benchmarks/rfi of the code under test)")
     args = ap.parse_args()
 
+    global BENCH
+    if args.bench_dir:
+        BENCH = args.bench_dir.resolve()
     manifest_doc = json.loads((BENCH / "manifest.json").read_text())
     manifest = manifest_doc["cases"]
     if args.case:
@@ -578,11 +591,14 @@ def main() -> int:
     print("failure classes:", report["failure_classes"])
     print("submission:", [(s["case"], s["outcome"], "OK" if s["ok"] else "MISMATCH") for s in subs])
     if not args.no_write and not args.case:
-        res = BENCH / "results"
-        res.mkdir(exist_ok=True)
+        res = (args.out_dir if args.out_dir else BENCH / "results").resolve()
+        if res == (BENCH / "results").resolve() and report["run"]["pipeline_dirty"] and not args.force_overwrite_baseline:
+            print("refusing to overwrite the frozen Phase 2 results with a modified pipeline; pass --out-dir DIR")
+            return 2
+        res.mkdir(parents=True, exist_ok=True)
         (res / "baseline.json").write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")
         (res / "failures.md").write_text(failure_markdown(failures, report["run"], report["failure_accounting"]), encoding="utf-8")
-        print(f"wrote {res.relative_to(ROOT)}/baseline.json and failures.md")
+        print(f"wrote {res}/baseline.json and failures.md")
     return 0
 
 

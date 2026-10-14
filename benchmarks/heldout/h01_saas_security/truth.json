@@ -1,0 +1,308 @@
+{
+  "case": "h01_saas_security",
+  "description": "SaaS vendor security review; engineer-natural nested JSON",
+  "source_style": "engineer-natural",
+  "questions": [
+    {
+      "control": "vendor_name",
+      "question": "1.1 Legal name of vendor *",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Brightloop Software Inc.",
+      "source": "company.legal_name",
+      "tags": [
+        "nested",
+        "realistic"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": true,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct match."
+    },
+    {
+      "control": "q2",
+      "question": "1.2 Total number of employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 412,
+      "source": "headcount.total",
+      "tags": [
+        "nested",
+        "paraphrase",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Total headcount; contractors are a separate distractor key."
+    },
+    {
+      "control": "q3",
+      "question": "1.3 Customer support personnel (headcount)",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": 57,
+      "source": "headcount.support",
+      "tags": [
+        "scoped",
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Role-scoped; support key exists."
+    },
+    {
+      "control": "q4",
+      "question": "1.4 Number of part-time employees",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only total/role headcounts exist; no part-time split."
+    },
+    {
+      "control": "q5",
+      "question": "1.5 Number of employees located in EMEA",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No geographic headcount in data."
+    },
+    {
+      "control": "parent",
+      "question": "1.6 Name of parent company",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Halvorsen Holdings Ltd",
+      "source": "company.parent_company.name",
+      "tags": [
+        "related_entity",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Related entity explicitly stored under parent_company."
+    },
+    {
+      "control": "mfa_all",
+      "question": "2.1 Is multi-factor authentication required for all users?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "security.mfa.enforced_for_all_users",
+      "tags": [
+        "polarity",
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Boolean False means not required for all users."
+    },
+    {
+      "control": "mfa_opt",
+      "question": "2.2 Is MFA optional for administrator accounts?",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "no",
+      "source": "security.mfa.enforced_for_admins",
+      "tags": [
+        "polarity",
+        "contestable"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Enforced for admins is True, so optional is No (plain inversion)."
+    },
+    {
+      "control": "pentest",
+      "question": "2.3 Date of most recent penetration test",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2026-02-17",
+      "source": "security.pen_test.last_date",
+      "tags": [
+        "nested"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "ISO date direct."
+    },
+    {
+      "control": "enc",
+      "question": "2.4 Encryption standard for data at rest",
+      "kind": "select",
+      "expect": "ANSWER",
+      "answer": "aes256",
+      "source": "security.encryption.at_rest",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Option label AES-256 maps to value aes256."
+    },
+    {
+      "control": "soc",
+      "question": "2.5 SOC 2 report type",
+      "kind": "radio",
+      "expect": "ANSWER",
+      "answer": "t2",
+      "source": "security.soc2.type",
+      "tags": [
+        "option_mapping"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Type II maps to t2."
+    },
+    {
+      "control": "ciso",
+      "question": "2.6 Security contact email (CISO)",
+      "kind": "email",
+      "expect": "ANSWER",
+      "answer": "ciso@brightloop.io",
+      "source": "security.ciso_email",
+      "tags": [
+        "paraphrase"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Direct."
+    },
+    {
+      "control": "iso27001",
+      "question": "2.7 Do you hold ISO 27001 certification?",
+      "kind": "radio",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "missing"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "No certification information in data."
+    },
+    {
+      "control": "iso_exp",
+      "question": "ISO 27001 certificate expiry",
+      "kind": "date",
+      "expect": "ABSENT",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "hidden"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": [
+        "iso27001",
+        "yes"
+      ],
+      "enable_when": null,
+      "step": 1,
+      "note": "Hidden until ISO answered yes; data has none."
+    },
+    {
+      "control": "ir",
+      "question": "2.8 Describe your incident response process",
+      "kind": "textarea",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "narrative"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Narrative; nothing in data."
+    },
+    {
+      "control": "sub",
+      "question": "2.9 Number of sub-processors in the EU",
+      "kind": "number",
+      "expect": "REVIEW",
+      "answer": null,
+      "source": null,
+      "tags": [
+        "scoped",
+        "distractor"
+      ],
+      "trap": null,
+      "invalid_source": null,
+      "required": false,
+      "when": null,
+      "enable_when": null,
+      "step": 1,
+      "note": "Only a global sub-processor count (19) exists; EU scope absent."
+    }
+  ]
+}

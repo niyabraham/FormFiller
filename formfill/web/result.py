@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import uuid
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from formfill.web.models import AnswerPlanItem
@@ -49,8 +49,9 @@ class RunResult:
     submission: dict = field(default_factory=dict)
     artifacts: dict = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+    navigation: dict = field(default_factory=dict)  # step-navigation record (only with a DiscoveryPolicy): steps, stop reason, notes
     run_id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
-    started_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat(timespec="seconds"))
+    started_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat(timespec="seconds"))
     finished_at: str = ""
 
     @property

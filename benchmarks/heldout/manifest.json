@@ -1,0 +1,92 @@
+{
+  "benchmark_version": "heldout-1.0.0",
+  "split": "heldout",
+  "cases": [
+    {
+      "id": "h01_saas_security",
+      "kind": "extraction",
+      "description": "SaaS vendor security review; engineer-natural nested JSON",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h02_hospital_supplier",
+      "kind": "extraction",
+      "description": "Hospital supplier onboarding; form-aligned flat keys",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "h03_bank_kyc",
+      "kind": "extraction",
+      "description": "Bank corporate KYC; lists of beneficial owners and signatories",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h04_construction_prequal",
+      "kind": "extraction",
+      "description": "Subcontractor prequalification wizard (3 steps)",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "h05_university_grant",
+      "kind": "extraction",
+      "description": "University research grant application",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h06_insurance_proposal",
+      "kind": "extraction",
+      "description": "Professional indemnity proposal form",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "h07_ngo_due_diligence",
+      "kind": "extraction",
+      "description": "NGO donor due diligence questionnaire",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h08_logistics_carrier",
+      "kind": "extraction",
+      "description": "Motor carrier onboarding; camelCase keys",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h09_retail_vendor",
+      "kind": "extraction",
+      "description": "Retailer vendor registration wizard with dynamically created step 2",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "h10_gov_procurement",
+      "kind": "extraction",
+      "description": "Public-sector tender supplier questionnaire with constraints",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h11_franchise_supplier",
+      "kind": "extraction",
+      "description": "Restaurant franchise supplier approval; franchisor vs franchisee vs JV",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h12_api_platform",
+      "kind": "extraction",
+      "description": "Software platform capability questionnaire; polarity-heavy",
+      "source_style": "form-aligned"
+    },
+    {
+      "id": "h13_manufacturing_quality",
+      "kind": "extraction",
+      "description": "Automotive supplier quality survey with custom widgets",
+      "source_style": "engineer-natural"
+    },
+    {
+      "id": "h14_staffing_agency",
+      "kind": "extraction",
+      "description": "Healthcare staffing agency MSP onboarding",
+      "source_style": "form-aligned"
+    }
+  ],
+  "scored_questions": 272,
+  "provenance": "authored by an independent agent from a spec without access to the pipeline or the development failure cards; key cross-checked by a blind labeller; see docs/HELDOUT_EVALUATION.md"
+}

@@ -1,0 +1,47 @@
+{
+  "company": {
+    "legal_name": "Brightloop Software Inc.",
+    "founded": "2014-06-02",
+    "hq": {
+      "city": "Austin",
+      "state": "TX",
+      "country": "US"
+    },
+    "website": "https://www.brightloop.io",
+    "parent_company": {
+      "name": "Halvorsen Holdings Ltd",
+      "country": "GB"
+    }
+  },
+  "headcount": {
+    "total": 412,
+    "engineering": 168,
+    "support": 57,
+    "contractors": 31
+  },
+  "security": {
+    "mfa": {
+      "enforced_for_admins": true,
+      "enforced_for_all_users": false
+    },
+    "encryption": {
+      "at_rest": "AES-256",
+      "in_transit": "TLS 1.2+"
+    },
+    "pen_test": {
+      "last_date": "2026-02-17",
+      "vendor": "Cobalt Labs"
+    },
+    "soc2": {
+      "type": "Type II",
+      "report_period_end": "2025-12-31"
+    },
+    "ciso_email": "ciso@brightloop.io",
+    "incident_contact_phone": "+1 512 555 0147",
+    "data_residency_regions": [
+      "us-east",
+      "eu-west"
+    ],
+    "subprocessors_count": 19
+  }
+}

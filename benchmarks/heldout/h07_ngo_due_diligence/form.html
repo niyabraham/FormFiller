@@ -1,0 +1,36 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h07_ngo_due_diligence</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h07_ngo_due_diligence</h1><form>
+<h2>Organisation</h2>
+<div class="row"><label for="q1">Organisation name</label><input type="text" name="n_name" id="q1"></div>
+<div class="row"><input type="text" name="n_ein" aria-label="Employer Identification Number (EIN)"></div>
+<div class="row"><label for="q3">Year registered</label><input type="number" name="n_year" id="q3"></div>
+<div class="row"><label for="q4">Number of full-time staff</label><input type="number" name="n_ft" id="q4"></div>
+<div class="row"><label for="q5">Number of part-time staff</label><input type="number" name="n_pt" id="q5"></div>
+<div class="row"><label for="q6">Total number of staff</label><input type="number" name="n_tot" id="q6"></div>
+<div class="row"><label for="q7">Number of volunteers</label><input type="number" name="n_vol" id="q7"></div>
+<h2>Governance</h2>
+<div class="row"><label for="q8">Number of board members</label><input type="number" name="n_board" id="q8"></div>
+<div class="row"><label for="q9">Number of independent directors</label><input type="number" name="n_ind" id="q9"></div>
+<div class="row"><label for="q10">Month in which your fiscal year ends</label><select name="n_fye" id="q10"><option value="">Select...</option><option value="01">January</option><option value="02">February</option><option value="03">March</option><option value="04">April</option><option value="05">May</option><option value="06">June</option><option value="07">July</option><option value="08">August</option><option value="09">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
+<div class="row"><label for="q11">Total revenue, most recent fiscal year (USD)</label><input type="number" name="n_rev" id="q11"></div>
+<div class="row"><label for="q12">Percentage of revenue from government sources</label><input type="number" name="n_gov" id="q12"></div>
+<div class="row"><fieldset><legend>Were your financial statements audited by an independent firm?</legend><label class="opt"><input type="radio" name="n_aud" value="yes"> Yes</label><label class="opt"><input type="radio" name="n_aud" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q14">Name of auditor</label><input type="text" name="n_audn" id="q14"></div>
+<div class="row"><fieldset><legend>Does the organisation have a conflict of interest policy?</legend><label class="opt"><input type="radio" name="n_coi" value="yes"> Yes</label><label class="opt"><input type="radio" name="n_coi" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Does the organisation lack a whistleblower policy?</legend><label class="opt"><input type="radio" name="n_wb" value="yes"> Yes</label><label class="opt"><input type="radio" name="n_wb" value="no"> No</label></fieldset></div>
+<div class="row"><fieldset><legend>Were there any related-party transactions last fiscal year?</legend><label class="opt"><input type="radio" name="n_rpt" value="yes"> Yes</label><label class="opt"><input type="radio" name="n_rpt" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q18">Name of fiscal sponsor</label><input type="text" name="n_fs" id="q18"></div>
+<div class="row"><label for="q19">Name of affiliated chapter or branch</label><input type="text" name="n_ch" id="q19"></div>
+<div class="row"><label for="q20">Beneficiaries served in the last year</label><input type="number" name="n_ben" id="q20"></div>
+<div class="row"><label for="q21">Beneficiaries served in the previous year</label><input type="number" name="n_ben2" id="q21"></div>
+<div class="row"><label for="q22">State your mission</label><textarea name="n_mis" id="q22" rows=3></textarea></div>
+<div class="row"><label for="q23">Describe your theory of change</label><textarea name="n_toc" id="q23" rows=3></textarea></div>
+<div class="row"><label for="q24">Upload your latest audited financial statements</label><input type="file" name="n_fsup" id="q24"></div>
+</form><script></script></body></html>

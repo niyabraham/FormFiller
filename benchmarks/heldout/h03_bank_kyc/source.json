@@ -1,0 +1,63 @@
+{
+  "entity": {
+    "registered_name": "Kestrel Maritime Trading Pte Ltd",
+    "reg_no": "201934118K",
+    "incorporation_date": "2019-08-21",
+    "country_of_incorporation": "SG",
+    "registered_address": {
+      "line1": "18 Robinson Road",
+      "line2": "#12-03",
+      "postal_code": "048547",
+      "city": "Singapore"
+    },
+    "business_activity": "Dry bulk commodity trading",
+    "annual_turnover": {
+      "amount": 48200000,
+      "currency": "USD",
+      "fiscal_year": 2025
+    }
+  },
+  "beneficial_owners": [
+    {
+      "name": "Mei Lin Tan",
+      "ownership_pct": 55,
+      "nationality": "SG",
+      "pep": false
+    },
+    {
+      "name": "Rafael Ortega",
+      "ownership_pct": 30,
+      "nationality": "ES",
+      "pep": false
+    }
+  ],
+  "authorised_signatories": [
+    {
+      "name": "Mei Lin Tan",
+      "title": "Director",
+      "email": "meilin@kestrelmaritime.sg"
+    }
+  ],
+  "group": {
+    "ultimate_parent": null,
+    "subsidiaries": [
+      {
+        "name": "Kestrel Freight Ltd",
+        "country": "HK"
+      }
+    ]
+  },
+  "compliance": {
+    "sanctions_screening": true,
+    "adverse_media_screening": true,
+    "pep_exposure": false,
+    "aml_officer": {
+      "name": "Joon Park",
+      "email": "compliance@kestrelmaritime.sg"
+    }
+  },
+  "contact": {
+    "email": "finance@kestrelmaritime.sg",
+    "phone": "+65 6123 4567"
+  }
+}

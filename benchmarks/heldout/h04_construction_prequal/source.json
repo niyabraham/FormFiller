@@ -1,0 +1,31 @@
+{
+  "Company Information": {
+    "Company name": "Ridgeback Civil & Structural Inc.",
+    "Years in business": 17,
+    "Contractor license number": "CGC-1527734",
+    "License state": "Florida",
+    "Bonding capacity (single project)": 12000000,
+    "Bonding capacity (aggregate)": 30000000,
+    "Surety company": "Travelers Casualty"
+  },
+  "Safety": {
+    "EMR (current)": 0.82,
+    "EMR (prior year)": 0.91,
+    "OSHA recordable incidents (last 3 years)": 4,
+    "Fatalities (last 5 years)": 0,
+    "Has written safety program": "Yes"
+  },
+  "Workforce": {
+    "Total employees": 240,
+    "Craft employees": 198,
+    "Salaried staff": 42,
+    "Union affiliation": "None"
+  },
+  "Projects": {
+    "Largest project completed (USD)": 28500000,
+    "Number of projects completed last year": 23
+  },
+  "Litigation": {
+    "Pending lawsuits": 0
+  }
+}

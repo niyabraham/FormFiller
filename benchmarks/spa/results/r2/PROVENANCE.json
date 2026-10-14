@@ -1,0 +1,21 @@
+{
+  "note": "working-tree provenance for every run in this directory; 'before' runs used a clean git worktree of the base commit (pipeline_module shows the path), 'after' runs used the working tree.",
+  "base_commit": "d3a132de393e51a457234757e686c16c190af94d",
+  "branch": "phase3c-spa-browser-reliability",
+  "working_tree_pipeline": {
+    "pipeline_module": "/home/claude/niyabraham/formfiller/formfill",
+    "evaluated_commit": "d3a132de393e51a457234757e686c16c190af94d",
+    "pipeline_dirty": true,
+    "pipeline_diff_sha256": "632c7f6037c78e8bf1e0a2168bc60a30a0acf9384f31dd17ca35b53a5f6bb749"
+  },
+  "tool_sha256": {
+    "tools/evaluate_spa.py": "5e1ca362a7fea1bcc9137f38faab2a918fb2d3a38298dcea5d9977ea6e9ed859",
+    "tools/evaluate_baseline.py": "5bbd07fe071d9b134dd00df37a739792b5e1f80d50eec713554d34505dc0a31e",
+    "tools/compare_runs.py": "638c9e8baf6076b72e17d979b4a1835026970f7c3a558a4d2ebdcc39073bf517",
+    "tools/compare_rankings.py": "f14d96d599fc2bc57b826a09a2fd482d1abb310f4ec8ba66b8b57794733c37bf"
+  },
+  "spa_ground_truth_sha256": "3fc2d398e152e247cdcd4af4b5d35a8d733afbbdf178e8ec33fffa27eaf610e3",
+  "spa_fixtures_generator_sha256": "af87f75787c1f4bd1b1b2f0d282bf2e13b084713714f110b5da92e88997e81b3",
+  "retrieval_files_unchanged_vs_base": true,
+  "historical_results_untouched": true
+}

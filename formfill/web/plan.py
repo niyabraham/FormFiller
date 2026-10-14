@@ -8,6 +8,7 @@ human-readable reason and the candidates considered:
   1. control disabled                         -> REVIEW
   2. no candidate at all                      -> REVIEW  (no source value)
   3. best score < MIN_CONFIDENCE              -> REVIEW  (weak evidence)
+  3b. the value is a placeholder ("None", "N/A", "TBD") and no option offers it -> REVIEW
   4. runner-up within MIN_MARGIN of the best
      and holding a *different* value          -> REVIEW  (ambiguous / conflicting)
   5. value fails deterministic validation     -> REVIEW  (wrong type, invalid option, ...)
@@ -25,7 +26,7 @@ from typing import Any
 
 from formfill.web.models import AnswerPlanItem, Candidate, Question
 from formfill.web.retrieve import Leaf, retrieve
-from formfill.web.validate import validate_answer
+from formfill.web.validate import is_placeholder, validate_answer
 
 MIN_CONFIDENCE = 0.6
 MIN_MARGIN = 0.15
@@ -40,8 +41,16 @@ def _same_value(a: Any, b: Any) -> bool:
     return str(a).strip().lower() == str(b).strip().lower()
 
 
+def _option_equals(control, value: Any) -> bool:
+    """A dropdown/radio that really offers "None" or "N/A" may be answered with it."""
+    v = str(value).strip().casefold()
+    return any(v in (str(o.value).strip().casefold(), str(o.label).strip().casefold()) for o in control.options)
+
+
 def _alts(cands: list[Candidate], skip: int = 0) -> list[dict]:
-    return [{"source": c.path, "value": c.value, "score": c.score} for c in cands[skip:3 + skip]]
+    return [{"source": c.path, "value": c.value, "score": c.score, **({"flags": c.flags} if c.flags else {}),
+             **({"evidence": c.evidence} if c.evidence else {})}
+            for c in cands[skip:3 + skip]]
 
 
 def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
@@ -65,9 +74,14 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
 
     top = cands[0]
     if top.score < MIN_CONFIDENCE:
+        why = f" -- {'; '.join(top.flags)}" if top.flags else ""
         return review(
-            f"best candidate {top.path!r} is too weak (score {top.score:.2f} < {MIN_CONFIDENCE})", cands, top.score
+            f"best candidate {top.path!r} is too weak (score {top.score:.2f} < {MIN_CONFIDENCE}){why}", cands, top.score
         )
+
+    if is_placeholder(top.value) and not _option_equals(c, top.value):
+        return review(f"{top.path!r} holds the placeholder {top.value!r}, not an answer; a human must decide what it means",
+                      cands, top.score)
 
     if len(cands) > 1:
         runner = cands[1]
@@ -83,7 +97,7 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
 
     return AnswerPlanItem(
         **base, status="ANSWER", source=top.path, raw_value=top.value, answer=result.value,
-        confidence=min(1.0, top.score), alternatives=_alts(cands, skip=1),
+        confidence=min(1.0, top.score), alternatives=_alts(cands, skip=1), evidence=list(top.evidence),
     )
 
 

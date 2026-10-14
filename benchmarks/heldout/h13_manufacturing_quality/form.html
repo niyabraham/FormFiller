@@ -1,0 +1,36 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>h13_manufacturing_quality</title><style>
+body{font:15px system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#222}
+h1{font-size:20px} h2{font-size:16px;margin-top:26px;border-bottom:1px solid #ccc}
+.row{margin:12px 0} label,.q{display:block;font-weight:600;margin-bottom:4px}
+label.opt{display:inline-block;font-weight:400;margin-right:14px} fieldset{border:1px solid #ccc}
+input[type=text],input[type=email],input[type=url],input[type=tel],input[type=number],input[type=date],select,textarea{width:100%;box-sizing:border-box;padding:6px}
+.fake{border:1px solid #888;padding:6px;margin:2px;display:inline-block;min-width:60px} .box{display:block;min-height:50px}
+[hidden]{display:none!important} #msg{margin-top:14px;font-weight:600} .err{color:#b00020}
+</style></head><body><h1>h13_manufacturing_quality</h1><form>
+<div class="row"><acme-field label="Plant legal name" qname="m1"></acme-field></div>
+<div class="row"><div role="combobox" aria-label="Country of plant" aria-expanded="false" tabindex="0" class="fake" data-qname="m2">Select...</div></div>
+<div class="row"><div role="radiogroup" aria-label="3.1 Is the plant IATF 16949 certified?" data-qname="m3"><div role="radio" aria-checked="false" tabindex="0" class="fake">Yes</div><div role="radio" aria-checked="false" tabindex="0" class="fake">No</div></div></div>
+<div class="row"><label for="q4">3.2 ISO 14001 certificate expiry date</label><input type="date" name="m4" id="q4"></div>
+<div class="row"><label for="q5">3.3 ISO 45001 certificate expiry date</label><input type="date" name="m5" id="q5"></div>
+<div class="row"><button type="button" role="switch" aria-checked="false" aria-label="Conflict minerals policy in place" data-qname="m6">Off</button></div>
+<h2>Workforce</h2>
+<div class="row"><label for="q7">Total employees (headcount)</label><input type="number" name="m7" id="q7"></div>
+<div class="row"><label for="q8">Number of direct production workers</label><input type="number" name="m8" id="q8"></div>
+<div class="row"><label for="q9">Number of agency (temporary) workers</label><input type="number" name="m9" id="q9"></div>
+<div class="row"><label for="q10">Quality department staff</label><input type="number" name="m10" id="q10"></div>
+<div class="row"><label for="q11">Number of employees on the night shift</label><input type="number" name="m11" id="q11"></div>
+<h2>Performance</h2>
+<div class="row"><label for="q12">Shifts per day</label><input type="number" name="m12" id="q12"></div>
+<div class="row"><label for="q13">Defect rate last year (PPM)</label><input type="number" name="m13" id="q13"></div>
+<div class="row"><label for="q14">On-time delivery rate (%)</label><input type="number" name="m14" id="q14"></div>
+<div class="row"><fieldset><legend>Do you report Scope 3 emissions?</legend><label class="opt"><input type="radio" name="m15" value="yes"> Yes</label><label class="opt"><input type="radio" name="m15" value="no"> No</label></fieldset></div>
+<div class="row"><label for="q16">Name of largest customer</label><input type="text" name="m16" id="q16"></div>
+<div class="row"><label for="q17">Share of sales to the largest customer (%)</label><input type="number" name="m17" id="q17"></div>
+<div class="row"><label for="q18">Name of the owning entity</label><input type="text" name="m18" id="q18"></div>
+<div class="row"><label for="q19">Quality manager email</label><input type="email" name="m19" id="q19"></div>
+<div class="row"><div role="textbox" aria-label="Describe your 8D corrective action process" aria-multiline="true" contenteditable="true" class="fake box" data-qname="m20"></div></div>
+</form><script>
+customElements.define('acme-field',class extends HTMLElement{connectedCallback(){
+ const r=this.attachShadow({mode:'open'});r.innerHTML='<label>'+this.getAttribute('label')+
+ '<input type="text" name="'+this.getAttribute('qname')+'"></label>'}});
+</script></body></html>

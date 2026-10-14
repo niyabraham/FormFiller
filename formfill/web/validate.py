@@ -78,6 +78,16 @@ def _match_option(value: Any, control: Control) -> str | None:
     return None
 
 
+_PLACEHOLDERS = {"none", "n/a", "n.a", "not applicable", "not available", "tbd", "tba", "tbc", "unknown", "null", "nil",
+                 "to be determined", "to be confirmed", "-", "--", "\u2013", "\u2014"}
+
+
+def is_placeholder(value: Any) -> bool:
+    """A string that stands in for "no value" ("None", "N/A", "TBD"). Whole-string match only, so
+    "Nonesuch Ltd" and "North America" are answers. Bare "NA" is not listed: it is a region code."""
+    return isinstance(value, str) and value.strip().casefold().rstrip(".") in _PLACEHOLDERS
+
+
 def validate_answer(value: Any, control: Control) -> Validated:
     if value is None or (isinstance(value, str) and not value.strip()):
         return _fail("source value is empty")
