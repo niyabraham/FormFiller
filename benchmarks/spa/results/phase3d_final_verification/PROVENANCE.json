@@ -1,0 +1,18 @@
+{
+  "purpose": "final pre-commit verification of Phase 3D on the exact tree that is committed in the Phase 3D code commit",
+  "base_commit": "1d1dbd0487f62b0e19db236d45e057c8a876d3f8",
+  "hash_recipe": "formfill-src-v2",
+  "pipeline_source_sha256": "47d6d572d15ccca55b6c632b500ee63606b2fb7117a362c0e4e09d47b335d53e",
+  "before_baselines": "3C 'before' outputs reused from ../phase3d_review_round2/ (produced from a clean worktree of the base commit; 3C code is unchanged), compared with compare_runs.py",
+  "dev_heldout_note": "dev/held-out baseline.json do not record commit/dirty/hash; the hash above is asserted for the same tree (formfill/ unchanged between the runs, checked by recomputing)",
+  "tests": "415 passed, 2 xfailed (see commands_and_output.log)",
+  "file_sha256": {
+    "formfill/web/execute.py": "11aba7ef1fe2f40ade7b212e60f1f118548c1fd8a1f109d45b49517fa79e8554",
+    "formfill/web/pipeline.py": "f82200fb863f4e128ec2071e741009b3ac2a468a540c5bac35bfba8e52adfef5",
+    "tests/web/test_widgets_3d.py": "e5adc95103f8f9dec658a7eda30fe90ffd796d0ec5680914a1af6d8ee927afcd",
+    "tools/evaluate_widgets3d.py": "15007b8df1a863aeb3d3209be601744d868934901221bece7077a4d557ffc177",
+    "tools/evaluate_spa.py": "872724919cee3c372e27892773bc7c355129099d821364a864cc9d80c541b690",
+    "tools/_provenance.py": "e424e83c247d8895a74f9bfed4cff12b8e1729ccc54807884ecf53b61303d5f7",
+    "benchmarks/spa/ground_truth_3d.json": "90026fa8231e8cfe07fbbd04cd87fe5fdae77cc53c8c28c8198771e122f1f188"
+  }
+}

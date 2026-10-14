@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>w3d_blur_commit</title>
+<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
+<body><h1>RFI supplier questionnaire</h1><div id="app">
+
+<div class="q"><label for="name">Legal company name</label><input id="name" type="text"></div>
+<div class="q" id="emailq"><label for="email">Contact email</label><input id="email" type="email"></div>
+<div id="slot"></div>
+<div id="tick" aria-hidden="true"></div>
+<script>
+// Mimics SurveyJS textUpdateMode "onBlur": typing (input events) changes only the DOM; the app's state is written on blur.
+// ?mode=delay : no email field (so Legal company name is the last field filled on the first pass); the dependent question renders 60 ms after the commit (asynchronous, still inside the quiet window)
+// ?mode=churn : the page re-renders a ticker every 30 ms forever, so it never goes quiet
+// ?mode=revert : the app rejects the committed value on blur and clears the field (a framework that normalises/resets).
+const mode = new URLSearchParams(location.search).get('mode');
+window.__state = {}; window.__commits = 0;
+function commit(key, el) {
+  if (mode === 'revert' && key === 'name') { el.value = ''; return; }
+  window.__state[key] = el.value; window.__commits++;
+  if (key === 'name') { if (mode === 'delay') setTimeout(render, 60); else render(); }
+}
+function render() {
+  const slot = document.getElementById('slot');
+  const has = !!window.__state.name, cur = document.getElementById('city');
+  if (has && !cur) {  // visibleIf "{name} notempty": the question does not exist in the DOM until the answer is committed
+    slot.innerHTML = '<div class="q"><label for="city">Headquarters city</label><input id="city" type="text"></div>';
+    document.getElementById('city').addEventListener('blur', e => commit('city', e.target));
+  } else if (!has && cur) slot.innerHTML = '';
+}
+if (mode === 'churn') setInterval(() => { document.getElementById('tick').textContent = String(performance.now()); }, 30);
+if (mode === 'delay') document.getElementById('emailq').remove();
+for (const k of ['name', 'email']) document.getElementById(k) && document.getElementById(k).addEventListener('blur', e => commit(k, e.target));
+</script>
+</div></body></html>

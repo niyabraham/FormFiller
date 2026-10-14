@@ -1,0 +1,40 @@
+## pytest
+........................................................................ [ 86%]
+.........................................................                [100%]
+415 passed, 2 xfailed in 149.40s (0:02:29)
+Tue Oct 13 18:42:37 UTC 2026
+## demo.py
+Final verification: PASS
+## widgets after
+12 expected fields: fill_ok 12, dom_readback 12, app_state 12; conditional discovered+filled 3/3
+side-effect mismatches: ['w3d_styled_radio']; unsettled-report mismatches: none
+  w3d_blur_commit                         0.66s {'city': (True, True, True), 'email': (True, True, True), 'name': (True, True, True)}
+  w3d_blur_commit?mode=revert             0.44s {'email': (True, True, None), 'name': (True, False, None)}
+  w3d_readonly_combobox                   0.17s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=dead         3.18s {'country': (False, False, None)}
+  w3d_styled_radio                        0.12s {'sector': (True, True, True)}
+  w3d_blur_commit?mode=delay              0.49s {'city': (True, True, True), 'name': (True, True, True)}
+  w3d_blur_commit?mode=churn              4.67s {'city': (True, True, True), 'email': (True, True, True), 'name': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap      0.18s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap_nav  0.19s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap_dead  1.63s {'country': (False, False, None)}
+## widgets before (3C, clean worktree)
+Traceback (most recent call last):
+  File "/home/claude/niyabraham/formfiller/tools/evaluate_widgets3d.py", line 35, in <module>
+    from formfill.web.execute import UNSETTLED
+ImportError: cannot import name 'UNSETTLED' from 'formfill.web.execute' (/tmp/claude-0/-home-claude/796e3658-e2dd-556e-8441-8e3d96b08eff/scratchpad/wt3c2/formfill/web/execute.py)
+## spa after
+submission_attempts                        0
+dialogs_accepted                           0
+safe_stop_correct                          [12, 12]
+## spa before(3C)
+submission_attempts                        0
+dialogs_accepted                           0
+safe_stop_correct                          [12, 12]
+## dev
+wrote /home/claude/niyabraham/formfiller/benchmarks/spa/results/phase3d_review_round2/dev_after/baseline.json and failures.md
+wrote /home/claude/niyabraham/formfiller/benchmarks/spa/results/phase3d_review_round2/dev_before/baseline.json and failures.md
+## heldout
+wrote /home/claude/niyabraham/formfiller/benchmarks/spa/results/phase3d_review_round2/heldout_after/baseline.json and failures.md
+wrote /home/claude/niyabraham/formfiller/benchmarks/spa/results/phase3d_review_round2/heldout_before/baseline.json and failures.md
+DONE

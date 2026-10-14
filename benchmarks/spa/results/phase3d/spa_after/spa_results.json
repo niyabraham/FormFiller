@@ -1,0 +1,3631 @@
+{
+  "run": {
+    "pipeline_module": "/home/claude/niyabraham/formfiller/formfill",
+    "evaluated_commit": "1d1dbd0487f62b0e19db236d45e057c8a876d3f8",
+    "pipeline_dirty": true,
+    "pipeline_diff_sha256": "03b733b92a9d6874840226874802be9ecaa640be9a5f6ada4b2beac2ca7161f7",
+    "mode": "policy",
+    "ground_truth_sha256": "db4dd0db0e6f494431e6fbceab474842ff9b9a337d1f35611cc3fd5df98855ba"
+  },
+  "summary": {
+    "fixtures": 26,
+    "crashed": 0,
+    "discovery_recall": [
+      82,
+      82
+    ],
+    "controls_found_only_after_navigation": [
+      30,
+      30
+    ],
+    "conditional_controls_found": [
+      1,
+      1
+    ],
+    "fill_success": [
+      79,
+      115
+    ],
+    "readback_verified": [
+      76,
+      115
+    ],
+    "app_committed": [
+      76,
+      115
+    ],
+    "silent_divergence": 3,
+    "values_lost": 3,
+    "planted_resets": [
+      3,
+      3
+    ],
+    "unsupported": [
+      1,
+      1
+    ],
+    "review_items_entered": 0,
+    "stage_on_time": [
+      82,
+      82
+    ],
+    "stage_early": 0,
+    "stage_late": 0,
+    "stage_missing": 0,
+    "stage_unexpected": 0,
+    "submit_events": 0,
+    "submit_true_probe_submissions": 0,
+    "submit_true_probe_submit_events": 0,
+    "submit_true_probe_walks_reported_filled": 0,
+    "submission_attempts": 0,
+    "dialogs_accepted": 0,
+    "safe_stop_correct": [
+      12,
+      12
+    ]
+  },
+  "fixtures": [
+    {
+      "fixture": "wiz_hidden",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_unmount",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_async",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_route",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            },
+            {
+              "text": "Back",
+              "tag": "button",
+              "type": "button",
+              "in_form": false,
+              "submit_type": false,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_guard",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_labels",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "cond_sync",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "sub"
+      ],
+      "discovered": [
+        "name",
+        "sub"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name"
+      ],
+      "filled": [
+        "name"
+      ],
+      "verified": [
+        "name"
+      ],
+      "app_committed": [
+        "name"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "sub": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "cond_async",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "discovered": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 3,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 1,
+        "found": 1
+      },
+      "answerable": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "filled": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "verified": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "app_committed": [
+        "name",
+        "sector",
+        "detail"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "detail": {
+          "expected": {
+            "step": 1,
+            "after": "sector"
+          },
+          "actual": {
+            "step": 1,
+            "round": 2
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "sector": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 3,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "controlled",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "email",
+        "city"
+      ],
+      "discovered": [
+        "name",
+        "email",
+        "city"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 3,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "email",
+        "city"
+      ],
+      "filled": [
+        "name",
+        "email",
+        "city"
+      ],
+      "verified": [
+        "name",
+        "email",
+        "city"
+      ],
+      "app_committed": [
+        "name",
+        "email",
+        "city"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 3,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "enable_after",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "email",
+        "phone"
+      ],
+      "discovered": [
+        "email",
+        "phone"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "email",
+        "phone"
+      ],
+      "filled": [
+        "email",
+        "phone"
+      ],
+      "verified": [
+        "email",
+        "phone"
+      ],
+      "app_committed": [
+        "email",
+        "phone"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "email": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "combobox",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "discovered": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 3,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "filled": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "verified": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "app_committed": [
+        "name",
+        "country",
+        "industry"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "country": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "industry": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 3,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "shadow_iframe",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 3,
+          "expected": 3
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email"
+      ],
+      "verified": [
+        "name",
+        "website",
+        "email"
+      ],
+      "app_committed": [
+        "name",
+        "website",
+        "email"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [
+        "phone"
+      ],
+      "unsupported_explained": [
+        "phone"
+      ],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "email": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 3,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "opaque_custom_element",
+          "frame_index": 0,
+          "element": "x-field",
+          "reason": "custom element exposes no readable shadow root (closed, or empty): its inner controls cannot be discovered"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "trap_submit",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "no_safe_next_control",
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "nav_dialog",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [
+        "confirm: Discard draft?"
+      ],
+      "dialogs_accepted": 0,
+      "confirm_calls": 1,
+      "expected_stop": "dialog_on_navigation",
+      "stop_reason": "dialog_on_navigation",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "dialog_on_navigation",
+          "step": 1,
+          "dialog": "confirm: Discard draft?",
+          "reason": "dismissed, not accepted"
+        }
+      ]
+    },
+    {
+      "fixture": "nav_reload",
+      "error": null,
+      "status": "FAILED",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [],
+      "app_committed": [],
+      "silent_divergence": [
+        "name",
+        "website"
+      ],
+      "values_lost": [
+        "name",
+        "website"
+      ],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "FAILED",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "document_navigation",
+      "stop_reason": "document_navigation",
+      "steps_visited": 1,
+      "reset_detected": [
+        "name",
+        "website"
+      ],
+      "planted_resets": [
+        "name",
+        "website"
+      ],
+      "notes": [
+        {
+          "kind": "document_navigation",
+          "step": 1,
+          "where": "after Next",
+          "reason": "the document changed under us while waiting for the page to settle; its state is uncertain"
+        }
+      ]
+    },
+    {
+      "fixture": "nav_reset",
+      "error": null,
+      "status": "FAILED",
+      "expected_discoverable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "discovered": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        },
+        "3": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 4,
+        "found": 4
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "verified": [
+        "name",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "app_committed": [
+        "name",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "silent_divergence": [
+        "website"
+      ],
+      "values_lost": [
+        "website"
+      ],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "FAILED",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "city": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "country": {
+          "expected": {
+            "step": 3
+          },
+          "actual": {
+            "step": 3,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "email": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "phone": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 6,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 3,
+      "reset_detected": [
+        "website"
+      ],
+      "planted_resets": [
+        "website"
+      ],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 3,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 3,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "attest",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "city",
+        "certify",
+        "signer"
+      ],
+      "discovered": [
+        "name",
+        "city",
+        "certify",
+        "signer"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        },
+        "2": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 2,
+        "found": 2
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "city"
+      ],
+      "filled": [
+        "name",
+        "city"
+      ],
+      "verified": [
+        "name",
+        "city"
+      ],
+      "app_committed": [
+        "name",
+        "city"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "certify": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "city": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "signer": {
+          "expected": {
+            "step": 2
+          },
+          "actual": {
+            "step": 2,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 4,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": null,
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 2,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 2,
+          "buttons_seen": [
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 2,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    },
+    {
+      "fixture": "trap_submit_button",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "submit_type_next_refused",
+      "stop_reason": "submit_type_next_refused",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "submit_type_next_refused",
+          "step": 1,
+          "button": "<button type=submit> 'Next': form submit control",
+          "buttons_seen": [
+            {
+              "text": "Next",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "the only next-step-looking button can submit the form or leave the page; refused without clicking"
+        }
+      ]
+    },
+    {
+      "fixture": "trap_submit_input",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "submit_type_next_refused",
+      "stop_reason": "submit_type_next_refused",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "submit_type_next_refused",
+          "step": 1,
+          "button": "<input type=submit> 'Continue': form submit control",
+          "buttons_seen": [
+            {
+              "text": "Continue",
+              "tag": "input",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "the only next-step-looking button can submit the form or leave the page; refused without clicking"
+        }
+      ]
+    },
+    {
+      "fixture": "trap_submit_default",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "submit_type_next_refused",
+      "stop_reason": "submit_type_next_refused",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "submit_type_next_refused",
+          "step": 1,
+          "button": "<button type=submit> 'Next': form submit control",
+          "buttons_seen": [
+            {
+              "text": "Next",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "the only next-step-looking button can submit the form or leave the page; refused without clicking"
+        }
+      ]
+    },
+    {
+      "fixture": "spa_submit_type_intercepted",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "submit_type_next_refused",
+      "stop_reason": "submit_type_next_refused",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "submit_type_next_refused",
+          "step": 1,
+          "button": "<button type=submit> 'Next': form submit control",
+          "buttons_seen": [
+            {
+              "text": "Next",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "the only next-step-looking button can submit the form or leave the page; refused without clicking"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_loading_forever",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [],
+      "discovered": [],
+      "missed": [],
+      "recall": null,
+      "recall_by_step": {},
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [],
+      "filled": [],
+      "verified": [],
+      "app_committed": [],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {},
+      "stage_counts": {
+        "on_time": 0,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "page_not_settled",
+      "stop_reason": "page_not_settled",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "page_not_settled",
+          "step": 1,
+          "where": "step start",
+          "waited_ms": 606,
+          "reason": "no quiet window of 150 ms within 600 ms (still loading, polling, or constantly re-rendering); nothing was filled or clicked on an unstable page"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_churn",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [],
+      "discovered": [],
+      "missed": [],
+      "recall": null,
+      "recall_by_step": {},
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [],
+      "filled": [],
+      "verified": [],
+      "app_committed": [],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {},
+      "stage_counts": {
+        "on_time": 0,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "page_not_settled",
+      "stop_reason": "page_not_settled",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "page_not_settled",
+          "step": 1,
+          "where": "step start",
+          "waited_ms": 604,
+          "reason": "no quiet window of 150 ms within 600 ms (still loading, polling, or constantly re-rendering); nothing was filled or clicked on an unstable page"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_churn_step2",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "page_not_settled",
+      "stop_reason": "page_not_settled",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "page_not_settled",
+          "step": 1,
+          "where": "after Next",
+          "waited_ms": 605,
+          "reason": "no quiet window of 150 ms within 600 ms (still loading, polling, or constantly re-rendering); nothing was filled or clicked on an unstable page"
+        }
+      ]
+    },
+    {
+      "fixture": "trap_submit_image",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "incomplete",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "submit_type_next_refused",
+      "stop_reason": "submit_type_next_refused",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "submit_type_next_refused",
+          "step": 1,
+          "button": "<input type=image> 'Next': form submit control",
+          "buttons_seen": [
+            {
+              "text": "Next",
+              "tag": "input",
+              "type": "image",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "the only next-step-looking button can submit the form or leave the page; refused without clicking"
+        }
+      ]
+    },
+    {
+      "fixture": "wiz_unfamiliar_next",
+      "error": null,
+      "status": "NEEDS_REVIEW",
+      "expected_discoverable": [
+        "name",
+        "website"
+      ],
+      "discovered": [
+        "name",
+        "website"
+      ],
+      "missed": [],
+      "recall": 1.0,
+      "recall_by_step": {
+        "1": {
+          "found": 2,
+          "expected": 2
+        }
+      },
+      "after_navigation": {
+        "expected": 0,
+        "found": 0
+      },
+      "conditional": {
+        "expected": 0,
+        "found": 0
+      },
+      "answerable": [
+        "name",
+        "website",
+        "email",
+        "phone",
+        "city",
+        "country"
+      ],
+      "filled": [
+        "name",
+        "website"
+      ],
+      "verified": [
+        "name",
+        "website"
+      ],
+      "app_committed": [
+        "name",
+        "website"
+      ],
+      "silent_divergence": [],
+      "values_lost": [],
+      "review_items_entered": [],
+      "unsupported_expected": [],
+      "unsupported_explained": [],
+      "submit_true_probe": {
+        "status": "NEEDS_REVIEW",
+        "outcome": "SKIPPED",
+        "completion": "unconfirmed",
+        "submissions": 0,
+        "submit_events": 0
+      },
+      "stage_report": {
+        "name": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        },
+        "website": {
+          "expected": {
+            "step": 1
+          },
+          "actual": {
+            "step": 1,
+            "round": 1
+          },
+          "verdict": "on_time"
+        }
+      },
+      "stage_counts": {
+        "on_time": 2,
+        "early": 0,
+        "late": 0,
+        "missing": 0,
+        "unexpected": 0
+      },
+      "submit_events": 0,
+      "submission_attempts": 0,
+      "dialogs_seen": [],
+      "dialogs_accepted": 0,
+      "confirm_calls": 0,
+      "expected_stop": "no_safe_next_control",
+      "stop_reason": "no_safe_next_control",
+      "steps_visited": 1,
+      "reset_detected": [],
+      "planted_resets": [],
+      "notes": [
+        {
+          "kind": "no_safe_next_control",
+          "step": 1,
+          "buttons_seen": [
+            {
+              "text": "Onward",
+              "tag": "button",
+              "type": "button",
+              "in_form": false,
+              "submit_type": false,
+              "disabled": false
+            },
+            {
+              "text": "Submit application",
+              "tag": "button",
+              "type": "submit",
+              "in_form": true,
+              "submit_type": true,
+              "disabled": false
+            }
+          ],
+          "reason": "no button on the page matches the allowed next-step labels (last step, or a label we will not press)"
+        },
+        {
+          "kind": "completion_unconfirmed",
+          "step": 1,
+          "reason": "no recognised next-step control: this is either the last step or a Next button we do not recognise, and the page does not say which"
+        }
+      ]
+    }
+  ]
+}

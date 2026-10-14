@@ -32,6 +32,9 @@ try:  # the pre-Phase-3C code has no policy module; that is the 'before' run
 except ImportError:
     DiscoveryPolicy = None
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from _provenance import RECIPE, pipeline_source_sha256
+
 BENCH = Path(__file__).resolve().parent.parent / "benchmarks" / "spa"
 
 
@@ -40,12 +43,9 @@ def _git(*a: str) -> str:
 
 
 def provenance() -> dict:
-    diff = _git("diff", "HEAD", "--", "formfill")
-    untracked = _git("ls-files", "--others", "--exclude-standard", "--", "formfill")
-    blob = diff + "\n" + "\n".join(f"{p}:{hashlib.sha256((ROOT / p).read_bytes()).hexdigest()}" for p in untracked.splitlines())
     import formfill
     return {"pipeline_module": str(Path(formfill.__file__).parent), "evaluated_commit": _git("rev-parse", "HEAD"), "pipeline_dirty": bool(_git("status", "--porcelain", "--", "formfill")),
-            "pipeline_diff_sha256": hashlib.sha256(blob.encode()).hexdigest() if blob.strip() else None}
+            "pipeline_diff_sha256": pipeline_source_sha256(ROOT), "hash_recipe": RECIPE}
 
 
 def classify_stage(expected: dict, actual: dict | None) -> str:

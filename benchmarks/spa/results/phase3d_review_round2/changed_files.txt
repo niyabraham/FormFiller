@@ -1,0 +1,11 @@
+A	benchmarks/spa/fixtures/w3d_blur_commit.html
+A	benchmarks/spa/fixtures/w3d_readonly_combobox.html
+A	benchmarks/spa/fixtures/w3d_styled_radio.html
+A	benchmarks/spa/ground_truth_3d.json
+A	docs/PHASE3D_WIDGET_COMMITMENT.md
+M	formfill/web/execute.py
+M	formfill/web/pipeline.py
+A	tests/web/test_widgets_3d.py
+A	tools/_provenance.py
+M	tools/evaluate_spa.py
+A	tools/evaluate_widgets3d.py

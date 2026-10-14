@@ -1,0 +1,865 @@
+diff --git a/benchmarks/spa/fixtures/w3d_blur_commit.html b/benchmarks/spa/fixtures/w3d_blur_commit.html
+new file mode 100644
+index 0000000..599826d
+--- /dev/null
++++ b/benchmarks/spa/fixtures/w3d_blur_commit.html
+@@ -0,0 +1,34 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><title>w3d_blur_commit</title>
++<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
++<body><h1>RFI supplier questionnaire</h1><div id="app">
++
++<div class="q"><label for="name">Legal company name</label><input id="name" type="text"></div>
++<div class="q" id="emailq"><label for="email">Contact email</label><input id="email" type="email"></div>
++<div id="slot"></div>
++<div id="tick" aria-hidden="true"></div>
++<script>
++// Mimics SurveyJS textUpdateMode "onBlur": typing (input events) changes only the DOM; the app's state is written on blur.
++// ?mode=delay : no email field (so Legal company name is the last field filled on the first pass); the dependent question renders 60 ms after the commit (asynchronous, still inside the quiet window)
++// ?mode=churn : the page re-renders a ticker every 30 ms forever, so it never goes quiet
++// ?mode=revert : the app rejects the committed value on blur and clears the field (a framework that normalises/resets).
++const mode = new URLSearchParams(location.search).get('mode');
++window.__state = {}; window.__commits = 0;
++function commit(key, el) {
++  if (mode === 'revert' && key === 'name') { el.value = ''; return; }
++  window.__state[key] = el.value; window.__commits++;
++  if (key === 'name') { if (mode === 'delay') setTimeout(render, 60); else render(); }
++}
++function render() {
++  const slot = document.getElementById('slot');
++  const has = !!window.__state.name, cur = document.getElementById('city');
++  if (has && !cur) {  // visibleIf "{name} notempty": the question does not exist in the DOM until the answer is committed
++    slot.innerHTML = '<div class="q"><label for="city">Headquarters city</label><input id="city" type="text"></div>';
++    document.getElementById('city').addEventListener('blur', e => commit('city', e.target));
++  } else if (!has && cur) slot.innerHTML = '';
++}
++if (mode === 'churn') setInterval(() => { document.getElementById('tick').textContent = String(performance.now()); }, 30);
++if (mode === 'delay') document.getElementById('emailq').remove();
++for (const k of ['name', 'email']) document.getElementById(k) && document.getElementById(k).addEventListener('blur', e => commit(k, e.target));
++</script>
++</div></body></html>
+diff --git a/benchmarks/spa/fixtures/w3d_readonly_combobox.html b/benchmarks/spa/fixtures/w3d_readonly_combobox.html
+new file mode 100644
+index 0000000..8416039
+--- /dev/null
++++ b/benchmarks/spa/fixtures/w3d_readonly_combobox.html
+@@ -0,0 +1,40 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><title>w3d_readonly_combobox</title>
++<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
++<body><h1>RFI supplier questionnaire</h1><div id="app">
++
++<div class="q"><label id="cl">Headquarters country</label>
++  <div style="position:relative;display:inline-block">
++    <input id="country" role="combobox" readonly aria-controls="country_list" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="cl" placeholder="Select..." style="width:14rem">
++    <div id="cover" style="position:absolute;inset:0;cursor:pointer"></div>
++  </div></div>
++<script>
++const inp = document.getElementById('country');
++window.__state = {}; window.__sideEffects = {clicks: 0, submits: 0};
++// ?mode=dead : list never opens.  ?mode=overlap / overlap_nav : a Submit / Continue button is drawn over the combobox's centre (no wrapper).
++// ?mode=overlap_dead : overlap + dead.  Side effects of the overlapping control are counted in window.__sideEffects.
++const MODE = new URLSearchParams(location.search).get('mode') || '';
++const DEAD = MODE === 'dead' || MODE === 'overlap_dead';
++if (MODE.startsWith('overlap')) {
++  document.getElementById('cover').remove();
++  const form = document.createElement('form'); form.addEventListener('submit', e => { e.preventDefault(); window.__sideEffects.submits++; });
++  const b = document.createElement('button'); b.textContent = MODE === 'overlap_nav' ? 'Continue' : 'Submit application';
++  b.type = MODE === 'overlap_nav' ? 'button' : 'submit'; b.style.cssText = 'position:absolute;inset:0;z-index:5;width:100%;height:100%';
++  b.addEventListener('click', () => { window.__sideEffects.clicks++; });
++  form.append(b); inp.parentElement.append(form);
++}
++const OPTS = ['Germany', 'United Kingdom', 'United States'];
++function close() { const l = document.getElementById('country_list'); if (l) l.remove(); inp.setAttribute('aria-expanded', 'false'); }
++function open() {
++  if (document.getElementById('country_list')) return close();
++  const ul = document.createElement('ul'); ul.id = 'country_list'; ul.setAttribute('role', 'listbox'); ul.style.cssText = 'border:1px solid #888;list-style:none;padding:0;width:14rem';
++  for (const o of OPTS) { const li = document.createElement('li'); li.setAttribute('role', 'option'); li.textContent = o; li.style.padding = '.3rem';
++    li.addEventListener('click', () => { window.__state.country = o; inp.value = o; close(); }); ul.append(li); }
++  document.body.append(ul); inp.setAttribute('aria-expanded', 'true');
++}
++if (!DEAD) {  // ?mode=dead : a readonly combobox whose list can never be opened (no handlers): an unsupported widget
++  const cv = document.getElementById('cover'); if (cv) cv.addEventListener('click', open);
++  inp.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'Enter') { e.preventDefault(); open(); } });
++}
++</script>
++</div></body></html>
+diff --git a/benchmarks/spa/fixtures/w3d_styled_radio.html b/benchmarks/spa/fixtures/w3d_styled_radio.html
+new file mode 100644
+index 0000000..f511471
+--- /dev/null
++++ b/benchmarks/spa/fixtures/w3d_styled_radio.html
+@@ -0,0 +1,19 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><title>w3d_styled_radio</title>
++<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
++<body><h1>RFI supplier questionnaire</h1><div id="app">
++
++<style>.opt{position:relative;display:flex;align-items:center;gap:.4rem;padding:.2rem 0}
++.opt input{position:absolute;width:1px;height:1px;margin:0;left:2px;top:50%;opacity:0}
++.opt .dec{position:relative;z-index:2;display:inline-block;width:1rem;height:1rem;border:2px solid #555;border-radius:50%}
++.opt input:checked + label .dec{background:#06c}</style>
++<div class="q" role="radiogroup" aria-labelledby="sl"><div id="sl">Industry sector</div>
++  <div class="opt"><input type="radio" name="sector" id="r1" value="Manufacturing"><label for="r1"><span class="dec"></span> Manufacturing</label></div>
++  <div class="opt"><input type="radio" name="sector" id="r2" value="Retail"><label for="r2"><span class="dec"></span> Retail</label></div>
++  <div class="opt"><input type="radio" name="sector" id="r3" value="Software"><label for="r3"><span class="dec"></span> Software</label></div>
++</div>
++<script>
++window.__state = {};
++document.querySelectorAll('input[name=sector]').forEach(r => r.addEventListener('change', () => { window.__state.sector = r.value; }));
++</script>
++</div></body></html>
+diff --git a/benchmarks/spa/ground_truth_3d.json b/benchmarks/spa/ground_truth_3d.json
+new file mode 100644
+index 0000000..5d17a56
+--- /dev/null
++++ b/benchmarks/spa/ground_truth_3d.json
+@@ -0,0 +1,92 @@
++{
++  "w3d_blur_commit": {
++    "desc": "text inputs commit app state on blur only; the City question exists only after Legal company name is committed",
++    "expected": {
++      "name": "Acme Robotics Ltd",
++      "email": "info@acme-robotics.example",
++      "city": "Leeds"
++    },
++    "conditional": [
++      "city"
++    ]
++  },
++  "w3d_blur_commit?mode=revert": {
++    "desc": "the app clears the field on blur: DOM and state both end empty; verification must NOT report success",
++    "expected": {},
++    "conditional": []
++  },
++  "w3d_readonly_combobox": {
++    "desc": "readonly ARIA combobox, cover element takes the pointer, portal listbox",
++    "expected": {
++      "country": "United Kingdom"
++    },
++    "side_effects_expected": {
++      "clicks": 0,
++      "submits": 0
++    }
++  },
++  "w3d_readonly_combobox?mode=dead": {
++    "desc": "readonly combobox that never opens: must stop quickly with a clear reason",
++    "expected": {},
++    "side_effects_expected": {
++      "clicks": 0,
++      "submits": 0
++    }
++  },
++  "w3d_styled_radio": {
++    "desc": "1x1 native radios under an overlaying decorator; selectable through the label",
++    "expected": {
++      "sector": "Manufacturing"
++    }
++  },
++  "w3d_blur_commit?mode=delay": {
++    "desc": "no email field; dependent city question renders 60 ms after the name commit (inside the 150 ms quiet window)",
++    "expected": {
++      "name": "Acme Robotics Ltd",
++      "city": "Leeds"
++    },
++    "conditional": [
++      "city"
++    ]
++  },
++  "w3d_blur_commit?mode=churn": {
++    "desc": "page re-renders every 30 ms forever: never settles; fill is reported with an UNSETTLED warning, status NEEDS_REVIEW (evaluator runs default 1500 ms cap)",
++    "expected": {
++      "name": "Acme Robotics Ltd",
++      "email": "info@acme-robotics.example",
++      "city": "Leeds"
++    },
++    "conditional": [
++      "city"
++    ],
++    "expect_unsettled": true
++  },
++  "w3d_readonly_combobox?mode=overlap": {
++    "desc": "a Submit button is drawn over the combobox centre: click refused, keyboard opens the list; the button must receive no click",
++    "expected": {
++      "country": "United Kingdom"
++    },
++    "side_effects_expected": {
++      "clicks": 0,
++      "submits": 0
++    }
++  },
++  "w3d_readonly_combobox?mode=overlap_nav": {
++    "desc": "a 'Continue' button is drawn over the combobox centre: click refused, keyboard opens the list; no click on the button",
++    "expected": {
++      "country": "United Kingdom"
++    },
++    "side_effects_expected": {
++      "clicks": 0,
++      "submits": 0
++    }
++  },
++  "w3d_readonly_combobox?mode=overlap_dead": {
++    "desc": "Submit button over the centre AND no keyboard support: safe unsupported stop, no click",
++    "expected": {},
++    "side_effects_expected": {
++      "clicks": 0,
++      "submits": 0
++    }
++  }
++}
+diff --git a/docs/PHASE3D_WIDGET_COMMITMENT.md b/docs/PHASE3D_WIDGET_COMMITMENT.md
+new file mode 100644
+index 0000000..0103137
+--- /dev/null
++++ b/docs/PHASE3D_WIDGET_COMMITMENT.md
+@@ -0,0 +1,53 @@
++# Phase 3D: widget commitment and verification
++
++Base: Phase 3C commit `1d1dbd0` (branch `phase3d-widget-commitment`, uncommitted). Baseline: `PUBLIC_DEMO_VALIDATION.md`.
++Local, generic SurveyJS-compatible fixtures only. **This says nothing about the reliability of any real portal.**
++
++## Design (all in `formfill/web/execute.py`; discovery, retrieval, planning, navigation untouched)
++1. **Blur-commit.** After every text-like `fill()` the field is blurred (a real focus change) and the DOM is allowed to go quiet
++   (<=1.5 s cap, 120 ms quiet window). Frameworks that commit on blur then update state and render conditional questions, which
++   the existing round loop discovers. A DOM value is evidence of what the page holds, **not** proof the app recorded it; the
++   pipeline cannot see app state, so app-state commitment is reported only where a fixture publishes `window.__state`.
++2. **Readonly combobox.** Detected (`readOnly`/`aria-readonly`) before `fill()`. Opened as a person would: click the point where it
++   is drawn (a cover element takes the pointer), then focus + ArrowDown. The option is clicked, then `aria-expanded` and the shown
++   value are verified. If neither opens a list: `unsupported readonly combobox ...` after <=3 s instead of a 5 s `fill()` timeout.
++3. **Styled radio.** If the native input is hit-testable it is `check()`ed as before; otherwise its accessible `<label>` is clicked and
++   `checked` verified. No JavaScript value setting. No label: clear "unsupported styled radio" error.
++
++## Evidence (`benchmarks/spa/results/phase3d/`)
++| | fill ok | DOM read-back | app state | conditional found+filled |
++|---|---|---|---|---|
++| 3C (before) | 3/5 | 3/5 | 2/5 | 1/1 (DOM ok, **app state not committed**) |
++| 3D (after) | 5/5 | 5/5 | 5/5 | 1/1 (committed) |
++Before: readonly combobox and styled radio each burn the full 5 s timeout. Failure-mode fixtures: `?mode=revert` (app clears the field on
++blur) is reported unverified; `?mode=dead` (list never opens) stops with a clear reason in ~3 s.
++Non-regression: 26 SPA fixtures identical (only settle-ms jitter); dev 195/195 and held-out outcomes unchanged (dev still has its 1 disputed
++unsafe answer); `demo.py` PASS; `demo_web.py` output identical apart from ids/timestamps; suite 398 passed, 2 xfailed (391 + 7 new).
++
++## Remaining limitations
++- Checkbox/checkbox-group styled like radios are not given the label path (out of scope; same fix would apply).
++- Blur is applied to every text-like fill in default mode too; a page that validates/rewrites on blur will now do so (verification reports it).
++- Custom comboboxes that open only on hover/other gestures, or filter-as-you-type readonly lists, are reported unsupported.
++- Shadow-root/iframe navigation-button search and the repeated "no longer in the DOM" note are unchanged (out of scope).
++- App-state commitment is unmeasurable on real sites; only DOM read-back is available there.
++
++## Review round 2 (still uncommitted; evidence in `benchmarks/spa/results/phase3d_review_round2/`)
++**Guarded readonly-combobox open** (`execute.py::_open_readonly_combobox`, `_CLICK_TARGET_JS`). Before any click the element at the combobox centre is
++hit-tested. The click goes ahead only if that element is the combobox, a wrapper containing it, or a wrapper in its immediate container that holds no
++other control. Buttons, links, tabs, other inputs/selects/textareas, `[tabindex]` elements, form/body-level wrappers, or nothing, are refused: nothing is
++clicked and the keyboard path (focus + ArrowDown) is tried; if that fails the error says `click refused: <why> (<target>)`. No JavaScript sets widget state.
++Fixtures: `w3d_readonly_combobox.html` (decorative wrapper: click path), `?mode=overlap` (Submit button over the centre), `?mode=overlap_nav`
++(Continue button), `?mode=overlap_dead` (button + no keyboard support). Mutation check: with the guard disabled the overlap fixtures record 1 click
++(and 1 submit event); with it enabled 0.
++**Delayed conditional rendering and honest settling.** `_commit` now distinguishes reaching the 150 ms quiet window from hitting the 1500 ms cap.
++The cap case returns a warning; `_fill_one` stores it in the item's `detail`, `run_form` adds a `RunResult.warning`, the status becomes `NEEDS_REVIEW`
++(never `FILLED`) and `submit=True` is skipped. Normal pages that go quiet promptly produce no warning (asserted in 3 fixtures × 2 modes).
++Fixtures: `w3d_blur_commit.html` (synchronous reveal), `?mode=delay` (no email field, so the name is the last answer; city appears 60 ms after the commit;
++with the quiet window cut to 20 ms the city is missed, with 150 ms it is found), `?mode=churn` (ticker every 30 ms: unsettled).
++Limit: a reveal that starts later than 150 ms after the blur is not waited for in default mode.
++**Policy mode.** Readonly-combobox, styled-radio, blur, delayed-reveal and ordinary/controlled/combobox tests run with `policy=None` and
++`DiscoveryPolicy()`; they check matching/fill/DOM read-back/app state where exposed, and no submission side effect. Exceptions: `?mode=churn`
++(policy mode would stop `page_not_settled` by design) and the `overlap_nav` button (a policy walk may legitimately press a button labelled Continue).
++**Provenance.** Both evaluators now use `tools/_provenance.py` (recipe `formfill-src-v2`). Earlier outputs used `v1a` (SPA) / `v1b` (widget), the same diff
++with/without a trailing newline; they are left as recorded.
++**Wall-clock assertion removed.** The unsupported-combobox test now asserts our own error text and the absence of a Playwright "Timeout", not elapsed time.
+diff --git a/formfill/web/execute.py b/formfill/web/execute.py
+index 3c3881f..67588e4 100644
+--- a/formfill/web/execute.py
++++ b/formfill/web/execute.py
+@@ -48,12 +48,15 @@ def _locator(page: Page, control: Control):
+     return page.frames[control.frame_index].locator(f'[data-ff-id="{control.control_id}"]')
+ 
+ 
+-def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 5000) -> None:
+-    """Enter one validated answer. Raises on any failure; the caller records it."""
++def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 5000) -> list[str]:
++    """Enter one validated answer. Raises on any failure; the caller records it. Returns warnings (normally empty):
++    currently only UNSETTLED, when the page was still changing after the field was left."""
+     loc = _locator(page, control)
+     kind = control.kind
++    warnings: list[str] = []
+     if kind in _TEXTLIKE:
+         loc.fill(str(answer), timeout=timeout_ms)
++        warnings += _commit(page, control, loc, timeout_ms)
+     elif kind == "combobox":
+         _fill_combobox(page, control, loc, answer, timeout_ms)
+     elif kind == "select":
+@@ -63,8 +66,8 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
+     elif kind == "radio":
+         for member in loc.all():
+             if member.get_attribute("value") == answer:
+-                member.check(timeout=timeout_ms)
+-                return
++                _select_radio(page, control, member, timeout_ms)
++                return warnings
+         raise ValueError(f"no radio option with value {answer!r}")
+     elif kind == "checkbox":
+         loc.set_checked(bool(answer), timeout=timeout_ms)
+@@ -73,24 +76,146 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
+             member.set_checked(member.get_attribute("value") in answer, timeout=timeout_ms)
+     else:
+         raise ValueError(f"unsupported control kind {kind!r}")
++    return warnings
++
++
++# After leaving a field, wait for the DOM to be quiet for _QUIET_MS (conditional questions render in response to the
++# commit). Reaching the quiet window is "settled"; hitting _SETTLE_MAX_MS first is NOT, and is reported as UNSETTLED.
++# A reveal that starts later than _QUIET_MS after the blur (a slow timer, a request) is not waited for in default mode.
++_QUIET_MS = 150
++_SETTLE_MAX_MS = 1500
++UNSETTLED = "page did not go quiet"  # prefix of the ItemResult.detail / RunResult warning recorded for an unsettled commit
++
++_QUIET_JS = """
++([quiet, maxms]) => new Promise(resolve => {
++  let last = performance.now(); const t0 = last;
++  const mo = new MutationObserver(() => { last = performance.now(); });
++  mo.observe(document, {subtree: true, childList: true, attributes: true, characterData: true});
++  const tick = () => { const now = performance.now();
++    if (now - last >= quiet) { mo.disconnect(); resolve({settled: true, waited: Math.round(now - t0)}); }
++    else if (now - t0 >= maxms) { mo.disconnect(); resolve({settled: false, waited: Math.round(now - t0)}); }
++    else setTimeout(tick, 20); };
++  tick();
++})
++"""
++
++
++def _commit(page: Page, control: Control, loc, timeout_ms: int) -> list[str]:
++    """Leave the field the way a person does, so frameworks that commit on blur/change record the answer, then let
++    the DOM go quiet. Blur is a real focus change, not a synthetic event; it moves focus nowhere. The DOM value
++    afterwards is evidence of what the page holds, NOT proof the application recorded it. Returns [UNSETTLED ...] when
++    the page never went quiet within _SETTLE_MAX_MS (dependent questions may not have rendered yet)."""
++    loc.blur(timeout=timeout_ms)
++    try:
++        st = page.frames[control.frame_index].evaluate(_QUIET_JS, [_QUIET_MS, _SETTLE_MAX_MS])
++    except Exception:  # noqa: BLE001 - a frame that navigated away: nothing left to settle
++        return []
++    if st.get("settled", True):
++        return []
++    return [f"{UNSETTLED} within {_SETTLE_MAX_MS} ms after leaving the field; questions that depend on this answer may not have appeared yet"]
++
++
++_RADIO_HIT_JS = """
++e => { const r = e.getBoundingClientRect(); if (!r.width && !r.height) return false;
++  const x = r.left + r.width / 2, y = r.top + r.height / 2;
++  const t = e.getRootNode().elementFromPoint(x, y); return t === e || e.contains(t); }
++"""
++
++
++def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None:
++    """Select one radio. A native input that is hit-testable is checked as before. A styled radio (tiny/hidden input
++    under a decorator that takes the pointer) is selected through its accessible label, the visible target a person
++    clicks. The result is verified by the checked state; nothing is set through JavaScript."""
++    if member.evaluate(_RADIO_HIT_JS):
++        member.check(timeout=timeout_ms)
++        return
++    label = member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element()
++    if label is None:
++        raise ValueError("unsupported styled radio: the native input is covered and it has no label to click")
++    label.click(timeout=timeout_ms)
++    if not member.is_checked():
++        raise ValueError("styled radio: clicking its label did not select it (selection not confirmed)")
++
++
++_OPEN_TIMEOUT_MS = 1500
++
++# What would receive a click at the centre of the combobox? Returns {ok, target, reason}. A click is allowed only when
++# the target is the combobox itself or a plain wrapper that belongs to it (contains it, or sits in its immediate container
++# that holds no other control). Anything that could navigate, submit or act on something else (button, link, tab, other
++# input/select/textarea, or a wrapper that also holds other controls) is refused; the keyboard path is used instead.
++_CLICK_TARGET_JS = """
++e => {
++  const r = e.getBoundingClientRect(); const x = r.left + r.width / 2, y = r.top + r.height / 2;
++  const t = e.getRootNode().elementFromPoint(x, y);
++  const name = n => n ? `<${n.tagName.toLowerCase()}${n.getAttribute('role') ? ' role=' + n.getAttribute('role') : ''}${n.type ? ' type=' + n.type : ''}> ` +
++    ((n.textContent || n.value || '').replace(/\\s+/g, ' ').trim().slice(0, 30)) : 'nothing';
++  if (!t) return {ok: false, target: 'nothing', reason: 'nothing is drawn at the click point'};
++  if (t === e) return {ok: true, target: name(t)};
++  const CONTROLS = 'button,a[href],summary,input,select,textarea,[role=button],[role=link],[role=tab],[role=menuitem],[role=option],[tabindex]';
++  const risky = t.closest(CONTROLS);
++  if (risky && risky !== e && !risky.contains(e)) return {ok: false, target: name(risky), reason: 'the click point is covered by another control'};
++  const BAD = ['BODY', 'HTML', 'FORM', 'MAIN', 'FIELDSET', 'SECTION'];
++  const owns = c => c && !BAD.includes(c.tagName) && Array.from(c.querySelectorAll(CONTROLS)).every(x => x === e || e.contains(x));
++  if (t.contains(e) && owns(t)) return {ok: true, target: name(t)};
++  const box = e.parentElement;
++  if (box && box.contains(t) && owns(box)) return {ok: true, target: name(t)};
++  return {ok: false, target: name(t), reason: 'the click point is covered by an element that is not part of this combobox'};
++}
++"""
++
++
++def _open_readonly_combobox(page: Page, control: Control, loc, frame, timeout_ms: int):
++    """A readonly combobox cannot be typed into. Open it the way a person does: click where it is drawn (a wrapper
++    usually sits over the input, so click the point rather than the element) but ONLY after checking what would receive
++    the click (_CLICK_TARGET_JS); if that is another control, or cannot be identified as part of this combobox, nothing
++    is clicked and the keyboard path (focus + ArrowDown) is used instead. Returns the visible listbox; raises a clear
++    'unsupported' error if no safe interaction opens one."""
++    wait = min(timeout_ms, _OPEN_TIMEOUT_MS)
++    listbox = frame.locator("[role=listbox]:visible").first
++    loc.scroll_into_view_if_needed(timeout=timeout_ms)
++    box = loc.bounding_box()
++    refused = ""
++    if box and box["width"] and box["height"]:
++        hit = loc.evaluate(_CLICK_TARGET_JS)
++        if hit["ok"]:
++            page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
++            try:
++                listbox.wait_for(state="visible", timeout=wait)
++                return listbox
++            except PlaywrightTimeout:
++                pass
++        else:
++            refused = f"; click refused: {hit['reason']} ({hit['target']})"
++    loc.focus(timeout=timeout_ms)
++    page.keyboard.press("ArrowDown")
++    try:
++        listbox.wait_for(state="visible", timeout=wait)
++        return listbox
++    except PlaywrightTimeout:
++        raise ValueError("unsupported readonly combobox: it cannot be typed into and no safe interaction opened its option list "
++                         f"(ArrowDown tried{refused})") from None
+ 
+ 
+ def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: int) -> None:
+-    """ARIA combobox: open it (type into it, if it is an input), pick the option whose text equals the answer,
++    """ARIA combobox: open it (type into it, if it is an editable input), pick the option whose text equals the answer,
+     and require the popup to close. Typing alone is not an answer: the app commits on selection."""
+     frame = page.frames[control.frame_index]
+     is_input = loc.evaluate("e => e.tagName === 'INPUT'")
+-    if is_input:
++    readonly = bool(loc.evaluate("e => e.readOnly === true || e.getAttribute('aria-readonly') === 'true'")) if is_input else False
++    if readonly:
++        listbox = _open_readonly_combobox(page, control, loc, frame, timeout_ms)
++    elif is_input:
+         loc.fill(str(answer), timeout=timeout_ms)
+     else:
+         loc.click(timeout=timeout_ms)
+-    listbox = frame.locator("[role=listbox]:visible").first
+-    try:
+-        listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
+-    except PlaywrightTimeout:
+-        if is_input:
+-            return  # free-text combobox with no popup: the typed text stays, read-back decides
+-        raise ValueError("combobox opened no listbox") from None
++    if not readonly:
++        listbox = frame.locator("[role=listbox]:visible").first
++        try:
++            listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
++        except PlaywrightTimeout:
++            if is_input:
++                return  # free-text combobox with no popup: the typed text stays, read-back decides
++            raise ValueError("combobox opened no listbox") from None
+     want = str(answer).strip().casefold()
+     options = listbox.locator("[role=option]")
+     for i in range(options.count()):
+@@ -102,6 +227,8 @@ def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: i
+         raise ValueError(f"no option {answer!r} in the combobox list")
+     if loc.get_attribute("aria-expanded") == "true":
+         raise ValueError("combobox list still open after selecting: selection not confirmed")
++    if readonly and (loc.input_value() or "").strip().casefold() != want:
++        raise ValueError(f"readonly combobox shows {loc.input_value()!r} after selecting {answer!r}: selection not confirmed")
+ 
+ 
+ def read_back(page: Page, control: Control) -> Observed:
+diff --git a/formfill/web/pipeline.py b/formfill/web/pipeline.py
+index d8496ca..40676c5 100644
+--- a/formfill/web/pipeline.py
++++ b/formfill/web/pipeline.py
+@@ -21,7 +21,7 @@ from playwright.sync_api import Page
+ 
+ from formfill.web import steps as _steps
+ from formfill.web.discover import discover
+-from formfill.web.execute import fill_control, matches, read_back
++from formfill.web.execute import UNSETTLED, fill_control, matches, read_back
+ from formfill.web.execute import submit as submit_form
+ from formfill.web.models import AnswerPlanItem, Control
+ from formfill.web.plan import build_plan
+@@ -83,6 +83,10 @@ def run_form(
+             warnings.append(f"navigation stopped early ({navigation['stop_reason']}); later steps were not filled and the form was not submitted")
+     if hidden:
+         warnings.append(f"{len(hidden)} control(s) stayed hidden and were not asked")
++    unsettled = [i for i in items.values() if i.detail.startswith(UNSETTLED)]
++    if unsettled:
++        warnings.append(f"{len(unsettled)} answer(s) were entered while the page was still changing ({UNSETTLED} after leaving the field); "
++                        "questions that depend on them may not have been discovered - review before submitting")
+     out = Path(out_dir) if out_dir else None
+     artifacts: dict = {}
+     if out:
+@@ -94,7 +98,9 @@ def run_form(
+     if submit:
+         blockers = [i for i in items.values() if i.plan.status == "REVIEW" and i.plan.required]
+         broken = [i for i in items.values() if i.plan.status == "ANSWER" and i.verified is False]
+-        if incomplete:
++        if unsettled:
++            submission = {"attempted": False, "outcome": "SKIPPED", "detail": f"{len(unsettled)} answer(s) were entered on a page that never settled"}
++        elif incomplete:
+             submission = {"attempted": False, "outcome": "SKIPPED",
+                           "detail": (f"navigation stopped early ({navigation['stop_reason']}); the form was not completed"
+                                        if navigation["completion"] == "incomplete" else
+@@ -109,6 +115,8 @@ def run_form(
+                 artifacts["screenshot_after_submit"] = str(out / "after_submit.png")
+ 
+     status = overall_status(list(items.values()), submission if submit else None)
++    if unsettled and status == "FILLED":
++        status = "NEEDS_REVIEW"  # an unsettled page may hide dependent questions: never "FILLED"
+     if incomplete and status in ("FILLED", "SUBMITTED", "SUBMITTED_UNCONFIRMED"):
+         status = "NEEDS_REVIEW"  # a walk cut short is never "FILLED"
+     result = RunResult(
+@@ -314,10 +322,10 @@ def _fill_one(page: Page, control: Control, plan: AnswerPlanItem, timeout_ms: in
+     if plan.status != "ANSWER":
+         return ItemResult(plan=plan)
+     try:
+-        fill_control(page, control, plan.answer, timeout_ms)
++        warnings = fill_control(page, control, plan.answer, timeout_ms) or []
+     except Exception as exc:  # noqa: BLE001 - recorded per item, run continues
+         return ItemResult(plan=plan, filled=False, detail=f"fill failed: {str(exc).splitlines()[0]}")
+-    return ItemResult(plan=plan, filled=True)
++    return ItemResult(plan=plan, filled=True, detail="; ".join(warnings))
+ 
+ 
+ def run_url(url: str, source_path: str | Path, *, out_dir: str | Path | None = None, trace: bool = True,
+diff --git a/tests/web/test_widgets_3d.py b/tests/web/test_widgets_3d.py
+new file mode 100644
+index 0000000..eb159f3
+--- /dev/null
++++ b/tests/web/test_widgets_3d.py
+@@ -0,0 +1,158 @@
++"""Phase 3D: widget commitment and verification against SurveyJS-compatible local fixtures (benchmarks/spa/fixtures/w3d_*).
++
++Three separate things are asserted and must not be conflated:
++  DOM read-back   what the page's own elements hold afterwards (what the pipeline can observe in any app)
++  app state       what the application recorded (window.__state; only measurable because these fixtures expose it)
++  discovery       whether a conditional question that depends on a commit appeared and was answered
++Generic local fixtures say nothing about the reliability of any real portal."""
++
++import json
++from pathlib import Path
++
++import pytest
++
++from formfill.web import execute
++from formfill.web.pipeline import run_form
++from formfill.web.steps import DiscoveryPolicy
++
++pytestmark = pytest.mark.browser
++
++BENCH = Path(__file__).resolve().parents[2] / "benchmarks" / "spa"
++SOURCE = json.loads((BENCH / "source.json").read_text())
++
++import sys
++
++sys.path.insert(0, str(BENCH.parents[1]))
++from benchmarks.spa.server import serve
++
++
++@pytest.fixture(scope="module")
++def base():
++    with serve() as url:
++        yield url
++
++
++@pytest.fixture
++def run(page, base):
++    def _run(fid, policy=False, **kw):
++        page.goto(f"{base}/{fid}")
++        res = run_form(page, SOURCE, policy=DiscoveryPolicy() if policy else None, **kw)
++        return res, page.evaluate("() => window.__state || {}"), page
++
++    return _run
++
++
++MODES = pytest.mark.parametrize("policy", [False, True], ids=["policy=None", "policy=DiscoveryPolicy()"])
++
++
++def by_label(res, text):
++    return next(i for i in res.items if text.lower() in i.plan.question.lower())
++
++
++def no_submission(page, res):
++    """No form submit event, no submission attempt recorded by the pipeline, and (policy mode) the page-side submit counter is 0."""
++    assert res.submission == {} and page.evaluate("() => window.__ffSubmits || 0") == 0
++
++
++@MODES
++def test_blur_commit_reaches_app_state_and_reveals_conditional(run, policy):
++    res, state, page = run("w3d_blur_commit.html", policy=policy)
++    assert state == {"name": "Acme Robotics Ltd", "email": "info@acme-robotics.example", "city": "Leeds"}  # app state
++    assert all(by_label(res, k).verified for k in ("company name", "email", "city"))  # DOM read-back
++    assert page.input_value("#city") == "Leeds"  # conditional field discovered and filled
++    assert not any(execute.UNSETTLED in w for w in res.warnings)  # a normal page that goes quiet promptly is not flagged
++    no_submission(page, res)
++
++
++@MODES
++def test_blur_commit_delayed_reveal_is_discovered_and_filled(run, policy):
++    # no email field, so the name is the last answer of the first pass; city renders 60 ms after its commit
++    res, state, page = run("w3d_blur_commit.html?mode=delay", policy=policy)
++    assert state == {"name": "Acme Robotics Ltd", "city": "Leeds"}
++    assert state["city"] == "Leeds" and by_label(res, "city").verified and page.input_value("#city") == "Leeds"
++    assert not any(execute.UNSETTLED in w for w in res.warnings)
++
++
++def test_unsettled_page_is_reported_not_treated_as_settled(run, monkeypatch):
++    monkeypatch.setattr(execute, "_SETTLE_MAX_MS", 300)  # a page that re-renders every 30 ms never reaches the 150 ms quiet window
++    res, state, _ = run("w3d_blur_commit.html?mode=churn")
++    item = by_label(res, "company name")
++    assert item.filled and item.detail.startswith(execute.UNSETTLED)
++    assert any(execute.UNSETTLED in w for w in res.warnings) and res.status == "NEEDS_REVIEW"  # never FILLED
++    assert state["name"] == "Acme Robotics Ltd"  # the answer itself still committed; only completeness is in doubt
++
++
++def test_unsettled_page_blocks_submit(run, monkeypatch):
++    monkeypatch.setattr(execute, "_SETTLE_MAX_MS", 300)
++    res, _, _ = run("w3d_blur_commit.html?mode=churn", submit=True)
++    assert res.submission["outcome"] == "SKIPPED" and res.status == "NEEDS_REVIEW"
++
++
++def test_blur_revert_is_not_reported_as_success(run):
++    res, state, _ = run("w3d_blur_commit.html?mode=revert")
++    item = by_label(res, "company name")
++    assert not item.verified and "name" not in state
++
++
++@MODES
++def test_readonly_combobox_option_is_picked_and_committed(run, policy):
++    res, state, page = run("w3d_readonly_combobox.html", policy=policy)  # decorative wrapper over the input: still clickable
++    item = by_label(res, "country")
++    assert item.filled and item.verified
++    assert state["country"] == "United Kingdom" and page.input_value("#country") == "United Kingdom"
++    assert page.evaluate("() => window.__sideEffects") == {"clicks": 0, "submits": 0}
++    no_submission(page, res)
++
++
++@MODES
++def test_unopenable_readonly_combobox_stops_with_clear_reason(run, policy):
++    res, state, page = run("w3d_readonly_combobox.html?mode=dead", policy=policy, timeout_ms=5000)
++    item = by_label(res, "country")
++    # our own error (not Playwright's 5 s action timeout); asserted on content, not on elapsed wall-clock time
++    assert not item.filled and item.detail.startswith("fill failed: unsupported readonly combobox") and "Timeout" not in item.detail
++    assert "country" not in state
++    no_submission(page, res)
++
++
++@MODES
++def test_overlapping_submit_button_is_never_clicked_keyboard_opens_list(run, policy):
++    res, state, page = run("w3d_readonly_combobox.html?mode=overlap", policy=policy)
++    item = by_label(res, "country")
++    assert item.filled and item.verified and state["country"] == "United Kingdom"  # opened with the keyboard instead
++    assert page.evaluate("() => window.__sideEffects") == {"clicks": 0, "submits": 0}  # the Submit button got no click, no submit
++    no_submission(page, res)
++
++
++@MODES
++def test_overlapping_submit_button_and_no_keyboard_support_is_a_safe_unsupported_stop(run, policy):
++    res, state, page = run("w3d_readonly_combobox.html?mode=overlap_dead", policy=policy)
++    item = by_label(res, "country")
++    assert not item.filled and "click refused" in item.detail and "Submit application" in item.detail and "Timeout" not in item.detail
++    assert page.evaluate("() => window.__sideEffects") == {"clicks": 0, "submits": 0} and "country" not in state
++    no_submission(page, res)
++
++
++def test_overlapping_navigation_button_is_never_clicked(run):
++    # default mode only: with a policy the walk is allowed to press a button labelled Continue, which would blur this test
++    for mode in ("overlap_nav", "overlap_dead"):
++        _, _, page = run(f"w3d_readonly_combobox.html?mode={mode}")
++        assert page.evaluate("() => window.__sideEffects") == {"clicks": 0, "submits": 0}, mode
++
++
++@MODES
++def test_styled_radio_selected_through_label_not_forced(run, policy):
++    res, state, page = run("w3d_styled_radio.html", policy=policy, timeout_ms=3000)
++    item = by_label(res, "sector")
++    assert item.filled and item.verified
++    assert state["sector"] == "Manufacturing" and page.is_checked("#r1") and not page.is_checked("#r2")
++    no_submission(page, res)
++
++
++@MODES
++@pytest.mark.parametrize("fid", ["controlled", "cond_sync", "combobox"])
++def test_ordinary_and_controlled_inputs_unchanged(page, base, fid, policy):
++    page.goto(f"{base}/{fid}.html")
++    res = run_form(page, SOURCE, policy=DiscoveryPolicy() if policy else None)
++    assert any(i.verified for i in res.items), fid
++    assert not any(execute.UNSETTLED in w for w in res.warnings)
++    no_submission(page, res)
+diff --git a/tools/_provenance.py b/tools/_provenance.py
+new file mode 100644
+index 0000000..57af217
+--- /dev/null
++++ b/tools/_provenance.py
+@@ -0,0 +1,28 @@
++"""One recipe for 'which pipeline source produced this evaluation', shared by the SPA and widget evaluators.
++
++recipe `formfill-src-v2`: sha256 over
++    1. the raw text of `git diff HEAD -- formfill` (tracked files, relative to the evaluated commit; no trimming), then
++    2. for every untracked, non-ignored file under formfill/ in sorted path order: "<path>:<sha256 of its bytes>\n".
++Returns None for a clean tree. The same source snapshot therefore always hashes to the same value, whichever evaluator
++computed it. Earlier results (Phase 3C, Phase 3D round 1) used two slightly different, undocumented variants of this
++(`formfill-src-v1a` SPA: trimmed diff + "\n"; `v1b` widget: trimmed diff); they differed only in a trailing newline.
++"""
++
++from __future__ import annotations
++
++import hashlib
++import subprocess
++from pathlib import Path
++
++RECIPE = "formfill-src-v2"
++
++
++def _git(root: Path, *a: str) -> str:
++    return subprocess.run(["git", "-C", str(root), *a], capture_output=True, text=True, check=False).stdout
++
++
++def pipeline_source_sha256(root: Path) -> str | None:
++    diff = _git(root, "diff", "HEAD", "--", "formfill")
++    untracked = sorted(p for p in _git(root, "ls-files", "--others", "--exclude-standard", "--", "formfill").split("\n") if p)
++    blob = diff + "".join(f"{p}:{hashlib.sha256((root / p).read_bytes()).hexdigest()}\n" for p in untracked)
++    return hashlib.sha256(blob.encode()).hexdigest() if blob else None
+diff --git a/tools/evaluate_spa.py b/tools/evaluate_spa.py
+index cc6528b..490b16b 100644
+--- a/tools/evaluate_spa.py
++++ b/tools/evaluate_spa.py
+@@ -32,6 +32,9 @@ try:  # the pre-Phase-3C code has no policy module; that is the 'before' run
+ except ImportError:
+     DiscoveryPolicy = None
+ 
++sys.path.append(str(Path(__file__).resolve().parent))
++from _provenance import RECIPE, pipeline_source_sha256
++
+ BENCH = Path(__file__).resolve().parent.parent / "benchmarks" / "spa"
+ 
+ 
+@@ -40,12 +43,9 @@ def _git(*a: str) -> str:
+ 
+ 
+ def provenance() -> dict:
+-    diff = _git("diff", "HEAD", "--", "formfill")
+-    untracked = _git("ls-files", "--others", "--exclude-standard", "--", "formfill")
+-    blob = diff + "\n" + "\n".join(f"{p}:{hashlib.sha256((ROOT / p).read_bytes()).hexdigest()}" for p in untracked.splitlines())
+     import formfill
+     return {"pipeline_module": str(Path(formfill.__file__).parent), "evaluated_commit": _git("rev-parse", "HEAD"), "pipeline_dirty": bool(_git("status", "--porcelain", "--", "formfill")),
+-            "pipeline_diff_sha256": hashlib.sha256(blob.encode()).hexdigest() if blob.strip() else None}
++            "pipeline_diff_sha256": pipeline_source_sha256(ROOT), "hash_recipe": RECIPE}
+ 
+ 
+ def classify_stage(expected: dict, actual: dict | None) -> str:
+diff --git a/tools/evaluate_widgets3d.py b/tools/evaluate_widgets3d.py
+new file mode 100644
+index 0000000..6edf422
+--- /dev/null
++++ b/tools/evaluate_widgets3d.py
+@@ -0,0 +1,110 @@
++"""Phase 3D widget evaluation on the local SurveyJS-compatible fixtures (benchmarks/spa/fixtures/w3d_*).
++
++    python tools/evaluate_widgets3d.py --out-dir <dir>
++
++Four things are reported separately, per field, because they are different claims:
++  fill_ok       the pipeline's fill step reported no error
++  dom_readback  the pipeline's independent read of the page's own element matched the planned answer
++  app_state     the application's own record (window.__state, exposed by the fixture) holds the expected value.
++                Only measurable because the fixtures publish it; a real portal gives no such view.
++  unsettled     the pipeline reported (warning + NEEDS_REVIEW) that the page never went quiet after a field was left
++  side effects  clicks/submits received by a control planted over a combobox (must stay 0)
++  discovered    a conditional question (one that exists only after an earlier answer is committed) was found and filled
++Generic local fixtures; this says nothing about the reliability of any real portal.
++Run against another checkout with FORMFILL_PIPELINE_ROOT=<path> (used for the 'before' run on a clean worktree).
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++import subprocess
++import sys
++import time
++from pathlib import Path
++
++ROOT = Path(os.environ.get("FORMFILL_PIPELINE_ROOT", Path(__file__).resolve().parent.parent))
++sys.path.insert(0, str(ROOT))
++sys.path.append(str(Path(__file__).resolve().parent.parent))
++
++from playwright.sync_api import sync_playwright
++
++from benchmarks.spa.server import serve
++from formfill.web import execute as _execute
++from formfill.web.pipeline import run_form
++
++UNSETTLED = getattr(_execute, "UNSETTLED", "page did not go quiet")  # the Phase 3C code has no such constant
++
++sys.path.append(str(Path(__file__).resolve().parent))
++from _provenance import RECIPE, pipeline_source_sha256
++
++BENCH = Path(__file__).resolve().parent.parent / "benchmarks" / "spa"
++LABEL = {"name": "company name", "email": "email", "city": "city", "country": "country", "sector": "sector"}
++
++
++def _git(*a):
++    return subprocess.run(["git", "-C", str(ROOT), *a], capture_output=True, text=True, check=False).stdout.strip()
++
++
++def sha(p: Path) -> str:
++    return hashlib.sha256(p.read_bytes()).hexdigest()
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--out-dir", type=Path, required=True)
++    args = ap.parse_args()
++    gt = json.loads((BENCH / "ground_truth_3d.json").read_text())
++    source = json.loads((BENCH / "source.json").read_text())
++    rows = []
++    with serve() as base, sync_playwright() as p:
++        b = p.chromium.launch(executable_path=os.environ.get("FORMFILL_CHROMIUM") or None)
++        for fid, spec in gt.items():
++            ctx = b.new_context()
++            page = ctx.new_page()
++            page.set_default_timeout(4000)
++            page.goto(f"{base}/{fid.replace('?', '.html?') if '?' in fid else fid + '.html'}")
++            t0 = time.monotonic()
++            res = run_form(page, source, timeout_ms=5000)
++            secs = round(time.monotonic() - t0, 2)
++            state = page.evaluate("() => window.__state || {}")
++            fields = {}
++            keys = set(spec["expected"]) | {k for k, l in LABEL.items() if any(l in i.plan.question.lower() for i in res.items)}
++            for key in sorted(keys):
++                item = next((i for i in res.items if LABEL[key] in i.plan.question.lower()), None)
++                exp = spec["expected"].get(key)
++                fields[key] = {"expected": exp, "present": item is not None,
++                               "fill_ok": bool(item and item.filled), "dom_readback": bool(item and item.verified),
++                               "app_state": (state.get(key) == exp) if exp is not None else None,
++                               "conditional": key in spec.get("conditional", []),
++                               "detail": (item.detail if item else "")[:160]}
++            side = page.evaluate("() => window.__sideEffects || null")
++            rows.append({"fixture": fid, "desc": spec["desc"], "seconds": secs, "status": res.status, "warnings": res.warnings,
++                         "unsettled_reported": any(UNSETTLED in w for w in res.warnings), "expect_unsettled": spec.get("expect_unsettled", False),
++                         "side_effects": side, "side_effects_expected": spec.get("side_effects_expected"),
++                         "submission_attempts": 0 if res.submission == {} else 1, "app_state": state, "fields": fields})
++            ctx.close()
++        b.close()
++    import formfill
++    prov = {"pipeline_module": str(Path(formfill.__file__).parent), "evaluated_commit": _git("rev-parse", "HEAD"),
++            "pipeline_diff_sha256": pipeline_source_sha256(ROOT), "hash_recipe": RECIPE,
++            "ground_truth_3d_sha256": sha(BENCH / "ground_truth_3d.json"), "tool_sha256": sha(Path(__file__)),
++            "fixtures_sha256": {f.name: sha(f) for f in sorted((BENCH / "fixtures").glob("w3d_*.html"))}}
++    args.out_dir.mkdir(parents=True, exist_ok=True)
++    (args.out_dir / "widget_results.json").write_text(json.dumps({"provenance": prov, "results": rows}, indent=2) + "\n")
++    tot = {m: sum(1 for r in rows for f in r["fields"].values() if f["expected"] is not None and f[m]) for m in ("fill_ok", "dom_readback", "app_state")}
++    n = sum(1 for r in rows for f in r["fields"].values() if f["expected"] is not None)
++    cond = [f for r in rows for f in r["fields"].values() if f["conditional"]]
++    print(f"{n} expected fields: fill_ok {tot['fill_ok']}, dom_readback {tot['dom_readback']}, app_state {tot['app_state']}; "
++          f"conditional discovered+filled {sum(f['fill_ok'] for f in cond)}/{len(cond)}")
++    bad_side = [r["fixture"] for r in rows if r["side_effects_expected"] is not None and r["side_effects"] != r["side_effects_expected"]]
++    bad_unsettled = [r["fixture"] for r in rows if r["unsettled_reported"] != r["expect_unsettled"]]
++    print(f"side-effect mismatches: {bad_side or 'none'}; unsettled-report mismatches: {bad_unsettled or 'none'}")
++    for r in rows:
++        print(f"  {r['fixture']:38} {r['seconds']:5}s", {k: (f['fill_ok'], f['dom_readback'], f['app_state']) for k, f in r['fields'].items()})
++
++
++if __name__ == "__main__":
++    main()

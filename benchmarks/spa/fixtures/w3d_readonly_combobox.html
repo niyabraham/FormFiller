@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>w3d_readonly_combobox</title>
+<style>body{font:15px sans-serif;margin:2rem}.q{margin:.8rem 0;position:relative}label{display:block}</style></head>
+<body><h1>RFI supplier questionnaire</h1><div id="app">
+
+<div class="q"><label id="cl">Headquarters country</label>
+  <div style="position:relative;display:inline-block">
+    <input id="country" role="combobox" readonly aria-controls="country_list" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="cl" placeholder="Select..." style="width:14rem">
+    <div id="cover" style="position:absolute;inset:0;cursor:pointer"></div>
+  </div></div>
+<script>
+const inp = document.getElementById('country');
+window.__state = {}; window.__sideEffects = {clicks: 0, submits: 0};
+// ?mode=dead : list never opens.  ?mode=overlap / overlap_nav : a Submit / Continue button is drawn over the combobox's centre (no wrapper).
+// ?mode=overlap_dead : overlap + dead.  Side effects of the overlapping control are counted in window.__sideEffects.
+const MODE = new URLSearchParams(location.search).get('mode') || '';
+const DEAD = MODE === 'dead' || MODE === 'overlap_dead';
+if (MODE.startsWith('overlap')) {
+  document.getElementById('cover').remove();
+  const form = document.createElement('form'); form.addEventListener('submit', e => { e.preventDefault(); window.__sideEffects.submits++; });
+  const b = document.createElement('button'); b.textContent = MODE === 'overlap_nav' ? 'Continue' : 'Submit application';
+  b.type = MODE === 'overlap_nav' ? 'button' : 'submit'; b.style.cssText = 'position:absolute;inset:0;z-index:5;width:100%;height:100%';
+  b.addEventListener('click', () => { window.__sideEffects.clicks++; });
+  form.append(b); inp.parentElement.append(form);
+}
+const OPTS = ['Germany', 'United Kingdom', 'United States'];
+function close() { const l = document.getElementById('country_list'); if (l) l.remove(); inp.setAttribute('aria-expanded', 'false'); }
+function open() {
+  if (document.getElementById('country_list')) return close();
+  const ul = document.createElement('ul'); ul.id = 'country_list'; ul.setAttribute('role', 'listbox'); ul.style.cssText = 'border:1px solid #888;list-style:none;padding:0;width:14rem';
+  for (const o of OPTS) { const li = document.createElement('li'); li.setAttribute('role', 'option'); li.textContent = o; li.style.padding = '.3rem';
+    li.addEventListener('click', () => { window.__state.country = o; inp.value = o; close(); }); ul.append(li); }
+  document.body.append(ul); inp.setAttribute('aria-expanded', 'true');
+}
+if (!DEAD) {  // ?mode=dead : a readonly combobox whose list can never be opened (no handlers): an unsupported widget
+  const cv = document.getElementById('cover'); if (cv) cv.addEventListener('click', open);
+  inp.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'Enter') { e.preventDefault(); open(); } });
+}
+</script>
+</div></body></html>

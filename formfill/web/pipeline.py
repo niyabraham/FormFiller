@@ -21,7 +21,7 @@ from playwright.sync_api import Page
 
 from formfill.web import steps as _steps
 from formfill.web.discover import discover
-from formfill.web.execute import fill_control, matches, read_back
+from formfill.web.execute import UNSETTLED, fill_control, matches, read_back
 from formfill.web.execute import submit as submit_form
 from formfill.web.models import AnswerPlanItem, Control
 from formfill.web.plan import build_plan
@@ -83,6 +83,10 @@ def run_form(
             warnings.append(f"navigation stopped early ({navigation['stop_reason']}); later steps were not filled and the form was not submitted")
     if hidden:
         warnings.append(f"{len(hidden)} control(s) stayed hidden and were not asked")
+    unsettled = [i for i in items.values() if i.detail.startswith(UNSETTLED)]
+    if unsettled:
+        warnings.append(f"{len(unsettled)} answer(s) were entered while the page was still changing ({UNSETTLED} after leaving the field); "
+                        "questions that depend on them may not have been discovered - review before submitting")
     out = Path(out_dir) if out_dir else None
     artifacts: dict = {}
     if out:
@@ -94,7 +98,9 @@ def run_form(
     if submit:
         blockers = [i for i in items.values() if i.plan.status == "REVIEW" and i.plan.required]
         broken = [i for i in items.values() if i.plan.status == "ANSWER" and i.verified is False]
-        if incomplete:
+        if unsettled:
+            submission = {"attempted": False, "outcome": "SKIPPED", "detail": f"{len(unsettled)} answer(s) were entered on a page that never settled"}
+        elif incomplete:
             submission = {"attempted": False, "outcome": "SKIPPED",
                           "detail": (f"navigation stopped early ({navigation['stop_reason']}); the form was not completed"
                                        if navigation["completion"] == "incomplete" else
@@ -109,6 +115,8 @@ def run_form(
                 artifacts["screenshot_after_submit"] = str(out / "after_submit.png")
 
     status = overall_status(list(items.values()), submission if submit else None)
+    if unsettled and status == "FILLED":
+        status = "NEEDS_REVIEW"  # an unsettled page may hide dependent questions: never "FILLED"
     if incomplete and status in ("FILLED", "SUBMITTED", "SUBMITTED_UNCONFIRMED"):
         status = "NEEDS_REVIEW"  # a walk cut short is never "FILLED"
     result = RunResult(
@@ -314,10 +322,10 @@ def _fill_one(page: Page, control: Control, plan: AnswerPlanItem, timeout_ms: in
     if plan.status != "ANSWER":
         return ItemResult(plan=plan)
     try:
-        fill_control(page, control, plan.answer, timeout_ms)
+        warnings = fill_control(page, control, plan.answer, timeout_ms) or []
     except Exception as exc:  # noqa: BLE001 - recorded per item, run continues
         return ItemResult(plan=plan, filled=False, detail=f"fill failed: {str(exc).splitlines()[0]}")
-    return ItemResult(plan=plan, filled=True)
+    return ItemResult(plan=plan, filled=True, detail="; ".join(warnings))
 
 
 def run_url(url: str, source_path: str | Path, *, out_dir: str | Path | None = None, trace: bool = True,

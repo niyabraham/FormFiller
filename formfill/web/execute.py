@@ -48,12 +48,15 @@ def _locator(page: Page, control: Control):
     return page.frames[control.frame_index].locator(f'[data-ff-id="{control.control_id}"]')
 
 
-def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 5000) -> None:
-    """Enter one validated answer. Raises on any failure; the caller records it."""
+def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 5000) -> list[str]:
+    """Enter one validated answer. Raises on any failure; the caller records it. Returns warnings (normally empty):
+    currently only UNSETTLED, when the page was still changing after the field was left."""
     loc = _locator(page, control)
     kind = control.kind
+    warnings: list[str] = []
     if kind in _TEXTLIKE:
         loc.fill(str(answer), timeout=timeout_ms)
+        warnings += _commit(page, control, loc, timeout_ms)
     elif kind == "combobox":
         _fill_combobox(page, control, loc, answer, timeout_ms)
     elif kind == "select":
@@ -63,8 +66,8 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
     elif kind == "radio":
         for member in loc.all():
             if member.get_attribute("value") == answer:
-                member.check(timeout=timeout_ms)
-                return
+                _select_radio(page, control, member, timeout_ms)
+                return warnings
         raise ValueError(f"no radio option with value {answer!r}")
     elif kind == "checkbox":
         loc.set_checked(bool(answer), timeout=timeout_ms)
@@ -73,24 +76,146 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
             member.set_checked(member.get_attribute("value") in answer, timeout=timeout_ms)
     else:
         raise ValueError(f"unsupported control kind {kind!r}")
+    return warnings
+
+
+# After leaving a field, wait for the DOM to be quiet for _QUIET_MS (conditional questions render in response to the
+# commit). Reaching the quiet window is "settled"; hitting _SETTLE_MAX_MS first is NOT, and is reported as UNSETTLED.
+# A reveal that starts later than _QUIET_MS after the blur (a slow timer, a request) is not waited for in default mode.
+_QUIET_MS = 150
+_SETTLE_MAX_MS = 1500
+UNSETTLED = "page did not go quiet"  # prefix of the ItemResult.detail / RunResult warning recorded for an unsettled commit
+
+_QUIET_JS = """
+([quiet, maxms]) => new Promise(resolve => {
+  let last = performance.now(); const t0 = last;
+  const mo = new MutationObserver(() => { last = performance.now(); });
+  mo.observe(document, {subtree: true, childList: true, attributes: true, characterData: true});
+  const tick = () => { const now = performance.now();
+    if (now - last >= quiet) { mo.disconnect(); resolve({settled: true, waited: Math.round(now - t0)}); }
+    else if (now - t0 >= maxms) { mo.disconnect(); resolve({settled: false, waited: Math.round(now - t0)}); }
+    else setTimeout(tick, 20); };
+  tick();
+})
+"""
+
+
+def _commit(page: Page, control: Control, loc, timeout_ms: int) -> list[str]:
+    """Leave the field the way a person does, so frameworks that commit on blur/change record the answer, then let
+    the DOM go quiet. Blur is a real focus change, not a synthetic event; it moves focus nowhere. The DOM value
+    afterwards is evidence of what the page holds, NOT proof the application recorded it. Returns [UNSETTLED ...] when
+    the page never went quiet within _SETTLE_MAX_MS (dependent questions may not have rendered yet)."""
+    loc.blur(timeout=timeout_ms)
+    try:
+        st = page.frames[control.frame_index].evaluate(_QUIET_JS, [_QUIET_MS, _SETTLE_MAX_MS])
+    except Exception:  # noqa: BLE001 - a frame that navigated away: nothing left to settle
+        return []
+    if st.get("settled", True):
+        return []
+    return [f"{UNSETTLED} within {_SETTLE_MAX_MS} ms after leaving the field; questions that depend on this answer may not have appeared yet"]
+
+
+_RADIO_HIT_JS = """
+e => { const r = e.getBoundingClientRect(); if (!r.width && !r.height) return false;
+  const x = r.left + r.width / 2, y = r.top + r.height / 2;
+  const t = e.getRootNode().elementFromPoint(x, y); return t === e || e.contains(t); }
+"""
+
+
+def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None:
+    """Select one radio. A native input that is hit-testable is checked as before. A styled radio (tiny/hidden input
+    under a decorator that takes the pointer) is selected through its accessible label, the visible target a person
+    clicks. The result is verified by the checked state; nothing is set through JavaScript."""
+    if member.evaluate(_RADIO_HIT_JS):
+        member.check(timeout=timeout_ms)
+        return
+    label = member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element()
+    if label is None:
+        raise ValueError("unsupported styled radio: the native input is covered and it has no label to click")
+    label.click(timeout=timeout_ms)
+    if not member.is_checked():
+        raise ValueError("styled radio: clicking its label did not select it (selection not confirmed)")
+
+
+_OPEN_TIMEOUT_MS = 1500
+
+# What would receive a click at the centre of the combobox? Returns {ok, target, reason}. A click is allowed only when
+# the target is the combobox itself or a plain wrapper that belongs to it (contains it, or sits in its immediate container
+# that holds no other control). Anything that could navigate, submit or act on something else (button, link, tab, other
+# input/select/textarea, or a wrapper that also holds other controls) is refused; the keyboard path is used instead.
+_CLICK_TARGET_JS = """
+e => {
+  const r = e.getBoundingClientRect(); const x = r.left + r.width / 2, y = r.top + r.height / 2;
+  const t = e.getRootNode().elementFromPoint(x, y);
+  const name = n => n ? `<${n.tagName.toLowerCase()}${n.getAttribute('role') ? ' role=' + n.getAttribute('role') : ''}${n.type ? ' type=' + n.type : ''}> ` +
+    ((n.textContent || n.value || '').replace(/\\s+/g, ' ').trim().slice(0, 30)) : 'nothing';
+  if (!t) return {ok: false, target: 'nothing', reason: 'nothing is drawn at the click point'};
+  if (t === e) return {ok: true, target: name(t)};
+  const CONTROLS = 'button,a[href],summary,input,select,textarea,[role=button],[role=link],[role=tab],[role=menuitem],[role=option],[tabindex]';
+  const risky = t.closest(CONTROLS);
+  if (risky && risky !== e && !risky.contains(e)) return {ok: false, target: name(risky), reason: 'the click point is covered by another control'};
+  const BAD = ['BODY', 'HTML', 'FORM', 'MAIN', 'FIELDSET', 'SECTION'];
+  const owns = c => c && !BAD.includes(c.tagName) && Array.from(c.querySelectorAll(CONTROLS)).every(x => x === e || e.contains(x));
+  if (t.contains(e) && owns(t)) return {ok: true, target: name(t)};
+  const box = e.parentElement;
+  if (box && box.contains(t) && owns(box)) return {ok: true, target: name(t)};
+  return {ok: false, target: name(t), reason: 'the click point is covered by an element that is not part of this combobox'};
+}
+"""
+
+
+def _open_readonly_combobox(page: Page, control: Control, loc, frame, timeout_ms: int):
+    """A readonly combobox cannot be typed into. Open it the way a person does: click where it is drawn (a wrapper
+    usually sits over the input, so click the point rather than the element) but ONLY after checking what would receive
+    the click (_CLICK_TARGET_JS); if that is another control, or cannot be identified as part of this combobox, nothing
+    is clicked and the keyboard path (focus + ArrowDown) is used instead. Returns the visible listbox; raises a clear
+    'unsupported' error if no safe interaction opens one."""
+    wait = min(timeout_ms, _OPEN_TIMEOUT_MS)
+    listbox = frame.locator("[role=listbox]:visible").first
+    loc.scroll_into_view_if_needed(timeout=timeout_ms)
+    box = loc.bounding_box()
+    refused = ""
+    if box and box["width"] and box["height"]:
+        hit = loc.evaluate(_CLICK_TARGET_JS)
+        if hit["ok"]:
+            page.mouse.click(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
+            try:
+                listbox.wait_for(state="visible", timeout=wait)
+                return listbox
+            except PlaywrightTimeout:
+                pass
+        else:
+            refused = f"; click refused: {hit['reason']} ({hit['target']})"
+    loc.focus(timeout=timeout_ms)
+    page.keyboard.press("ArrowDown")
+    try:
+        listbox.wait_for(state="visible", timeout=wait)
+        return listbox
+    except PlaywrightTimeout:
+        raise ValueError("unsupported readonly combobox: it cannot be typed into and no safe interaction opened its option list "
+                         f"(ArrowDown tried{refused})") from None
 
 
 def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: int) -> None:
-    """ARIA combobox: open it (type into it, if it is an input), pick the option whose text equals the answer,
+    """ARIA combobox: open it (type into it, if it is an editable input), pick the option whose text equals the answer,
     and require the popup to close. Typing alone is not an answer: the app commits on selection."""
     frame = page.frames[control.frame_index]
     is_input = loc.evaluate("e => e.tagName === 'INPUT'")
-    if is_input:
+    readonly = bool(loc.evaluate("e => e.readOnly === true || e.getAttribute('aria-readonly') === 'true'")) if is_input else False
+    if readonly:
+        listbox = _open_readonly_combobox(page, control, loc, frame, timeout_ms)
+    elif is_input:
         loc.fill(str(answer), timeout=timeout_ms)
     else:
         loc.click(timeout=timeout_ms)
-    listbox = frame.locator("[role=listbox]:visible").first
-    try:
-        listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
-    except PlaywrightTimeout:
-        if is_input:
-            return  # free-text combobox with no popup: the typed text stays, read-back decides
-        raise ValueError("combobox opened no listbox") from None
+    if not readonly:
+        listbox = frame.locator("[role=listbox]:visible").first
+        try:
+            listbox.wait_for(state="visible", timeout=min(timeout_ms, 1500))
+        except PlaywrightTimeout:
+            if is_input:
+                return  # free-text combobox with no popup: the typed text stays, read-back decides
+            raise ValueError("combobox opened no listbox") from None
     want = str(answer).strip().casefold()
     options = listbox.locator("[role=option]")
     for i in range(options.count()):
@@ -102,6 +227,8 @@ def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: i
         raise ValueError(f"no option {answer!r} in the combobox list")
     if loc.get_attribute("aria-expanded") == "true":
         raise ValueError("combobox list still open after selecting: selection not confirmed")
+    if readonly and (loc.input_value() or "").strip().casefold() != want:
+        raise ValueError(f"readonly combobox shows {loc.input_value()!r} after selecting {answer!r}: selection not confirmed")
 
 
 def read_back(page: Page, control: Control) -> Observed:
