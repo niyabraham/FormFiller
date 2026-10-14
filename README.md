@@ -25,6 +25,57 @@ python demo.py
 
 ---
 
+## Project Status (web RFI forms, through Phase 3D)
+
+**Purpose.** Automate answering DOM-based RFI web forms from a JSON source of company data, without guessing: a value is entered only
+when it can be traced to a source field with sufficient confidence; everything else goes to REVIEW for a person.
+
+**Pipeline (all deterministic; no LLM, embeddings, RAG, vector DB or browser agent):**
+discover controls (DOM, open shadow roots, same-process iframes) → understand each question (label, section, help, options) → retrieve candidate
+JSON paths by token/phrase scoring with scope, polarity, period and parent/sibling checks → plan ANSWER or REVIEW (thresholds `MIN_CONFIDENCE=0.6`,
+`MIN_MARGIN=0.15`) → validate against the control's constraints → fill with Playwright → read the DOM back and verify → write `result.json`
+with per-question provenance. Attestation/consent controls are never auto-filled.
+
+**Stack as implemented:** Python ≥3.11, Playwright (Chromium), pytest, Ruff; pypdf/reportlab for the legacy PDF path. Layers live in `formfill/web/`
+(`discover`, `understand`, `tokens`, `retrieve`, `plan`, `validate`, `execute`, `steps`, `pipeline`, `result`).
+
+| Phase | What it added (branch) |
+|---|---|
+| 2 | Local benchmark (`benchmarks/rfi`) and baseline evaluation (`docs/PHASE2_EVALUATION.md`) |
+| 3A | Retrieval hardening: scope words, generic coverage guard, polarity markers, tokeniser fixes (`docs/PHASE3A_EVALUATION.md`) |
+| 3B-A / 3B-B | Safety hardening (counting, temporal scope, negation, placeholders) and parent/sibling-aware retrieval (`docs/PHASE3B_A_EVALUATION.md`, `docs/PHASE3B_B_EVALUATION.md`) |
+| 3C | Opt-in multi-step navigation (`DiscoveryPolicy`), shadow DOM, ARIA comboboxes, settling, safe stops; 26 SPA fixtures (`docs/PHASE3C_SPA_EVALUATION.md`) |
+| 3D | Blur-commit with honest settle reporting, readonly ARIA comboboxes (click-target guard + keyboard fallback), styled radios via their label; regression fixtures and evaluator (`docs/PHASE3D_WIDGET_COMMITMENT.md`) |
+
+**Verified on the Phase 3D tree** (branch `phase3d-widget-commitment`; commands and raw output in
+`benchmarks/spa/results/phase3d_final_verification/commands_and_output.log`):
+
+| Check | Command | Result |
+|---|---|---|
+| Test suite | `python -m pytest -q` | 415 passed, 2 xfailed |
+| PDF demo / web demo | `python demo.py`, `python demo_web.py` | `Final verification: PASS`; web demo output identical to Phase 3C apart from ids/timestamps |
+| Phase 3D widget fixtures (12 expected fields) | `python tools/evaluate_widgets3d.py --out-dir <dir>` | fill 12/12, DOM read-back 12/12, fixture app state 12/12 (Phase 3C: 7 / 7 / 4) |
+| 26 SPA fixtures | `python tools/evaluate_spa.py --policy --out-dir <dir>` | identical to Phase 3C; 0 submit events, 0 submission attempts |
+| Development benchmark (195 outcomes) | `python tools/evaluate_baseline.py --out-dir <dir>` | 102 auto-answered, 100 correct, **1 unsafe** (a disputed one; not zero), precision 98.0 %, coverage 53.1 % |
+| Additional benchmark (276 outcomes) | `python tools/evaluate_baseline.py --bench-dir benchmarks/heldout --out-dir <dir>` | 107 auto-answered, 107 correct, 0 unsafe, coverage 39.3 % |
+
+Both benchmarks are **development data** (their failures were inspected while designing rules); they are not evidence of generalisation.
+
+**DOM read-back is not application-state commitment.** After a fill the pipeline reads the page's own element back. A page can show a value that
+its application never recorded (Phase 3D's fixtures reproduce this: a blur-committed field verified in the DOM but absent from app state at Phase 3C).
+App-state commitment is measured only on local fixtures that publish their own state; on a real site only DOM read-back exists.
+
+**Completion is never confirmed and submission needs a person.** A multi-step walk always ends "unconfirmed" or "incomplete" (the last step cannot be
+told apart from a Next button the policy does not recognise), so the status is `NEEDS_REVIEW`, never `FILLED`, and `submit=True` is skipped after a walk.
+Submit-type navigation controls are refused unless explicitly opted in. Testing never clicks a final submission control.
+
+**Known limitations.** Reveals later than ~150 ms after a field is left are not waited for in default mode (an unsettled page is flagged `NEEDS_REVIEW`);
+unsupported widgets (comboboxes that open only on hover, styled checkboxes, closed shadow roots, canvas) stop with a stated reason; Next/Continue controls inside
+shadow roots or iframes are not searched; answer correctness depends on the JSON source and rule-based matching (one disputed unsafe answer remains on the
+development set); **no real RFI portal has been tested**. This is a research prototype, not production-ready, and nothing here supports real-portal reliability.
+
+---
+
 ## 1. What This PoC Demonstrates
 
 The current PoC takes:
@@ -519,6 +570,8 @@ The deterministic, abstain-first foundation supports gradual introduction of AI 
 
 ### For Web Forms
 
+> This is the original roadmap. The phases actually completed (2, 3A-3D) are described under *Project Status* above; no AI component has been added.
+
 1. **Phase 1 (current)**: Deterministic token-based retrieval + rule-based planning. Scale to real RFIs; observe recall failures on synonym table.
 
 2. **Phase 2 (triggered by data)**: Add embeddings-based semantic matching for question-to-source mapping when synonyms table grows unmanageable.
@@ -590,6 +643,9 @@ Results and recommendation: `docs/PHASE2_EVALUATION.md`.
 
 See `docs/` for detailed research and design:
 
+- **PHASE3A_EVALUATION.md, PHASE3B_A_EVALUATION.md, PHASE3B_B_EVALUATION.md, HELDOUT_EVALUATION.md** — retrieval hardening and the additional benchmark.
+- **PHASE3C_SPA_EVALUATION.md** — multi-step/SPA navigation, safe stops, 26 local fixtures.
+- **PHASE3D_WIDGET_COMMITMENT.md** — blur-commit, readonly comboboxes, styled radios; review rounds 1-2.
 - **TECH_STACK_COMPARISON.md** — Why Playwright, not Selenium/Cypress/Puppeteer; why no LLM in MVP; testing strategy.
 - **OUTPUT_DESIGN.md** — Why result.json is the primary output (not "the filled form"); schema with per-question provenance; status vocabulary.
 - **GITHUB_LANDSCAPE.md** — Comparison of 8 OSS projects (Browser Use, Skyvern, Stagehand, LaVague, etc.). Finding: no project covers full pipeline (form analysis → JSON retrieval → answer plan → fill → verify).

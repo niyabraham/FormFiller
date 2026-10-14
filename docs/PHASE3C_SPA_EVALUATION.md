@@ -1,6 +1,6 @@
 # Phase 3C — SPA browser reliability
 
-Branch `phase3c-spa-browser-reliability`, from `d3a132de393e51a457234757e686c16c190af94d` (Phase 3B-B). **Uncommitted, for review.**
+Branch `phase3c-spa-browser-reliability`, from `d3a132de393e51a457234757e686c16c190af94d` (Phase 3B-B). Committed as `1d1dbd0` on that branch.
 Retrieval, scoring, thresholds, `plan.py`, `retrieve.py` and `validate.py` are untouched. No LLMs, embeddings, RAG, or live third-party sites.
 
 ## What the browser layer supported before, and what was missing (at `d3a132d`)

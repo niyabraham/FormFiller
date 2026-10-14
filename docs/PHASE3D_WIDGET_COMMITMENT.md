@@ -1,6 +1,6 @@
 # Phase 3D: widget commitment and verification
 
-Base: Phase 3C commit `1d1dbd0` (branch `phase3d-widget-commitment`, uncommitted). Baseline: `PUBLIC_DEMO_VALIDATION.md`.
+Base: Phase 3C commit `1d1dbd0` (branch `phase3d-widget-commitment`; code commit `5f0b4cf`). Investigation baseline: a public-demo validation report (SurveyJS, SauceDemo; kept outside the repository).
 Local, generic SurveyJS-compatible fixtures only. **This says nothing about the reliability of any real portal.**
 
 ## Design (all in `formfill/web/execute.py`; discovery, retrieval, planning, navigation untouched)
@@ -31,7 +31,7 @@ unsafe answer); `demo.py` PASS; `demo_web.py` output identical apart from ids/ti
 - Shadow-root/iframe navigation-button search and the repeated "no longer in the DOM" note are unchanged (out of scope).
 - App-state commitment is unmeasurable on real sites; only DOM read-back is available there.
 
-## Review round 2 (still uncommitted; evidence in `benchmarks/spa/results/phase3d_review_round2/`)
+## Review round 2 (evidence in `benchmarks/spa/results/phase3d_review_round2/`)
 **Guarded readonly-combobox open** (`execute.py::_open_readonly_combobox`, `_CLICK_TARGET_JS`). Before any click the element at the combobox centre is
 hit-tested. The click goes ahead only if that element is the combobox, a wrapper containing it, or a wrapper in its immediate container that holds no
 other control. Buttons, links, tabs, other inputs/selects/textareas, `[tabindex]` elements, form/body-level wrappers, or nothing, are refused: nothing is
@@ -51,3 +51,9 @@ Limit: a reveal that starts later than 150 ms after the blur is not waited for i
 **Provenance.** Both evaluators now use `tools/_provenance.py` (recipe `formfill-src-v2`). Earlier outputs used `v1a` (SPA) / `v1b` (widget), the same diff
 with/without a trailing newline; they are left as recorded.
 **Wall-clock assertion removed.** The unsupported-combobox test now asserts our own error text and the absence of a Playwright "Timeout", not elapsed time.
+
+## Final verification (commit `5f0b4cf`; `benchmarks/spa/results/phase3d_final_verification/`)
+Fresh run on the committed tree: `python -m pytest -q` 415 passed, 2 xfailed; `demo.py` PASS; `demo_web.py` identical to Phase 3C apart from ids/timestamps;
+widget evaluation 12/12 fill, 12/12 DOM read-back, 12/12 fixture app state, 0 side effects on planted overlay controls, unsettled page flagged only on the churn fixture;
+26 SPA fixtures identical to Phase 3C (0 submit events, 0 submission attempts); dev 195/195 and additional-set 276/276 outcomes unchanged.
+Dev and additional-set outputs do not record commit/hash; their provenance is asserted in that directory's `PROVENANCE.json`.
