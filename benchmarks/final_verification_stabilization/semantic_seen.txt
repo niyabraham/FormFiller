@@ -1,0 +1,13 @@
+[seen] digest=a587b58a61ceb0e5 questions=141 (answerable 108, must-review 33)
+auto-answered=50 correct=48 UNSAFE=2 (wrong source 1, answered a must-review 1) missed=59
+precision=96.0%  coverage=44.4%  review_rate=64.5%  unsafe_rate=1.4%
+  ambiguous          n=5   correct=0   missed=0   unsafe=0  correct_review=5
+  compound           n=2   correct=0   missed=0   unsafe=0  correct_review=2
+  conflicting        n=2   correct=0   missed=0   unsafe=1  correct_review=1
+  exact              n=6   correct=5   missed=1   unsafe=0  correct_review=0
+  negation           n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  paraphrase         n=98  correct=39  missed=58  unsafe=1  correct_review=0
+  scope              n=12  correct=4   missed=0   unsafe=0  correct_review=8
+  similar_different  n=2   correct=0   missed=0   unsafe=0  correct_review=2
+  unsupported        n=10  correct=0   missed=0   unsafe=0  correct_review=10
+wrote benchmarks/final_verification_stabilization/semantic/seen.json

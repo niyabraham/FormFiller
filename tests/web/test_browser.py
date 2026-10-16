@@ -9,7 +9,7 @@ import json
 import pytest
 
 from formfill.web.discover import discover
-from formfill.web.execute import read_back, submit
+from formfill.web.execute import read_back
 from formfill.web.pipeline import run_form
 
 pytestmark = pytest.mark.browser
@@ -92,35 +92,36 @@ def test_end_to_end_fills_answers_and_flags_the_rest(open_fixture, tmp_path):
     assert (tmp_path / "filled.png").stat().st_size > 0
 
 
-def test_submit_blocked_while_required_items_need_review(open_fixture):
+def test_required_review_item_makes_the_form_not_ready_for_a_person(open_fixture):
     page = open_fixture("rfi_basic.html")
     src = {k: v for k, v in BASIC_SOURCE.items() if k != "security"}  # required email now unresolved
-    result = run_form(page, src, submit=True, success_text="Thank you")
-    assert result.submission["outcome"] == "SKIPPED" and result.status == "NEEDS_REVIEW"
+    result = run_form(page, src)
+    hs = result.human_submission
+    assert result.status == "NEEDS_REVIEW" and hs["ready_for_human_review"] is False
+    assert any("required question needs an answer" in b for b in hs["blockers"])
     assert page.locator("#done").is_hidden()  # nothing was sent
 
 
-def test_submit_confirmed_when_all_required_answered(open_fixture):
+def test_everything_answered_is_filled_but_never_submitted(open_fixture):
     page = open_fixture("rfi_basic.html")
-    result = run_form(page, BASIC_SOURCE, submit=True, success_text="Thank you, your response was received")
-    assert result.submission["outcome"] == "CONFIRMED"
-    assert result.status == "SUBMITTED" and len(result.review_items) == 2  # optional blanks stay visible in the result
+    result = run_form(page, BASIC_SOURCE)
+    hs = result.human_submission
+    assert hs["performed_by_formfill"] is False and hs["ready_for_human_review"] is True
+    assert "person must review" in hs["action_required"]
+    assert result.status == "NEEDS_REVIEW" and len(result.review_items) == 2  # optional blanks stay visible in the result
+    assert page.locator("#done").is_hidden()  # the form's own confirmation never appeared: nothing was sent
 
 
-def test_submit_unconfirmed_when_no_confirmation_text_appears(open_fixture):
+def test_nothing_in_the_package_can_submit(open_fixture):
+    import formfill.web.execute as execute
+    import formfill.web.steps as steps
+
+    assert not hasattr(execute, "submit")
     page = open_fixture("rfi_basic.html")
-    result = run_form(page, BASIC_SOURCE, submit=True, success_text="Never appears", out_dir=None)
-    assert result.submission["outcome"] == "UNCONFIRMED" and result.status == "SUBMITTED_UNCONFIRMED"
-
-
-def test_browser_validation_blocks_submission_and_is_reported(open_fixture):
-    page = open_fixture("rfi_strict.html")
-    page.fill("#code", "BAD")  # violates the pattern; the browser must refuse to submit
-    outcome = submit(page, "button[type=submit]", success_text="Registration accepted", timeout_ms=800)
-    assert outcome["outcome"] == "BLOCKED_BY_VALIDATION" and outcome["invalid_controls"]
-    assert page.locator("#ok").is_hidden()
-    page.fill("#code", "ABC-1234")
-    assert submit(page, "button[type=submit]", success_text="Registration accepted")["outcome"] == "CONFIRMED"
+    with pytest.raises(TypeError):
+        run_form(page, BASIC_SOURCE, submit=True)
+    with pytest.raises(TypeError):
+        steps.DiscoveryPolicy(allow_submit_type_navigation=True)
 
 
 # ---- widgets, conditional fields, defaults -----------------------------------

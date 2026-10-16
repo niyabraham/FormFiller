@@ -81,13 +81,13 @@ def test_wrong_type_is_review():
 
 
 def test_value_not_in_allowed_options_is_review():
-    ctl = dict(options=[Option("IN", "India"), Option("US", "United States")])
+    ctl = {"options": [Option("IN", "India"), Option("US", "United States")]}
     item = plan_question(q("Country", "select", **ctl), index_source({"country": "Atlantis"}))
     assert item.status == "REVIEW" and "allowed options" in item.reason
 
 
 def test_json_boolean_maps_to_yes_no_radio():
-    ctl = dict(options=[Option("yes", "Yes"), Option("no", "No")])
+    ctl = {"options": [Option("yes", "Yes"), Option("no", "No")]}
     item = plan_question(q("Do you hold ISO 27001 certification?", "radio", **ctl),
                          index_source({"certifications": {"iso_27001": True}}))
     assert item.status == "ANSWER" and item.answer == "yes"

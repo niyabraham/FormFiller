@@ -275,16 +275,27 @@ def run_case(browser, entry: dict) -> tuple[list[dict], dict | None]:
     page.goto((d / "form.html").as_uri())
     initial = by_name(discover(page))
     sub = entry["kind"] == "submission"
-    result = run_form(page, source, submit=sub, success_text=entry.get("success_text"), timeout_ms=4000)
-    final = by_name(discover(page)) if not sub else initial
-    ctx = make_ctx(page, entry["id"], entry["source_style"], source, result, initial, final, read_dom=not sub)
+    result = run_form(page, source, timeout_ms=4000)  # FormFiller never submits: a person does
+    final = by_name(discover(page))
+    ctx = make_ctx(page, entry["id"], entry["source_style"], source, result, initial, final, read_dom=True)
     recs = [evaluate_question(q, ctx) for q in truth["questions"]]
     sub_rec = None
     if sub:
-        got = result.submission.get("outcome")
-        sub_rec = {"case": entry["id"], "description": entry["description"], "expected_outcome": entry["expected_outcome"],
-                   "outcome": got, "expected_status": entry["expected_status"], "status": result.status,
-                   "ok": got == entry["expected_outcome"] and result.status == entry["expected_status"],
+        # The manifest's historical `expected_outcome` came from a run that pressed Submit. Without submitting, the
+        # equivalent facts are: is the form ready for a person (SKIPPED meant "a required item was unresolved"), and
+        # was the form left unsubmitted (its success message never appeared).
+        expected_ready = entry["expected_outcome"] != "SKIPPED"
+        hs = result.human_submission
+        text = entry.get("success_text")
+        left_unsubmitted = not (text and page.get_by_text(text).count() and page.get_by_text(text).first.is_visible())
+        got = "READY_FOR_HUMAN_REVIEW" if hs["ready_for_human_review"] else "NOT_READY"
+        sub_rec = {"case": entry["id"], "description": entry["description"],
+                   "historical_expected_outcome": entry["expected_outcome"],
+                   "expected_outcome": "READY_FOR_HUMAN_REVIEW" if expected_ready else "NOT_READY", "outcome": got,
+                   "left_unsubmitted": left_unsubmitted, "performed_by_formfill": hs["performed_by_formfill"],
+                   "status": result.status,
+                   "ok": (got == ("READY_FOR_HUMAN_REVIEW" if expected_ready else "NOT_READY") and left_unsubmitted
+                          and not hs["performed_by_formfill"]),
                    "note": entry.get("note", "")}
     page.context.close()
     return recs, sub_rec
@@ -473,7 +484,7 @@ REPRO_COMMAND = "python tools/build_benchmark.py && python tools/evaluate_baseli
 def _git(*args: str) -> str:
     try:
         return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
-    except Exception:  # noqa: BLE001 - metadata is best effort
+    except Exception:
         return ""
 
 

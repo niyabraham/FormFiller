@@ -11,6 +11,9 @@ dependencies = [
     "pypdf>=5.0",
 ]
 
+[project.scripts]
+formfill = "formfill.web.cli:main"
+
 [project.optional-dependencies]
 web = ["playwright>=1.45"]
 dev = ["pytest>=8.0", "reportlab>=4.0", "playwright>=1.45"]
@@ -21,3 +24,28 @@ packages = ["formfill"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["browser: needs Playwright and a Chromium build (skipped automatically when unavailable)"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+extend-exclude = ["benchmarks/**/fixtures", "benchmarks/heldout/authoring", "output"]  # authoring/ is the frozen record of how the held-out set was written
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "W", "I", "B", "C4", "SIM", "RUF", "BLE", "S110", "UP"]
+ignore = [
+    "RUF001", "RUF002", "RUF003",  # typographic characters appear in user-facing strings on purpose
+    "E731",                          # one-line lambdas in small helpers
+    "SIM108", "SIM102", "SIM105",    # style-only rewrites that make the safety logic harder to read
+    "B905",                          # zip() without strict= is intentional where lengths match by construction
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["E402", "BLE001", "S110"]
+"tools/**" = ["E402", "BLE001", "S110", "RUF005", "E741", "C408"]
+"benchmarks/**" = ["E402", "E741", "C408", "F403", "F405"]
+
+[tool.mypy]
+files = ["formfill"]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true

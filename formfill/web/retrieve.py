@@ -48,9 +48,11 @@ penalty breaks the tie the safe way -- the total is a different answer.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import re
+from dataclasses import dataclass, replace
 from typing import Any
 
+from formfill.web import semantic
 from formfill.web.models import Candidate, Question
 from formfill.web.tokens import (
     IMPLICIT_NOUNS,
@@ -113,14 +115,14 @@ def index_source(data: Any) -> list[Leaf]:
     def walk(node: Any, segments: list[str], item_id: tuple[str, ...] = (), item_vals: list | None = None) -> None:
         if isinstance(node, dict):
             for k, v in node.items():
-                walk(v, segments + [str(k)], item_id, item_vals)
+                walk(v, [*segments, str(k)], item_id, item_vals)
         elif isinstance(node, list):
             if node and all(not isinstance(x, (dict, list)) for x in node):
                 add(node, segments, item_id, item_vals)
             else:
                 for i, v in enumerate(node):
-                    ident = tuple(segments + [str(i)])
-                    walk(v, segments + [str(i)], ident, _item_values(v) if isinstance(v, dict) else [])
+                    ident = (*segments, str(i))
+                    walk(v, [*segments, str(i)], ident, _item_values(v) if isinstance(v, dict) else [])
         elif node is not None and node != "":
             add(node, segments, item_id, item_vals)
 
@@ -158,9 +160,46 @@ def sibling_evidence(q_tokens: set[str], leaf: Leaf) -> frozenset[str]:
     return frozenset().union(*sibling_matches(q_tokens, leaf))
 
 
+_LIGHT = semantic.light_words()
+SOFT_PREFIX = "soft match: "
+_YEAR_LIKE = re.compile(r"(?:19|20)\d\d")
+
+
+_NUMBER_WORDS = {w: str(i) for i, w in enumerate(
+    ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"])}
+
+
 def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
-                q_period: frozenset[str] = frozenset(), is_count: bool = False) -> tuple[float, list[str]]:
-    """Score one leaf and say why it was capped, if it was."""
+                q_period: frozenset[str] = frozenset(), is_count: bool = False,
+                q_seq: list[str] | None = None, sem: semantic.Config = semantic.DEFAULT) -> tuple[float, list[str]]:
+    """Score one leaf and say why it was capped, if it was. With `q_seq` (the question's ordered tokens) the question is
+    first aligned onto this leaf's key words (formfill/web/semantic.py); the alignment is soft, so its weakest link
+    multiplies the score, and every cap below still runs on the aligned tokens."""
+    if is_count:
+        # a measure word is implicit in a counting question: `employee_count` answers "how many employees", and a
+        # question's "size" explains nothing a key must carry. A key made only of a measure word (`employees.count`)
+        # is the count of its parent.
+        measure = semantic.MEASURE
+        q_tokens = q_tokens - measure
+        if q_seq is not None:
+            q_seq = [t for t in q_seq if t not in measure]
+        core = leaf.leaf_tokens - semantic.MEASURE
+        if core and core != leaf.leaf_tokens:
+            leaf = replace(leaf, leaf_tokens=core)
+        elif not core and leaf.parent_tokens:
+            leaf = replace(leaf, leaf_tokens=leaf.parent_tokens, parent_tokens=frozenset())
+    if "current" in q_tokens and not leaf.period and not (leaf.leaf_tokens | leaf.parent_tokens) & QUALIFIERS:
+        # "current headcount" asks for the present value, which is what a key naming no period holds. A key that names
+        # a qualifier ("previous_", "former_", "full_time") or a period still has to be named by the question.
+        q_tokens = q_tokens - {"current"}
+        q_seq = [t for t in q_seq if t != "current"] if q_seq is not None else None
+    links: list[str] = []
+    weight = 1.0
+    if q_seq is not None:
+        al = semantic.align(q_seq, leaf.leaf_tokens, is_count, sem, leaf.parent_tokens)
+        if al.links:
+            q_tokens, weight, links = al.tokens | (q_tokens - set(q_seq)), al.weight, al.links
+    q_tokens = q_tokens - (_LIGHT - leaf.leaf_tokens - leaf.parent_tokens)  # "do you HOLD ISO 27001" asks the same as "ISO 27001"
     # words like "total" widen a question; they only count when the key carries them too
     q_eff = q_tokens - (NEUTRAL - leaf.leaf_tokens - leaf.parent_tokens)
     if not q_eff:
@@ -168,6 +207,8 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
     leaf_hit = q_eff & leaf.leaf_tokens
     if not leaf_hit:
         return 0.0, []
+    if leaf_hit <= SELF_REFERENCE and leaf.leaf_tokens - SELF_REFERENCE:
+        return 0.0, []  # "your company" names the asker, not the fact: `company_name` is not evidence for "which sector does your company ..."
     cited = sibling_matches(q_eff, leaf) if SIBLING_CREDIT else []  # values of sibling fields of this list item that the question cites ("Omaha")
     sibling_hit = frozenset().union(*cited)
     explained_by = leaf.leaf_tokens | leaf.parent_tokens | sibling_hit
@@ -194,7 +235,17 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
         modifiers = unexplained - IMPLICIT_NOUNS
         base = len(q_eff) - len(unexplained & IMPLICIT_NOUNS)
         explained = base - len(modifiers)
-        if modifiers and explained / base <= COUNT_MIN_EXPLAINED_FRACTION:
+        crossed = leaf.leaf_tokens - q_eff - NEUTRAL - _LIGHT  # words only the key carries: it counts a narrower population
+        spelled = {_NUMBER_WORDS[t] for t in modifiers if t in _NUMBER_WORDS}
+        crossed = crossed - spelled  # "last five years" and `last_5_years` name the same number
+        modifiers = modifiers - {t for t in modifiers if _NUMBER_WORDS.get(t) in leaf.leaf_tokens}
+        if modifiers and crossed:
+            # "regulatory inspections passed" vs `gcp_inspections_passed`: the question's modifier is not in the key AND the key's
+            # own modifier ("gcp") is not in the question, so the two count different subsets. Counting questions only.
+            flags.append(f"counting question: modifier {sorted(modifiers)} is not in the key, and the key adds {sorted(crossed)} "
+                         f"which the question does not name")
+            score = min(score, UNEXPLAINED_CAP)
+        elif modifiers and explained / base <= COUNT_MIN_EXPLAINED_FRACTION:
             flags.append(f"counting question: only {explained} of {base} words are explained by the key or its path "
                          f"(unexplained modifier: {sorted(modifiers)})")
             score = min(score, UNEXPLAINED_CAP)
@@ -202,19 +253,35 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
         flags.append(f"only {len(q_eff) - len(unexplained)} of {len(q_eff)} question words are explained by the key or its path "
                      f"(unexplained: {sorted(unexplained)})")
         score = min(score, UNEXPLAINED_CAP)
-    if q_period and (leaf.period and q_period != leaf.period or not leaf.period and q_period - _IMPLICIT_PERIODS):
+    # identifier conflict: "ISO 9001" is not `iso_13485_certified`. A number-bearing word in the question that the key does not
+    # carry, against a different number-bearing word in the key, names a different standard / form / tier.
+    key_words = leaf.leaf_tokens | leaf.parent_tokens
+    q_ids = {t for t in unexplained if any(c.isdigit() for c in t) and not _YEAR_LIKE.fullmatch(t)
+             and not any(t in k for k in key_words)}  # "SOC 2" in the question is the "soc2" of the key, not a conflict
+    k_ids = {t for t in key_words if any(c.isdigit() for c in t) and not _YEAR_LIKE.fullmatch(t)} - q_eff
+    if q_ids and k_ids:
+        flags.append(f"identifier differs: question names {sorted(q_ids)}, key path names {sorted(k_ids)}")
+        score = min(score, POLARITY_CAP)
+    if q_period and ((leaf.period and q_period != leaf.period) or (not leaf.period and q_period - _IMPLICIT_PERIODS)):
         flags.append(f"period differs: question names {sorted(q_period)}, key path names {sorted(leaf.period) or 'none'}")
         score = min(score, PERIOD_CAP)
     neg_q, neg_l = q_tokens & NEGATORS, explained_by & NEGATORS
     if neg_q != neg_l:
         flags.append(f"polarity differs: question has {sorted(neg_q) or 'none'}, key path has {sorted(neg_l) or 'none'}")
         score = min(score, POLARITY_CAP)
+    if links and weight < 1.0 and score > 0:
+        score *= weight  # a soft match never outranks an exact one
+    if links:
+        flags.append(SOFT_PREFIX + "; ".join(links))  # moved to Candidate.evidence by retrieve(): not a cap reason
     return score, flags
 
 
 def score_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf, q_period: frozenset[str] = frozenset(),
                is_count: bool = False) -> float:
     return assess_leaf(q_tokens, section_tokens, leaf, q_period, is_count)[0]
+
+
+SEMANTIC = semantic.DEFAULT  # module switch used by retrieve(); tests and ablations replace it
 
 
 def _count_modifiers_ignoring_entity(q: set[str], leaf: Leaf) -> set[str]:
@@ -315,9 +382,13 @@ def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Can
     section = set(tokenize(question.control.section))
     scored: list[list] = []
     for leaf in leaves:
-        s, flags = assess_leaf(q, section, leaf, question.period, question.is_count)
+        s, flags = assess_leaf(q, section, leaf, question.period, question.is_count, question.concept_tokens, SEMANTIC)
         if s > 0:
             scored.append([s, flags, [], leaf])
     _apply_context(scored, q, section, question.is_count)
+    for row in scored:  # soft-match notes are evidence for the reviewer, not reasons a score was capped
+        soft = [f for f in row[1] if f.startswith(SOFT_PREFIX)]
+        row[1] = [f for f in row[1] if not f.startswith(SOFT_PREFIX)]
+        row[2] = soft + row[2]
     scored.sort(key=lambda t: (-t[0], t[3].path))
     return [Candidate(leaf.path, leaf.value, round(s, 4), flags, evidence) for s, flags, evidence, leaf in scored[:top_k]]

@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "comment": "Closed, reviewable vocabulary for SOFT term equivalence (formfill/web/semantic.py). Not a per-form alias list: each group is general business-document vocabulary meaning 'these words name the same kind of fact'. A match through this file scores below an exact match and never overrides the safety caps. Words that differ in meaning although they look alike are deliberately NOT grouped (incorporation vs founding, mailing vs email, employer vs employee, subcontractor vs subprocessor).",
+  "synonym_groups": [
+    [
+      "revenue",
+      "turnover",
+      "sale"
+    ],
+    [
+      "industry",
+      "sector",
+      "vertical"
+    ],
+    [
+      "found",
+      "establish",
+      "inception"
+    ],
+    [
+      "phone",
+      "hotline",
+      "switchboard"
+    ],
+    [
+      "require",
+      "mandatory",
+      "enforce",
+      "compulsory"
+    ],
+    [
+      "enable",
+      "support",
+      "use"
+    ],
+    [
+      "employee",
+      "payroll",
+      "manpower"
+    ],
+    [
+      "latest",
+      "recent",
+      "last"
+    ],
+    [
+      "trustee",
+      "director"
+    ],
+    [
+      "customer",
+      "client"
+    ],
+    [
+      "supplier",
+      "vendor"
+    ],
+    [
+      "owner",
+      "proprietor"
+    ]
+  ],
+  "phrases": [
+    {
+      "pattern": "\\bweb address\\b",
+      "replace": "website"
+    },
+    {
+      "pattern": "\\bhead office\\b",
+      "replace": "headquarter"
+    },
+    {
+      "pattern": "\\bmain office\\b",
+      "replace": "headquarter"
+    },
+    {
+      "pattern": "\\bmost recent\\b",
+      "replace": "latest"
+    },
+    {
+      "pattern": "\\b(?:people|persons|individuals)\\s+(?:are\\s+)?(?:employed|working|on (?:your |the )?payroll)\\b",
+      "replace": "employee"
+    },
+    {
+      "pattern": "\\bteam size\\b|\\bhow big is your team\\b",
+      "replace": "employee count"
+    },
+    {
+      "pattern": "\\bset up\\b|\\bstarted trading\\b|\\bstart trading\\b",
+      "replace": "found"
+    },
+    {
+      "pattern": "\\b(?:work|works|working)\\s+(?:for|at|in)\\b",
+      "replace": " "
+    }
+  ],
+  "light_words": [
+    "hold",
+    "maintain",
+    "possess",
+    "obtain",
+    "offer",
+    "operate",
+    "carry",
+    "applicable"
+  ]
+}

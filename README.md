@@ -44,31 +44,37 @@ The workflow is designed to be conservative: if the system cannot safely handle 
 - **JSON** — structured source data
 - **pytest** — automated regression testing
 
+## Usage
+
+```bash
+pip install -e ".[web,dev]"      # Chromium needed; set FORMFILL_CHROMIUM=/path/to/chrome if Playwright's download is unavailable
+python -m formfill fill --source company.json --url https://example/form --out-dir out [--wizard] [--redact] [--strict]
+python -m formfill ask --source company.json "What is your workforce size?"   # no browser
+python -m formfill check-source company.json
+```
+
+`fill` writes `result.json` (per-question outcome, source path, evidence, `human_submission`), plus `filled.png` and `trace.zip` unless `--redact`. No HTML report is generated. FormFiller **never submits**; a person reviews and submits.
+
+## Question understanding
+
+Retrieval scores each question against every JSON leaf by token overlap, then applies a soft alignment layer (`formfill/web/semantic.py`, `lexicon.json`): derivational stems, a small closed synonym lexicon, initialisms, abbreviations. "Workforce size", "headcount" and "number of people working in the company" resolve to `employee_count` with the path and the link recorded as evidence. Scope, negation, period, population, identifier and ambiguity checks run on the aligned tokens, and anything doubtful goes to REVIEW. No LLM, embeddings or vector DB are used (see `PROJECT_COMPLETION.md` section 6).
+
 ## Verification and test results
 
-The latest recorded verification on the `phase3d-widget-commitment` branch reported:
+Verified on the current working tree (details, datasets and caveats in `PROJECT_COMPLETION.md`):
 
-- **Automated tests:** 415 passed, 2 xfailed (expected failures).
-- **Widget fixtures:** 12/12 for filling, DOM readback, and fixture application-state commitment.
-- **SPA fixtures:** 26 tested fixtures, with zero submission events and zero submission attempts reported.
-- **Demo scripts:** `demo.py` passed; `demo_web.py` ran successfully.
-- **Matching evaluations:** development and additional-set outcomes were unchanged by the widget work. These are development evaluations, not proof of generalisation to unseen real-world portals.
-
-Run the test suite from the repository root:
+- **Tests:** 480 passed, 2 xfailed (intentional disputed labels); ruff and mypy clean.
+- **Matching, development sets:** `benchmarks/rfi` 106/108 answered correct, 1 unsafe (a disputed label); `benchmarks/heldout` 119 answered, 0 unsafe. Semantic held-out v2 (author-written; first run 50 correct, 3 unsafe; 1 unsafe after fixes made once its failures were seen). Zero unsafe answers is **not** claimed.
+- **Widget fixtures:** 12/12 fill, DOM read-back and fixture app-state. **SPA fixtures:** 26, zero submit events, zero submissions.
+- **Demos:** `demo.py` PASS; `demo_web.py` NEEDS_REVIEW by design.
 
 ```bash
 python -m pytest -q
+python tools/evaluate_semantic.py --split dev --out-dir <new dir>
+python tools/evaluate_widgets3d.py --out-dir <new dir>
 ```
 
-The widget evaluation script is:
-
-```bash
-python tools/evaluate_widgets3d.py
-```
-
-See the `docs/` and `benchmarks/spa/results/` directories for evaluation details, fixture definitions, provenance information, and recorded outputs.
-
-**Important:** These results are from automated tests and local fixtures. They do not establish production readiness or guarantee that a real website has saved the entered data.
+**Important:** results are from local fixtures written by the project's author. No real portal has been tested, and DOM read-back or fixture state is not proof of server-side persistence.
 
 ## Safety and human review
 
@@ -77,7 +83,7 @@ FormFiller is intended to assist with data entry, not to make the final business
 - Uncertain answers or unsupported interactions should be flagged for human review.
 - A value visible in the DOM is not necessarily proof that the website's internal application state accepted it.
 - Application-state commitment in a test fixture is not proof of server-side persistence.
-- Final submission is left to a human reviewer; the system does not claim that an RFI has been submitted successfully.
+- FormFiller has no submit code path. Final submission is left to a human reviewer, and the report says so (`human_submission`).
 
 ## Current limitations
 
@@ -102,4 +108,4 @@ FormFiller is intended to assist with data entry, not to make the final business
 
 FormFiller is a tested prototype for JSON-driven RFI web-form automation. Its current focus is reliable form discovery, conservative answer matching, supported browser interactions, verification, and safe handoff for human review.
 
-The next major validation milestone is to test the workflow on a real RFI portal in an authorized, non-submitting environment and document the results.
+The next milestone is to test on a real RFI portal in an authorized, non-submitting environment. See `PROJECT_COMPLETION.md` for status and limitations.

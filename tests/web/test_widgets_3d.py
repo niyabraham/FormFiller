@@ -51,7 +51,7 @@ def by_label(res, text):
 
 def no_submission(page, res):
     """No form submit event, no submission attempt recorded by the pipeline, and (policy mode) the page-side submit counter is 0."""
-    assert res.submission == {} and page.evaluate("() => window.__ffSubmits || 0") == 0
+    assert res.human_submission["performed_by_formfill"] is False and page.evaluate("() => window.__ffSubmits || 0") == 0
 
 
 @MODES
@@ -82,10 +82,10 @@ def test_unsettled_page_is_reported_not_treated_as_settled(run, monkeypatch):
     assert state["name"] == "Acme Robotics Ltd"  # the answer itself still committed; only completeness is in doubt
 
 
-def test_unsettled_page_blocks_submit(run, monkeypatch):
+def test_unsettled_page_is_not_ready_for_human_review(run, monkeypatch):
     monkeypatch.setattr(execute, "_SETTLE_MAX_MS", 300)
-    res, _, _ = run("w3d_blur_commit.html?mode=churn", submit=True)
-    assert res.submission["outcome"] == "SKIPPED" and res.status == "NEEDS_REVIEW"
+    res, _, _ = run("w3d_blur_commit.html?mode=churn")
+    assert not res.human_submission["ready_for_human_review"] and res.status == "NEEDS_REVIEW"
 
 
 def test_blur_revert_is_not_reported_as_success(run):
@@ -156,3 +156,41 @@ def test_ordinary_and_controlled_inputs_unchanged(page, base, fid, policy):
     assert any(i.verified for i in res.items), fid
     assert not any(execute.UNSETTLED in w for w in res.warnings)
     no_submission(page, res)
+
+
+# ---- styled checkboxes (same label approach as styled radios) ------------------------------------------------------------
+
+_STYLED_CB = """
+<style>.opt{position:relative;display:flex;gap:.4rem;padding:.2rem 0}
+.opt input{position:absolute;width:1px;height:1px;margin:0;left:2px;top:50%;opacity:0}
+.opt .dec{position:relative;z-index:2;display:inline-block;width:1rem;height:1rem;border:2px solid #555}</style>
+<div role="group" aria-labelledby="g"><div id="g">Certifications held</div>
+ <div class="opt"><input type="checkbox" id="c1" name="cert" value="iso9001"><label for="c1"><span class="dec"></span> ISO 9001</label></div>
+ <div class="opt"><input type="checkbox" id="c2" name="cert" value="iso14001"><label for="c2"><span class="dec"></span> ISO 14001</label></div>
+</div>
+<div class="opt"><input type="checkbox" id="n" name="news" value="1"><label for="n"><span class="dec"></span> Subscribe to <a href="#x" id="lnk">news</a></label></div>
+<script>window.__clicks = 0; document.getElementById('lnk').addEventListener('click', () => window.__clicks++);</script>
+"""
+
+
+@pytest.mark.browser
+def test_styled_checkbox_group_is_set_through_labels(page):
+    from formfill.web.pipeline import run_form
+
+    page.set_content(_STYLED_CB)
+    res = run_form(page, {"certifications": ["ISO 9001"]})
+    item = next(i for i in res.items if i.plan.question == "Certifications held")
+    assert item.plan.status == "ANSWER" and item.filled and item.verified, item.detail
+    assert page.is_checked("#c1") and not page.is_checked("#c2")
+
+
+@pytest.mark.browser
+def test_styled_checkbox_with_a_link_in_its_label_is_refused_not_clicked(page):
+    from formfill.web.discover import discover
+    from formfill.web.execute import fill_control
+
+    page.set_content(_STYLED_CB)
+    ctl = next(c for c in discover(page).controls if c.html_id == "n")
+    with pytest.raises(ValueError, match="another control"):
+        fill_control(page, ctl, True, 2000)
+    assert page.evaluate("window.__clicks") == 0 and not page.is_checked("#n")

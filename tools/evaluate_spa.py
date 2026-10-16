@@ -66,8 +66,9 @@ def classify_stage(expected: dict, actual: dict | None) -> str:
 
 
 def probe_submit(browser, base: str, fid: str, gt: dict, source: dict, use_policy: bool) -> dict:
-    """Second, separate run of the fixture with submit=True: does the pipeline ever press a real submit button on this
-    page? (Local fixtures only; the app counts real submissions in window.__submitted.)"""
+    """Second, separate run of the fixture: does the pipeline ever press a real submit button on this page?
+    (FormFiller has no submit option any more; this probe stays as a regression check. Local fixtures only; the app
+    counts real submissions in window.__submitted.)"""
     ctx = browser.new_context()
     page = ctx.new_page()
     page.goto(f"{base}/{fid}.html")
@@ -75,15 +76,15 @@ def probe_submit(browser, base: str, fid: str, gt: dict, source: dict, use_polic
     kw = {"policy": DiscoveryPolicy(**gt.get("policy", {}))} if use_policy else {}
     out: dict = {}
     try:
-        res = run_form(page, source, submit=True, **kw)
-        out = {"status": res.status, "outcome": res.submission.get("outcome"),
+        res = run_form(page, source, **kw)
+        out = {"status": res.status, "outcome": "READY_FOR_HUMAN_REVIEW" if res.human_submission["ready_for_human_review"] else "NOT_READY",
                "completion": (getattr(res, "navigation", None) or {}).get("completion")}
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         out = {"error": f"{type(exc).__name__}: {str(exc).splitlines()[0]}"}
     try:
         out["submissions"] = page.evaluate("() => window.__submitted || 0")
         out["submit_events"] = page.evaluate("() => window.__ffSubmits || 0")
-    except Exception:  # noqa: BLE001
+    except Exception:
         out.setdefault("submissions", 0)
         out.setdefault("submit_events", 0)
     ctx.close()
@@ -100,14 +101,14 @@ def run_one(browser, base: str, fid: str, gt: dict, source: dict, use_policy: bo
     try:
         kw = {"policy": DiscoveryPolicy(**gt.get("policy", {}))} if use_policy else {}
         result = run_form(page, source, **kw)
-    except Exception as exc:  # noqa: BLE001 - a crash is a measured outcome
+    except Exception as exc:
         err = f"{type(exc).__name__}: {str(exc).splitlines()[0]}"
     try:
         app_state = page.evaluate("() => window.__state || {}")
         submitted = page.evaluate("() => window.__submitted || 0")
         confirms = page.evaluate("() => window.__confirms || 0")
         submit_events = page.evaluate("() => window.__ffSubmits || 0")
-    except Exception:  # noqa: BLE001
+    except Exception:
         app_state, submitted, confirms, submit_events = {}, 0, 0, 0
     ctx.close()
 

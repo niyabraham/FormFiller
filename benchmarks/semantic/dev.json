@@ -1,0 +1,1058 @@
+{
+ "benchmark": "semantic-dev",
+ "version": "1.0.0",
+ "description": "Retrieval/safety cases used DURING development of the semantic layer. Not a held-out set.",
+ "cases": [
+  {
+   "id": "d01_it_services",
+   "description": "mid-size IT services company, flat profile",
+   "source": {
+    "company_name": "ABC Technologies",
+    "employee_count": 150,
+    "industry": "Information Technology",
+    "services": [
+     "AI Solutions",
+     "Software Development"
+    ],
+    "founded_year": 2008,
+    "website": "https://www.abctech.example",
+    "headquarters_city": "Pune",
+    "annual_revenue_usd": 12500000,
+    "information_security_policy": true,
+    "support_email": "support@abctech.example",
+    "main_phone": "+91 20 5550 0100"
+   },
+   "questions": [
+    {
+     "question": "Company name",
+     "expect": "company_name",
+     "category": "exact"
+    },
+    {
+     "question": "How many employees does your company have?",
+     "expect": "employee_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "What is your company's workforce size?",
+     "expect": "employee_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Give the number of people working in the company.",
+     "expect": "employee_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "What is the current employee headcount?",
+     "expect": "employee_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Which sector does your business operate in?",
+     "expect": "industry",
+     "category": "paraphrase"
+    },
+    {
+     "question": "In what year was the company established?",
+     "expect": "founded_year",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Company web address",
+     "expect": "website",
+     "category": "paraphrase",
+     "kind": "url"
+    },
+    {
+     "question": "In which city is your head office located?",
+     "expect": "headquarters_city",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Total revenue (USD)",
+     "expect": "annual_revenue_usd",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Customer support email address",
+     "expect": "support_email",
+     "category": "paraphrase",
+     "kind": "email"
+    },
+    {
+     "question": "Switchboard telephone number",
+     "expect": "main_phone",
+     "category": "paraphrase",
+     "kind": "tel"
+    },
+    {
+     "question": "What will your headcount be next year?",
+     "expect": "REVIEW",
+     "category": "scope"
+    },
+    {
+     "question": "How many of your employees are full-time?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "How many employees does your subsidiary have?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Does your company hold ISO 27001 certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you have a SOC 2 report?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "What is your company's tax registration number?",
+     "expect": "REVIEW",
+     "category": "unsupported"
+    },
+    {
+     "question": "Provide your annual revenue for 2019",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Describe your disaster recovery approach",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "textarea"
+    },
+    {
+     "question": "Do you have an information security policy?",
+     "expect": "information_security_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Provide the company's fax number",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "tel"
+    }
+   ]
+  },
+  {
+   "id": "d02_nested_supplier",
+   "description": "nested supplier profile with parents and repeated field names",
+   "source": {
+    "organisation": {
+     "legal_name": "Northwind Components Ltd",
+     "trading_name": "Northwind",
+     "registration_number": "08123456",
+     "year_established": 1998,
+     "contact": {
+      "email": "procurement@northwind.example",
+      "phone": "+44 113 496 0000"
+     },
+     "registered_address": {
+      "line1": "1 Mill Street",
+      "city": "Leeds",
+      "postcode": "LS1 4AB",
+      "country": "United Kingdom"
+     },
+     "trading_address": {
+      "line1": "Unit 7 Dock Road",
+      "city": "Hull",
+      "postcode": "HU1 2CD",
+      "country": "United Kingdom"
+     }
+    },
+    "workforce": {
+     "total_employees": 240,
+     "apprentices": 12
+    },
+    "finance": {
+     "turnover_gbp": 18400000,
+     "vat_number": "GB123456789"
+    },
+    "insurance": {
+     "public_liability": {
+      "insurer": "Aviva",
+      "cover_gbp": 5000000,
+      "expiry": "2027-03-31"
+     },
+     "employers_liability": {
+      "insurer": "Zurich",
+      "cover_gbp": 10000000,
+      "expiry": "2027-06-30"
+     }
+    }
+   },
+   "questions": [
+    {
+     "question": "Registered company name",
+     "expect": "organisation.legal_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Trading name",
+     "expect": "organisation.trading_name",
+     "category": "exact"
+    },
+    {
+     "question": "Companies House number",
+     "expect": "organisation.registration_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "When was the business founded?",
+     "expect": "organisation.year_established",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Contact email",
+     "expect": "organisation.contact.email",
+     "category": "exact",
+     "kind": "email"
+    },
+    {
+     "question": "Registered office city",
+     "expect": "organisation.registered_address.city",
+     "category": "nested"
+    },
+    {
+     "question": "Registered office postcode",
+     "expect": "organisation.registered_address.postcode",
+     "category": "nested"
+    },
+    {
+     "question": "City",
+     "expect": "organisation.registered_address.city",
+     "category": "nested",
+     "section": "Registered address"
+    },
+    {
+     "question": "City",
+     "expect": "organisation.trading_address.city",
+     "category": "nested",
+     "section": "Trading address"
+    },
+    {
+     "question": "City",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "Postcode",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "Total number of staff",
+     "expect": "workforce.total_employees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of apprentices",
+     "expect": "workforce.apprentices",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Annual turnover (GBP)",
+     "expect": "finance.turnover_gbp",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "VAT registration number",
+     "expect": "finance.vat_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Public liability insurer",
+     "expect": "insurance.public_liability.insurer",
+     "category": "nested"
+    },
+    {
+     "question": "Public liability cover amount (GBP)",
+     "expect": "insurance.public_liability.cover_gbp",
+     "category": "nested",
+     "kind": "number"
+    },
+    {
+     "question": "Employers' liability expiry date",
+     "expect": "insurance.employers_liability.expiry",
+     "category": "nested",
+     "kind": "date"
+    },
+    {
+     "question": "Insurer",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "Expiry date",
+     "expect": "REVIEW",
+     "category": "ambiguous",
+     "kind": "date"
+    },
+    {
+     "question": "Professional indemnity insurer",
+     "expect": "REVIEW",
+     "category": "unsupported"
+    },
+    {
+     "question": "Number of contractors",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "d03_booleans_policies",
+   "description": "boolean policy flags; negation and polarity",
+   "source": {
+    "security": {
+     "mfa_required": true,
+     "sso_enabled": false,
+     "data_encrypted_at_rest": true,
+     "penetration_test_last_date": "2026-02-14",
+     "incident_response_plan": true,
+     "security_awareness_training": true
+    },
+    "privacy": {
+     "dpo_name": "R. Mehta",
+     "gdpr_applicable": true,
+     "data_retention_years": 7
+    },
+    "governance": {
+     "whistleblower_policy": true,
+     "anti_bribery_policy": true,
+     "has_conflicts_of_interest": false
+    }
+   },
+   "questions": [
+    {
+     "question": "Is multi-factor authentication mandatory for all users?",
+     "expect": "security.mfa_required",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you enforce MFA?",
+     "expect": "security.mfa_required",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is MFA optional?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you support single sign-on?",
+     "expect": "security.sso_enabled",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is single sign-on disabled?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is customer data encrypted at rest?",
+     "expect": "security.data_encrypted_at_rest",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is customer data stored unencrypted?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Date of your most recent penetration test",
+     "expect": "security.penetration_test_last_date",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Do you maintain a documented incident response plan?",
+     "expect": "security.incident_response_plan",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do staff receive security awareness training?",
+     "expect": "security.security_awareness_training",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Name of Data Protection Officer",
+     "expect": "privacy.dpo_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Does GDPR apply to your organisation?",
+     "expect": "privacy.gdpr_applicable",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How long (in years) do you retain customer data?",
+     "expect": "privacy.data_retention_years",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do you have a whistleblowing policy?",
+     "expect": "governance.whistleblower_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Does the organisation lack a whistleblower policy?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you have an anti-corruption policy?",
+     "expect": "governance.anti_bribery_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are there any conflicts of interest to declare?",
+     "expect": "governance.has_conflicts_of_interest",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold Cyber Essentials certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Has your organisation suffered a data breach in the last 3 years?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is a vulnerability scan performed monthly?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d04_missing_conflicting",
+   "description": "null / placeholder / contradictory source values",
+   "source": {
+    "company": {
+     "name": "Zenith Logistics",
+     "employee_count": 150,
+     "website": null,
+     "fax": "",
+     "tax_id": "TBD",
+     "phone": "N/A",
+     "email": "hello@zenith.example"
+    },
+    "hr": {
+     "headcount": 180
+    },
+    "finance": {
+     "revenue_2024": 4200000,
+     "revenue_2023": 3900000,
+     "currency": "EUR"
+    }
+   },
+   "questions": [
+    {
+     "question": "Company name",
+     "expect": "company.name",
+     "category": "exact"
+    },
+    {
+     "question": "Contact email address",
+     "expect": "company.email",
+     "category": "paraphrase",
+     "kind": "email"
+    },
+    {
+     "question": "Company website",
+     "expect": "REVIEW",
+     "category": "missing",
+     "kind": "url"
+    },
+    {
+     "question": "Fax number",
+     "expect": "REVIEW",
+     "category": "missing",
+     "kind": "tel"
+    },
+    {
+     "question": "Tax identification number",
+     "expect": "REVIEW",
+     "category": "missing"
+    },
+    {
+     "question": "Telephone number",
+     "expect": "REVIEW",
+     "category": "missing",
+     "kind": "tel"
+    },
+    {
+     "question": "How many employees do you have?",
+     "expect": "REVIEW",
+     "category": "conflicting",
+     "kind": "number"
+    },
+    {
+     "question": "Number of staff",
+     "expect": "REVIEW",
+     "category": "conflicting",
+     "kind": "number"
+    },
+    {
+     "question": "Revenue for 2024",
+     "expect": "finance.revenue_2024",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Revenue for 2023",
+     "expect": "finance.revenue_2023",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Revenue for 2022",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Reporting currency",
+     "expect": "finance.currency",
+     "category": "paraphrase"
+    }
+   ]
+  },
+  {
+   "id": "d05_lists_and_compound",
+   "description": "list values, multi-select, compound questions",
+   "source": {
+    "name": "Lumen Analytics",
+    "services": [
+     "Data Engineering",
+     "Machine Learning",
+     "Dashboards"
+    ],
+    "certifications": [
+     "ISO 9001",
+     "ISO 14001"
+    ],
+    "operating_regions": [
+     "EMEA",
+     "APAC"
+    ],
+    "primary_contact": {
+     "name": "Priya Nair",
+     "email": "priya@lumen.example",
+     "phone": "+91 80 5550 0199"
+    },
+    "billing_address": "22 Ring Road, Bengaluru 560001",
+    "registered_office": "4 Park Lane, Mumbai 400001"
+   },
+   "questions": [
+    {
+     "question": "Which services do you provide?",
+     "expect": "services",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "Data Engineering",
+      "Machine Learning",
+      "Dashboards",
+      "Consulting"
+     ]
+    },
+    {
+     "question": "Certifications held",
+     "expect": "certifications",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 27001"
+     ]
+    },
+    {
+     "question": "Regions in which you operate",
+     "expect": "operating_regions",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "EMEA",
+      "APAC",
+      "Americas"
+     ]
+    },
+    {
+     "question": "Name of primary contact",
+     "expect": "primary_contact.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Primary contact email",
+     "expect": "primary_contact.email",
+     "category": "exact",
+     "kind": "email"
+    },
+    {
+     "question": "Primary contact telephone",
+     "expect": "primary_contact.phone",
+     "category": "paraphrase",
+     "kind": "tel"
+    },
+    {
+     "question": "Please provide the contact name and email address",
+     "expect": "REVIEW",
+     "category": "compound"
+    },
+    {
+     "question": "State your registered address and telephone number",
+     "expect": "REVIEW",
+     "category": "compound"
+    },
+    {
+     "question": "Billing address",
+     "expect": "billing_address",
+     "category": "exact"
+    },
+    {
+     "question": "Registered office address",
+     "expect": "registered_office",
+     "category": "exact"
+    },
+    {
+     "question": "Mailing address",
+     "expect": "REVIEW",
+     "category": "similar_different"
+    },
+    {
+     "question": "Name of secondary contact",
+     "expect": "REVIEW",
+     "category": "similar_different"
+    },
+    {
+     "question": "Do you hold ISO 27001?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d06_counts_populations",
+   "description": "employee populations and counting constraints",
+   "source": {
+    "people": {
+     "employees": {
+      "total": 320,
+      "full_time": 280,
+      "part_time": 40
+     },
+     "contractors": 15,
+     "board_members": 7,
+     "independent_directors": 3
+    },
+    "sites": {
+     "offices": 4,
+     "warehouses": 2
+    }
+   },
+   "questions": [
+    {
+     "question": "Total number of employees",
+     "expect": "people.employees.total",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many people do you employ in total?",
+     "expect": "people.employees.total",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of full-time employees",
+     "expect": "people.employees.full_time",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "How many staff work part time?",
+     "expect": "people.employees.part_time",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of contractors",
+     "expect": "people.contractors",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "How many freelancers or contractors do you use?",
+     "expect": "people.contractors",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Size of the board of directors",
+     "expect": "people.board_members",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of independent non-executive directors",
+     "expect": "people.independent_directors",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many offices do you operate?",
+     "expect": "sites.offices",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of warehouses",
+     "expect": "sites.warehouses",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Number of seasonal workers",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    },
+    {
+     "question": "Number of employees in the engineering department",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of female employees",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of employees based outside the UK",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of manufacturing plants",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "d07_dates_units",
+   "description": "dates, money and numeric type constraints",
+   "source": {
+    "incorporation_date": "2011-06-09",
+    "financial_year_end": "31 March",
+    "annual_turnover": "\u00a32.4m",
+    "insured_value": "1,500,000",
+    "liability_cover": "approximately 2 million",
+    "vat_registered": true,
+    "year_end_month": "March",
+    "number_of_branches": "six"
+   },
+   "questions": [
+    {
+     "question": "Date of incorporation",
+     "expect": "incorporation_date",
+     "category": "exact",
+     "kind": "date"
+    },
+    {
+     "question": "When was the company incorporated?",
+     "expect": "incorporation_date",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Financial year end",
+     "expect": "financial_year_end",
+     "category": "exact"
+    },
+    {
+     "question": "Annual turnover (number only)",
+     "expect": "REVIEW",
+     "category": "type",
+     "kind": "number"
+    },
+    {
+     "question": "Total insured value",
+     "expect": "insured_value",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Liability cover (number)",
+     "expect": "REVIEW",
+     "category": "type",
+     "kind": "number"
+    },
+    {
+     "question": "Are you VAT registered?",
+     "expect": "vat_registered",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Number of branches (numeric)",
+     "expect": "REVIEW",
+     "category": "type",
+     "kind": "number"
+    },
+    {
+     "question": "Date of last audit",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "date"
+    }
+   ]
+  },
+  {
+   "id": "d08_choices",
+   "description": "dropdown / radio options that differ from source wording",
+   "source": {
+    "company": {
+     "size_band": "51-200",
+     "legal_form": "Private limited company",
+     "listed": false,
+     "country": "India",
+     "sector": "Software"
+    },
+    "contact": {
+     "preferred_language": "English"
+    }
+   },
+   "questions": [
+    {
+     "question": "Company size",
+     "expect": "company.size_band",
+     "category": "paraphrase",
+     "kind": "select",
+     "options": [
+      "1-10",
+      "11-50",
+      "51-200",
+      "201-500",
+      "500+"
+     ]
+    },
+    {
+     "question": "Legal structure",
+     "expect": "company.legal_form",
+     "category": "paraphrase",
+     "kind": "select",
+     "options": [
+      "Sole trader",
+      "Partnership",
+      "Private limited company",
+      "Public limited company"
+     ]
+    },
+    {
+     "question": "Is the company publicly listed?",
+     "expect": "company.listed",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Country of registration",
+     "expect": "company.country",
+     "category": "paraphrase",
+     "kind": "select",
+     "options": [
+      "India",
+      "United Kingdom",
+      "United States"
+     ]
+    },
+    {
+     "question": "Primary sector",
+     "expect": "company.sector",
+     "category": "paraphrase",
+     "kind": "select",
+     "options": [
+      "Software",
+      "Manufacturing",
+      "Retail"
+     ]
+    },
+    {
+     "question": "Industry",
+     "expect": "REVIEW",
+     "category": "option_mismatch",
+     "kind": "select",
+     "options": [
+      "Healthcare",
+      "Finance",
+      "Education"
+     ]
+    },
+    {
+     "question": "Preferred language for correspondence",
+     "expect": "contact.preferred_language",
+     "category": "paraphrase",
+     "kind": "select",
+     "options": [
+      "English",
+      "Hindi"
+     ]
+    },
+    {
+     "question": "Company type",
+     "expect": "REVIEW",
+     "category": "option_mismatch",
+     "kind": "select",
+     "options": [
+      "LLC",
+      "Corporation",
+      "Limited company"
+     ]
+    }
+   ]
+  }
+ ]
+}

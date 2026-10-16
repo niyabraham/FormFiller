@@ -57,43 +57,39 @@ Reading: the **browser agents return task-level results with no provenance**; th
     }
   ],
   "review_items": [ { "question_id": "...", "question": "...", "required": true, "reason": "...", "alternatives": [] } ],
-  "submission": { "attempted": true, "outcome": "CONFIRMED", "final_url": "...", "confirmation_text": "Thank you, ..." },
-  "artifacts": { "screenshot_filled": "filled.png", "screenshot_after_submit": "after_submit.png", "trace": "trace.zip", "result_json": "result.json" },
+  "human_submission": { "performed_by_formfill": false, "action_required": "a person must review the form and submit it themselves", "ready_for_human_review": true, "blockers": [] },
+  "server_persistence": "not_checked",
+  "not_asked": [ { "label": "...", "reason": "control stayed hidden" } ],
+  "artifacts": { "screenshot_filled": "filled.png", "trace": "trace.zip", "result_json": "result.json" },
   "warnings": ["1 control(s) stayed hidden and were not asked"]
 }
 ```
 
 ## 4. Status vocabulary (business outcome)
 
+**[CURRENT] FormFiller never submits.** There is no submit code path; submit-type and off-page controls are refused before any click. Final submission is a human action.
+
 | status | meaning | rule in code |
 |---|---|---|
-| `FILLED` | every discovered question answered and verified; not submitted | no REVIEW, no failures, no submission |
-| `NEEDS_REVIEW` | at least one question needs a human; nothing wrong was entered | any REVIEW item (also when submit was skipped because a required item is unresolved) |
-| `SUBMITTED` | submitted and the portal's confirmation was seen | submission outcome `CONFIRMED` |
-| `SUBMITTED_UNCONFIRMED` | submit clicked; no success signal observed | outcome `UNCONFIRMED` |
-| `FAILED` | a fill failed, a read-back mismatched, or the browser/portal rejected the submit | any ANSWER not filled/verified, or `ERROR`/`BLOCKED_BY_VALIDATION` |
+| `FILLED` | every discovered question answered and read back in the DOM; nothing submitted | no REVIEW, no failures, walk completed and page settled |
+| `NEEDS_REVIEW` | at least one question needs a human; nothing wrong was entered | any REVIEW item |
+| `FAILED` | a fill failed or a read-back mismatched | any ANSWER not filled/verified |
 
-Submission outcomes: `CONFIRMED`, `UNCONFIRMED`, `BLOCKED_BY_VALIDATION`, `NO_SUBMIT_CONTROL`, `ERROR`, `SKIPPED` (we refused: a required item needs review or a verification failed).
-
-**[CURRENT] Submission is opt-in** (`submit=False` by default) and is refused while any *required* question is in REVIEW. Optional blanks do not block submission and remain listed in `review_items`.
+Per-question `outcome`: `needs_review`, `failed`, `unverified`, `verified_dom` (value read back from the DOM), `verified_client_state` (also confirmed by a caller-supplied `state_reader`). `server_persistence` is always `not_checked`. The `human_submission` block states that submission was not performed and lists any `blockers` to review.
 
 ## 5. Supporting artifacts
 
-| artifact | MVP | notes |
-|---|---|---|
-| `result.json` | **yes** | primary output |
-| full-page screenshot before submit | **yes** | `filled.png` |
-| screenshot after submit | **yes** | `after_submit.png` (confirmation evidence) |
-| Playwright trace (`trace.zip`) | **yes** (via `run_url`) | `playwright show-trace`; contains screenshots, DOM snapshots, actions [FINDING: playwright.dev trace viewer docs] |
-| confirmation text + final URL | **yes** | inside `submission` |
-| submission/confirmation ID | [FUTURE] | needs a per-portal extraction rule; [OPEN] whether portals show one |
-| HAR / network log, DOM snapshot of the confirmation page | [FUTURE] | add when audit requirements are known |
-| PDF/print of the confirmation | [FUTURE] | only if a customer needs a receipt |
-| persistence (DB) of runs, reviewer decisions | [FUTURE] | files are enough until there is a review UI |
+| artifact | notes |
+|---|---|
+| `result.json` | primary output |
+| `filled.png` | full-page screenshot of the filled page (not written with `--redact`) |
+| `trace.zip` | Playwright trace, `playwright show-trace` (not written with `--redact`) |
+
+No HTML report is generated. Not implemented: confirmation text or ID, after-submit screenshot (nothing is submitted), HAR, run persistence.
 
 ## 6. Open questions for the guide
 
-1. Is the end goal *filled but not submitted* (a human clicks Send) or *submitted*? The code supports both; the default is the safe one.
-2. Is there a confirmation signal per portal (text, reference number, email)? Without it `SUBMITTED_UNCONFIRMED` is the best we can say.
+1. [RESOLVED] The end goal is *filled but not submitted*: a human clicks Send.
+2. [OBSOLETE] Confirmation signals are not needed while FormFiller does not submit.
 3. Who consumes `result.json`: a reviewer UI, an API, an audit store? That decides persistence and retention.
 4. Do answers need to be reproducible years later (then keep the source JSON snapshot hash in the result — easy to add)?

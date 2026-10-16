@@ -1,0 +1,883 @@
+{
+ "benchmark": "semantic-heldout-v2",
+ "version": "2.0.0",
+ "description": "Held-out v2: authored in one sitting AFTER the semantic layer was implemented and tuned, from domains/key styles not used in dev or seen sets, and never run until frozen. Authored by the same engineer as the implementation (no independent annotator); expectations are the author's judgement of the safe correct behaviour.",
+ "cases": [
+  {
+   "id": "v01_energy_utility",
+   "description": "energy supplier tender",
+   "source": {
+    "supplier": {
+     "name": "BrightGrid Energy plc",
+     "incorporated_on": "2009-04-17",
+     "headcount": 1260,
+     "licence_number": "EL-44821"
+    },
+    "operations": {
+     "generation_capacity_mw": 850,
+     "renewable_share_pct": 64,
+     "customers_served": 2100000,
+     "control_rooms": 3
+    },
+    "compliance": {
+     "ofgem_licensed": true,
+     "iso_50001": true,
+     "iso_14001": false,
+     "last_audit_date": "2026-03-11"
+    },
+    "esg": {
+     "net_zero_target_year": 2040,
+     "scope1_emissions_tonnes": 182000
+    }
+   },
+   "questions": [
+    {
+     "question": "Name of the supplier",
+     "expect": "supplier.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "When was your company incorporated?",
+     "expect": "supplier.incorporated_on",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Total number of people you employ",
+     "expect": "supplier.headcount",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Energy licence reference",
+     "expect": "supplier.licence_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "What is your installed generation capacity (MW)?",
+     "expect": "operations.generation_capacity_mw",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Percentage of output from renewable sources",
+     "expect": "operations.renewable_share_pct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many customers do you supply?",
+     "expect": "operations.customers_served",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of control rooms",
+     "expect": "operations.control_rooms",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Are you licensed by the regulator?",
+     "expect": "compliance.ofgem_licensed",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold ISO 50001 certification?",
+     "expect": "compliance.iso_50001",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold ISO 14001 certification?",
+     "expect": "compliance.iso_14001",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Date of most recent external audit",
+     "expect": "compliance.last_audit_date",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "By what year will you reach net zero?",
+     "expect": "esg.net_zero_target_year",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Direct (Scope 1) emissions in tonnes",
+     "expect": "esg.scope1_emissions_tonnes",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Scope 2 emissions in tonnes",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold ISO 27001 certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many people will you employ in 2030?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of employees in the trading division",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Is your ISO 14001 certification lapsed?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Customers served in 2019",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "v02_pharma_cro",
+   "description": "clinical research organisation, camel and snake keys mixed",
+   "source": {
+    "legalEntity": "Genova Clinical Research GmbH",
+    "yearFounded": 1999,
+    "hq": {
+     "city": "Basel",
+     "country": "Switzerland"
+    },
+    "staff": {
+     "total": 530,
+     "clinical_monitors": 140,
+     "data_managers": 45
+    },
+    "quality": {
+     "gcp_inspections_passed": 12,
+     "fda_483_observations": 0,
+     "iso_9001": true,
+     "sops_count": 318
+    },
+    "systems": {
+     "ctms_vendor": "Veeva",
+     "edc_validated": true,
+     "hosting_region": "EU"
+    },
+    "sites": {
+     "countries_with_offices": 17,
+     "trials_ongoing": 64
+    }
+   },
+   "questions": [
+    {
+     "question": "Name of legal entity",
+     "expect": "legalEntity",
+     "category": "paraphrase"
+    },
+    {
+     "question": "What year did the company begin operating?",
+     "expect": "yearFounded",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "City of headquarters",
+     "expect": "hq.city",
+     "category": "nested"
+    },
+    {
+     "question": "Which country is the head office in?",
+     "expect": "hq.country",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How big is your workforce?",
+     "expect": "staff.total",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of clinical monitors",
+     "expect": "staff.clinical_monitors",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "How many data managers do you have?",
+     "expect": "staff.data_managers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many regulatory inspections have you passed?",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    },
+    {
+     "question": "Number of FDA Form 483 observations received",
+     "expect": "quality.fda_483_observations",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Is the organisation ISO 9001 certified?",
+     "expect": "quality.iso_9001",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many SOPs do you maintain?",
+     "expect": "quality.sops_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Which clinical trial management system do you use?",
+     "expect": "systems.ctms_vendor",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Is your electronic data capture system validated?",
+     "expect": "systems.edc_validated",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Where is data hosted?",
+     "expect": "systems.hosting_region",
+     "category": "paraphrase"
+    },
+    {
+     "question": "In how many countries do you have offices?",
+     "expect": "sites.countries_with_offices",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of trials currently running",
+     "expect": "sites.trials_ongoing",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of biostatisticians",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold ISO 13485 certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold a GxP certificate?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is EDC validation optional?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "City",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    }
+   ]
+  },
+  {
+   "id": "v03_edtech",
+   "description": "education technology vendor privacy review",
+   "source": {
+    "Company": "LearnLoop Ltd",
+    "Founded": "2016",
+    "Registered office": "12 Bridge Street, Manchester M1 4AB",
+    "Number of learners": "1.2 million",
+    "Data protection officer": "Sam Ortega",
+    "DPO email": "dpo@learnloop.example",
+    "Children's data collected": "Yes",
+    "Data stored in": "United Kingdom",
+    "Retention period (months)": 24,
+    "Sub-processors": [
+     "AWS",
+     "Twilio",
+     "Sentry"
+    ],
+    "ICO registration number": "ZA118800"
+   },
+   "questions": [
+    {
+     "question": "Company name",
+     "expect": "Company",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Year of establishment",
+     "expect": "Founded",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Registered address",
+     "expect": "Registered office",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Who is your DPO?",
+     "expect": "Data protection officer",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Email address of the data protection officer",
+     "expect": "DPO email",
+     "category": "paraphrase",
+     "kind": "email"
+    },
+    {
+     "question": "Do you process data about children?",
+     "expect": "Children's data collected",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "In which country is data stored?",
+     "expect": "Data stored in",
+     "category": "paraphrase"
+    },
+    {
+     "question": "For how many months do you keep personal data?",
+     "expect": "Retention period (months)",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "List your sub-processors",
+     "expect": "Sub-processors",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "AWS",
+      "Twilio",
+      "Sentry",
+      "Stripe"
+     ]
+    },
+    {
+     "question": "ICO registration number",
+     "expect": "ICO registration number",
+     "category": "exact"
+    },
+    {
+     "question": "How many users does the platform have?",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    },
+    {
+     "question": "Do you sell personal data to third parties?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Have you had a data breach in the last 12 months?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is a DPIA completed for new features?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Please give your DPO name and phone number",
+     "expect": "REVIEW",
+     "category": "compound"
+    }
+   ]
+  },
+  {
+   "id": "v04_agri_coop",
+   "description": "agricultural cooperative; plain English keys with units",
+   "source": {
+    "name": "Green Valley Growers Cooperative",
+    "members": 412,
+    "year_formed": 1971,
+    "hectares_under_cultivation": 5400,
+    "main_crop": "Wheat",
+    "organic_certified": true,
+    "cold_storage_capacity_tonnes": 12000,
+    "exports_to": [
+     "Germany",
+     "Netherlands",
+     "UAE"
+    ],
+    "annual_turnover_inr": 890000000,
+    "gst_number": "29ABCDE1234F1Z5",
+    "board": {
+     "chair": "Meera Iyer",
+     "size": 9
+    },
+    "contact_phone": "+91 80 5550 7788"
+   },
+   "questions": [
+    {
+     "question": "Name of the cooperative",
+     "expect": "name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many member farmers do you have?",
+     "expect": "members",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "In what year was the cooperative formed?",
+     "expect": "year_formed",
+     "category": "exact"
+    },
+    {
+     "question": "Total area under cultivation (hectares)",
+     "expect": "hectares_under_cultivation",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "What is your principal crop?",
+     "expect": "main_crop",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Is your produce certified organic?",
+     "expect": "organic_certified",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Cold storage capacity in tonnes",
+     "expect": "cold_storage_capacity_tonnes",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Which countries do you export to?",
+     "expect": "exports_to",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "Germany",
+      "Netherlands",
+      "UAE",
+      "UK"
+     ]
+    },
+    {
+     "question": "Annual turnover (INR)",
+     "expect": "annual_turnover_inr",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "GST registration number",
+     "expect": "gst_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Who chairs the board?",
+     "expect": "board.chair",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Number of board members",
+     "expect": "board.size",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Contact telephone",
+     "expect": "contact_phone",
+     "category": "paraphrase",
+     "kind": "tel"
+    },
+    {
+     "question": "How many employees does the cooperative have?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold GlobalGAP certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many hectares will you cultivate next year?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Is your produce non-organic?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Turnover in the previous financial year",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "v05_telecom_dupes",
+   "description": "telecom; same field names under different parents and list items",
+   "source": {
+    "operator": {
+     "name": "Vantage Mobile",
+     "country": "Kenya",
+     "founded": 2004,
+     "employees": 3100
+    },
+    "parent_group": {
+     "name": "Vantage Holdings",
+     "country": "Mauritius",
+     "founded": 1996,
+     "employees": 9800
+    },
+    "network": {
+     "towers": 4200,
+     "coverage_population_pct": 81
+    },
+    "regional_offices": [
+     {
+      "city": "Nairobi",
+      "staff": 420
+     },
+     {
+      "city": "Mombasa",
+      "staff": 160
+     }
+    ],
+    "licences": {
+     "spectrum_900": true,
+     "spectrum_2600": false
+    }
+   },
+   "questions": [
+    {
+     "question": "Operator name",
+     "expect": "operator.name",
+     "category": "exact"
+    },
+    {
+     "question": "Country of operation",
+     "expect": "operator.country",
+     "category": "paraphrase"
+    },
+    {
+     "question": "When was the operator founded?",
+     "expect": "operator.founded",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many people work for the operator?",
+     "expect": "operator.employees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Name of parent group",
+     "expect": "parent_group.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Country where the parent group is registered",
+     "expect": "parent_group.country",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Number of employees in the parent group",
+     "expect": "parent_group.employees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of mobile towers",
+     "expect": "network.towers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "What share of the population does your network cover (%)?",
+     "expect": "network.coverage_population_pct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Staff at the Nairobi office",
+     "expect": "regional_offices.0.staff",
+     "category": "nested",
+     "kind": "number"
+    },
+    {
+     "question": "Staff at the Mombasa office",
+     "expect": "regional_offices.1.staff",
+     "category": "nested",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold a 900 MHz spectrum licence?",
+     "expect": "licences.spectrum_900",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold 2600 MHz spectrum?",
+     "expect": "licences.spectrum_2600",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Year founded",
+     "expect": "REVIEW",
+     "category": "ambiguous",
+     "kind": "number"
+    },
+    {
+     "question": "Number of employees",
+     "expect": "REVIEW",
+     "category": "ambiguous",
+     "kind": "number"
+    },
+    {
+     "question": "Staff at the Kisumu office",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of 5G sites",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "v06_facilities",
+   "description": "facilities services, placeholders and missing values",
+   "source": {
+    "firm": {
+     "name": "CleanSweep Facilities",
+     "employees": 740,
+     "website": "N/A",
+     "vat": "",
+     "insurer": "None",
+     "fax": "-",
+     "email": "bids@cleansweep.example"
+    },
+    "safety": {
+     "accidents_2024": 3,
+     "accidents_2023": 5,
+     "safety_officer": "Joan Pike"
+    },
+    "clients": {
+     "public_sector": true,
+     "largest_contract_value": 2600000
+    }
+   },
+   "questions": [
+    {
+     "question": "Company name",
+     "expect": "firm.name",
+     "category": "exact"
+    },
+    {
+     "question": "Total workforce",
+     "expect": "firm.employees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Website address",
+     "expect": "REVIEW",
+     "category": "missing",
+     "kind": "url"
+    },
+    {
+     "question": "VAT number",
+     "expect": "REVIEW",
+     "category": "missing"
+    },
+    {
+     "question": "Name of insurer",
+     "expect": "REVIEW",
+     "category": "missing"
+    },
+    {
+     "question": "Fax",
+     "expect": "REVIEW",
+     "category": "missing",
+     "kind": "tel"
+    },
+    {
+     "question": "Email for bids",
+     "expect": "firm.email",
+     "category": "paraphrase",
+     "kind": "email"
+    },
+    {
+     "question": "How many accidents did you record in 2024?",
+     "expect": "safety.accidents_2024",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "How many accidents did you record in 2023?",
+     "expect": "safety.accidents_2023",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "How many accidents did you record in 2022?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Name of your safety officer",
+     "expect": "safety.safety_officer",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Do you work for the public sector?",
+     "expect": "clients.public_sector",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Value of your largest contract",
+     "expect": "clients.largest_contract_value",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Are you free of any accidents this year?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  }
+ ]
+}

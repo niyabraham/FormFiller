@@ -1,0 +1,4 @@
+semantic-heldout-v2 frozen before its first run.
+file digest (sha256[:16]): d727c02237d23cdc
+frozen at (UTC): 2026-10-14T20:37:54+00:00
+No label or question may change after this point. A genuine ground-truth defect is documented in PROJECT_COMPLETION.md; the first-run results stay in benchmarks/semantic/results/.

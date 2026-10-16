@@ -20,7 +20,7 @@ def browser():
     with sync_api.sync_playwright() as p:
         try:
             b = p.chromium.launch(executable_path=exe)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             pytest.skip(f"Chromium unavailable: {str(exc).splitlines()[0]}")
         yield b
         b.close()

@@ -137,7 +137,7 @@ _OPAQUE_JS = """
 def _extract(frame: Frame, index: int) -> list[Control]:
     try:
         raw = frame.evaluate(_EXTRACT_JS, index)
-    except Exception:  # detached / inaccessible frame
+    except Exception:  # noqa: BLE001 - detached / inaccessible frame
         return []
     controls = []
     for r in raw:
@@ -158,6 +158,6 @@ def discover(page: Page) -> FormSchema:
             for tag in frame.evaluate(_OPAQUE_JS):
                 notes.append({"kind": "opaque_custom_element", "frame_index": i, "element": tag,
                               "reason": "custom element exposes no readable shadow root (closed, or empty): its inner controls cannot be discovered"})
-        except Exception:  # noqa: BLE001 - detached / inaccessible frame
+        except Exception:  # noqa: BLE001, S110 - detached / inaccessible frame: nothing to report
             pass
     return FormSchema(url=page.url, title=page.title(), controls=controls, notes=notes)

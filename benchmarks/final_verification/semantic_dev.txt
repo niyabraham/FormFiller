@@ -1,0 +1,17 @@
+[dev] digest=cf5eb90bf822ae6c questions=121 (answerable 76, must-review 45)
+auto-answered=59 correct=59 UNSAFE=0 (wrong source 0, answered a must-review 0) missed=17
+precision=100.0%  coverage=77.6%  review_rate=51.2%  unsafe_rate=0.0%
+  ambiguous          n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  compound           n=2   correct=0   missed=0   unsafe=0  correct_review=2
+  conflicting        n=2   correct=0   missed=0   unsafe=0  correct_review=2
+  exact              n=13  correct=13  missed=0   unsafe=0  correct_review=0
+  missing            n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  negation           n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  nested             n=7   correct=7   missed=0   unsafe=0  correct_review=0
+  option_mismatch    n=2   correct=0   missed=0   unsafe=0  correct_review=2
+  paraphrase         n=54  correct=37  missed=17  unsafe=0  correct_review=0
+  scope              n=10  correct=2   missed=0   unsafe=0  correct_review=8
+  similar_different  n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  type               n=3   correct=0   missed=0   unsafe=0  correct_review=3
+  unsupported        n=12  correct=0   missed=0   unsafe=0  correct_review=12
+wrote benchmarks/final_verification/semantic/dev.json

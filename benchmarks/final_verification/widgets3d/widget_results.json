@@ -1,0 +1,364 @@
+{
+  "provenance": {
+    "pipeline_module": "/home/claude/FormFiller/formfill",
+    "evaluated_commit": "4ffe03be74634932215fc4e3edb876beb33fd7ac",
+    "pipeline_diff_sha256": "c766191309f1557726b6329b9f9550225d785029b830e9d479e51f59fba6b7de",
+    "hash_recipe": "formfill-src-v2",
+    "ground_truth_3d_sha256": "90026fa8231e8cfe07fbbd04cd87fe5fdae77cc53c8c28c8198771e122f1f188",
+    "tool_sha256": "9d1d328da395d695b3118441f6ee9a7f7e47577721195c92215b68a51fd29505",
+    "fixtures_sha256": {
+      "w3d_blur_commit.html": "e5afa0feb6ddd62528e2c5a99753a59affc754cb1807f53d6c9a82f502805201",
+      "w3d_readonly_combobox.html": "4256930212bf7931905f51920e22a9c4ae55e5baabd8b97e75064d95b4a9b6ed",
+      "w3d_styled_radio.html": "875b338a695001c730eadb07986460e52a501a087a24fba555854562331ef3a4"
+    }
+  },
+  "results": [
+    {
+      "fixture": "w3d_blur_commit",
+      "desc": "text inputs commit app state on blur only; the City question exists only after Legal company name is committed",
+      "seconds": 0.76,
+      "status": "FILLED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": null,
+      "side_effects_expected": null,
+      "submission_attempts": 0,
+      "app_state": {
+        "name": "Acme Robotics Ltd",
+        "email": "info@acme-robotics.example",
+        "city": "Leeds"
+      },
+      "fields": {
+        "city": {
+          "expected": "Leeds",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": true,
+          "detail": ""
+        },
+        "email": {
+          "expected": "info@acme-robotics.example",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        },
+        "name": {
+          "expected": "Acme Robotics Ltd",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        }
+      }
+    },
+    {
+      "fixture": "w3d_blur_commit?mode=revert",
+      "desc": "the app clears the field on blur: DOM and state both end empty; verification must NOT report success",
+      "seconds": 0.48,
+      "status": "FAILED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": null,
+      "side_effects_expected": null,
+      "submission_attempts": 0,
+      "app_state": {
+        "email": "info@acme-robotics.example"
+      },
+      "fields": {
+        "email": {
+          "expected": null,
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": null,
+          "conditional": false,
+          "detail": ""
+        },
+        "name": {
+          "expected": null,
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": false,
+          "app_state": null,
+          "conditional": false,
+          "detail": "expected 'Acme Robotics Ltd', page holds ''"
+        }
+      }
+    },
+    {
+      "fixture": "w3d_readonly_combobox",
+      "desc": "readonly ARIA combobox, cover element takes the pointer, portal listbox",
+      "seconds": 0.27,
+      "status": "FILLED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "side_effects_expected": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "submission_attempts": 0,
+      "app_state": {
+        "country": "United Kingdom"
+      },
+      "fields": {
+        "country": {
+          "expected": "United Kingdom",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        }
+      }
+    },
+    {
+      "fixture": "w3d_readonly_combobox?mode=dead",
+      "desc": "readonly combobox that never opens: must stop quickly with a clear reason",
+      "seconds": 3.19,
+      "status": "FAILED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "side_effects_expected": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "submission_attempts": 0,
+      "app_state": {},
+      "fields": {
+        "country": {
+          "expected": null,
+          "present": true,
+          "fill_ok": false,
+          "dom_readback": false,
+          "app_state": null,
+          "conditional": false,
+          "detail": "fill failed: unsupported readonly combobox: it cannot be typed into and no safe interaction opened its option list (ArrowDown tried) expected 'United Kingdom', "
+        }
+      }
+    },
+    {
+      "fixture": "w3d_styled_radio",
+      "desc": "1x1 native radios under an overlaying decorator; selectable through the label",
+      "seconds": 0.19,
+      "status": "FILLED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": null,
+      "side_effects_expected": null,
+      "submission_attempts": 0,
+      "app_state": {
+        "sector": "Manufacturing"
+      },
+      "fields": {
+        "sector": {
+          "expected": "Manufacturing",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        }
+      }
+    },
+    {
+      "fixture": "w3d_blur_commit?mode=delay",
+      "desc": "no email field; dependent city question renders 60 ms after the name commit (inside the 150 ms quiet window)",
+      "seconds": 0.54,
+      "status": "FILLED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": null,
+      "side_effects_expected": null,
+      "submission_attempts": 0,
+      "app_state": {
+        "name": "Acme Robotics Ltd",
+        "city": "Leeds"
+      },
+      "fields": {
+        "city": {
+          "expected": "Leeds",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": true,
+          "detail": ""
+        },
+        "name": {
+          "expected": "Acme Robotics Ltd",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        }
+      }
+    },
+    {
+      "fixture": "w3d_blur_commit?mode=churn",
+      "desc": "page re-renders every 30 ms forever: never settles; fill is reported with an UNSETTLED warning, status NEEDS_REVIEW (evaluator runs default 1500 ms cap)",
+      "seconds": 4.71,
+      "status": "NEEDS_REVIEW",
+      "warnings": [
+        "3 answer(s) were entered while the page was still changing (page did not go quiet after leaving the field); questions that depend on them may not have been discovered - review before submitting"
+      ],
+      "unsettled_reported": true,
+      "expect_unsettled": true,
+      "side_effects": null,
+      "side_effects_expected": null,
+      "submission_attempts": 0,
+      "app_state": {
+        "name": "Acme Robotics Ltd",
+        "email": "info@acme-robotics.example",
+        "city": "Leeds"
+      },
+      "fields": {
+        "city": {
+          "expected": "Leeds",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": true,
+          "detail": "page did not go quiet within 1500 ms after leaving the field; questions that depend on this answer may not have appeared yet"
+        },
+        "email": {
+          "expected": "info@acme-robotics.example",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": "page did not go quiet within 1500 ms after leaving the field; questions that depend on this answer may not have appeared yet"
+        },
+        "name": {
+          "expected": "Acme Robotics Ltd",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": "page did not go quiet within 1500 ms after leaving the field; questions that depend on this answer may not have appeared yet"
+        }
+      }
+    },
+    {
+      "fixture": "w3d_readonly_combobox?mode=overlap",
+      "desc": "a Submit button is drawn over the combobox centre: click refused, keyboard opens the list; the button must receive no click",
+      "seconds": 0.23,
+      "status": "FILLED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "side_effects_expected": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "submission_attempts": 0,
+      "app_state": {
+        "country": "United Kingdom"
+      },
+      "fields": {
+        "country": {
+          "expected": "United Kingdom",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        }
+      }
+    },
+    {
+      "fixture": "w3d_readonly_combobox?mode=overlap_nav",
+      "desc": "a 'Continue' button is drawn over the combobox centre: click refused, keyboard opens the list; no click on the button",
+      "seconds": 0.26,
+      "status": "FILLED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "side_effects_expected": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "submission_attempts": 0,
+      "app_state": {
+        "country": "United Kingdom"
+      },
+      "fields": {
+        "country": {
+          "expected": "United Kingdom",
+          "present": true,
+          "fill_ok": true,
+          "dom_readback": true,
+          "app_state": true,
+          "conditional": false,
+          "detail": ""
+        }
+      }
+    },
+    {
+      "fixture": "w3d_readonly_combobox?mode=overlap_dead",
+      "desc": "Submit button over the centre AND no keyboard support: safe unsupported stop, no click",
+      "seconds": 1.68,
+      "status": "FAILED",
+      "warnings": [],
+      "unsettled_reported": false,
+      "expect_unsettled": false,
+      "side_effects": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "side_effects_expected": {
+        "clicks": 0,
+        "submits": 0
+      },
+      "submission_attempts": 0,
+      "app_state": {},
+      "fields": {
+        "country": {
+          "expected": null,
+          "present": true,
+          "fill_ok": false,
+          "dom_readback": false,
+          "app_state": null,
+          "conditional": false,
+          "detail": "fill failed: unsupported readonly combobox: it cannot be typed into and no safe interaction opened its option list (ArrowDown tried; click refused: the click po"
+        }
+      }
+    }
+  ]
+}

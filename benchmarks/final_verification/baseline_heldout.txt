@@ -1,0 +1,3 @@
+auto-answered=119  correct=119  UNSAFE=0
+precision=100.0%  coverage=43.8%  review_rate=44.9%  not_surfaced=11.4%  answerable_recall=58.0%
+excluding disputed labels: N=272 answered=119 correct=119 unsafe=0 precision=100.0%

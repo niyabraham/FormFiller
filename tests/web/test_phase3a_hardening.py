@@ -279,3 +279,11 @@ def test_self_reference_does_not_make_a_sibling_entity_win():
     cands = retrieve(understand_control(Control("c", "number", "How many employees does your organization have?")),
                      index_source({"company": {"employees": 250}, "subsidiary": {"employees": 80}}))
     assert cands[0].path == "company.employees"
+
+
+# ---- status negations (found by held-out semantic v2) -------------------------------------------------------------------
+@pytest.mark.parametrize("word", ["lapsed", "expired", "revoked", "withdrawn", "suspended", "terminated", "inactive", "invalid"])
+def test_status_negation_words_are_polarity_markers(word):
+    from formfill.web.tokens import NEGATORS, tokenize
+
+    assert word in NEGATORS and word in tokenize(f"Is your certification {word}?")

@@ -134,54 +134,40 @@ def test_submit_type_next_is_never_clicked(run, fid):
     assert res.status == "NEEDS_REVIEW" and any("stopped early" in w for w in res.warnings)
 
 
-def test_intercepted_submit_button_is_refused_by_default_but_opt_in_navigates(run):
-    res, _, _ = run("spa_submit_type_intercepted")
+def test_intercepted_submit_type_button_is_always_refused(run):
+    """A submit-type control cannot be told apart from a real submission before the click: there is no opt-in."""
+    res, _, page = run("spa_submit_type_intercepted")
     assert res.navigation["stop_reason"] == "submit_type_next_refused" and res.navigation["steps_visited"] == 1
-    res2, state2, page2 = run("spa_submit_type_intercepted", DiscoveryPolicy(allow_submit_type_navigation=True))
-    assert res2.navigation["steps_visited"] == 3 and state2["city"] == "Leeds"
-    assert page2.evaluate("() => window.__submitted") == 0
+    assert page.evaluate("() => window.__submitted") == 0
+    with pytest.raises(TypeError):
+        DiscoveryPolicy(allow_submit_type_navigation=True)
 
 
-def test_opt_in_does_not_unlock_commit_labels(run):
-    res, _, page = run("trap_submit", DiscoveryPolicy(allow_submit_type_navigation=True))  # button says "Submit application"
+def test_commit_labelled_button_is_never_pressed(run):
+    res, _, page = run("trap_submit")  # the only button says "Submit application"
     assert res.navigation["stop_reason"] == "no_safe_next_control" and page.evaluate("() => window.__submitted") == 0
 
 
-def test_submit_flag_is_not_honoured_after_a_refused_next(run):
-    res, _, page = run("trap_submit_button", submit=True)
-    assert res.submission["outcome"] == "SKIPPED" and page.evaluate("() => window.__submitted") == 0
+@pytest.mark.parametrize("kw", [{"submit": True}, {"submit_selector": "#submit"}, {"success_text": "Thank you"}])
+def test_run_form_has_no_submission_parameters(page, base, kw):
+    """FormFiller never submits: the old submit options are gone, so a caller cannot ask for it by accident."""
+    page.goto(f"{base}/trap_submit_button.html")
+    with pytest.raises(TypeError):
+        run_form(page, SOURCE, **kw)
 
 
-@pytest.mark.parametrize("html,expect", [
-    ('<form><button type="button">Next</button></form>', "found"),
-    ("<button>Next</button>", "found"),  # outside a form a type-less button submits nothing
-    ('<div role="button" tabindex="0">Continue</div>', "found"),
-    ('<a role="button" href="#">Next</a>', "found"),
-    ("<form><button>Next</button></form>", "refused"),  # type-less button in a form IS a submit button
-    ('<form><button type="submit">Next</button></form>', "refused"),
-    ('<form><input type="submit" value="Continue"></form>', "refused"),
-    ('<form><input type="image" alt="Next"></form>', "refused"),  # image submit button: label comes from alt
-    ('<form><input type="image" alt="Continue" value="Continue"></form>', "refused"),
-    ('<input type="image" alt="Next">', "found"),  # outside a form an image input submits nothing
-    ('<form><input type="image" alt="Submit application"></form>', "none"),  # commit label: never a Next
-    ('<form id="f"></form><button type="submit" form="f">Next</button>', "refused"),  # ownership via the form= attribute
-    ('<a role="button" href="/elsewhere">Next</a>', "refused"),  # leaves the page
-    ("<form><button type=\"button\">Submit application</button></form>", "none"),
-])
-def test_next_button_html_metadata(page, html, expect):
+def test_no_submit_function_exists():
+    from formfill.web import execute
+
+    assert not hasattr(execute, "submit")
+
+
+@pytest.mark.parametrize("markup", ['<form><button type="submit">Next</button></form>', '<a role="button" href="/elsewhere">Next</a>'])
+def test_submit_type_and_off_page_next_are_refused(page, markup):
     from formfill.web.steps import next_button
 
-    page.set_content(html)
-    assert next_button(page, DiscoveryPolicy())["state"] == expect
-
-
-def test_opt_in_policy_finds_submit_type(page):
-    from formfill.web.steps import next_button
-
-    page.set_content('<form><button type="submit">Next</button></form>')
-    assert next_button(page, DiscoveryPolicy(allow_submit_type_navigation=True))["state"] == "found"
-    page.set_content('<a role="button" href="/elsewhere">Next</a>')
-    assert next_button(page, DiscoveryPolicy(allow_submit_type_navigation=True))["state"] == "refused"  # off-page links stay refused
+    page.set_content(markup)
+    assert next_button(page, DiscoveryPolicy())["state"] == "refused"
 
 
 # ---- review round 2: an unsettled page is never filled or clicked -------------------------------------------------------
@@ -189,10 +175,10 @@ def test_opt_in_policy_finds_submit_type(page):
 
 @pytest.mark.parametrize("fid", ["wiz_loading_forever", "wiz_churn"])
 def test_unsettled_page_is_not_touched(run, fid):
-    res, state, page = run(fid, DiscoveryPolicy(settle_timeout_ms=600), submit=True)
+    res, state, page = run(fid, DiscoveryPolicy(settle_timeout_ms=600))
     assert res.navigation["stop_reason"] == "page_not_settled"
     assert res.items == [] and state == {}  # nothing discovered, filled, or clicked
-    assert res.status == "NEEDS_REVIEW" and res.submission["outcome"] == "SKIPPED"
+    assert res.status == "NEEDS_REVIEW" and not res.human_submission["performed_by_formfill"]
     assert page.evaluate("() => window.__submitted") == 0
     note = next(n for n in res.navigation["notes"] if n["kind"] == "page_not_settled")
     assert note["where"] == "step start" and note["waited_ms"] >= 600
@@ -224,7 +210,7 @@ def test_complete_walk_is_unconfirmed_not_filled(run):
     assert any(n["kind"] == "completion_unconfirmed" for n in res.navigation["notes"])
 
 
-# ---- review round 3: uncertain completion is never submitted --------------------------------------------------------------
+# ---- uncertain completion is never submitted, and nothing is ever submitted ------------------------------------------------
 
 
 def _nothing_submitted(page):
@@ -233,49 +219,49 @@ def _nothing_submitted(page):
     assert page.locator("#thanks").count() == 0
 
 
-def test_trap_submit_with_submit_true_is_skipped(run):
-    res, _, page = run("trap_submit", submit=True)  # only button says "Submit application"; a mid-wizard trap
+def test_trap_submit_is_not_submitted(run):
+    res, _, page = run("trap_submit")  # only button says "Submit application"; a mid-wizard trap
     assert res.navigation["stop_reason"] == "no_safe_next_control" and res.navigation["completion"] == "unconfirmed"
-    assert res.submission["outcome"] == "SKIPPED" and "unconfirmed" in res.submission["detail"]
+    assert not res.human_submission["ready_for_human_review"]
     assert res.status == "NEEDS_REVIEW"
     _nothing_submitted(page)
 
 
-def test_unfamiliar_next_label_with_submit_true_is_skipped(run):
-    """Step 1 of 3 has a Next we do not recognise ('Onward') and a REAL visible Submit button. Before this rule the
-    submit routine would have found and pressed it."""
-    res, state, page = run("wiz_unfamiliar_next", submit=True)
+def test_unfamiliar_next_label_is_not_submitted(run):
+    """Step 1 of 3 has a Next we do not recognise ('Onward') and a REAL visible Submit button."""
+    res, state, page = run("wiz_unfamiliar_next")
     assert res.navigation["stop_reason"] == "no_safe_next_control" and res.navigation["steps_visited"] == 1
-    assert res.submission["outcome"] == "SKIPPED" and res.status == "NEEDS_REVIEW"
+    assert res.status == "NEEDS_REVIEW" and not res.human_submission["performed_by_formfill"]
     assert set(state) == {"name", "website"}
     assert page.locator("#submit").is_visible()  # the dangerous button was there the whole time
     _nothing_submitted(page)
 
 
-def test_genuine_final_step_with_submit_true_is_not_submitted(run):
+def test_genuine_final_step_is_filled_but_not_submitted(run):
     """A walk that really did reach the last step looks identical to the cases above, so it is treated the same way:
-    filled and verified, reported as unconfirmed, NOT submitted. Submitting needs a later, explicit final-step policy."""
-    res, state, page = run("wiz_unmount", submit=True)
+    filled and verified, reported as unconfirmed, NOT submitted. Submission is a human action."""
+    res, state, page = run("wiz_unmount")
     assert res.navigation["steps_visited"] == 3 and state["city"] == "Leeds"
-    assert res.navigation["completion"] == "unconfirmed" and res.submission["outcome"] == "SKIPPED"
+    assert res.navigation["completion"] == "unconfirmed" and not res.human_submission["performed_by_formfill"]
     assert res.status == "NEEDS_REVIEW"
     assert page.locator("#submit").is_visible()  # the real final Submit button is on screen, untouched
     _nothing_submitted(page)
 
 
 @pytest.mark.parametrize("fid", ["trap_submit_button", "trap_submit_input", "trap_submit_default", "trap_submit_image", "spa_submit_type_intercepted"])
-def test_refused_submit_type_with_submit_true_is_skipped(run, fid):
-    res, _, page = run(fid, submit=True)
+def test_refused_submit_type_is_not_submitted(run, fid):
+    res, _, page = run(fid)
     assert res.navigation["stop_reason"] == "submit_type_next_refused" and res.navigation["completion"] == "incomplete"
-    assert res.submission["outcome"] == "SKIPPED"
+    assert not res.human_submission["ready_for_human_review"]
     _nothing_submitted(page)
 
 
-def test_without_a_policy_submit_true_still_works_as_before(page, base):
-    """The single-page path is unchanged: no policy, no walk, so no completion question."""
+def test_without_a_policy_nothing_is_submitted(page, base):
+    """The single-page path: no policy, no walk, so no completion question; and the page's Submit button is untouched."""
     page.goto(f"{base}/wiz_unfamiliar_next.html")
-    res = run_form(page, SOURCE, submit=True)
+    res = run_form(page, SOURCE)
     assert res.navigation == {}
+    assert page.evaluate("() => window.__submitted") == 0 and page.locator("#thanks").count() == 0  # (no page-side counter without a policy)
 
 
 # ---- review round 2: stage-aware discovery -----------------------------------------------------------------------------

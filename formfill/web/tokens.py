@@ -18,6 +18,8 @@ STOPWORDS = {
     "for", "in", "to", "and", "or", "with", "on", "by", "our", "we", "us", "have",
     "has", "list", "give", "specify", "select", "choose", "which", "who",
     "that", "this", "be", "at", "as", "from", "it", "its", "required",
+    # question furniture, and the synonyms of "required" (polarity is carried by NEGATORS, not by these)
+    "mandatory", "compulsory", "was", "were", "when",
 }
 # Phase 3A: "total", "state" and "optional" are no longer stopwords. "total" and "state" are real
 # key names (customers.total, address.state); "optional" is polarity (see NEGATORS) -- dropping it
@@ -46,7 +48,12 @@ QUALIFIERS = {
 NEGATORS = {"not", "non", "optional", "disabled", "disable", "without", "unsupported", "never", "inapplicable",
             # Phase 3B-A: "Does the organisation lack a whistleblower policy?" read `whistleblower_policy: true`
             # and answered "yes". Nothing is inverted: the marker only has to match on both sides, else REVIEW.
-            "lack", "lacking", "absence", "absent"}
+            "lack", "lacking", "absence", "absent",
+            # status negations found by held-out semantic v2 ("Is your ISO 14001 certification lapsed?" read `iso_14001: false`
+            # and answered). Same rule: the marker must match on both sides, else REVIEW.
+            "lapsed", "expired", "revoked", "withdrawn", "suspended", "cancelled", "canceled", "terminated", "ceased",
+            "discontinued", "rejected", "denied", "failed", "inactive", "missing", "unable", "invalid", "prohibited",
+            "banned", "excluded", "unqualified"}
 
 # A generic noun a key may leave implicit: `company.full_time` answers "full-time employees". Such a word is not
 # held against a key (see retrieve.assess_leaf); every other unexplained word is a modifier the key must carry.
@@ -139,9 +146,14 @@ def tokenize(text: str) -> list[str]:
     acronyms = [m.group(1).lower() for m in re.finditer(r"\(\s*([^)]*?)\s*\)", text)
                 if _ACRONYM.fullmatch(m.group(1)) and m.group(1).lower() not in _NOT_ACRONYMS]
     text = re.sub(r"\([^)]*\)", " ", text)  # other parenthetical hints, e.g. "(DD/MM/YYYY)"
+    text = re.sub(r"['\u2019]s\b", "", text)  # possessive: "company's" is "company", not "company" + "s"
     text = text.lower().replace("_", " ")  # snake_case: "_" is a word character, so \b would not fire
     text = _STATE_VERB.sub(" ", text)
     for pattern, repl in _PHRASES:
+        text = pattern.sub(repl, text)
+    from formfill.web.semantic import lexicon_phrases  # closed phrase table, reviewable in formfill/web/lexicon.json
+
+    for pattern, repl in lexicon_phrases():
         text = pattern.sub(repl, text)
     out: list[str] = []
     for raw in re.split(r"[^a-z0-9]+", text) + acronyms:

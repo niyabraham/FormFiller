@@ -291,12 +291,14 @@ class TestKnownCosts:
         # Phase 3B-A behaviour, unchanged: a single parent names the entity and the key explains most of the words
         assert_answer(ask("Customer support personnel (headcount)", {"headcount": {"support": 57}}, "number"), 57)
 
-    def test_a_filler_verb_in_a_count_costs_coverage_when_context_had_to_pick_the_candidate(self):
-        # "work" cannot be told from a modifier without a word list; when hierarchy picked the candidate, it must
-        # not also hide an unexplained word, so this natural phrasing stays REVIEW (the plain one answers)
+    def test_work_in_is_idiom_not_a_modifier_and_context_still_picks_the_candidate(self):
+        # Was a documented coverage cost ("work" could not be told from a modifier). The closed phrase table in
+        # lexicon.json now treats "work in/for/at" as filler, so the natural phrasing answers like the plain one...
         src = {"departments": {"engineering": {"employees": 120}, "sales": {"employees": 40}}}
-        assert_review(ask("How many employees work in the sales department?", src, "number"))
+        assert_answer(ask("How many employees work in the sales department?", src, "number"), 40)
         assert_answer(ask("Number of employees in the sales department", src, "number"), 40)
+        # ...but a genuine unexplained modifier next to a context-picked candidate still stays REVIEW
+        assert_review(ask("How many seasonal employees work in the sales department?", src, "number"))
 
     def test_opening_is_not_matched_to_opened(self):
         # tokeniser limitation (no stemming of -ing/-ed pairs), out of scope for this batch

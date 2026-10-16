@@ -39,7 +39,8 @@ _ENUMERATOR = re.compile(r"^\s*(?:[A-Za-z]\.\d+(?:\.\d+)*|\d+(?:\.\d+)*)[.):]?\s
 _DECORATION = re.compile(r"\s*[\[(]\s*(?:optional|required)\s*[\])]\s*|\s*[-\u2013\u2014:]\s*(?:optional|required)\s*$|^\s*(?:optional|required)\s*[-\u2013\u2014:]\s*", re.IGNORECASE)
 
 
-_COUNT = re.compile(r"\b(?:how\s+many|number\s+of|no\.\s*of|count\s+of|headcount|total\s+(?:number|count))\b", re.IGNORECASE)
+_COUNT = re.compile(r"\b(?:how\s+many|number\s+of|no\.\s*of|count\s+of|headcount|total\s+(?:number|count)|"
+                    r"(?:workforce|team|staff|board)\s+size|size\s+of\s+(?:your\s+|the\s+)?(?:workforce|team|staff|board))\b", re.IGNORECASE)
 
 
 def concept_text(text: str) -> str:

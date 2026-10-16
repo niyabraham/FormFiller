@@ -76,11 +76,27 @@ def item(status, filled=False, verified=None):
 
 def test_status_matrix():
     ok = item("ANSWER", True, True)
-    assert overall_status([ok], None) == "FILLED"
-    assert overall_status([ok, item("REVIEW")], None) == "NEEDS_REVIEW"
-    assert overall_status([item("ANSWER", False)], None) == "FAILED"
-    assert overall_status([item("ANSWER", True, False)], None) == "FAILED"
-    assert overall_status([ok], {"outcome": "CONFIRMED"}) == "SUBMITTED"
-    assert overall_status([ok], {"outcome": "UNCONFIRMED"}) == "SUBMITTED_UNCONFIRMED"
-    assert overall_status([ok], {"outcome": "BLOCKED_BY_VALIDATION"}) == "FAILED"
-    assert overall_status([ok, item("REVIEW")], {"outcome": "SKIPPED"}) == "NEEDS_REVIEW"
+    assert overall_status([ok]) == "FILLED"
+    assert overall_status([ok, item("REVIEW")]) == "NEEDS_REVIEW"
+    assert overall_status([item("ANSWER", False)]) == "FAILED"
+    assert overall_status([item("ANSWER", True, False)]) == "FAILED"
+    assert overall_status([item("ANSWER", False), item("REVIEW")]) == "FAILED"  # a failed fill outranks review
+    # there is no SUBMITTED status: FormFiller never submits
+    assert {overall_status([ok]), overall_status([item("REVIEW")]), overall_status([item("ANSWER", False)])} == {"FILLED", "NEEDS_REVIEW", "FAILED"}
+
+
+def test_human_submission_block():
+    from formfill.web.result import RunResult, human_submission
+
+    ok = item("ANSWER", True, True)
+    res = RunResult(url="u", status="FILLED", items=[ok])
+    hs = human_submission(res)
+    assert hs["performed_by_formfill"] is False and hs["ready_for_human_review"] and hs["blockers"] == []
+    required_review = item("REVIEW")  # AnswerPlanItem("q","Q","text",True,...) is required
+    required_review.plan.reason = "no matching value in the source data"
+    res = RunResult(url="u", status="NEEDS_REVIEW", items=[ok, required_review])
+    assert not human_submission(res)["ready_for_human_review"]
+    assert not human_submission(RunResult(url="u", status="x", items=[ok]), incomplete=True)["ready_for_human_review"]
+    assert not human_submission(RunResult(url="u", status="x", items=[ok]), unsettled=True)["ready_for_human_review"]
+    broken = item("ANSWER", True, False)
+    assert not human_submission(RunResult(url="u", status="FAILED", items=[broken]))["ready_for_human_review"]

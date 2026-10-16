@@ -1,0 +1,8 @@
+cases=14 questions=272 (expected ANSWER 205, REVIEW 67)
+auto-answered=119  correct=119  UNSAFE=0
+precision=100.0%  coverage=43.8%  review_rate=44.9%  not_surfaced=11.4%  answerable_recall=58.0%
+confusion: {'expected_ANSWER__predicted_ANSWER__correct': 119, 'expected_ANSWER__predicted_ANSWER__incorrect_value': 0, 'expected_ANSWER__predicted_ANSWER__fill_failed': 0, 'expected_ANSWER__predicted_REVIEW': 65, 'expected_ANSWER__not_asked': 21, 'expected_REVIEW__predicted_REVIEW': 57, 'expected_REVIEW__predicted_ANSWER': 0, 'expected_REVIEW__not_asked': 10}
+excluding disputed labels: N=272 answered=119 correct=119 unsafe=0 precision=100.0%
+failure classes: {'retrieval problem': 46, 'form discovery problem': 34, 'validation problem': 7, 'ambiguity problem': 7, 'browser execution problem': 2}
+submission: []
+wrote /home/claude/FormFiller/benchmarks/final_verification_stabilization/baseline_heldout/baseline.json and failures.md

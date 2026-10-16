@@ -42,7 +42,7 @@ def main() -> int:
             top_changed.append((k, ra, rb))
         elif (ua or {}).get("path") != (ub or {}).get("path"):
             runner_changed.append((k, ra, rb))
-        elif ta and tb and abs(ta["score"] - tb["score"]) > 1e-9 or ua and ub and abs(ua["score"] - ub["score"]) > 1e-9:
+        elif (ta and tb and abs(ta["score"] - tb["score"]) > 1e-9) or (ua and ub and abs(ua["score"] - ub["score"]) > 1e-9):
             score_changed.append((k, ra, rb))
 
     def rows(items) -> list[str]:

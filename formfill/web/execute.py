@@ -70,10 +70,10 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
                 return warnings
         raise ValueError(f"no radio option with value {answer!r}")
     elif kind == "checkbox":
-        loc.set_checked(bool(answer), timeout=timeout_ms)
+        _set_checked(loc, bool(answer), timeout_ms)
     elif kind == "checkbox_group":
         for member in loc.all():
-            member.set_checked(member.get_attribute("value") in answer, timeout=timeout_ms)
+            _set_checked(member, member.get_attribute("value") in answer, timeout_ms)
     else:
         raise ValueError(f"unsupported control kind {kind!r}")
     return warnings
@@ -122,6 +122,25 @@ e => { const r = e.getBoundingClientRect(); if (!r.width && !r.height) return fa
 """
 
 
+_LABEL_JS = """
+e => {
+  const label = (e.labels && e.labels[0]) || e.closest('label');
+  if (!label) return {ok: false, reason: 'it has no label to click'};
+  const other = Array.from(label.querySelectorAll('a[href], button, select, textarea, [role=button], [role=link], input'))
+    .filter(x => x !== e && !e.contains(x));
+  if (other.length) return {ok: false, reason: 'its label contains another control (' + other[0].tagName.toLowerCase() + '): a click could act on it'};
+  return {ok: true};
+}
+"""
+
+
+def _click_label(member, what: str, timeout_ms: int) -> None:
+    check = member.evaluate(_LABEL_JS)
+    if not check["ok"]:
+        raise ValueError(f"unsupported styled {what}: the native input is covered and {check['reason']}")
+    member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element().click(timeout=timeout_ms)
+
+
 def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None:
     """Select one radio. A native input that is hit-testable is checked as before. A styled radio (tiny/hidden input
     under a decorator that takes the pointer) is selected through its accessible label, the visible target a person
@@ -129,12 +148,22 @@ def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None
     if member.evaluate(_RADIO_HIT_JS):
         member.check(timeout=timeout_ms)
         return
-    label = member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element()
-    if label is None:
-        raise ValueError("unsupported styled radio: the native input is covered and it has no label to click")
-    label.click(timeout=timeout_ms)
+    _click_label(member, "radio", timeout_ms)
     if not member.is_checked():
         raise ValueError("styled radio: clicking its label did not select it (selection not confirmed)")
+
+
+def _set_checked(member, want: bool, timeout_ms: int) -> None:
+    """Same rule for checkboxes: a hit-testable native input is set directly; a styled one is toggled through its label, only
+    when it needs toggling, and the checked state is verified. Attestation/consent boxes never get here (plan.py)."""
+    if member.is_checked() == want:
+        return
+    if member.evaluate(_RADIO_HIT_JS):
+        member.set_checked(want, timeout=timeout_ms)
+        return
+    _click_label(member, "checkbox", timeout_ms)
+    if member.is_checked() != want:
+        raise ValueError("styled checkbox: clicking its label did not change it (state not confirmed)")
 
 
 _OPEN_TIMEOUT_MS = 1500
@@ -242,39 +271,3 @@ def matches(expected: Any, observed: Any) -> bool:
     if isinstance(expected, bool) or isinstance(observed, bool):
         return expected is observed
     return str(expected) == str(observed)
-
-
-def submit(page: Page, submit_selector: str | None = None, success_text: str | None = None,
-           timeout_ms: int = 5000) -> dict:
-    """Click submit and report what happened. Outcomes:
-    CONFIRMED (success text seen), UNCONFIRMED (clicked, nothing to confirm
-    with), BLOCKED_BY_VALIDATION (browser refused: lists the invalid
-    controls), NO_SUBMIT_CONTROL, ERROR."""
-    loc = page.locator(submit_selector) if submit_selector else page.locator("button[type=submit], input[type=submit]")
-    if loc.count() == 0:
-        return {"attempted": False, "outcome": "NO_SUBMIT_CONTROL"}
-    before = page.url
-    try:
-        loc.first.click(timeout=timeout_ms)
-    except Exception as exc:  # noqa: BLE001 - any click failure is reported, not raised
-        return {"attempted": True, "outcome": "ERROR", "detail": str(exc).splitlines()[0]}
-    try:
-        page.wait_for_load_state("load", timeout=timeout_ms)
-    except Exception:  # noqa: BLE001
-        pass
-    invalid = page.evaluate(
-        "() => Array.from(document.querySelectorAll(':invalid')).map(e => e.dataset.ffId || e.name || e.id)"
-    )
-    info: dict = {"attempted": True, "final_url": page.url, "url_changed": page.url != before}
-    if invalid and page.url == before and not success_text:
-        return {**info, "outcome": "BLOCKED_BY_VALIDATION", "invalid_controls": invalid}
-    if success_text:
-        try:
-            el = page.get_by_text(success_text).first
-            el.wait_for(timeout=timeout_ms)
-            return {**info, "outcome": "CONFIRMED", "confirmation_text": el.inner_text()[:300]}
-        except Exception:  # noqa: BLE001
-            if invalid:
-                return {**info, "outcome": "BLOCKED_BY_VALIDATION", "invalid_controls": invalid}
-            return {**info, "outcome": "UNCONFIRMED", "detail": f"text {success_text!r} not found"}
-    return {**info, "outcome": "UNCONFIRMED", "detail": "no success text configured"}

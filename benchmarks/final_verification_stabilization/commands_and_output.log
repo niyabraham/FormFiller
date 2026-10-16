@@ -1,0 +1,22 @@
+## git
+main
+4ffe03be74634932215fc4e3edb876beb33fd7ac
+## pytest
+........................................................................ [ 74%]
+........................................................................ [ 89%]
+..................................................                       [100%]
+480 passed, 2 xfailed in 173.10s (0:02:53)
+## ruff
+All checks passed!
+## mypy
+Success: no issues found in 23 source files
+## demo.py
+Final verification: PASS
+Output: output/filled_form_final.pdf
+## demo_web.py
+I confirm the answers are accurate          REVIEW                          attestation/consent checkbox: a human must confirm it, never auto-ticked
+DPO name                                    ANSWER  A. Rao                  privacy.dpo_name (1.00) ok
+
+Run status: NEEDS_REVIEW
+Submission: not performed by FormFiller - a person must review the form and submit it themselves (ready for review: True)
+Artifacts: filled.png, result.json, trace.zip in output/web/

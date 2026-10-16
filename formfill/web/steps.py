@@ -5,15 +5,16 @@ Everything here is about *where the form is*, never *what to answer*. It is only
 
 The policy is deliberately conservative. It will press a button only when the button's visible text is on an
 explicit allow list of "go to the next step" labels AND is not on the deny list of commit-style labels
-(submit, finish, confirm, pay, ...) AND, by default, is not a submit-type control (see below). It never presses anything
+(submit, finish, confirm, pay, ...) AND is not a submit-type control (see below). It never presses anything
 else, never accepts a browser dialog, closes any popup it did not ask for, and stops, recording why, on anything unexpected.
-This is risk reduction, not a guarantee that nothing can ever be submitted: `DiscoveryPolicy.allow_submit_type_navigation`
-is an explicit opt-in that can click a form submit control, and the post-click submit-event counter is a second line of
-defence that cannot see every script-driven submission. Next-button search covers the main document only (not open shadow
-roots or iframes), which is a narrower reach than field discovery.
+This is risk reduction, not a guarantee that nothing can ever be submitted: a "Next" button that itself performs a
+script-driven submission cannot be told apart from a real one before the click, and the post-click submit-event counter
+is only a second line of defence that cannot see every script-driven submission. There is no opt-in that allows
+submit-type controls. Next-button search covers the main document only (not open shadow roots or iframes), which is a
+narrower reach than field discovery.
 
     no_safe_next_control   no allowed Next button on the page. Ambiguous by nature: the genuine last step, or a Next we do not recognise.
-                           Completion is UNCONFIRMED: status NEEDS_REVIEW, never FILLED, and submit=True is skipped
+                           Completion is UNCONFIRMED: status NEEDS_REVIEW, never FILLED
     submit_type_next_refused  the only Next-looking button is a form submit control (button type=submit, a <button> with no
                            type inside a form, <input type=submit|image>) or a link that leaves the page: refused BEFORE any click,
                            because a submission cannot be undone once it has happened
@@ -59,9 +60,6 @@ INCOMPLETE_STOPS = frozenset({
 class DiscoveryPolicy:
     max_steps: int = 12
     max_rounds_per_step: int = 5  # conditional reveals: answer, wait, look again
-    # Default False and it should stay False. A form-owned submit control is how a page *submits*; an SPA that intercepts
-    # it (preventDefault) cannot be told apart from one that does not, until after the click, which is too late.
-    allow_submit_type_navigation: bool = False
     settle_quiet_ms: int = 150  # DOM must be quiet this long to count as settled
     settle_timeout_ms: int = 4000
     allow: re.Pattern = field(default=_ALLOW, repr=False)
@@ -150,7 +148,7 @@ def next_button(page: Page, policy: DiscoveryPolicy) -> dict:
     buttons = page.evaluate(_BUTTONS_JS)
     safe = [b for b in buttons if policy.is_safe_next(b["text"])]
     seen = [{k: b[k] for k in ("text", "tag", "type", "in_form", "submit_type", "disabled")} for b in buttons]
-    refused = [b for b in safe if (b["submit_type"] and not policy.allow_submit_type_navigation) or b["leaves_page"]]
+    refused = [b for b in safe if b["submit_type"] or b["leaves_page"]]  # a form-owned submit control is how a page *submits*: never pressed
     usable = [b for b in safe if b not in refused]
     for b in usable:
         if not b["disabled"]:

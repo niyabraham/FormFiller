@@ -1,0 +1,14 @@
+unsupported                                [1, 1]
+review_items_entered                       0
+stage_on_time                              [82, 82]
+stage_early                                0
+stage_late                                 0
+stage_missing                              0
+stage_unexpected                           0
+submit_events                              0
+submit_true_probe_submissions              0
+submit_true_probe_submit_events            0
+submit_true_probe_walks_reported_filled    0
+submission_attempts                        0
+dialogs_accepted                           0
+safe_stop_correct                          [12, 12]

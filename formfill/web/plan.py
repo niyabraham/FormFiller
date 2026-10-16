@@ -55,10 +55,10 @@ def _alts(cands: list[Candidate], skip: int = 0) -> list[dict]:
 
 def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
     c = question.control
-    base = dict(
-        question_id=question.question_id, question=question.text,
-        field_type=c.kind, required=c.required,
-    )
+    base: dict[str, Any] = {
+        "question_id": question.question_id, "question": question.text,
+        "field_type": c.kind, "required": c.required,
+    }
 
     def review(reason: str, cands: list[Candidate], confidence: float = 0.0) -> AnswerPlanItem:
         return AnswerPlanItem(**base, status="REVIEW", reason=reason, confidence=confidence, alternatives=_alts(cands))
@@ -83,9 +83,10 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
         return review(f"{top.path!r} holds the placeholder {top.value!r}, not an answer; a human must decide what it means",
                       cands, top.score)
 
-    if len(cands) > 1:
-        runner = cands[1]
-        if top.score - runner.score < MIN_MARGIN and not _same_value(top.value, runner.value):
+    for runner in cands[1:]:  # every close rival, not only the runner-up: a same-valued runner-up must not hide a different one
+        if top.score - runner.score >= MIN_MARGIN:
+            break
+        if not _same_value(top.value, runner.value):
             return review(
                 f"ambiguous: {top.path!r} and {runner.path!r} are about equally relevant but disagree",
                 cands, top.score,

@@ -84,7 +84,7 @@ def main() -> None:
             rows.append({"fixture": fid, "desc": spec["desc"], "seconds": secs, "status": res.status, "warnings": res.warnings,
                          "unsettled_reported": any(UNSETTLED in w for w in res.warnings), "expect_unsettled": spec.get("expect_unsettled", False),
                          "side_effects": side, "side_effects_expected": spec.get("side_effects_expected"),
-                         "submission_attempts": 0 if res.submission == {} else 1, "app_state": state, "fields": fields})
+                         "submission_attempts": 1 if res.human_submission.get("performed_by_formfill") else 0, "app_state": state, "fields": fields})
             ctx.close()
         b.close()
     import formfill

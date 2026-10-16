@@ -1,0 +1,2389 @@
+{
+ "benchmark": "semantic-heldout-v2",
+ "version": "2.0.0",
+ "file_digest": "d727c02237d23cdc",
+ "provenance": {
+  "git_head": "4ffe03be74634932215fc4e3edb876beb33fd7ac",
+  "pipeline_source_sha256": "6d3dc390a7592a4d71eed6cbc22c29c51f437ba7801fc68452d6374759f42084",
+  "hash_recipe": "formfill-src-v2",
+  "note": "pipeline_source_sha256 is null for a clean tree; otherwise it hashes the uncommitted formfill/ changes"
+ },
+ "overall": {
+  "questions": 105,
+  "expected_answer": 73,
+  "expected_review": 32,
+  "auto_answered": 51,
+  "correct": 50,
+  "unsafe": 1,
+  "wrong_answer": 0,
+  "unsafe_answer": 1,
+  "missed": 23,
+  "correct_review": 31,
+  "precision_pct": 98.0,
+  "coverage_pct": 68.5,
+  "review_rate_pct": 51.4,
+  "unsafe_rate_pct": 1.0
+ },
+ "by_category": {
+  "ambiguous": {
+   "questions": 3,
+   "expected_answer": 0,
+   "expected_review": 3,
+   "auto_answered": 1,
+   "correct": 0,
+   "unsafe": 1,
+   "wrong_answer": 0,
+   "unsafe_answer": 1,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": 0.0,
+   "coverage_pct": null,
+   "review_rate_pct": 66.7,
+   "unsafe_rate_pct": 33.3
+  },
+  "compound": {
+   "questions": 1,
+   "expected_answer": 0,
+   "expected_review": 1,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 1,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "exact": {
+   "questions": 7,
+   "expected_answer": 7,
+   "expected_review": 0,
+   "auto_answered": 7,
+   "correct": 7,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "missing": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "negation": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "nested": {
+   "questions": 3,
+   "expected_answer": 3,
+   "expected_review": 0,
+   "auto_answered": 3,
+   "correct": 3,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "paraphrase": {
+   "questions": 61,
+   "expected_answer": 61,
+   "expected_review": 0,
+   "auto_answered": 40,
+   "correct": 40,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 21,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 65.6,
+   "review_rate_pct": 34.4,
+   "unsafe_rate_pct": 0.0
+  },
+  "scope": {
+   "questions": 9,
+   "expected_answer": 2,
+   "expected_review": 7,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 2,
+   "correct_review": 7,
+   "precision_pct": null,
+   "coverage_pct": 0.0,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "similar_different": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "unsupported": {
+   "questions": 9,
+   "expected_answer": 0,
+   "expected_review": 9,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 9,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "by_case": {
+  "v01_energy_utility": {
+   "questions": 20,
+   "expected_answer": 14,
+   "expected_review": 6,
+   "auto_answered": 9,
+   "correct": 9,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 5,
+   "correct_review": 6,
+   "precision_pct": 100.0,
+   "coverage_pct": 64.3,
+   "review_rate_pct": 55.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "v02_pharma_cro": {
+   "questions": 21,
+   "expected_answer": 15,
+   "expected_review": 6,
+   "auto_answered": 11,
+   "correct": 10,
+   "unsafe": 1,
+   "wrong_answer": 0,
+   "unsafe_answer": 1,
+   "missed": 5,
+   "correct_review": 5,
+   "precision_pct": 90.9,
+   "coverage_pct": 66.7,
+   "review_rate_pct": 47.6,
+   "unsafe_rate_pct": 4.8
+  },
+  "v03_edtech": {
+   "questions": 15,
+   "expected_answer": 10,
+   "expected_review": 5,
+   "auto_answered": 7,
+   "correct": 7,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 3,
+   "correct_review": 5,
+   "precision_pct": 100.0,
+   "coverage_pct": 70.0,
+   "review_rate_pct": 53.3,
+   "unsafe_rate_pct": 0.0
+  },
+  "v04_agri_coop": {
+   "questions": 18,
+   "expected_answer": 13,
+   "expected_review": 5,
+   "auto_answered": 10,
+   "correct": 10,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 3,
+   "correct_review": 5,
+   "precision_pct": 100.0,
+   "coverage_pct": 76.9,
+   "review_rate_pct": 44.4,
+   "unsafe_rate_pct": 0.0
+  },
+  "v05_telecom_dupes": {
+   "questions": 17,
+   "expected_answer": 13,
+   "expected_review": 4,
+   "auto_answered": 8,
+   "correct": 8,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 5,
+   "correct_review": 4,
+   "precision_pct": 100.0,
+   "coverage_pct": 61.5,
+   "review_rate_pct": 52.9,
+   "unsafe_rate_pct": 0.0
+  },
+  "v06_facilities": {
+   "questions": 14,
+   "expected_answer": 8,
+   "expected_review": 6,
+   "auto_answered": 6,
+   "correct": 6,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 2,
+   "correct_review": 6,
+   "precision_pct": 100.0,
+   "coverage_pct": 75.0,
+   "review_rate_pct": 57.1,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "unsafe": [
+  {
+   "question": "City",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "hq.city",
+   "outcome": "unsafe_answer",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  }
+ ],
+ "missed": [
+  {
+   "question": "Total number of people you employ",
+   "category": "paraphrase",
+   "expect": "supplier.headcount",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Energy licence reference",
+   "category": "paraphrase",
+   "expect": "supplier.licence_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'supplier.licence_number' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['energy', 'reference'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "supplier.licence_number",
+     "score": 0.5
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Percentage of output from renewable sources",
+   "category": "paraphrase",
+   "expect": "operations.renewable_share_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.286,
+   "reason": "best candidate 'operations.renewable_share_pct' is too weak (score 0.29 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['output', 'percentage', 'source'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operations.renewable_share_pct",
+     "score": 0.2857
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "How many customers do you supply?",
+   "category": "paraphrase",
+   "expect": "operations.customers_served",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'operations.customers_served' is too weak (score 0.50 < 0.6) -- counting question: modifier ['supply'] is not in the key, and the key adds ['served'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operations.customers_served",
+     "score": 0.5
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Are you licensed by the regulator?",
+   "category": "paraphrase",
+   "expect": "compliance.ofgem_licensed",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'compliance.ofgem_licensed' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.ofgem_licensed",
+     "score": 0.5
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "What year did the company begin operating?",
+   "category": "paraphrase",
+   "expect": "yearFounded",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.286,
+   "reason": "best candidate 'yearFounded' is too weak (score 0.29 < 0.6) -- only 2 of 5 question words are explained by the key or its path (unexplained: ['begin', 'did', 'operating'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "yearFounded",
+     "score": 0.2857
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "How big is your workforce?",
+   "category": "paraphrase",
+   "expect": "staff.total",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Which clinical trial management system do you use?",
+   "category": "paraphrase",
+   "expect": "systems.ctms_vendor",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.45,
+   "reason": "best candidate 'systems.ctms_vendor' is too weak (score 0.45 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "systems.ctms_vendor",
+     "score": 0.45
+    },
+    {
+     "source": "sites.trials_ongoing",
+     "score": 0.2857
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Where is data hosted?",
+   "category": "paraphrase",
+   "expect": "systems.hosting_region",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'staff.data_managers' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['hosted', 'where'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "staff.data_managers",
+     "score": 0.4
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Number of trials currently running",
+   "category": "paraphrase",
+   "expect": "sites.trials_ongoing",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'sites.trials_ongoing' is too weak (score 0.40 < 0.6) -- counting question: modifier ['currently', 'running'] is not in the key, and the key adds ['ongoing'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "sites.trials_ongoing",
+     "score": 0.4
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Registered address",
+   "category": "paraphrase",
+   "expect": "Registered office",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'Registered office' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Registered office",
+     "score": 0.5
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Do you process data about children?",
+   "category": "paraphrase",
+   "expect": "Children's data collected",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.571,
+   "reason": "best candidate \"Children's data collected\" is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Children's data collected",
+     "score": 0.5714
+    },
+    {
+     "source": "Data stored in",
+     "score": 0.3333
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "For how many months do you keep personal data?",
+   "category": "paraphrase",
+   "expect": "Retention period (months)",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.333,
+   "reason": "best candidate 'Data stored in' is too weak (score 0.33 < 0.6) -- counting question: modifier ['keep', 'month', 'personal'] is not in the key, and the key adds ['stored'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Data stored in",
+     "score": 0.3333
+    },
+    {
+     "source": "Children's data collected",
+     "score": 0.2857
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "How many member farmers do you have?",
+   "category": "paraphrase",
+   "expect": "members",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'members' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['farmer'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "members",
+     "score": 0.5
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "What is your principal crop?",
+   "category": "paraphrase",
+   "expect": "main_crop",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'main_crop' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "main_crop",
+     "score": 0.5
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Number of board members",
+   "category": "paraphrase",
+   "expect": "board.size",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'board.size' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['member'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "board.size",
+     "score": 0.5
+    },
+    {
+     "source": "members",
+     "score": 0.5
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Country of operation",
+   "category": "paraphrase",
+   "expect": "operator.country",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'operator.country' and 'parent_group.country' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operator.country",
+     "score": 0.6667
+    },
+    {
+     "source": "parent_group.country",
+     "score": 0.6667
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "How many people work for the operator?",
+   "category": "paraphrase",
+   "expect": "operator.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Country where the parent group is registered",
+   "category": "paraphrase",
+   "expect": "parent_group.country",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.343,
+   "reason": "best candidate 'parent_group.country' is too weak (score 0.34 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_group.country",
+     "score": 0.3429
+    },
+    {
+     "source": "operator.country",
+     "score": 0.12
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Number of mobile towers",
+   "category": "paraphrase",
+   "expect": "network.towers",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'network.towers' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['phone'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "network.towers",
+     "score": 0.5
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "What share of the population does your network cover (%)?",
+   "category": "paraphrase",
+   "expect": "network.coverage_population_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.548,
+   "reason": "best candidate 'network.coverage_population_pct' is too weak (score 0.55 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "network.coverage_population_pct",
+     "score": 0.5484
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "How many accidents did you record in 2024?",
+   "category": "scope",
+   "expect": "safety.accidents_2024",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'safety.accidents_2024' is too weak (score 0.50 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['did', 'record'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "safety.accidents_2024",
+     "score": 0.5
+    },
+    {
+     "source": "safety.accidents_2023",
+     "score": 0.3
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "How many accidents did you record in 2023?",
+   "category": "scope",
+   "expect": "safety.accidents_2023",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'safety.accidents_2023' is too weak (score 0.50 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['did', 'record'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "safety.accidents_2023",
+     "score": 0.5
+    },
+    {
+     "source": "safety.accidents_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "v06_facilities"
+  }
+ ],
+ "questions": [
+  {
+   "question": "Name of the supplier",
+   "category": "paraphrase",
+   "expect": "supplier.name",
+   "got": "supplier.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "When was your company incorporated?",
+   "category": "paraphrase",
+   "expect": "supplier.incorporated_on",
+   "got": "supplier.incorporated_on",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Total number of people you employ",
+   "category": "paraphrase",
+   "expect": "supplier.headcount",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Energy licence reference",
+   "category": "paraphrase",
+   "expect": "supplier.licence_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'supplier.licence_number' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['energy', 'reference'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "supplier.licence_number",
+     "score": 0.5
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "What is your installed generation capacity (MW)?",
+   "category": "paraphrase",
+   "expect": "operations.generation_capacity_mw",
+   "got": "operations.generation_capacity_mw",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Percentage of output from renewable sources",
+   "category": "paraphrase",
+   "expect": "operations.renewable_share_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.286,
+   "reason": "best candidate 'operations.renewable_share_pct' is too weak (score 0.29 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['output', 'percentage', 'source'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operations.renewable_share_pct",
+     "score": 0.2857
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "How many customers do you supply?",
+   "category": "paraphrase",
+   "expect": "operations.customers_served",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'operations.customers_served' is too weak (score 0.50 < 0.6) -- counting question: modifier ['supply'] is not in the key, and the key adds ['served'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operations.customers_served",
+     "score": 0.5
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Number of control rooms",
+   "category": "exact",
+   "expect": "operations.control_rooms",
+   "got": "operations.control_rooms",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Are you licensed by the regulator?",
+   "category": "paraphrase",
+   "expect": "compliance.ofgem_licensed",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'compliance.ofgem_licensed' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.ofgem_licensed",
+     "score": 0.5
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Do you hold ISO 50001 certification?",
+   "category": "paraphrase",
+   "expect": "compliance.iso_50001",
+   "got": "compliance.iso_50001",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.iso_14001",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Do you hold ISO 14001 certification?",
+   "category": "paraphrase",
+   "expect": "compliance.iso_14001",
+   "got": "compliance.iso_14001",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.iso_50001",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Date of most recent external audit",
+   "category": "paraphrase",
+   "expect": "compliance.last_audit_date",
+   "got": "compliance.last_audit_date",
+   "outcome": "correct",
+   "confidence": 0.771,
+   "reason": null,
+   "evidence": [
+    "soft match: 'latest' ~ 'last' [lexicon] (0.90)"
+   ],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "By what year will you reach net zero?",
+   "category": "paraphrase",
+   "expect": "esg.net_zero_target_year",
+   "got": "esg.net_zero_target_year",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Direct (Scope 1) emissions in tonnes",
+   "category": "paraphrase",
+   "expect": "esg.scope1_emissions_tonnes",
+   "got": "esg.scope1_emissions_tonnes",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Scope 2 emissions in tonnes",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'esg.scope1_emissions_tonnes' is too weak (score 0.30 < 0.6) -- identifier differs: question names ['2'], key path names ['scope1']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "esg.scope1_emissions_tonnes",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Do you hold ISO 27001 certification?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'compliance.iso_14001' is too weak (score 0.30 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['27001', 'certification']); identifier differs: question names ['27001'], key path names ['14001']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.iso_14001",
+     "score": 0.3
+    },
+    {
+     "source": "compliance.iso_50001",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "How many people will you employ in 2030?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Number of employees in the trading division",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'supplier.headcount' is too weak (score 0.30 < 0.6) -- question scope ['trading'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "supplier.headcount",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Is your ISO 14001 certification lapsed?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'compliance.iso_14001' is too weak (score 0.30 < 0.6) -- polarity differs: question has ['lapsed'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.iso_14001",
+     "score": 0.3
+    },
+    {
+     "source": "compliance.iso_50001",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Customers served in 2019",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'operations.customers_served' is too weak (score 0.30 < 0.6) -- period differs: question names ['2019'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operations.customers_served",
+     "score": 0.3
+    }
+   ],
+   "case": "v01_energy_utility"
+  },
+  {
+   "question": "Name of legal entity",
+   "category": "paraphrase",
+   "expect": "legalEntity",
+   "got": "legalEntity",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "What year did the company begin operating?",
+   "category": "paraphrase",
+   "expect": "yearFounded",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.286,
+   "reason": "best candidate 'yearFounded' is too weak (score 0.29 < 0.6) -- only 2 of 5 question words are explained by the key or its path (unexplained: ['begin', 'did', 'operating'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "yearFounded",
+     "score": 0.2857
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "City of headquarters",
+   "category": "nested",
+   "expect": "hq.city",
+   "got": "hq.city",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Which country is the head office in?",
+   "category": "paraphrase",
+   "expect": "hq.country",
+   "got": "hq.country",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "sites.countries_with_offices",
+     "score": 0.3
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "How big is your workforce?",
+   "category": "paraphrase",
+   "expect": "staff.total",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Number of clinical monitors",
+   "category": "exact",
+   "expect": "staff.clinical_monitors",
+   "got": "staff.clinical_monitors",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "How many data managers do you have?",
+   "category": "paraphrase",
+   "expect": "staff.data_managers",
+   "got": "staff.data_managers",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "How many regulatory inspections have you passed?",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'quality.gcp_inspections_passed' is too weak (score 0.50 < 0.6) -- counting question: modifier ['regulatory'] is not in the key, and the key adds ['gcp'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "quality.gcp_inspections_passed",
+     "score": 0.5
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Number of FDA Form 483 observations received",
+   "category": "paraphrase",
+   "expect": "quality.fda_483_observations",
+   "got": "quality.fda_483_observations",
+   "outcome": "correct",
+   "confidence": 0.75,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Is the organisation ISO 9001 certified?",
+   "category": "paraphrase",
+   "expect": "quality.iso_9001",
+   "got": "quality.iso_9001",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "How many SOPs do you maintain?",
+   "category": "paraphrase",
+   "expect": "quality.sops_count",
+   "got": "quality.sops_count",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Which clinical trial management system do you use?",
+   "category": "paraphrase",
+   "expect": "systems.ctms_vendor",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.45,
+   "reason": "best candidate 'systems.ctms_vendor' is too weak (score 0.45 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "systems.ctms_vendor",
+     "score": 0.45
+    },
+    {
+     "source": "sites.trials_ongoing",
+     "score": 0.2857
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Is your electronic data capture system validated?",
+   "category": "paraphrase",
+   "expect": "systems.edc_validated",
+   "got": "systems.edc_validated",
+   "outcome": "correct",
+   "confidence": 0.818,
+   "reason": null,
+   "evidence": [
+    "soft match: 'electronic data capture' spells 'edc' (0.90)"
+   ],
+   "alternatives": [
+    {
+     "source": "staff.data_managers",
+     "score": 0.2857
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Where is data hosted?",
+   "category": "paraphrase",
+   "expect": "systems.hosting_region",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'staff.data_managers' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['hosted', 'where'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "staff.data_managers",
+     "score": 0.4
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "In how many countries do you have offices?",
+   "category": "paraphrase",
+   "expect": "sites.countries_with_offices",
+   "got": "sites.countries_with_offices",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "hq.country",
+     "score": 0.5
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Number of trials currently running",
+   "category": "paraphrase",
+   "expect": "sites.trials_ongoing",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'sites.trials_ongoing' is too weak (score 0.40 < 0.6) -- counting question: modifier ['currently', 'running'] is not in the key, and the key adds ['ongoing'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "sites.trials_ongoing",
+     "score": 0.4
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Number of biostatisticians",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Do you hold ISO 13485 certification?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'quality.iso_9001' is too weak (score 0.30 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['13485', 'certification']); identifier differs: question names ['13485'], key path names ['9001']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "quality.iso_9001",
+     "score": 0.3
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Do you hold a GxP certificate?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Is EDC validation optional?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.285,
+   "reason": "best candidate 'systems.edc_validated' is too weak (score 0.28 < 0.6) -- polarity differs: question has ['optional'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "systems.edc_validated",
+     "score": 0.285
+    }
+   ],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "City",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "hq.city",
+   "outcome": "unsafe_answer",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v02_pharma_cro"
+  },
+  {
+   "question": "Company name",
+   "category": "paraphrase",
+   "expect": "Company",
+   "got": "Company",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Year of establishment",
+   "category": "paraphrase",
+   "expect": "Founded",
+   "got": "Founded",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [
+    "soft match: 'establishment' ~ 'founded' [lexicon] (0.90)"
+   ],
+   "alternatives": [],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Registered address",
+   "category": "paraphrase",
+   "expect": "Registered office",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'Registered office' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Registered office",
+     "score": 0.5
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Who is your DPO?",
+   "category": "paraphrase",
+   "expect": "Data protection officer",
+   "got": "Data protection officer",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "DPO email",
+     "score": 0.6667
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Email address of the data protection officer",
+   "category": "paraphrase",
+   "expect": "DPO email",
+   "got": "DPO email",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Data protection officer",
+     "score": 0.5
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Do you process data about children?",
+   "category": "paraphrase",
+   "expect": "Children's data collected",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.571,
+   "reason": "best candidate \"Children's data collected\" is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Children's data collected",
+     "score": 0.5714
+    },
+    {
+     "source": "Data stored in",
+     "score": 0.3333
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "In which country is data stored?",
+   "category": "paraphrase",
+   "expect": "Data stored in",
+   "got": "Data stored in",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Children's data collected",
+     "score": 0.3333
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "For how many months do you keep personal data?",
+   "category": "paraphrase",
+   "expect": "Retention period (months)",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.333,
+   "reason": "best candidate 'Data stored in' is too weak (score 0.33 < 0.6) -- counting question: modifier ['keep', 'month', 'personal'] is not in the key, and the key adds ['stored'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Data stored in",
+     "score": 0.3333
+    },
+    {
+     "source": "Children's data collected",
+     "score": 0.2857
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "List your sub-processors",
+   "category": "paraphrase",
+   "expect": "Sub-processors",
+   "got": "Sub-processors",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "ICO registration number",
+   "category": "exact",
+   "expect": "ICO registration number",
+   "got": "ICO registration number",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "How many users does the platform have?",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Do you sell personal data to third parties?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.286,
+   "reason": "best candidate 'Data stored in' is too weak (score 0.29 < 0.6) -- only 1 of 5 question words are explained by the key or its path (unexplained: ['party', 'personal', 'sell', 'third'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Data stored in",
+     "score": 0.2857
+    },
+    {
+     "source": "Children's data collected",
+     "score": 0.25
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Have you had a data breach in the last 12 months?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.25,
+   "reason": "best candidate 'Data stored in' is too weak (score 0.25 < 0.6) -- only 1 of 6 question words are explained by the key or its path (unexplained: ['12', 'breach', 'had', 'last', 'month'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Data stored in",
+     "score": 0.25
+    },
+    {
+     "source": "Children's data collected",
+     "score": 0.2222
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Is a DPIA completed for new features?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Please give your DPO name and phone number",
+   "category": "compound",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'Data protection officer' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['name', 'phone'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "Data protection officer",
+     "score": 0.5
+    },
+    {
+     "source": "DPO email",
+     "score": 0.4
+    }
+   ],
+   "case": "v03_edtech"
+  },
+  {
+   "question": "Name of the cooperative",
+   "category": "paraphrase",
+   "expect": "name",
+   "got": "name",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "How many member farmers do you have?",
+   "category": "paraphrase",
+   "expect": "members",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'members' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['farmer'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "members",
+     "score": 0.5
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "In what year was the cooperative formed?",
+   "category": "exact",
+   "expect": "year_formed",
+   "got": "year_formed",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Total area under cultivation (hectares)",
+   "category": "paraphrase",
+   "expect": "hectares_under_cultivation",
+   "got": "hectares_under_cultivation",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "What is your principal crop?",
+   "category": "paraphrase",
+   "expect": "main_crop",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'main_crop' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "main_crop",
+     "score": 0.5
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Is your produce certified organic?",
+   "category": "paraphrase",
+   "expect": "organic_certified",
+   "got": "organic_certified",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Cold storage capacity in tonnes",
+   "category": "exact",
+   "expect": "cold_storage_capacity_tonnes",
+   "got": "cold_storage_capacity_tonnes",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Which countries do you export to?",
+   "category": "paraphrase",
+   "expect": "exports_to",
+   "got": "exports_to",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Annual turnover (INR)",
+   "category": "paraphrase",
+   "expect": "annual_turnover_inr",
+   "got": "annual_turnover_inr",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "GST registration number",
+   "category": "paraphrase",
+   "expect": "gst_number",
+   "got": "gst_number",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Who chairs the board?",
+   "category": "paraphrase",
+   "expect": "board.chair",
+   "got": "board.chair",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Number of board members",
+   "category": "paraphrase",
+   "expect": "board.size",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'board.size' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['member'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "board.size",
+     "score": 0.5
+    },
+    {
+     "source": "members",
+     "score": 0.5
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Contact telephone",
+   "category": "paraphrase",
+   "expect": "contact_phone",
+   "got": "contact_phone",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "How many employees does the cooperative have?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Do you hold GlobalGAP certification?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.228,
+   "reason": "best candidate 'organic_certified' is too weak (score 0.23 < 0.6) -- question scope ['global'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organic_certified",
+     "score": 0.228
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "How many hectares will you cultivate next year?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.286,
+   "reason": "best candidate 'year_formed' is too weak (score 0.29 < 0.6) -- counting question: modifier ['cultivate', 'hectare', 'next', 'will'] is not in the key, and the key adds ['formed'] which the question does not name; period differs: question names ['+1y'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "year_formed",
+     "score": 0.2857
+    },
+    {
+     "source": "hectares_under_cultivation",
+     "score": 0.285
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Is your produce non-organic?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'organic_certified' is too weak (score 0.30 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['non', 'produce']); polarity differs: question has ['non'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organic_certified",
+     "score": 0.3
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Turnover in the previous financial year",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.333,
+   "reason": "best candidate 'year_formed' is too weak (score 0.33 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['financial', 'previou', 'turnover'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "year_formed",
+     "score": 0.3333
+    },
+    {
+     "source": "annual_turnover_inr",
+     "score": 0.2857
+    }
+   ],
+   "case": "v04_agri_coop"
+  },
+  {
+   "question": "Operator name",
+   "category": "exact",
+   "expect": "operator.name",
+   "got": "operator.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['operator'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_group.name",
+     "score": 0.4
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Country of operation",
+   "category": "paraphrase",
+   "expect": "operator.country",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'operator.country' and 'parent_group.country' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operator.country",
+     "score": 0.6667
+    },
+    {
+     "source": "parent_group.country",
+     "score": 0.6667
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "When was the operator founded?",
+   "category": "paraphrase",
+   "expect": "operator.founded",
+   "got": "operator.founded",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['operator'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_group.founded",
+     "score": 0.4
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "How many people work for the operator?",
+   "category": "paraphrase",
+   "expect": "operator.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Name of parent group",
+   "category": "paraphrase",
+   "expect": "parent_group.name",
+   "got": "parent_group.name",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['group', 'parent'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "operator.name",
+     "score": 0.18
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Country where the parent group is registered",
+   "category": "paraphrase",
+   "expect": "parent_group.country",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.343,
+   "reason": "best candidate 'parent_group.country' is too weak (score 0.34 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_group.country",
+     "score": 0.3429
+    },
+    {
+     "source": "operator.country",
+     "score": 0.12
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Number of employees in the parent group",
+   "category": "paraphrase",
+   "expect": "parent_group.employees",
+   "got": "parent_group.employees",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['group', 'parent'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "operator.employees",
+     "score": 0.18
+    },
+    {
+     "source": "regional_offices.0.staff",
+     "score": 0.18
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Number of mobile towers",
+   "category": "paraphrase",
+   "expect": "network.towers",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'network.towers' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['phone'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "network.towers",
+     "score": 0.5
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "What share of the population does your network cover (%)?",
+   "category": "paraphrase",
+   "expect": "network.coverage_population_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.548,
+   "reason": "best candidate 'network.coverage_population_pct' is too weak (score 0.55 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "network.coverage_population_pct",
+     "score": 0.5484
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Staff at the Nairobi office",
+   "category": "nested",
+   "expect": "regional_offices.0.staff",
+   "got": "regional_offices.0.staff",
+   "outcome": "correct",
+   "confidence": 0.909,
+   "reason": null,
+   "evidence": [
+    "path names ['office'], which the other candidates' paths do not carry",
+    "question cites ['nairobi'], a value in this list item"
+   ],
+   "alternatives": [
+    {
+     "source": "regional_offices.1.staff",
+     "score": 0.6667
+    },
+    {
+     "source": "operator.employees",
+     "score": 0.3
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Staff at the Mombasa office",
+   "category": "nested",
+   "expect": "regional_offices.1.staff",
+   "got": "regional_offices.1.staff",
+   "outcome": "correct",
+   "confidence": 0.909,
+   "reason": null,
+   "evidence": [
+    "path names ['office'], which the other candidates' paths do not carry",
+    "question cites ['mombasa'], a value in this list item"
+   ],
+   "alternatives": [
+    {
+     "source": "regional_offices.0.staff",
+     "score": 0.6667
+    },
+    {
+     "source": "operator.employees",
+     "score": 0.3
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Do you hold a 900 MHz spectrum licence?",
+   "category": "paraphrase",
+   "expect": "licences.spectrum_900",
+   "got": "licences.spectrum_900",
+   "outcome": "correct",
+   "confidence": 0.769,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "licences.spectrum_2600",
+     "score": 0.3
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Do you hold 2600 MHz spectrum?",
+   "category": "paraphrase",
+   "expect": "licences.spectrum_2600",
+   "got": "licences.spectrum_2600",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "licences.spectrum_900",
+     "score": 0.3
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Year founded",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'operator.founded' and 'parent_group.founded' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operator.founded",
+     "score": 0.6667
+    },
+    {
+     "source": "parent_group.founded",
+     "score": 0.6667
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Number of employees",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'operator.employees' and 'parent_group.employees' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "operator.employees",
+     "score": 1.0
+    },
+    {
+     "source": "parent_group.employees",
+     "score": 1.0
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Staff at the Kisumu office",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'regional_offices.0.staff' and 'regional_offices.1.staff' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "regional_offices.0.staff",
+     "score": 0.6667
+    },
+    {
+     "source": "regional_offices.1.staff",
+     "score": 0.6667
+    }
+   ],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Number of 5G sites",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v05_telecom_dupes"
+  },
+  {
+   "question": "Company name",
+   "category": "exact",
+   "expect": "firm.name",
+   "got": "firm.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Total workforce",
+   "category": "paraphrase",
+   "expect": "firm.employees",
+   "got": "firm.employees",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Website address",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.667,
+   "reason": "'firm.website' holds the placeholder 'N/A', not an answer; a human must decide what it means",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "firm.website",
+     "score": 0.6667
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "VAT number",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Name of insurer",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.667,
+   "reason": "'firm.insurer' holds the placeholder 'None', not an answer; a human must decide what it means",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "firm.insurer",
+     "score": 0.6667
+    },
+    {
+     "source": "firm.name",
+     "score": 0.6667
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Fax",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "'firm.fax' holds the placeholder '-', not an answer; a human must decide what it means",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "firm.fax",
+     "score": 1.0
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Email for bids",
+   "category": "paraphrase",
+   "expect": "firm.email",
+   "got": "firm.email",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "How many accidents did you record in 2024?",
+   "category": "scope",
+   "expect": "safety.accidents_2024",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'safety.accidents_2024' is too weak (score 0.50 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['did', 'record'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "safety.accidents_2024",
+     "score": 0.5
+    },
+    {
+     "source": "safety.accidents_2023",
+     "score": 0.3
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "How many accidents did you record in 2023?",
+   "category": "scope",
+   "expect": "safety.accidents_2023",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'safety.accidents_2023' is too weak (score 0.50 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['did', 'record'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "safety.accidents_2023",
+     "score": 0.5
+    },
+    {
+     "source": "safety.accidents_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "How many accidents did you record in 2022?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'safety.accidents_2023' is too weak (score 0.30 < 0.6) -- counting question: modifier ['2022', 'did', 'record'] is not in the key, and the key adds ['2023'] which the question does not name; period differs: question names ['2022'], key path names ['2023']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "safety.accidents_2023",
+     "score": 0.3
+    },
+    {
+     "source": "safety.accidents_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Name of your safety officer",
+   "category": "paraphrase",
+   "expect": "safety.safety_officer",
+   "got": "safety.safety_officer",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "firm.name",
+     "score": 0.5
+    }
+   ],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Do you work for the public sector?",
+   "category": "paraphrase",
+   "expect": "clients.public_sector",
+   "got": "clients.public_sector",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Value of your largest contract",
+   "category": "paraphrase",
+   "expect": "clients.largest_contract_value",
+   "got": "clients.largest_contract_value",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "v06_facilities"
+  },
+  {
+   "question": "Are you free of any accidents this year?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'safety.accidents_2023' is too weak (score 0.30 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['free', 'year']); period differs: question names ['0y'], key path names ['2023']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "safety.accidents_2023",
+     "score": 0.3
+    },
+    {
+     "source": "safety.accidents_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "v06_facilities"
+  }
+ ]
+}

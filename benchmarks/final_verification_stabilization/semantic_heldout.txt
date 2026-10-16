@@ -1,0 +1,14 @@
+[heldout] digest=d727c02237d23cdc questions=105 (answerable 73, must-review 32)
+auto-answered=51 correct=50 UNSAFE=1 (wrong source 0, answered a must-review 1) missed=23
+precision=98.0%  coverage=68.5%  review_rate=51.4%  unsafe_rate=1.0%
+  ambiguous          n=3   correct=0   missed=0   unsafe=1  correct_review=2
+  compound           n=1   correct=0   missed=0   unsafe=0  correct_review=1
+  exact              n=7   correct=7   missed=0   unsafe=0  correct_review=0
+  missing            n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  negation           n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  nested             n=3   correct=3   missed=0   unsafe=0  correct_review=0
+  paraphrase         n=61  correct=40  missed=21  unsafe=0  correct_review=0
+  scope              n=9   correct=0   missed=2   unsafe=0  correct_review=7
+  similar_different  n=4   correct=0   missed=0   unsafe=0  correct_review=4
+  unsupported        n=9   correct=0   missed=0   unsafe=0  correct_review=9
+wrote benchmarks/final_verification_stabilization/semantic/heldout.json

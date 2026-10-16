@@ -1,0 +1,1196 @@
+{
+ "benchmark": "semantic-seen",
+ "version": "1.0.0",
+ "description": "Authored before the semantic layer, but its baseline failure list was read while the lexicon was being written, so it is NOT held out. Treated as a second development set.",
+ "cases": [
+  {
+   "id": "h01_medical_supplier",
+   "description": "hospital supplier, flat keys with unit suffixes",
+   "source": {
+    "company_name": "Meridian Surgical Supplies Inc.",
+    "staff_count": 412,
+    "year_incorporated": 2003,
+    "fda_registered": true,
+    "primary_product_line": "Disposable surgical instruments",
+    "warehouse_count": 3,
+    "sales_contact_email": "sales@meridian-surgical.example",
+    "toll_free_number": "+1 800 555 0142",
+    "annual_sales_usd": 88000000,
+    "iso_13485_certified": true,
+    "recall_events_last_5_years": 0
+   },
+   "questions": [
+    {
+     "question": "Legal entity name",
+     "expect": "company_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many people are on your payroll?",
+     "expect": "staff_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Total workforce",
+     "expect": "staff_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of individuals employed by your organisation",
+     "expect": "staff_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Year of incorporation",
+     "expect": "year_incorporated",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Is your facility registered with the FDA?",
+     "expect": "fda_registered",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "What do you mainly manufacture or sell?",
+     "expect": "primary_product_line",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many distribution centres do you operate?",
+     "expect": "warehouse_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Email address of your sales team",
+     "expect": "sales_contact_email",
+     "category": "paraphrase",
+     "kind": "email"
+    },
+    {
+     "question": "Customer service hotline",
+     "expect": "toll_free_number",
+     "category": "paraphrase",
+     "kind": "tel"
+    },
+    {
+     "question": "Gross annual sales in US dollars",
+     "expect": "annual_sales_usd",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold ISO 13485 certification?",
+     "expect": "iso_13485_certified",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many product recalls have you had in the past five years?",
+     "expect": "recall_events_last_5_years",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold ISO 9001 certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many people do you expect to employ next year?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of staff at the head office only",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Sales for the previous financial year",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Product liability insurer",
+     "expect": "REVIEW",
+     "category": "unsupported"
+    }
+   ]
+  },
+  {
+   "id": "h02_bank_kyc",
+   "description": "KYC onboarding, nested beneficial owners (repeated field names)",
+   "source": {
+    "entity": {
+     "registered_name": "Halcyon Capital Partners LLP",
+     "incorporation_country": "United Kingdom",
+     "incorporation_date": "2015-09-01",
+     "registration_no": "OC401234",
+     "lei": "5493001KJTIIGC8Y1R12",
+     "website": "https://halcyon-capital.example",
+     "regulated": true,
+     "regulator": "FCA"
+    },
+    "beneficial_owners": [
+     {
+      "name": "Elena Marsh",
+      "ownership_pct": 60,
+      "nationality": "British"
+     },
+     {
+      "name": "David Okafor",
+      "ownership_pct": 40,
+      "nationality": "Nigerian"
+     }
+    ],
+    "authorised_signatory": {
+     "name": "Elena Marsh",
+     "title": "Managing Partner",
+     "email": "elena@halcyon-capital.example"
+    },
+    "compliance": {
+     "pep_exposure": false,
+     "sanctions_screening": true,
+     "aml_officer": "Tom Whitfield"
+    }
+   },
+   "questions": [
+    {
+     "question": "Full registered name of the entity",
+     "expect": "entity.registered_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Country where the company was formed",
+     "expect": "entity.incorporation_country",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Date the entity was incorporated",
+     "expect": "entity.incorporation_date",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Company registration number",
+     "expect": "entity.registration_no",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Legal Entity Identifier (LEI)",
+     "expect": "entity.lei",
+     "category": "exact"
+    },
+    {
+     "question": "Corporate website URL",
+     "expect": "entity.website",
+     "category": "paraphrase",
+     "kind": "url"
+    },
+    {
+     "question": "Is the entity regulated by a financial authority?",
+     "expect": "entity.regulated",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Name of your regulator",
+     "expect": "entity.regulator",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Name of authorised signatory",
+     "expect": "authorised_signatory.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Signatory job title",
+     "expect": "authorised_signatory.title",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Signatory email",
+     "expect": "authorised_signatory.email",
+     "category": "exact",
+     "kind": "email"
+    },
+    {
+     "question": "Is any beneficial owner a politically exposed person?",
+     "expect": "compliance.pep_exposure",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you screen customers against sanctions lists?",
+     "expect": "compliance.sanctions_screening",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Name of Money Laundering Reporting Officer",
+     "expect": "compliance.aml_officer",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Name",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "Ownership percentage",
+     "expect": "REVIEW",
+     "category": "ambiguous",
+     "kind": "number"
+    },
+    {
+     "question": "Nationality of beneficial owner",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "Is the company listed on a stock exchange?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h03_construction",
+   "description": "construction pre-qualification; safety stats, periods",
+   "source": {
+    "contractor": {
+     "name": "Ridgeway Civil Engineering",
+     "founded": 1994,
+     "employees_direct": 96,
+     "turnover_gbp_2024": 31200000,
+     "turnover_gbp_2023": 28750000
+    },
+    "health_and_safety": {
+     "riddor_incidents_2024": 2,
+     "riddor_incidents_2023": 4,
+     "lost_time_injury_rate": 0.8,
+     "has_safety_policy": true,
+     "chas_accredited": true,
+     "iso_45001": false
+    },
+    "projects": {
+     "largest_contract_value_gbp": 14500000,
+     "completed_last_5_years": 37
+    },
+    "financial": {
+     "bankruptcy_history": false,
+     "bank_name": "Barclays"
+    }
+   },
+   "questions": [
+    {
+     "question": "Contractor trading name",
+     "expect": "contractor.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Year the firm started trading",
+     "expect": "contractor.founded",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many directly employed operatives and staff do you have?",
+     "expect": "contractor.employees_direct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover in 2024",
+     "expect": "contractor.turnover_gbp_2024",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover in 2023",
+     "expect": "contractor.turnover_gbp_2023",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover in 2022",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of RIDDOR reportable incidents in 2024",
+     "expect": "health_and_safety.riddor_incidents_2024",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of RIDDOR reportable incidents in 2023",
+     "expect": "health_and_safety.riddor_incidents_2023",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Lost time injury frequency rate",
+     "expect": "health_and_safety.lost_time_injury_rate",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do you have a written health and safety policy?",
+     "expect": "health_and_safety.has_safety_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are you CHAS accredited?",
+     "expect": "health_and_safety.chas_accredited",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold ISO 45001?",
+     "expect": "health_and_safety.iso_45001",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Value of your largest single contract (GBP)",
+     "expect": "projects.largest_contract_value_gbp",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many projects have you completed in the last five years?",
+     "expect": "projects.completed_last_5_years",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Has the company ever been declared bankrupt?",
+     "expect": "financial.bankruptcy_history",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Name of your bankers",
+     "expect": "financial.bank_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Do you hold ISO 14001?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is the company free from RIDDOR incidents?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h04_university_grant",
+   "description": "research grant application, sentence-style keys",
+   "source": {
+    "Principal investigator name": "Dr Amara Singh",
+    "Institution": "University of Leeds",
+    "Department": "School of Computing",
+    "ORCID": "0000-0002-4417-8821",
+    "Project title": "Robust Learning from Noisy Labels",
+    "Requested funding (GBP)": 412000,
+    "Project duration (months)": 36,
+    "Ethics approval obtained": "Yes",
+    "Number of PhD students supported": 2,
+    "Co-investigators": [
+     "Prof. Li Wei",
+     "Dr Tomas Novak"
+    ]
+   },
+   "questions": [
+    {
+     "question": "Name of the lead researcher",
+     "expect": "Principal investigator name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Host organisation",
+     "expect": "Institution",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Which department will the project be based in?",
+     "expect": "Department",
+     "category": "paraphrase"
+    },
+    {
+     "question": "ORCID iD",
+     "expect": "ORCID",
+     "category": "exact"
+    },
+    {
+     "question": "Title of proposed research",
+     "expect": "Project title",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How much funding are you requesting?",
+     "expect": "Requested funding (GBP)",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Length of project in months",
+     "expect": "Project duration (months)",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Has ethical approval been secured?",
+     "expect": "Ethics approval obtained",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many doctoral students will be funded?",
+     "expect": "Number of PhD students supported",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Names of co-investigators",
+     "expect": "Co-investigators",
+     "category": "paraphrase",
+     "kind": "textarea"
+    },
+    {
+     "question": "Requested funding for year 2",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of postdoctoral researchers",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    },
+    {
+     "question": "Is a data management plan attached?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h05_saas_vendor",
+   "description": "SaaS vendor security questionnaire, camelCase keys",
+   "source": {
+    "vendor": {
+     "legalName": "Skyforge Software Pvt Ltd",
+     "employeeCount": 58,
+     "foundedYear": 2017,
+     "hqCountry": "India",
+     "customerCount": 340
+    },
+    "security": {
+     "soc2Type2": true,
+     "pentestFrequency": "annually",
+     "encryptionInTransit": "TLS 1.3",
+     "backupFrequency": "daily",
+     "sso": true,
+     "mfaForStaff": true,
+     "dataResidencyRegions": [
+      "EU",
+      "India"
+     ]
+    },
+    "support": {
+     "uptimeSlaPercent": 99.9,
+     "supportHours": "24x7",
+     "supportEmail": "support@skyforge.example"
+    },
+    "legal": {
+     "subprocessors": 4,
+     "dpaAvailable": true
+    }
+   },
+   "questions": [
+    {
+     "question": "Vendor legal name",
+     "expect": "vendor.legalName",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How big is your team?",
+     "expect": "vendor.employeeCount",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of people employed",
+     "expect": "vendor.employeeCount",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Year founded",
+     "expect": "vendor.foundedYear",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Where is your headquarters located (country)?",
+     "expect": "vendor.hqCountry",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many customers do you currently serve?",
+     "expect": "vendor.customerCount",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do you have a current SOC 2 Type II report?",
+     "expect": "security.soc2Type2",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How often do you commission external penetration tests?",
+     "expect": "security.pentestFrequency",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Which encryption protocol protects data in transit?",
+     "expect": "security.encryptionInTransit",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How frequently is customer data backed up?",
+     "expect": "security.backupFrequency",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Do you support SAML single sign-on?",
+     "expect": "security.sso",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is multi-factor authentication enforced for your own employees?",
+     "expect": "security.mfaForStaff",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "In which regions can customer data be stored?",
+     "expect": "security.dataResidencyRegions",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "EU",
+      "India",
+      "US"
+     ]
+    },
+    {
+     "question": "Contractual uptime commitment (%)",
+     "expect": "support.uptimeSlaPercent",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "When is support available?",
+     "expect": "support.supportHours",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many sub-processors do you use?",
+     "expect": "legal.subprocessors",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Can you provide a Data Processing Agreement?",
+     "expect": "legal.dpaAvailable",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold ISO 27001 certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold HIPAA compliance attestation?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is MFA optional for your staff?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is SSO unsupported?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h06_ngo",
+   "description": "NGO due diligence; repeated field names across entities",
+   "source": {
+    "org": {
+     "name": "Open Hands Foundation",
+     "founded": 2005,
+     "staff": 42,
+     "volunteers": 310,
+     "registration_number": "CH-8841"
+    },
+    "parent": {
+     "name": "Open Hands International",
+     "founded": 1987,
+     "staff": 1200
+    },
+    "finance": {
+     "total_income": 5400000,
+     "government_funding_pct": 22,
+     "audited": true,
+     "auditor": "Grant Thornton"
+    },
+    "governance": {
+     "trustees": 9,
+     "independent_trustees": 6,
+     "whistleblower_policy": true,
+     "safeguarding_policy": true
+    }
+   },
+   "questions": [
+    {
+     "question": "Name of organisation",
+     "expect": "org.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Year the charity was set up",
+     "expect": "org.founded",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many paid staff does the organisation have?",
+     "expect": "org.staff",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of volunteers",
+     "expect": "org.volunteers",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Charity registration number",
+     "expect": "org.registration_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Name of parent organisation",
+     "expect": "parent.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Number of employees in the parent organisation",
+     "expect": "parent.staff",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Year the parent organisation was founded",
+     "expect": "parent.founded",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Total annual income (GBP)",
+     "expect": "finance.total_income",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "What percentage of income comes from government?",
+     "expect": "finance.government_funding_pct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Were your accounts independently audited?",
+     "expect": "finance.audited",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Who is your external auditor?",
+     "expect": "finance.auditor",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many trustees sit on the board?",
+     "expect": "governance.trustees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of independent trustees",
+     "expect": "governance.independent_trustees",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "Do you have a whistleblowing policy?",
+     "expect": "governance.whistleblower_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is there a child safeguarding policy in place?",
+     "expect": "governance.safeguarding_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Year founded",
+     "expect": "REVIEW",
+     "category": "ambiguous",
+     "kind": "number"
+    },
+    {
+     "question": "Number of staff",
+     "expect": "REVIEW",
+     "category": "ambiguous",
+     "kind": "number"
+    },
+    {
+     "question": "Do you lack a whistleblower policy?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Number of staff in overseas offices",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "h07_logistics",
+   "description": "logistics carrier; abbreviations and compound words in keys",
+   "source": {
+    "carrier": {
+     "dotNumber": "2456781",
+     "mcNumber": "MC-998877",
+     "fleetSize": 120,
+     "reeferTrailers": 34,
+     "driverCount": 145,
+     "eldEnabled": true,
+     "hazmatAuthorized": false,
+     "safetyRating": "Satisfactory",
+     "insuranceCargoLimitUsd": 1000000,
+     "serviceRegions": [
+      "Midwest",
+      "Southeast"
+     ],
+     "headquarters": "Memphis, TN",
+     "yearsInBusiness": 19,
+     "scac": "RDGW"
+    }
+   },
+   "questions": [
+    {
+     "question": "USDOT number",
+     "expect": "carrier.dotNumber",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Motor carrier (MC) number",
+     "expect": "carrier.mcNumber",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many trucks are in your fleet?",
+     "expect": "carrier.fleetSize",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of refrigerated trailers",
+     "expect": "carrier.reeferTrailers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many drivers do you employ?",
+     "expect": "carrier.driverCount",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do your vehicles use electronic logging devices?",
+     "expect": "carrier.eldEnabled",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are you authorised to transport hazardous materials?",
+     "expect": "carrier.hazmatAuthorized",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Current FMCSA safety rating",
+     "expect": "carrier.safetyRating",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Cargo insurance coverage limit (USD)",
+     "expect": "carrier.insuranceCargoLimitUsd",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Which regions do you serve?",
+     "expect": "carrier.serviceRegions",
+     "category": "paraphrase",
+     "kind": "multiselect",
+     "options": [
+      "Midwest",
+      "Southeast",
+      "Northeast",
+      "West"
+     ]
+    },
+    {
+     "question": "Where is your head office?",
+     "expect": "carrier.headquarters",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many years have you been in business?",
+     "expect": "carrier.yearsInBusiness",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Standard Carrier Alpha Code",
+     "expect": "carrier.scac",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Number of dry van trailers",
+     "expect": "REVIEW",
+     "category": "similar_different",
+     "kind": "number"
+    },
+    {
+     "question": "Do you hold C-TPAT certification?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many drivers do you plan to hire next year?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Fleet size in 2020",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "h08_retail_misc",
+   "description": "retail vendor, conflicting duplicates and compound questions",
+   "source": {
+    "business": {
+     "name": "Fieldstone Home Goods",
+     "employees": 75,
+     "since": 2010,
+     "owner_email": "owner@fieldstone.example",
+     "store_phone": "555-0134",
+     "website": "fieldstone.example"
+    },
+    "operations": {
+     "sku_count": 1800,
+     "warehouse_locations": 2,
+     "returns_policy_days": 30,
+     "ships_internationally": true
+    },
+    "hr": {
+     "total_employees": 82
+    },
+    "payments": {
+     "accepts_credit_cards": true,
+     "net_terms_days": 45
+    }
+   },
+   "questions": [
+    {
+     "question": "Business name",
+     "expect": "business.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "When did you start trading?",
+     "expect": "business.since",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Owner's email",
+     "expect": "business.owner_email",
+     "category": "paraphrase",
+     "kind": "email"
+    },
+    {
+     "question": "Store telephone number",
+     "expect": "business.store_phone",
+     "category": "paraphrase",
+     "kind": "tel"
+    },
+    {
+     "question": "How many products (SKUs) do you carry?",
+     "expect": "operations.sku_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of warehouse sites",
+     "expect": "operations.warehouse_locations",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Returns window in days",
+     "expect": "operations.returns_policy_days",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Do you ship overseas?",
+     "expect": "operations.ships_internationally",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you accept credit card payments?",
+     "expect": "payments.accepts_credit_cards",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Payment terms offered (days)",
+     "expect": "payments.net_terms_days",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many employees does the company have?",
+     "expect": "REVIEW",
+     "category": "conflicting",
+     "kind": "number"
+    },
+    {
+     "question": "Total workforce",
+     "expect": "REVIEW",
+     "category": "conflicting",
+     "kind": "number"
+    },
+    {
+     "question": "Give the business name and website",
+     "expect": "REVIEW",
+     "category": "compound"
+    },
+    {
+     "question": "Owner email and store phone",
+     "expect": "REVIEW",
+     "category": "compound"
+    },
+    {
+     "question": "Do you offer gift cards?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you accept cryptocurrency?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  }
+ ]
+}
