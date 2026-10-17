@@ -63,7 +63,7 @@ Retrieval scores each question against every JSON leaf by token overlap, then ap
 
 Verified on the current working tree (details, datasets and caveats in `PROJECT_COMPLETION.md`):
 
-- **Tests:** 480 passed, 2 xfailed (intentional disputed labels); ruff and mypy clean.
+- **Tests:** 514 passed, 2 xfailed (intentional disputed labels); ruff and mypy clean.
 - **Matching, development sets:** `benchmarks/rfi` 106/108 answered correct, 1 unsafe (a disputed label); `benchmarks/heldout` 119 answered, 0 unsafe. Semantic held-out v2 (author-written; first run 50 correct, 3 unsafe; 1 unsafe after fixes made once its failures were seen). Zero unsafe answers is **not** claimed.
 - **Widget fixtures:** 12/12 fill, DOM read-back and fixture app-state. **SPA fixtures:** 26, zero submit events, zero submissions.
 - **Demos:** `demo.py` PASS; `demo_web.py` NEEDS_REVIEW by design.

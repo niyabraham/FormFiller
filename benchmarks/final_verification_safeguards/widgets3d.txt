@@ -1,0 +1,12 @@
+12 expected fields: fill_ok 12, dom_readback 12, app_state 12; conditional discovered+filled 3/3
+side-effect mismatches: none; unsettled-report mismatches: none
+  w3d_blur_commit                         0.77s {'city': (True, True, True), 'email': (True, True, True), 'name': (True, True, True)}
+  w3d_blur_commit?mode=revert             0.54s {'email': (True, True, None), 'name': (True, False, None)}
+  w3d_readonly_combobox                   0.32s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=dead         3.22s {'country': (False, False, None)}
+  w3d_styled_radio                        0.21s {'sector': (True, True, True)}
+  w3d_blur_commit?mode=delay              0.57s {'city': (True, True, True), 'name': (True, True, True)}
+  w3d_blur_commit?mode=churn              4.78s {'city': (True, True, True), 'email': (True, True, True), 'name': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap      0.31s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap_nav  0.35s {'country': (True, True, True)}
+  w3d_readonly_combobox?mode=overlap_dead  1.71s {'country': (False, False, None)}

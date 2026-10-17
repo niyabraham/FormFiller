@@ -72,7 +72,7 @@ def summarise(rows: list[dict]) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--split", choices=["dev", "seen", "heldout"], required=True)
+    ap.add_argument("--split", choices=["dev", "seen", "heldout", "heldout_v3", "dev_defects"], required=True)
     ap.add_argument("--out-dir")
     ap.add_argument("--list-failures", action="store_true")
     ap.add_argument("--provider", choices=["wordnet"], help="ablation: add an optional term provider on top of the shipped layer")

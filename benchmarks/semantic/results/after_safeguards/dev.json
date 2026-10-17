@@ -1,0 +1,2568 @@
+{
+ "benchmark": "semantic-dev",
+ "version": "1.0.0",
+ "file_digest": "cf5eb90bf822ae6c",
+ "provenance": {
+  "git_head": "bea0b206c5742579b5a0b865262de0febc8cd98e",
+  "pipeline_source_sha256": "b3c9f36f7e507fa20a423adfb0c42f6f128783b77975e528f8884247f868acce",
+  "hash_recipe": "formfill-src-v2",
+  "note": "pipeline_source_sha256 is null for a clean tree; otherwise it hashes the uncommitted formfill/ changes"
+ },
+ "overall": {
+  "questions": 121,
+  "expected_answer": 76,
+  "expected_review": 45,
+  "auto_answered": 59,
+  "correct": 59,
+  "unsafe": 0,
+  "wrong_answer": 0,
+  "unsafe_answer": 0,
+  "missed": 17,
+  "correct_review": 45,
+  "precision_pct": 100.0,
+  "coverage_pct": 77.6,
+  "review_rate_pct": 51.2,
+  "unsafe_rate_pct": 0.0
+ },
+ "by_category": {
+  "ambiguous": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "compound": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "conflicting": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "exact": {
+   "questions": 13,
+   "expected_answer": 13,
+   "expected_review": 0,
+   "auto_answered": 13,
+   "correct": 13,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "missing": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "negation": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "nested": {
+   "questions": 7,
+   "expected_answer": 7,
+   "expected_review": 0,
+   "auto_answered": 7,
+   "correct": 7,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "option_mismatch": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "paraphrase": {
+   "questions": 54,
+   "expected_answer": 54,
+   "expected_review": 0,
+   "auto_answered": 37,
+   "correct": 37,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 17,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 68.5,
+   "review_rate_pct": 31.5,
+   "unsafe_rate_pct": 0.0
+  },
+  "scope": {
+   "questions": 10,
+   "expected_answer": 2,
+   "expected_review": 8,
+   "auto_answered": 2,
+   "correct": 2,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 8,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 80.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "similar_different": {
+   "questions": 4,
+   "expected_answer": 0,
+   "expected_review": 4,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 4,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "type": {
+   "questions": 3,
+   "expected_answer": 0,
+   "expected_review": 3,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 3,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "unsupported": {
+   "questions": 12,
+   "expected_answer": 0,
+   "expected_review": 12,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 12,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "by_case": {
+  "d01_it_services": {
+   "questions": 22,
+   "expected_answer": 13,
+   "expected_review": 9,
+   "auto_answered": 12,
+   "correct": 12,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 1,
+   "correct_review": 9,
+   "precision_pct": 100.0,
+   "coverage_pct": 92.3,
+   "review_rate_pct": 45.5,
+   "unsafe_rate_pct": 0.0
+  },
+  "d02_nested_supplier": {
+   "questions": 22,
+   "expected_answer": 16,
+   "expected_review": 6,
+   "auto_answered": 11,
+   "correct": 11,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 5,
+   "correct_review": 6,
+   "precision_pct": 100.0,
+   "coverage_pct": 68.8,
+   "review_rate_pct": 50.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "d03_booleans_policies": {
+   "questions": 20,
+   "expected_answer": 13,
+   "expected_review": 7,
+   "auto_answered": 10,
+   "correct": 10,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 3,
+   "correct_review": 7,
+   "precision_pct": 100.0,
+   "coverage_pct": 76.9,
+   "review_rate_pct": 50.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "d04_missing_conflicting": {
+   "questions": 12,
+   "expected_answer": 5,
+   "expected_review": 7,
+   "auto_answered": 4,
+   "correct": 4,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 1,
+   "correct_review": 7,
+   "precision_pct": 100.0,
+   "coverage_pct": 80.0,
+   "review_rate_pct": 66.7,
+   "unsafe_rate_pct": 0.0
+  },
+  "d05_lists_and_compound": {
+   "questions": 13,
+   "expected_answer": 8,
+   "expected_review": 5,
+   "auto_answered": 8,
+   "correct": 8,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 5,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 38.5,
+   "unsafe_rate_pct": 0.0
+  },
+  "d06_counts_populations": {
+   "questions": 15,
+   "expected_answer": 10,
+   "expected_review": 5,
+   "auto_answered": 6,
+   "correct": 6,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 4,
+   "correct_review": 5,
+   "precision_pct": 100.0,
+   "coverage_pct": 60.0,
+   "review_rate_pct": 60.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "d07_dates_units": {
+   "questions": 9,
+   "expected_answer": 5,
+   "expected_review": 4,
+   "auto_answered": 4,
+   "correct": 4,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 1,
+   "correct_review": 4,
+   "precision_pct": 100.0,
+   "coverage_pct": 80.0,
+   "review_rate_pct": 55.6,
+   "unsafe_rate_pct": 0.0
+  },
+  "d08_choices": {
+   "questions": 8,
+   "expected_answer": 6,
+   "expected_review": 2,
+   "auto_answered": 4,
+   "correct": 4,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 2,
+   "correct_review": 2,
+   "precision_pct": 100.0,
+   "coverage_pct": 66.7,
+   "review_rate_pct": 50.0,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "unsafe": [],
+ "missed": [
+  {
+   "question": "Switchboard telephone number",
+   "category": "paraphrase",
+   "expect": "main_phone",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'main_phone' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "main_phone",
+     "score": 0.5
+    }
+   ],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Registered company name",
+   "category": "paraphrase",
+   "expect": "organisation.legal_name",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'organisation.legal_name' is too weak (score 0.30 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.legal_name",
+     "score": 0.3
+    },
+    {
+     "source": "organisation.trading_name",
+     "score": 0.3
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Companies House number",
+   "category": "paraphrase",
+   "expect": "organisation.registration_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "When was the business founded?",
+   "category": "paraphrase",
+   "expect": "organisation.year_established",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.54,
+   "reason": "best candidate 'organisation.year_established' is too weak (score 0.54 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.year_established",
+     "score": 0.54
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Annual turnover (GBP)",
+   "category": "paraphrase",
+   "expect": "finance.turnover_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.48,
+   "reason": "best candidate 'finance.turnover_gbp' is too weak (score 0.48 < 0.6) -- question scope ['annual'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.48
+    },
+    {
+     "source": "insurance.employers_liability.cover_gbp",
+     "score": 0.24
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "VAT registration number",
+   "category": "paraphrase",
+   "expect": "finance.vat_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'finance.vat_number' and 'organisation.registration_number' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.vat_number",
+     "score": 0.6667
+    },
+    {
+     "source": "organisation.registration_number",
+     "score": 0.6667
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Is multi-factor authentication mandatory for all users?",
+   "category": "paraphrase",
+   "expect": "security.mfa_required",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'security.mfa_required' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['all', 'user'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.mfa_required",
+     "score": 0.5
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Does GDPR apply to your organisation?",
+   "category": "paraphrase",
+   "expect": "privacy.gdpr_applicable",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'privacy.gdpr_applicable' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.gdpr_applicable",
+     "score": 0.4
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "How long (in years) do you retain customer data?",
+   "category": "paraphrase",
+   "expect": "privacy.data_retention_years",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.286,
+   "reason": "best candidate 'privacy.data_retention_years' is too weak (score 0.29 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['customer', 'long', 'retain'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.data_retention_years",
+     "score": 0.2857
+    },
+    {
+     "source": "security.data_encrypted_at_rest",
+     "score": 0.2857
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Contact email address",
+   "category": "paraphrase",
+   "expect": "company.email",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.email' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['address', 'contact'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.email",
+     "score": 0.5
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "How many people do you employ in total?",
+   "category": "paraphrase",
+   "expect": "people.employees.total",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.employees.total' is too weak (score 0.50 < 0.6) -- counting question: modifier ['employ'] is not in the key, and the key adds ['employee'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "How many freelancers or contractors do you use?",
+   "category": "paraphrase",
+   "expect": "people.contractors",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.contractors' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['freelancer', 'use'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.contractors",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Size of the board of directors",
+   "category": "paraphrase",
+   "expect": "people.board_members",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.board_members' is too weak (score 0.50 < 0.6) -- counting question: modifier ['director'] is not in the key, and the key adds ['member'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.board_members",
+     "score": 0.5
+    },
+    {
+     "source": "people.independent_directors",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of independent non-executive directors",
+   "category": "paraphrase",
+   "expect": "people.independent_directors",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'people.independent_directors' is too weak (score 0.30 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['executive', 'non']); polarity differs: question has ['non'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.independent_directors",
+     "score": 0.3
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "When was the company incorporated?",
+   "category": "paraphrase",
+   "expect": "incorporation_date",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.475,
+   "reason": "best candidate 'incorporation_date' is too weak (score 0.47 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "incorporation_date",
+     "score": 0.475
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Legal structure",
+   "category": "paraphrase",
+   "expect": "company.legal_form",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.legal_form' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.legal_form",
+     "score": 0.5
+    }
+   ],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Primary sector",
+   "category": "paraphrase",
+   "expect": "company.sector",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'company.sector' is too weak (score 0.40 < 0.6) -- question scope ['primary'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.sector",
+     "score": 0.4
+    }
+   ],
+   "case": "d08_choices"
+  }
+ ],
+ "questions": [
+  {
+   "question": "Company name",
+   "category": "exact",
+   "expect": "company_name",
+   "got": "company_name",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "How many employees does your company have?",
+   "category": "paraphrase",
+   "expect": "employee_count",
+   "got": "employee_count",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "What is your company's workforce size?",
+   "category": "paraphrase",
+   "expect": "employee_count",
+   "got": "employee_count",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Give the number of people working in the company.",
+   "category": "paraphrase",
+   "expect": "employee_count",
+   "got": "employee_count",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "What is the current employee headcount?",
+   "category": "paraphrase",
+   "expect": "employee_count",
+   "got": "employee_count",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Which sector does your business operate in?",
+   "category": "paraphrase",
+   "expect": "industry",
+   "got": "industry",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [
+    "soft match: 'sector' ~ 'industry' [lexicon] (0.90)"
+   ],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "In what year was the company established?",
+   "category": "paraphrase",
+   "expect": "founded_year",
+   "got": "founded_year",
+   "outcome": "correct",
+   "confidence": 0.72,
+   "reason": null,
+   "evidence": [
+    "soft match: 'established' ~ 'founded' [lexicon] (0.90)"
+   ],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Company web address",
+   "category": "paraphrase",
+   "expect": "website",
+   "got": "website",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "In which city is your head office located?",
+   "category": "paraphrase",
+   "expect": "headquarters_city",
+   "got": "headquarters_city",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Total revenue (USD)",
+   "category": "paraphrase",
+   "expect": "annual_revenue_usd",
+   "got": "annual_revenue_usd",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Customer support email address",
+   "category": "paraphrase",
+   "expect": "support_email",
+   "got": "support_email",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Switchboard telephone number",
+   "category": "paraphrase",
+   "expect": "main_phone",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'main_phone' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "main_phone",
+     "score": 0.5
+    }
+   ],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "What will your headcount be next year?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'employee_count' is too weak (score 0.30 < 0.6) -- counting question: only 1 of 4 words are explained by the key or its path (unexplained modifier: ['next', 'will', 'year']); period differs: question names ['+1y'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "employee_count",
+     "score": 0.3
+    },
+    {
+     "source": "founded_year",
+     "score": 0.3
+    }
+   ],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "How many of your employees are full-time?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'employee_count' is too weak (score 0.40 < 0.6) -- question scope ['fulltime'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "employee_count",
+     "score": 0.4
+    }
+   ],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "How many employees does your subsidiary have?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'employee_count' is too weak (score 0.40 < 0.6) -- question scope ['subsidiary'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "employee_count",
+     "score": 0.4
+    }
+   ],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Does your company hold ISO 27001 certification?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Do you have a SOC 2 report?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "What is your company's tax registration number?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Provide your annual revenue for 2019",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'annual_revenue_usd' is too weak (score 0.30 < 0.6) -- period differs: question names ['2019'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "annual_revenue_usd",
+     "score": 0.3
+    }
+   ],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Describe your disaster recovery approach",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Do you have an information security policy?",
+   "category": "paraphrase",
+   "expect": "information_security_policy",
+   "got": "information_security_policy",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Provide the company's fax number",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d01_it_services"
+  },
+  {
+   "question": "Registered company name",
+   "category": "paraphrase",
+   "expect": "organisation.legal_name",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'organisation.legal_name' is too weak (score 0.30 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.legal_name",
+     "score": 0.3
+    },
+    {
+     "source": "organisation.trading_name",
+     "score": 0.3
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Trading name",
+   "category": "exact",
+   "expect": "organisation.trading_name",
+   "got": "organisation.trading_name",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.legal_name",
+     "score": 0.3
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Companies House number",
+   "category": "paraphrase",
+   "expect": "organisation.registration_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "When was the business founded?",
+   "category": "paraphrase",
+   "expect": "organisation.year_established",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.54,
+   "reason": "best candidate 'organisation.year_established' is too weak (score 0.54 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.year_established",
+     "score": 0.54
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Contact email",
+   "category": "exact",
+   "expect": "organisation.contact.email",
+   "got": "organisation.contact.email",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Registered office city",
+   "category": "nested",
+   "expect": "organisation.registered_address.city",
+   "got": "organisation.registered_address.city",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [
+    "path names ['registered'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "organisation.trading_address.city",
+     "score": 0.18
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Registered office postcode",
+   "category": "nested",
+   "expect": "organisation.registered_address.postcode",
+   "got": "organisation.registered_address.postcode",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [
+    "path names ['registered'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "organisation.trading_address.postcode",
+     "score": 0.18
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "City",
+   "category": "nested",
+   "expect": "organisation.registered_address.city",
+   "got": "organisation.registered_address.city",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [
+    "path names ['registered'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "organisation.trading_address.city",
+     "score": 0.72
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "City",
+   "category": "nested",
+   "expect": "organisation.trading_address.city",
+   "got": "organisation.trading_address.city",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [
+    "path names ['trading'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "organisation.registered_address.city",
+     "score": 0.72
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "City",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'organisation.registered_address.city' and 'organisation.trading_address.city' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.registered_address.city",
+     "score": 1.0
+    },
+    {
+     "source": "organisation.trading_address.city",
+     "score": 1.0
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Postcode",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'organisation.registered_address.postcode' and 'organisation.trading_address.postcode' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "organisation.registered_address.postcode",
+     "score": 1.0
+    },
+    {
+     "source": "organisation.trading_address.postcode",
+     "score": 1.0
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Total number of staff",
+   "category": "paraphrase",
+   "expect": "workforce.total_employees",
+   "got": "workforce.total_employees",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Number of apprentices",
+   "category": "exact",
+   "expect": "workforce.apprentices",
+   "got": "workforce.apprentices",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Annual turnover (GBP)",
+   "category": "paraphrase",
+   "expect": "finance.turnover_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.48,
+   "reason": "best candidate 'finance.turnover_gbp' is too weak (score 0.48 < 0.6) -- question scope ['annual'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.48
+    },
+    {
+     "source": "insurance.employers_liability.cover_gbp",
+     "score": 0.24
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "VAT registration number",
+   "category": "paraphrase",
+   "expect": "finance.vat_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'finance.vat_number' and 'organisation.registration_number' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.vat_number",
+     "score": 0.6667
+    },
+    {
+     "source": "organisation.registration_number",
+     "score": 0.6667
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Public liability insurer",
+   "category": "nested",
+   "expect": "insurance.public_liability.insurer",
+   "got": "insurance.public_liability.insurer",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['public'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "insurance.employers_liability.insurer",
+     "score": 0.4
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Public liability cover amount (GBP)",
+   "category": "nested",
+   "expect": "insurance.public_liability.cover_gbp",
+   "got": "insurance.public_liability.cover_gbp",
+   "outcome": "correct",
+   "confidence": 0.75,
+   "reason": null,
+   "evidence": [
+    "path names ['public'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "insurance.employers_liability.cover_gbp",
+     "score": 0.4
+    },
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.2857
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Employers' liability expiry date",
+   "category": "nested",
+   "expect": "insurance.employers_liability.expiry",
+   "got": "insurance.employers_liability.expiry",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [
+    "path names ['employer'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "insurance.public_liability.expiry",
+     "score": 0.3273
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Insurer",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'insurance.employers_liability.insurer' and 'insurance.public_liability.insurer' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.employers_liability.insurer",
+     "score": 1.0
+    },
+    {
+     "source": "insurance.public_liability.insurer",
+     "score": 1.0
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Expiry date",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.667,
+   "reason": "ambiguous: 'insurance.employers_liability.expiry' and 'insurance.public_liability.expiry' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.employers_liability.expiry",
+     "score": 0.6667
+    },
+    {
+     "source": "insurance.public_liability.expiry",
+     "score": 0.6667
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Professional indemnity insurer",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'insurance.employers_liability.insurer' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['indemnity', 'professional'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.employers_liability.insurer",
+     "score": 0.5
+    },
+    {
+     "source": "insurance.public_liability.insurer",
+     "score": 0.5
+    }
+   ],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Number of contractors",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d02_nested_supplier"
+  },
+  {
+   "question": "Is multi-factor authentication mandatory for all users?",
+   "category": "paraphrase",
+   "expect": "security.mfa_required",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'security.mfa_required' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['all', 'user'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.mfa_required",
+     "score": 0.5
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do you enforce MFA?",
+   "category": "paraphrase",
+   "expect": "security.mfa_required",
+   "got": "security.mfa_required",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Is MFA optional?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'security.mfa_required' is too weak (score 0.30 < 0.6) -- polarity differs: question has ['optional'], key path has none; modality differs: question none, key path ['obligation']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.mfa_required",
+     "score": 0.3
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do you support single sign-on?",
+   "category": "paraphrase",
+   "expect": "security.sso_enabled",
+   "got": "security.sso_enabled",
+   "outcome": "correct",
+   "confidence": 0.9,
+   "reason": null,
+   "evidence": [
+    "soft match: 'support' ~ 'enabled' [lexicon] (0.90)"
+   ],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Is single sign-on disabled?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'security.sso_enabled' is too weak (score 0.30 < 0.6) -- polarity differs: question has ['disabled'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.sso_enabled",
+     "score": 0.3
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Is customer data encrypted at rest?",
+   "category": "paraphrase",
+   "expect": "security.data_encrypted_at_rest",
+   "got": "security.data_encrypted_at_rest",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.data_retention_years",
+     "score": 0.2857
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Is customer data stored unencrypted?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.286,
+   "reason": "best candidate 'privacy.data_retention_years' is too weak (score 0.29 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['customer', 'stored', 'unencrypted'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.data_retention_years",
+     "score": 0.2857
+    },
+    {
+     "source": "security.data_encrypted_at_rest",
+     "score": 0.2857
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Date of your most recent penetration test",
+   "category": "paraphrase",
+   "expect": "security.penetration_test_last_date",
+   "got": "security.penetration_test_last_date",
+   "outcome": "correct",
+   "confidence": 0.9,
+   "reason": null,
+   "evidence": [
+    "soft match: 'latest' ~ 'last' [lexicon] (0.90)"
+   ],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do you maintain a documented incident response plan?",
+   "category": "paraphrase",
+   "expect": "security.incident_response_plan",
+   "got": "security.incident_response_plan",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do staff receive security awareness training?",
+   "category": "paraphrase",
+   "expect": "security.security_awareness_training",
+   "got": "security.security_awareness_training",
+   "outcome": "correct",
+   "confidence": 0.75,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Name of Data Protection Officer",
+   "category": "paraphrase",
+   "expect": "privacy.dpo_name",
+   "got": "privacy.dpo_name",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Does GDPR apply to your organisation?",
+   "category": "paraphrase",
+   "expect": "privacy.gdpr_applicable",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'privacy.gdpr_applicable' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.gdpr_applicable",
+     "score": 0.4
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "How long (in years) do you retain customer data?",
+   "category": "paraphrase",
+   "expect": "privacy.data_retention_years",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.286,
+   "reason": "best candidate 'privacy.data_retention_years' is too weak (score 0.29 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['customer', 'long', 'retain'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.data_retention_years",
+     "score": 0.2857
+    },
+    {
+     "source": "security.data_encrypted_at_rest",
+     "score": 0.2857
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do you have a whistleblowing policy?",
+   "category": "paraphrase",
+   "expect": "governance.whistleblower_policy",
+   "got": "governance.whistleblower_policy",
+   "outcome": "correct",
+   "confidence": 0.95,
+   "reason": null,
+   "evidence": [
+    "soft match: 'whistleblowing' ~ 'whistleblower' [stem] (0.95)"
+   ],
+   "alternatives": [
+    {
+     "source": "governance.anti_bribery_policy",
+     "score": 0.4
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Does the organisation lack a whistleblower policy?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'governance.whistleblower_policy' is too weak (score 0.30 < 0.6) -- polarity differs: question has ['lack'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "governance.whistleblower_policy",
+     "score": 0.3
+    },
+    {
+     "source": "governance.anti_bribery_policy",
+     "score": 0.2857
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do you have an anti-corruption policy?",
+   "category": "paraphrase",
+   "expect": "governance.anti_bribery_policy",
+   "got": "governance.anti_bribery_policy",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "governance.whistleblower_policy",
+     "score": 0.4
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Are there any conflicts of interest to declare?",
+   "category": "paraphrase",
+   "expect": "governance.has_conflicts_of_interest",
+   "got": "governance.has_conflicts_of_interest",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Do you hold Cyber Essentials certification?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Has your organisation suffered a data breach in the last 3 years?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'privacy.data_retention_years' is too weak (score 0.40 < 0.6) -- only 3 of 7 question words are explained by the key or its path (unexplained: ['3', 'breach', 'last', 'suffered'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "privacy.data_retention_years",
+     "score": 0.4
+    },
+    {
+     "source": "security.data_encrypted_at_rest",
+     "score": 0.2
+    }
+   ],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Is a vulnerability scan performed monthly?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d03_booleans_policies"
+  },
+  {
+   "question": "Company name",
+   "category": "exact",
+   "expect": "company.name",
+   "got": "company.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Contact email address",
+   "category": "paraphrase",
+   "expect": "company.email",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.email' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['address', 'contact'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.email",
+     "score": 0.5
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Company website",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Fax number",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Tax identification number",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.tax_id' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.tax_id",
+     "score": 0.5
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Telephone number",
+   "category": "missing",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "'company.phone' holds the placeholder 'N/A', not an answer; a human must decide what it means",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.phone",
+     "score": 1.0
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "How many employees do you have?",
+   "category": "conflicting",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'company.employee_count' and 'hr.headcount' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.employee_count",
+     "score": 1.0
+    },
+    {
+     "source": "hr.headcount",
+     "score": 1.0
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Number of staff",
+   "category": "conflicting",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'company.employee_count' and 'hr.headcount' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.employee_count",
+     "score": 1.0
+    },
+    {
+     "source": "hr.headcount",
+     "score": 1.0
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Revenue for 2024",
+   "category": "scope",
+   "expect": "finance.revenue_2024",
+   "got": "finance.revenue_2024",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.revenue_2023",
+     "score": 0.3
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Revenue for 2023",
+   "category": "scope",
+   "expect": "finance.revenue_2023",
+   "got": "finance.revenue_2023",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.revenue_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Revenue for 2022",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'finance.revenue_2023' is too weak (score 0.30 < 0.6) -- period differs: question names ['2022'], key path names ['2023']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.revenue_2023",
+     "score": 0.3
+    },
+    {
+     "source": "finance.revenue_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Reporting currency",
+   "category": "paraphrase",
+   "expect": "finance.currency",
+   "got": "finance.currency",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d04_missing_conflicting"
+  },
+  {
+   "question": "Which services do you provide?",
+   "category": "paraphrase",
+   "expect": "services",
+   "got": "services",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Certifications held",
+   "category": "paraphrase",
+   "expect": "certifications",
+   "got": "certifications",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Regions in which you operate",
+   "category": "paraphrase",
+   "expect": "operating_regions",
+   "got": "operating_regions",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Name of primary contact",
+   "category": "paraphrase",
+   "expect": "primary_contact.name",
+   "got": "primary_contact.name",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['contact', 'primary'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "name",
+     "score": 0.18
+    }
+   ],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Primary contact email",
+   "category": "exact",
+   "expect": "primary_contact.email",
+   "got": "primary_contact.email",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Primary contact telephone",
+   "category": "paraphrase",
+   "expect": "primary_contact.phone",
+   "got": "primary_contact.phone",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Please provide the contact name and email address",
+   "category": "compound",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.545,
+   "reason": "best candidate 'primary_contact.email' is too weak (score 0.55 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "primary_contact.email",
+     "score": 0.5455
+    },
+    {
+     "source": "primary_contact.name",
+     "score": 0.5455
+    }
+   ],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "State your registered address and telephone number",
+   "category": "compound",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'registered_office' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['address', 'phone'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "registered_office",
+     "score": 0.4
+    },
+    {
+     "source": "primary_contact.phone",
+     "score": 0.3
+    }
+   ],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Billing address",
+   "category": "exact",
+   "expect": "billing_address",
+   "got": "billing_address",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Registered office address",
+   "category": "exact",
+   "expect": "registered_office",
+   "got": "registered_office",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "billing_address",
+     "score": 0.24
+    }
+   ],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Mailing address",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'billing_address' is too weak (score 0.30 < 0.6) -- question scope ['mailing'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "billing_address",
+     "score": 0.3
+    }
+   ],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Name of secondary contact",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'primary_contact.name' is too weak (score 0.40 < 0.6) -- question scope ['secondary'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "primary_contact.name",
+     "score": 0.4
+    },
+    {
+     "source": "name",
+     "score": 0.18
+    }
+   ],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Do you hold ISO 27001?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d05_lists_and_compound"
+  },
+  {
+   "question": "Total number of employees",
+   "category": "paraphrase",
+   "expect": "people.employees.total",
+   "got": "people.employees.total",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "How many people do you employ in total?",
+   "category": "paraphrase",
+   "expect": "people.employees.total",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.employees.total' is too weak (score 0.50 < 0.6) -- counting question: modifier ['employ'] is not in the key, and the key adds ['employee'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of full-time employees",
+   "category": "exact",
+   "expect": "people.employees.full_time",
+   "got": "people.employees.full_time",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.3
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "How many staff work part time?",
+   "category": "paraphrase",
+   "expect": "people.employees.part_time",
+   "got": "people.employees.part_time",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.24
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of contractors",
+   "category": "exact",
+   "expect": "people.contractors",
+   "got": "people.contractors",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "How many freelancers or contractors do you use?",
+   "category": "paraphrase",
+   "expect": "people.contractors",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.contractors' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['freelancer', 'use'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.contractors",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Size of the board of directors",
+   "category": "paraphrase",
+   "expect": "people.board_members",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.board_members' is too weak (score 0.50 < 0.6) -- counting question: modifier ['director'] is not in the key, and the key adds ['member'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.board_members",
+     "score": 0.5
+    },
+    {
+     "source": "people.independent_directors",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of independent non-executive directors",
+   "category": "paraphrase",
+   "expect": "people.independent_directors",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'people.independent_directors' is too weak (score 0.30 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['executive', 'non']); polarity differs: question has ['non'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.independent_directors",
+     "score": 0.3
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "How many offices do you operate?",
+   "category": "paraphrase",
+   "expect": "sites.offices",
+   "got": "sites.offices",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of warehouses",
+   "category": "exact",
+   "expect": "sites.warehouses",
+   "got": "sites.warehouses",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of seasonal workers",
+   "category": "similar_different",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.employees.total' is too weak (score 0.50 < 0.6) -- counting question: modifier ['seasonal'] is not in the key, and the key adds ['people'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of employees in the engineering department",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'people.employees.total' is too weak (score 0.40 < 0.6) -- counting question: modifier ['department', 'engineering'] is not in the key, and the key adds ['people'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.4
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of female employees",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.employees.total' is too weak (score 0.50 < 0.6) -- counting question: modifier ['female'] is not in the key, and the key adds ['people'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.5
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of employees based outside the UK",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.333,
+   "reason": "best candidate 'people.employees.total' is too weak (score 0.33 < 0.6) -- counting question: modifier ['based', 'outside', 'uk'] is not in the key, and the key adds ['people'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.employees.total",
+     "score": 0.3333
+    }
+   ],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Number of manufacturing plants",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d06_counts_populations"
+  },
+  {
+   "question": "Date of incorporation",
+   "category": "exact",
+   "expect": "incorporation_date",
+   "got": "incorporation_date",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "When was the company incorporated?",
+   "category": "paraphrase",
+   "expect": "incorporation_date",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.475,
+   "reason": "best candidate 'incorporation_date' is too weak (score 0.47 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "incorporation_date",
+     "score": 0.475
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Financial year end",
+   "category": "exact",
+   "expect": "financial_year_end",
+   "got": "financial_year_end",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "year_end_month",
+     "score": 0.6667
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Annual turnover (number only)",
+   "category": "type",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "'annual_turnover': '\u00a32.4m' is not a number",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "annual_turnover",
+     "score": 1.0
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Total insured value",
+   "category": "paraphrase",
+   "expect": "insured_value",
+   "got": "insured_value",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Liability cover (number)",
+   "category": "type",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "'liability_cover': 'approximately 2 million' is not a number",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "liability_cover",
+     "score": 1.0
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Are you VAT registered?",
+   "category": "paraphrase",
+   "expect": "vat_registered",
+   "got": "vat_registered",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Number of branches (numeric)",
+   "category": "type",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "'number_of_branches': 'six' is not a number",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "number_of_branches",
+     "score": 1.0
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Date of last audit",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'incorporation_date' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['audit', 'last'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "incorporation_date",
+     "score": 0.4
+    }
+   ],
+   "case": "d07_dates_units"
+  },
+  {
+   "question": "Company size",
+   "category": "paraphrase",
+   "expect": "company.size_band",
+   "got": "company.size_band",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Legal structure",
+   "category": "paraphrase",
+   "expect": "company.legal_form",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.legal_form' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.legal_form",
+     "score": 0.5
+    }
+   ],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Is the company publicly listed?",
+   "category": "paraphrase",
+   "expect": "company.listed",
+   "got": "company.listed",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Country of registration",
+   "category": "paraphrase",
+   "expect": "company.country",
+   "got": "company.country",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Primary sector",
+   "category": "paraphrase",
+   "expect": "company.sector",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'company.sector' is too weak (score 0.40 < 0.6) -- question scope ['primary'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.sector",
+     "score": 0.4
+    }
+   ],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Industry",
+   "category": "option_mismatch",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.9,
+   "reason": "'company.sector': 'Software' is not one of the allowed options ['Healthcare', 'Finance', 'Education']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.sector",
+     "score": 0.9
+    }
+   ],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Preferred language for correspondence",
+   "category": "paraphrase",
+   "expect": "contact.preferred_language",
+   "got": "contact.preferred_language",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "d08_choices"
+  },
+  {
+   "question": "Company type",
+   "category": "option_mismatch",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "d08_choices"
+  }
+ ]
+}

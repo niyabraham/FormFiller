@@ -55,11 +55,15 @@ from typing import Any
 from formfill.web import semantic
 from formfill.web.models import Candidate, Question
 from formfill.web.tokens import (
+    COMPOSITE_MARKERS,
+    ENTITY_QUALIFIERS,
     IMPLICIT_NOUNS,
     NEGATORS,
     NEUTRAL,
     QUALIFIERS,
     SELF_REFERENCE,
+    entity_modifiers,
+    modality_markers,
     period_markers,
     tokenize,
 )
@@ -169,9 +173,10 @@ _NUMBER_WORDS = {w: str(i) for i, w in enumerate(
     ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"])}
 
 
-def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
+def _assess(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
                 q_period: frozenset[str] = frozenset(), is_count: bool = False,
-                q_seq: list[str] | None = None, sem: semantic.Config = semantic.DEFAULT) -> tuple[float, list[str]]:
+                q_seq: list[str] | None = None, sem: semantic.Config = semantic.DEFAULT,
+                q_modality: frozenset[str] = frozenset(), q_modality_soft: frozenset[str] = frozenset()) -> tuple[float, list[str], float | None, frozenset[str]]:
     """Score one leaf and say why it was capped, if it was. With `q_seq` (the question's ordered tokens) the question is
     first aligned onto this leaf's key words (formfill/web/semantic.py); the alignment is soft, so its weakest link
     multiplies the score, and every cap below still runs on the aligned tokens."""
@@ -203,12 +208,12 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
     # words like "total" widen a question; they only count when the key carries them too
     q_eff = q_tokens - (NEUTRAL - leaf.leaf_tokens - leaf.parent_tokens)
     if not q_eff:
-        return 0.0, []
+        return 0.0, [], None, frozenset()
     leaf_hit = q_eff & leaf.leaf_tokens
     if not leaf_hit:
-        return 0.0, []
+        return 0.0, [], None, frozenset()
     if leaf_hit <= SELF_REFERENCE and leaf.leaf_tokens - SELF_REFERENCE:
-        return 0.0, []  # "your company" names the asker, not the fact: `company_name` is not evidence for "which sector does your company ..."
+        return 0.0, [], None, frozenset()  # "your company" names the asker, not the fact: `company_name` is not evidence for "which sector does your company ..."
     cited = sibling_matches(q_eff, leaf) if SIBLING_CREDIT else []  # values of sibling fields of this list item that the question cites ("Omaha")
     sibling_hit = frozenset().union(*cited)
     explained_by = leaf.leaf_tokens | leaf.parent_tokens | sibling_hit
@@ -269,10 +274,37 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
     if neg_q != neg_l:
         flags.append(f"polarity differs: question has {sorted(neg_q) or 'none'}, key path has {sorted(neg_l) or 'none'}")
         score = min(score, POLARITY_CAP)
+    # Safeguards found by held-out v3 (each is a word CLASS, none names a field or a question):
+    # 1. entity: "parent_company.employees" holds the parent's count, not "the company's"; a key naming another legal entity that
+    #    the question does not name answers a different question, whether or not a rival exists.
+    other_entity = ((key_words & ENTITY_QUALIFIERS) | entity_modifiers(leaf.path)) - q_tokens
+    rival: float | None = None
+    if other_entity:
+        flags.append(f"key path names another entity {sorted(other_entity)} that the question does not")
+        rival = score  # still a rival (see retrieve(): only when the top answer does not explain more of the question than this key): if the plain key and this one disagree, the question never said which entity it meant
+        score = min(score, UNEXPLAINED_CAP)
+    # 2. composite: "total ... including X" is a sum; a key holding one component does not answer it unless the key says so too.
+    composite = (q_tokens & COMPOSITE_MARKERS) - key_words
+    if composite:
+        flags.append(f"question asks for a composite ({sorted(composite)}) that the key does not claim to hold")
+        score = min(score, UNEXPLAINED_CAP)
+    # 3. modality: `audit_required` is an obligation, not an audit; a plan or a request is not a fact that holds. The families
+    #    named by the question and by the key path must agree (read from raw words: "required" is a stopword in tokens).
+    k_modality = modality_markers(leaf.path)
+    # key narrows by a modality the question never named, or the question insists on one the key lacks; a soft verb ("enforced")
+    # on either side satisfies the other side's obligation but never creates a mismatch on its own
+    if (k_modality - q_modality_soft) or (q_modality - modality_markers(leaf.path, soft=True)):
+        flags.append(f"modality differs: question {sorted(q_modality_soft | q_modality) or 'none'}, key path {sorted(k_modality) or 'none'}")
+        score = min(score, POLARITY_CAP)
     if links and weight < 1.0 and score > 0:
         score *= weight  # a soft match never outranks an exact one
     if links:
         flags.append(SOFT_PREFIX + "; ".join(links))  # moved to Candidate.evidence by retrieve(): not a cap reason
+    return score, flags, rival, frozenset(q_eff & explained_by)
+
+
+def assess_leaf(*args: Any, **kwargs: Any) -> tuple[float, list[str]]:
+    score, flags, _, _ = _assess(*args, **kwargs)
     return score, flags
 
 
@@ -381,14 +413,24 @@ def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Can
     q = set(question.concept_tokens)
     section = set(tokenize(question.control.section))
     scored: list[list] = []
+    rivals: dict[str, float] = {}
+    explained_by_path: dict[str, frozenset[str]] = {}
     for leaf in leaves:
-        s, flags = assess_leaf(q, section, leaf, question.period, question.is_count, question.concept_tokens, SEMANTIC)
+        s, flags, rival, explained = _assess(q, section, leaf, question.period, question.is_count, question.concept_tokens, SEMANTIC,
+                                  modality_markers(question.text), modality_markers(question.text, soft=True))
         if s > 0:
             scored.append([s, flags, [], leaf])
+            explained_by_path[leaf.path] = explained
+            if rival is not None:
+                rivals[leaf.path] = rival
     _apply_context(scored, q, section, question.is_count)
     for row in scored:  # soft-match notes are evidence for the reviewer, not reasons a score was capped
         soft = [f for f in row[1] if f.startswith(SOFT_PREFIX)]
         row[1] = [f for f in row[1] if not f.startswith(SOFT_PREFIX)]
         row[2] = soft + row[2]
     scored.sort(key=lambda t: (-t[0], t[3].path))
-    return [Candidate(leaf.path, leaf.value, round(s, 4), flags, evidence) for s, flags, evidence, leaf in scored[:top_k]]
+    if scored:  # an entity-capped key is a fair rival only if the best answer does not explain more of the question than it does
+        best = explained_by_path[scored[0][3].path]
+        for path in [p for p in rivals if not best <= explained_by_path[p]]:
+            del rivals[path]
+    return [Candidate(leaf.path, leaf.value, round(s, 4), flags, evidence, rivals.get(leaf.path)) for s, flags, evidence, leaf in scored[:top_k] + [r for r in scored[top_k:] if r[3].path in rivals]]

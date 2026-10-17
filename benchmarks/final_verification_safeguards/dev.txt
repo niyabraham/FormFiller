@@ -1,0 +1,8 @@
+cases=16 questions=192 (expected ANSWER 157, REVIEW 35)
+auto-answered=108  correct=106  UNSAFE=1
+precision=98.1%  coverage=56.2%  review_rate=37.5%  not_surfaced=6.2%  answerable_recall=67.5%
+confusion: {'expected_ANSWER__predicted_ANSWER__correct': 106, 'expected_ANSWER__predicted_ANSWER__incorrect_value': 0, 'expected_ANSWER__predicted_ANSWER__fill_failed': 1, 'expected_ANSWER__predicted_REVIEW': 40, 'expected_ANSWER__not_asked': 10, 'expected_REVIEW__predicted_REVIEW': 32, 'expected_REVIEW__predicted_ANSWER': 1, 'expected_REVIEW__not_asked': 2}
+excluding disputed labels: N=190 answered=107 correct=106 unsafe=0 precision=99.1%
+failure classes: {'retrieval problem': 25, 'question understanding problem': 1, 'validation problem': 5, 'ambiguity problem': 5, 'form discovery problem': 16, 'browser execution problem': 2, 'submission/verification problem': 1}
+submission: [('sub_ok', 'READY_FOR_HUMAN_REVIEW', 'OK'), ('sub_required_missing', 'NOT_READY', 'OK'), ('sub_attestation_required', 'NOT_READY', 'OK'), ('sub_server_reject', 'READY_FOR_HUMAN_REVIEW', 'OK'), ('sub_delayed_confirmation', 'READY_FOR_HUMAN_REVIEW', 'OK'), ('sub_navigates_away', 'READY_FOR_HUMAN_REVIEW', 'OK'), ('sub_optional_unresolved', 'READY_FOR_HUMAN_REVIEW', 'OK')]
+wrote /home/claude/FormFiller/benchmarks/final_verification_safeguards/baseline_dev/baseline.json and failures.md

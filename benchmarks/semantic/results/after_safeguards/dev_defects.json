@@ -1,0 +1,1228 @@
+{
+ "benchmark": "semantic-dev-defects",
+ "version": "1.0.0",
+ "file_digest": "0221221ad04f5c49",
+ "provenance": {
+  "git_head": "bea0b206c5742579b5a0b865262de0febc8cd98e",
+  "pipeline_source_sha256": "b3c9f36f7e507fa20a423adfb0c42f6f128783b77975e528f8884247f868acce",
+  "hash_recipe": "formfill-src-v2",
+  "note": "pipeline_source_sha256 is null for a clean tree; otherwise it hashes the uncommitted formfill/ changes"
+ },
+ "overall": {
+  "questions": 50,
+  "expected_answer": 32,
+  "expected_review": 18,
+  "auto_answered": 28,
+  "correct": 28,
+  "unsafe": 0,
+  "wrong_answer": 0,
+  "unsafe_answer": 0,
+  "missed": 4,
+  "correct_review": 18,
+  "precision_pct": 100.0,
+  "coverage_pct": 87.5,
+  "review_rate_pct": 44.0,
+  "unsafe_rate_pct": 0.0
+ },
+ "by_category": {
+  "composite": {
+   "questions": 12,
+   "expected_answer": 7,
+   "expected_review": 5,
+   "auto_answered": 7,
+   "correct": 7,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 5,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 41.7,
+   "unsafe_rate_pct": 0.0
+  },
+  "entity": {
+   "questions": 23,
+   "expected_answer": 14,
+   "expected_review": 9,
+   "auto_answered": 13,
+   "correct": 13,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 1,
+   "correct_review": 9,
+   "precision_pct": 100.0,
+   "coverage_pct": 92.9,
+   "review_rate_pct": 43.5,
+   "unsafe_rate_pct": 0.0
+  },
+  "modality": {
+   "questions": 15,
+   "expected_answer": 11,
+   "expected_review": 4,
+   "auto_answered": 8,
+   "correct": 8,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 3,
+   "correct_review": 4,
+   "precision_pct": 100.0,
+   "coverage_pct": 72.7,
+   "review_rate_pct": 46.7,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "by_case": {
+  "x01_entity_group": {
+   "questions": 13,
+   "expected_answer": 5,
+   "expected_review": 8,
+   "auto_answered": 5,
+   "correct": 5,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 8,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 61.5,
+   "unsafe_rate_pct": 0.0
+  },
+  "x02_single_entity": {
+   "questions": 3,
+   "expected_answer": 3,
+   "expected_review": 0,
+   "auto_answered": 3,
+   "correct": 3,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x03_affiliate_company": {
+   "questions": 4,
+   "expected_answer": 4,
+   "expected_review": 0,
+   "auto_answered": 3,
+   "correct": 3,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 1,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 75.0,
+   "review_rate_pct": 25.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x04_holding_operating": {
+   "questions": 3,
+   "expected_answer": 2,
+   "expected_review": 1,
+   "auto_answered": 2,
+   "correct": 2,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 1,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 33.3,
+   "unsafe_rate_pct": 0.0
+  },
+  "x05_composite_people": {
+   "questions": 6,
+   "expected_answer": 3,
+   "expected_review": 3,
+   "auto_answered": 3,
+   "correct": 3,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 3,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 50.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x06_composite_key_carries_it": {
+   "questions": 1,
+   "expected_answer": 1,
+   "expected_review": 0,
+   "auto_answered": 1,
+   "correct": 1,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x07_composite_money": {
+   "questions": 3,
+   "expected_answer": 2,
+   "expected_review": 1,
+   "auto_answered": 2,
+   "correct": 2,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 1,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 33.3,
+   "unsafe_rate_pct": 0.0
+  },
+  "x08_composite_sites": {
+   "questions": 2,
+   "expected_answer": 1,
+   "expected_review": 1,
+   "auto_answered": 1,
+   "correct": 1,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 1,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 50.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x09_modality_security": {
+   "questions": 4,
+   "expected_answer": 4,
+   "expected_review": 0,
+   "auto_answered": 4,
+   "correct": 4,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x10_modality_compliance": {
+   "questions": 3,
+   "expected_answer": 1,
+   "expected_review": 2,
+   "auto_answered": 1,
+   "correct": 1,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 66.7,
+   "unsafe_rate_pct": 0.0
+  },
+  "x11_modality_training": {
+   "questions": 3,
+   "expected_answer": 2,
+   "expected_review": 1,
+   "auto_answered": 1,
+   "correct": 1,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 1,
+   "correct_review": 1,
+   "precision_pct": 100.0,
+   "coverage_pct": 50.0,
+   "review_rate_pct": 66.7,
+   "unsafe_rate_pct": 0.0
+  },
+  "x12_modality_cover": {
+   "questions": 3,
+   "expected_answer": 2,
+   "expected_review": 1,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 2,
+   "correct_review": 1,
+   "precision_pct": null,
+   "coverage_pct": 0.0,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "x13_modality_cert": {
+   "questions": 2,
+   "expected_answer": 2,
+   "expected_review": 0,
+   "auto_answered": 2,
+   "correct": 2,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "unsafe": [],
+ "missed": [
+  {
+   "question": "How many people work for the company?",
+   "category": "entity",
+   "expect": "company.headcount",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "x03_affiliate_company"
+  },
+  {
+   "question": "Percentage of staff who completed induction",
+   "category": "modality",
+   "expect": "training.induction_completed_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.571,
+   "reason": "best candidate 'training.induction_completed_pct' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "training.induction_completed_pct",
+     "score": 0.5714
+    },
+    {
+     "source": "training.induction_mandatory",
+     "score": 0.3
+    }
+   ],
+   "case": "x11_modality_training"
+  },
+  {
+   "question": "How much cover are you requesting?",
+   "category": "modality",
+   "expect": "insurance.cover_requested_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'insurance.cover_requested_gbp' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.cover_requested_gbp",
+     "score": 0.4
+    },
+    {
+     "source": "insurance.cover_held_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "x12_modality_cover"
+  },
+  {
+   "question": "How much cover do you currently hold?",
+   "category": "modality",
+   "expect": "insurance.cover_held_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'insurance.cover_held_gbp' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.cover_held_gbp",
+     "score": 0.4
+    },
+    {
+     "source": "insurance.cover_requested_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "x12_modality_cover"
+  }
+ ],
+ "questions": [
+  {
+   "question": "How many people does the enterprise employ?",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "How many staff does the parent company have?",
+   "category": "entity",
+   "expect": "parent_company.employees",
+   "got": "parent_company.employees",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['parent'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "subsidiary.employees",
+     "score": 0.18
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Number of employees at the subsidiary",
+   "category": "entity",
+   "expect": "subsidiary.employees",
+   "got": "subsidiary.employees",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['subsidiary'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.24
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Legal name of the company",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.legal_name' is too weak (score 0.50 < 0.6) -- key path names another entity ['parent'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.legal_name",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.legal_name",
+     "score": 0.5
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Legal name of the subsidiary",
+   "category": "entity",
+   "expect": "subsidiary.legal_name",
+   "got": "subsidiary.legal_name",
+   "outcome": "correct",
+   "confidence": 0.909,
+   "reason": null,
+   "evidence": [
+    "path names ['subsidiary'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_company.legal_name",
+     "score": 0.288
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Which country is the business registered in?",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'parent_company.country' is too weak (score 0.40 < 0.6) -- question scope ['registered'] is not in the key or its path; key path names another entity ['parent'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.country",
+     "score": 0.4
+    },
+    {
+     "source": "subsidiary.country",
+     "score": 0.3
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Country of the subsidiary",
+   "category": "entity",
+   "expect": "subsidiary.country",
+   "got": "subsidiary.country",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['subsidiary'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_company.country",
+     "score": 0.24
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Annual turnover",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'subsidiary.turnover_gbp' is too weak (score 0.30 < 0.6) -- question scope ['annual'] is not in the key or its path; key path names another entity ['subsidiary'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "subsidiary.turnover_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Turnover of the subsidiary",
+   "category": "entity",
+   "expect": "subsidiary.turnover_gbp",
+   "got": "subsidiary.turnover_gbp",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "What is the company's name?",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.legal_name' is too weak (score 0.50 < 0.6) -- key path names another entity ['parent'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.legal_name",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.legal_name",
+     "score": 0.5
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "How many employees does the company have?",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- key path names another entity ['parent'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Number of people employed by the business",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- key path names another entity ['parent'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "Company country",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.country' is too weak (score 0.50 < 0.6) -- key path names another entity ['parent'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.country",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.country",
+     "score": 0.5
+    }
+   ],
+   "case": "x01_entity_group"
+  },
+  {
+   "question": "How many employees does the business have?",
+   "category": "entity",
+   "expect": "company.employees",
+   "got": "company.employees",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x02_single_entity"
+  },
+  {
+   "question": "Name of the firm",
+   "category": "entity",
+   "expect": "company.name",
+   "got": "company.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x02_single_entity"
+  },
+  {
+   "question": "What year was the company founded?",
+   "category": "entity",
+   "expect": "company.founded",
+   "got": "company.founded",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x02_single_entity"
+  },
+  {
+   "question": "How many people work for the company?",
+   "category": "entity",
+   "expect": "company.headcount",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "x03_affiliate_company"
+  },
+  {
+   "question": "Affiliate headcount",
+   "category": "entity",
+   "expect": "affiliate.headcount",
+   "got": "affiliate.headcount",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['affiliate'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "company.headcount",
+     "score": 0.24
+    }
+   ],
+   "case": "x03_affiliate_company"
+  },
+  {
+   "question": "Name of the affiliate",
+   "category": "entity",
+   "expect": "affiliate.name",
+   "got": "affiliate.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['affiliate'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "company.name",
+     "score": 0.24
+    }
+   ],
+   "case": "x03_affiliate_company"
+  },
+  {
+   "question": "Name of the company",
+   "category": "entity",
+   "expect": "company.name",
+   "got": "company.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "affiliate.name",
+     "score": 0.5
+    }
+   ],
+   "case": "x03_affiliate_company"
+  },
+  {
+   "question": "Name of the holding company",
+   "category": "entity",
+   "expect": "group.holding_company.name",
+   "got": "group.holding_company.name",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['holding'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "group.operating_company.name",
+     "score": 0.24
+    }
+   ],
+   "case": "x04_holding_operating"
+  },
+  {
+   "question": "Name of the operating company",
+   "category": "entity",
+   "expect": "group.operating_company.name",
+   "got": "group.operating_company.name",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['operating'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "group.holding_company.name",
+     "score": 0.3
+    }
+   ],
+   "case": "x04_holding_operating"
+  },
+  {
+   "question": "Name of the company",
+   "category": "entity",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'group.holding_company.name' is too weak (score 0.50 < 0.6) -- key path names another entity ['holding'] that the question does not",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.holding_company.name",
+     "score": 0.5
+    },
+    {
+     "source": "group.operating_company.name",
+     "score": 0.5
+    }
+   ],
+   "case": "x04_holding_operating"
+  },
+  {
+   "question": "Total staff including seasonal workers",
+   "category": "composite",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.seasonal_staff' is too weak (score 0.50 < 0.6) -- question asks for a composite (['including']) that the key does not claim to hold",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.seasonal_staff",
+     "score": 0.5
+    },
+    {
+     "source": "people.permanent_staff",
+     "score": 0.4
+    }
+   ],
+   "case": "x05_composite_people"
+  },
+  {
+   "question": "Number of employees excluding contractors",
+   "category": "composite",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.contractors' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['excluding']); question asks for a composite (['excluding']) that the key does not claim to hold",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.contractors",
+     "score": 0.5
+    },
+    {
+     "source": "people.permanent_staff",
+     "score": 0.4
+    }
+   ],
+   "case": "x05_composite_people"
+  },
+  {
+   "question": "Combined headcount of permanent and seasonal staff",
+   "category": "composite",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.permanent_staff' is too weak (score 0.50 < 0.6) -- counting question: only 2 of 4 words are explained by the key or its path (unexplained modifier: ['combined', 'seasonal']); question asks for a composite (['combined']) that the key does not claim to hold",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.permanent_staff",
+     "score": 0.5
+    },
+    {
+     "source": "people.seasonal_staff",
+     "score": 0.4
+    }
+   ],
+   "case": "x05_composite_people"
+  },
+  {
+   "question": "Number of seasonal staff",
+   "category": "composite",
+   "expect": "people.seasonal_staff",
+   "got": "people.seasonal_staff",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.permanent_staff",
+     "score": 0.5
+    }
+   ],
+   "case": "x05_composite_people"
+  },
+  {
+   "question": "How many permanent staff do you have?",
+   "category": "composite",
+   "expect": "people.permanent_staff",
+   "got": "people.permanent_staff",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.seasonal_staff",
+     "score": 0.3
+    }
+   ],
+   "case": "x05_composite_people"
+  },
+  {
+   "question": "How many contractors?",
+   "category": "composite",
+   "expect": "people.contractors",
+   "got": "people.contractors",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x05_composite_people"
+  },
+  {
+   "question": "Total workforce including contractors",
+   "category": "composite",
+   "expect": "workforce.total_including_contractors",
+   "got": "workforce.total_including_contractors",
+   "outcome": "correct",
+   "confidence": 0.933,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.employees_only",
+     "score": 0.4
+    }
+   ],
+   "case": "x06_composite_key_carries_it"
+  },
+  {
+   "question": "Total revenue including services",
+   "category": "composite",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'revenue.services_gbp' is too weak (score 0.50 < 0.6) -- question asks for a composite (['including']) that the key does not claim to hold",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "revenue.services_gbp",
+     "score": 0.5
+    }
+   ],
+   "case": "x07_composite_money"
+  },
+  {
+   "question": "Revenue from services",
+   "category": "composite",
+   "expect": "revenue.services_gbp",
+   "got": "revenue.services_gbp",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x07_composite_money"
+  },
+  {
+   "question": "Product revenue",
+   "category": "composite",
+   "expect": "revenue.product_gbp",
+   "got": "revenue.product_gbp",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x07_composite_money"
+  },
+  {
+   "question": "How many sites do you have including warehouses?",
+   "category": "composite",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'sites.warehouses' is too weak (score 0.50 < 0.6) -- question asks for a composite (['including']) that the key does not claim to hold",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "sites.warehouses",
+     "score": 0.5
+    }
+   ],
+   "case": "x08_composite_sites"
+  },
+  {
+   "question": "Number of warehouses",
+   "category": "composite",
+   "expect": "sites.warehouses",
+   "got": "sites.warehouses",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x08_composite_sites"
+  },
+  {
+   "question": "Is MFA required?",
+   "category": "modality",
+   "expect": "security.mfa_required",
+   "got": "security.mfa_required",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.mfa_enabled",
+     "score": 0.3
+    }
+   ],
+   "case": "x09_modality_security"
+  },
+  {
+   "question": "Is MFA enabled?",
+   "category": "modality",
+   "expect": "security.mfa_enabled",
+   "got": "security.mfa_enabled",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.mfa_required",
+     "score": 0.3
+    }
+   ],
+   "case": "x09_modality_security"
+  },
+  {
+   "question": "When is your next audit planned?",
+   "category": "modality",
+   "expect": "security.audit_planned",
+   "got": "security.audit_planned",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.last_audit",
+     "score": 0.3
+    }
+   ],
+   "case": "x09_modality_security"
+  },
+  {
+   "question": "When was your last audit?",
+   "category": "modality",
+   "expect": "security.last_audit",
+   "got": "security.last_audit",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.audit_planned",
+     "score": 0.3
+    }
+   ],
+   "case": "x09_modality_security"
+  },
+  {
+   "question": "Have your financial statements been audited?",
+   "category": "modality",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.285,
+   "reason": "best candidate 'compliance.audit_required' is too weak (score 0.28 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['been', 'financial', 'statement']); modality differs: question none, key path ['obligation']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.audit_required",
+     "score": 0.285
+    }
+   ],
+   "case": "x10_modality_compliance"
+  },
+  {
+   "question": "Is an audit required?",
+   "category": "modality",
+   "expect": "compliance.audit_required",
+   "got": "compliance.audit_required",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x10_modality_compliance"
+  },
+  {
+   "question": "Are your records audited?",
+   "category": "modality",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.285,
+   "reason": "best candidate 'compliance.audit_required' is too weak (score 0.28 < 0.6) -- modality differs: question none, key path ['obligation']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "compliance.audit_required",
+     "score": 0.285
+    }
+   ],
+   "case": "x10_modality_compliance"
+  },
+  {
+   "question": "Is induction mandatory?",
+   "category": "modality",
+   "expect": "training.induction_mandatory",
+   "got": "training.induction_mandatory",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "training.induction_completed_pct",
+     "score": 0.3
+    }
+   ],
+   "case": "x11_modality_training"
+  },
+  {
+   "question": "Have all staff completed induction?",
+   "category": "modality",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.571,
+   "reason": "best candidate 'training.induction_completed_pct' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "training.induction_completed_pct",
+     "score": 0.5714
+    },
+    {
+     "source": "training.induction_mandatory",
+     "score": 0.3
+    }
+   ],
+   "case": "x11_modality_training"
+  },
+  {
+   "question": "Percentage of staff who completed induction",
+   "category": "modality",
+   "expect": "training.induction_completed_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.571,
+   "reason": "best candidate 'training.induction_completed_pct' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "training.induction_completed_pct",
+     "score": 0.5714
+    },
+    {
+     "source": "training.induction_mandatory",
+     "score": 0.3
+    }
+   ],
+   "case": "x11_modality_training"
+  },
+  {
+   "question": "How much cover are you requesting?",
+   "category": "modality",
+   "expect": "insurance.cover_requested_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'insurance.cover_requested_gbp' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.cover_requested_gbp",
+     "score": 0.4
+    },
+    {
+     "source": "insurance.cover_held_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "x12_modality_cover"
+  },
+  {
+   "question": "How much cover do you currently hold?",
+   "category": "modality",
+   "expect": "insurance.cover_held_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'insurance.cover_held_gbp' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.cover_held_gbp",
+     "score": 0.4
+    },
+    {
+     "source": "insurance.cover_requested_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "x12_modality_cover"
+  },
+  {
+   "question": "Insurance cover amount",
+   "category": "modality",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'insurance.cover_held_gbp' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.cover_held_gbp",
+     "score": 0.4
+    },
+    {
+     "source": "insurance.cover_requested_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "x12_modality_cover"
+  },
+  {
+   "question": "Are you ISO 9001 certified?",
+   "category": "modality",
+   "expect": "certification.iso_9001_certified",
+   "got": "certification.iso_9001_certified",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x13_modality_cert"
+  },
+  {
+   "question": "Is your certification renewal pending?",
+   "category": "modality",
+   "expect": "certification.renewal_pending",
+   "got": "certification.renewal_pending",
+   "outcome": "correct",
+   "confidence": 0.909,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "x13_modality_cert"
+  }
+ ]
+}

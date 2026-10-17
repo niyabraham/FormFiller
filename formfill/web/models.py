@@ -81,6 +81,7 @@ class Candidate:
     score: float
     flags: list[str] = field(default_factory=list)  # why the score was capped (unexplained scope, polarity), for reviewers
     evidence: list[str] = field(default_factory=list)  # context that set rivals aside (path / sibling-value evidence), for reviewers
+    rival_score: float | None = None  # score before an entity cap: such a key can never be THE answer to a generic question, but it is still a rival
 
 
 @dataclass

@@ -1,0 +1,4 @@
+semantic-heldout-v3 frozen BEFORE any embedding code existed and before its first run.
+file digest (sha256[:16]): 7cba9bef43a3b84d
+frozen at (UTC): 2026-10-16T07:08:41+00:00
+Author-written by the same engineer as the matcher; not independently annotated. No label or question may change after this point; a ground-truth defect is documented, not edited. It is never used to choose a threshold, rule or model setting.

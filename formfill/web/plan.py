@@ -84,8 +84,9 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
                       cands, top.score)
 
     for runner in cands[1:]:  # every close rival, not only the runner-up: a same-valued runner-up must not hide a different one
-        if top.score - runner.score >= MIN_MARGIN:
-            break
+        rival = max(runner.score, runner.rival_score or 0.0)  # a key that names another entity cannot answer, but still disagrees
+        if top.score - rival >= MIN_MARGIN:
+            continue
         if not _same_value(top.value, runner.value):
             return review(
                 f"ambiguous: {top.path!r} and {runner.path!r} are about equally relevant but disagree",

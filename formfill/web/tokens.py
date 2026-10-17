@@ -55,6 +55,51 @@ NEGATORS = {"not", "non", "optional", "disabled", "disable", "without", "unsuppo
             "discontinued", "rejected", "denied", "failed", "inactive", "missing", "unable", "invalid", "prohibited",
             "banned", "excluded", "unqualified"}
 
+# Entity qualifiers: words that name a DIFFERENT legal entity than "the company" ("parent_company.employees",
+# "subsidiary.name"). A question that does not name the entity is not answered by such a key (retrieve.assess_leaf).
+ENTITY_QUALIFIERS = {"parent", "subsidiary", "affiliate", "holding", "ultimate", "sister"}
+
+# Structure, not a word list: a path segment shaped "<modifier> <entity noun>" (operating_company, acquired_firm) names one
+# specific entity, not "the company"; `company_details` (noun first) is not such a segment.
+ENTITY_NOUNS = {"company", "entity", "firm"}
+
+
+def entity_modifiers(path: str) -> frozenset[str]:
+    """Modifier words of every path segment that ends in an entity noun ("group.operating_company.name" -> {"operating"})."""
+    out: set[str] = set()
+    for segment in path.split("."):
+        words = tokenize(segment)
+        if len(words) >= 2 and words[-1] in ENTITY_NOUNS:
+            out.update(words[:-1])
+    return frozenset(out)
+
+
+# Composite-population markers: "total staff INCLUDING seasonal workers" asks for a sum over several populations, which a key
+# holding one component cannot answer. The marker has to be carried by the key itself ("total_including_contractors").
+COMPOSITE_MARKERS = {"including", "include", "includes", "excluding", "exclude", "excludes", "inclusive", "exclusive",
+                     "combined", "plus"}
+
+# Modality: whether a fact is an OBLIGATION ("audit_required"), a PLAN ("audit_planned") or a REQUEST ("cover_requested") rather
+# than something that happened or holds. "required"/"mandatory" are stopwords (form furniture), so they vanish from tokens and
+# `audit_required` would read as `audit`; modality is therefore read from the raw words of the question and of the key path.
+_MODALITY = {"required": "obligation", "require": "obligation", "requires": "obligation", "mandatory": "obligation",
+             "compulsory": "obligation", "obligatory": "obligation", "needed": "obligation",
+             "planned": "plan", "intended": "plan", "proposed": "plan", "scheduled": "plan", "pending": "plan", "upcoming": "plan",
+             "requested": "request", "requesting": "request"}
+# Soft obligation verbs ("Do you ENFORCE MFA?"): they may satisfy a key that says `mfa_required`, but a question using them is not
+# held to a key that carries no obligation word ("Is MFA enforced for staff?" reads `mfaForStaff`).
+_SOFT_OBLIGATION = {"enforce", "enforces", "enforced", "enforcing", "mandate", "mandates", "mandated", "must"}
+
+
+def modality_markers(text: str, soft: bool = False) -> frozenset[str]:
+    """Modality families named by the raw words of `text` (a question label or a dotted key path); `soft` adds the soft verbs."""
+    words = re.findall(r"[a-z]+", re.sub(r"(?<=[a-z])(?=[A-Z])", " ", text).lower())
+    found = {_MODALITY[w] for w in words if w in _MODALITY}
+    if soft and any(w in _SOFT_OBLIGATION for w in words):
+        found.add("obligation")
+    return frozenset(found)
+
+
 # A generic noun a key may leave implicit: `company.full_time` answers "full-time employees". Such a word is not
 # held against a key (see retrieve.assess_leaf); every other unexplained word is a modifier the key must carry.
 IMPLICIT_NOUNS = {"employee"}

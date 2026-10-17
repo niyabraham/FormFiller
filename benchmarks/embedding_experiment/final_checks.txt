@@ -1,0 +1,15 @@
+..................................................                       [100%]
+480 passed, 2 xfailed in 175.60s (0:02:55)
+All checks passed!
+Success: no issues found in 23 source files
+Final verification: PASS
+Run status: NEEDS_REVIEW
+Submission: not performed by FormFiller - a person must review the form and submit it themselves (ready for review: True)
+[dev] auto-answered=59 correct=59 UNSAFE=0 (wrong source 0, answered a must-review 0) missed=17
+[dev] precision=100.0%  coverage=77.6%  review_rate=51.2%  unsafe_rate=0.0%
+[seen] auto-answered=50 correct=48 UNSAFE=2 (wrong source 1, answered a must-review 1) missed=59
+[seen] precision=96.0%  coverage=44.4%  review_rate=64.5%  unsafe_rate=1.4%
+[heldout] auto-answered=51 correct=50 UNSAFE=1 (wrong source 0, answered a must-review 1) missed=23
+[heldout] precision=98.0%  coverage=68.5%  review_rate=51.4%  unsafe_rate=1.0%
+[heldout_v3] auto-answered=52 correct=48 UNSAFE=4 (wrong source 0, answered a must-review 4) missed=38
+[heldout_v3] precision=92.3%  coverage=55.8%  review_rate=57.4%  unsafe_rate=3.3%

@@ -1,0 +1,18 @@
+
+[dev] baseline: answered=59 correct=59 unsafe=0 precision=100.0 coverage=77.6
+  min=0.60 embedding: answered=60 correct=60 unsafe=0 precision=100.0 coverage=78.9  changed=1
+              missed -> correct        [d06_counts_populations] 'How many people do you employ in total?'  got people.employees.total  ["soft match: 'employ' ~ 'employee' [provider:embedding] (0.65)"]
+
+[seen] baseline: answered=50 correct=48 unsafe=2 precision=96.0 coverage=44.4
+  min=0.60 embedding: answered=50 correct=49 unsafe=1 precision=98.0 coverage=45.4  changed=2
+        wrong_answer -> missed         [h03_construction] 'Name of your bankers'  got REVIEW  []
+              missed -> correct        [h04_university_grant] 'How much funding are you requesting?'  got Requested funding (GBP)  ["soft match: 'requesting' ~ 'requested' [provider:embedding] (0.80)"]
+
+[heldout] baseline: answered=51 correct=50 unsafe=1 precision=98.0 coverage=68.5
+  min=0.60 embedding: answered=51 correct=50 unsafe=1 precision=98.0 coverage=68.5  changed=0
+
+[heldout_v3] baseline: answered=52 correct=48 unsafe=4 precision=92.3 coverage=55.8
+  min=0.60 embedding: answered=53 correct=49 unsafe=4 precision=92.5 coverage=57.0  changed=1
+              missed -> correct        [w01_logistics_3pl] 'Name of your bankers'  got finance.bank_name  ["soft match: 'banker' ~ 'bank' [provider:embedding] (0.77)"]
+
+wrote benchmarks/embedding_experiment/semantic/embedding_comparison.json

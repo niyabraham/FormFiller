@@ -1,0 +1,3124 @@
+{
+ "benchmark": "semantic-heldout-v3",
+ "version": "3.0.0",
+ "file_digest": "7cba9bef43a3b84d",
+ "provenance": {
+  "git_head": "bea0b206c5742579b5a0b865262de0febc8cd98e",
+  "pipeline_source_sha256": null,
+  "hash_recipe": "formfill-src-v2",
+  "note": "pipeline_source_sha256 is null for a clean tree; otherwise it hashes the uncommitted formfill/ changes"
+ },
+ "overall": {
+  "questions": 122,
+  "expected_answer": 86,
+  "expected_review": 36,
+  "auto_answered": 52,
+  "correct": 48,
+  "unsafe": 4,
+  "wrong_answer": 0,
+  "unsafe_answer": 4,
+  "missed": 38,
+  "correct_review": 32,
+  "precision_pct": 92.3,
+  "coverage_pct": 55.8,
+  "review_rate_pct": 57.4,
+  "unsafe_rate_pct": 3.3
+ },
+ "by_category": {
+  "ambiguous": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "conflicting": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 2,
+   "correct": 0,
+   "unsafe": 2,
+   "wrong_answer": 0,
+   "unsafe_answer": 2,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 0.0,
+   "coverage_pct": null,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 100.0
+  },
+  "exact": {
+   "questions": 2,
+   "expected_answer": 2,
+   "expected_review": 0,
+   "auto_answered": 2,
+   "correct": 2,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 100.0,
+   "review_rate_pct": 0.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "negation": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "paraphrase": {
+   "questions": 67,
+   "expected_answer": 67,
+   "expected_review": 0,
+   "auto_answered": 37,
+   "correct": 37,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 30,
+   "correct_review": 0,
+   "precision_pct": 100.0,
+   "coverage_pct": 55.2,
+   "review_rate_pct": 44.8,
+   "unsafe_rate_pct": 0.0
+  },
+  "period": {
+   "questions": 18,
+   "expected_answer": 9,
+   "expected_review": 9,
+   "auto_answered": 7,
+   "correct": 7,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 2,
+   "correct_review": 9,
+   "precision_pct": 100.0,
+   "coverage_pct": 77.8,
+   "review_rate_pct": 61.1,
+   "unsafe_rate_pct": 0.0
+  },
+  "population": {
+   "questions": 10,
+   "expected_answer": 4,
+   "expected_review": 6,
+   "auto_answered": 1,
+   "correct": 1,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 3,
+   "correct_review": 6,
+   "precision_pct": 100.0,
+   "coverage_pct": 25.0,
+   "review_rate_pct": 90.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "scope": {
+   "questions": 9,
+   "expected_answer": 4,
+   "expected_review": 5,
+   "auto_answered": 3,
+   "correct": 1,
+   "unsafe": 2,
+   "wrong_answer": 0,
+   "unsafe_answer": 2,
+   "missed": 3,
+   "correct_review": 3,
+   "precision_pct": 33.3,
+   "coverage_pct": 25.0,
+   "review_rate_pct": 66.7,
+   "unsafe_rate_pct": 22.2
+  },
+  "type": {
+   "questions": 2,
+   "expected_answer": 0,
+   "expected_review": 2,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 2,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "unsupported": {
+   "questions": 8,
+   "expected_answer": 0,
+   "expected_review": 8,
+   "auto_answered": 0,
+   "correct": 0,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 0,
+   "correct_review": 8,
+   "precision_pct": null,
+   "coverage_pct": null,
+   "review_rate_pct": 100.0,
+   "unsafe_rate_pct": 0.0
+  }
+ },
+ "by_case": {
+  "w01_logistics_3pl": {
+   "questions": 23,
+   "expected_answer": 15,
+   "expected_review": 8,
+   "auto_answered": 11,
+   "correct": 11,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 4,
+   "correct_review": 8,
+   "precision_pct": 100.0,
+   "coverage_pct": 73.3,
+   "review_rate_pct": 52.2,
+   "unsafe_rate_pct": 0.0
+  },
+  "w02_saas_group": {
+   "questions": 22,
+   "expected_answer": 16,
+   "expected_review": 6,
+   "auto_answered": 8,
+   "correct": 6,
+   "unsafe": 2,
+   "wrong_answer": 0,
+   "unsafe_answer": 2,
+   "missed": 10,
+   "correct_review": 4,
+   "precision_pct": 75.0,
+   "coverage_pct": 37.5,
+   "review_rate_pct": 63.6,
+   "unsafe_rate_pct": 9.1
+  },
+  "w03_law_firm": {
+   "questions": 19,
+   "expected_answer": 13,
+   "expected_review": 6,
+   "auto_answered": 9,
+   "correct": 9,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 4,
+   "correct_review": 6,
+   "precision_pct": 100.0,
+   "coverage_pct": 69.2,
+   "review_rate_pct": 52.6,
+   "unsafe_rate_pct": 0.0
+  },
+  "w04_hospitality": {
+   "questions": 19,
+   "expected_answer": 13,
+   "expected_review": 6,
+   "auto_answered": 10,
+   "correct": 9,
+   "unsafe": 1,
+   "wrong_answer": 0,
+   "unsafe_answer": 1,
+   "missed": 4,
+   "correct_review": 5,
+   "precision_pct": 90.0,
+   "coverage_pct": 69.2,
+   "review_rate_pct": 47.4,
+   "unsafe_rate_pct": 5.3
+  },
+  "w05_engineering": {
+   "questions": 20,
+   "expected_answer": 15,
+   "expected_review": 5,
+   "auto_answered": 5,
+   "correct": 5,
+   "unsafe": 0,
+   "wrong_answer": 0,
+   "unsafe_answer": 0,
+   "missed": 10,
+   "correct_review": 5,
+   "precision_pct": 100.0,
+   "coverage_pct": 33.3,
+   "review_rate_pct": 75.0,
+   "unsafe_rate_pct": 0.0
+  },
+  "w06_charity": {
+   "questions": 19,
+   "expected_answer": 14,
+   "expected_review": 5,
+   "auto_answered": 9,
+   "correct": 8,
+   "unsafe": 1,
+   "wrong_answer": 0,
+   "unsafe_answer": 1,
+   "missed": 6,
+   "correct_review": 4,
+   "precision_pct": 88.9,
+   "coverage_pct": 57.1,
+   "review_rate_pct": 52.6,
+   "unsafe_rate_pct": 5.3
+  }
+ },
+ "unsafe": [
+  {
+   "question": "How many employees does the business have?",
+   "category": "conflicting",
+   "expect": "REVIEW",
+   "got": "parent_company.employees",
+   "outcome": "unsafe_answer",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "subsidiary.employees",
+     "score": 0.6667
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Name of the company",
+   "category": "conflicting",
+   "expect": "REVIEW",
+   "got": "parent_company.name",
+   "outcome": "unsafe_answer",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "subsidiary.name",
+     "score": 0.6667
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Total workforce including seasonal workers",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "people.seasonal_workers",
+   "outcome": "unsafe_answer",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.permanent_employees",
+     "score": 0.4
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Are your accounts audited?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "governance.audit_required",
+   "outcome": "unsafe_answer",
+   "confidence": 0.633,
+   "reason": null,
+   "evidence": [
+    "soft match: 'audited' ~ 'audit' [stem] (0.95)"
+   ],
+   "alternatives": [
+    {
+     "source": "governance.accounts_independently_examined",
+     "score": 0.4
+    }
+   ],
+   "case": "w06_charity"
+  }
+ ],
+ "missed": [
+  {
+   "question": "How many staff do you employ?",
+   "category": "paraphrase",
+   "expect": "workforce.total_staff",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'workforce.agency_staff' is too weak (score 0.50 < 0.6) -- counting question: modifier ['employ'] is not in the key, and the key adds ['agency'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.agency_staff",
+     "score": 0.5
+    },
+    {
+     "source": "workforce.total_staff",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many of your people are drivers?",
+   "category": "paraphrase",
+   "expect": "workforce.drivers",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'workforce.drivers' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['people'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.drivers",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Name of your bankers",
+   "category": "paraphrase",
+   "expect": "finance.bank_name",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.trading_name' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.trading_name",
+     "score": 0.5
+    },
+    {
+     "source": "finance.bank_name",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Annual turnover (GBP)",
+   "category": "paraphrase",
+   "expect": "finance.turnover_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.48,
+   "reason": "best candidate 'finance.turnover_gbp' is too weak (score 0.48 < 0.6) -- question scope ['annual'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.48
+    },
+    {
+     "source": "finance.turnover_gbp_previous_year",
+     "score": 0.3429
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many people does the parent company employ?",
+   "category": "population",
+   "expect": "parent_company.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Number of staff worldwide",
+   "category": "population",
+   "expect": "parent_company.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['worldwide'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How many staff work for the UK entity?",
+   "category": "population",
+   "expect": "subsidiary.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['entity', 'uk'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Where is the group headquartered?",
+   "category": "paraphrase",
+   "expect": "parent_company.headquarters",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "UK company registration number",
+   "category": "paraphrase",
+   "expect": "subsidiary.companies_house_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Service availability over the last twelve months (%)",
+   "category": "paraphrase",
+   "expect": "product.uptime_pct_last_12_months",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.364,
+   "reason": "best candidate 'product.uptime_pct_last_12_months' is too weak (score 0.36 < 0.6) -- only 2 of 6 question words are explained by the key or its path (unexplained: ['availability', 'over', 'service', 'twelve'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "product.uptime_pct_last_12_months",
+     "score": 0.3636
+    },
+    {
+     "source": "security.last_pen_test",
+     "score": 0.2222
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Which regions do you host data in?",
+   "category": "paraphrase",
+   "expect": "product.data_regions",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.8,
+   "reason": "'product.data_regions': ['eu-west-2', 'us-east-1'] cannot be entered as text",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "product.data_regions",
+     "score": 0.8
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Do you have a SOC 2 Type II report?",
+   "category": "paraphrase",
+   "expect": "security.soc2_type2",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How often is penetration testing performed?",
+   "category": "paraphrase",
+   "expect": "security.pen_test_frequency",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.486,
+   "reason": "best candidate 'security.last_pen_test' is too weak (score 0.49 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.last_pen_test",
+     "score": 0.4857
+    },
+    {
+     "source": "security.pen_test_frequency",
+     "score": 0.4857
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Support response time commitment (hours)",
+   "category": "paraphrase",
+   "expect": "support.response_sla_hours",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.353,
+   "reason": "best candidate 'support.response_sla_hours' is too weak (score 0.35 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "support.response_sla_hours",
+     "score": 0.3529
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How many partners are there?",
+   "category": "paraphrase",
+   "expect": "firm.partners",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'firm.partners' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['there'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "firm.partners",
+     "score": 0.5
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Professional indemnity cover (GBP)",
+   "category": "paraphrase",
+   "expect": "professional_indemnity.limit_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'professional_indemnity.limit_gbp' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "professional_indemnity.limit_gbp",
+     "score": 0.5
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Who insures you for professional indemnity?",
+   "category": "paraphrase",
+   "expect": "professional_indemnity.insurer",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "When does your PI insurance renew?",
+   "category": "paraphrase",
+   "expect": "professional_indemnity.renewal_date",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "How many hotels do you own or manage?",
+   "category": "paraphrase",
+   "expect": "group.hotels",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'group.hotels' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['manage', 'own'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.hotels",
+     "score": 0.5
+    },
+    {
+     "source": "sustainability.green_key_certified_hotels",
+     "score": 0.2857
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many apprentices are currently employed?",
+   "category": "paraphrase",
+   "expect": "people.apprentices",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.apprentices' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['currently', 'employed'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.apprentices",
+     "score": 0.5
+    },
+    {
+     "source": "licences.fire_certificate_current",
+     "score": 0.3167
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Guest nights per year",
+   "category": "paraphrase",
+   "expect": "guests.annual_guest_nights",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.571,
+   "reason": "best candidate 'guests.annual_guest_nights' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "guests.annual_guest_nights",
+     "score": 0.5714
+    },
+    {
+     "source": "group.founded_year",
+     "score": 0.3333
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Average guest rating",
+   "category": "paraphrase",
+   "expect": "guests.average_review_score",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'guests.average_review_score' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "guests.average_review_score",
+     "score": 0.4
+    },
+    {
+     "source": "guests.annual_guest_nights",
+     "score": 0.3333
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Registered company name",
+   "category": "paraphrase",
+   "expect": "business.legal_name",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'business.legal_name' is too weak (score 0.30 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.legal_name",
+     "score": 0.3
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Total employees",
+   "category": "paraphrase",
+   "expect": "business.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'business.employees' and 'divisions.nuclear.employees' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.employees",
+     "score": 1.0
+    },
+    {
+     "source": "divisions.nuclear.employees",
+     "score": 1.0
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many people work in your rail division?",
+   "category": "scope",
+   "expect": "divisions.rail.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many people work in your nuclear division?",
+   "category": "scope",
+   "expect": "divisions.nuclear.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Annual turnover",
+   "category": "paraphrase",
+   "expect": "business.turnover_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'business.turnover_gbp' is too weak (score 0.30 < 0.6) -- question scope ['annual'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.turnover_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Lost time incident rate for 2025",
+   "category": "period",
+   "expect": "health_safety.lost_time_incident_rate_2025",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 1.0,
+   "reason": "'health_safety.lost_time_incident_rate_2025': 0.21 is not a whole number (field step is 1)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.lost_time_incident_rate_2025",
+     "score": 1.0
+    },
+    {
+     "source": "health_safety.riddor_reports_2025",
+     "score": 0.25
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many fatalities have you had?",
+   "category": "paraphrase",
+   "expect": "health_safety.fatalities_ever",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'health_safety.fatalities_ever' is too weak (score 0.50 < 0.6) -- counting question: modifier ['had'] is not in the key, and the key adds ['ever'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.fatalities_ever",
+     "score": 0.5
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Percentage of site staff holding a CSCS card",
+   "category": "paraphrase",
+   "expect": "certifications.cscs_card_holders_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.57,
+   "reason": "best candidate 'certifications.cscs_card_holders_pct' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "certifications.cscs_card_holders_pct",
+     "score": 0.57
+    },
+    {
+     "source": "business.employees",
+     "score": 0.1714
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Are you registered with Achilles UVDB?",
+   "category": "paraphrase",
+   "expect": "certifications.achilles_uvdb",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.48,
+   "reason": "best candidate 'certifications.achilles_uvdb' is too weak (score 0.48 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "certifications.achilles_uvdb",
+     "score": 0.48
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Are you registered with Constructionline?",
+   "category": "scope",
+   "expect": "certifications.constructionline_gold",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'certifications.constructionline_gold' is too weak (score 0.30 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "certifications.constructionline_gold",
+     "score": 0.3
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Charity registration number",
+   "category": "paraphrase",
+   "expect": "charity.registered_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Year of registration",
+   "category": "paraphrase",
+   "expect": "charity.year_registered",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'charity.year_registered' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "charity.year_registered",
+     "score": 0.5
+    },
+    {
+     "source": "reach.beneficiaries_last_year",
+     "score": 0.4
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many volunteers support your work?",
+   "category": "paraphrase",
+   "expect": "people.volunteers",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.volunteers' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['support', 'work'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.volunteers",
+     "score": 0.5
+    },
+    {
+     "source": "people.volunteer_hours_last_year",
+     "score": 0.2857
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Percentage of income from grants",
+   "category": "paraphrase",
+   "expect": "income.grants_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'income.grants_pct' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "income.grants_pct",
+     "score": 0.5
+    },
+    {
+     "source": "income.total_income_gbp_2024",
+     "score": 0.2857
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Who is your designated safeguarding officer?",
+   "category": "paraphrase",
+   "expect": "governance.safeguarding_lead",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'governance.safeguarding_lead' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['designated', 'officer'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "governance.safeguarding_lead",
+     "score": 0.4
+    },
+    {
+     "source": "governance.safeguarding_policy",
+     "score": 0.4
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many people benefited last year?",
+   "category": "period",
+   "expect": "reach.beneficiaries_last_year",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.volunteer_hours_last_year' is too weak (score 0.50 < 0.6) -- counting question: modifier ['benefited'] is not in the key, and the key adds ['hour', 'volunteer'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.volunteer_hours_last_year",
+     "score": 0.5
+    },
+    {
+     "source": "reach.beneficiaries_last_year",
+     "score": 0.5
+    }
+   ],
+   "case": "w06_charity"
+  }
+ ],
+ "questions": [
+  {
+   "question": "Registered company number",
+   "category": "paraphrase",
+   "expect": "company.registered_number",
+   "got": "company.registered_number",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Year the business was established",
+   "category": "paraphrase",
+   "expect": "company.founded",
+   "got": "company.founded",
+   "outcome": "correct",
+   "confidence": 0.6,
+   "reason": null,
+   "evidence": [
+    "soft match: 'established' ~ 'founded' [lexicon] (0.90)"
+   ],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp_previous_year",
+     "score": 0.2857
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many staff do you employ?",
+   "category": "paraphrase",
+   "expect": "workforce.total_staff",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'workforce.agency_staff' is too weak (score 0.50 < 0.6) -- counting question: modifier ['employ'] is not in the key, and the key adds ['agency'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.agency_staff",
+     "score": 0.5
+    },
+    {
+     "source": "workforce.total_staff",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many of your people are drivers?",
+   "category": "paraphrase",
+   "expect": "workforce.drivers",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'workforce.drivers' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['people'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.drivers",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Number of agency workers",
+   "category": "paraphrase",
+   "expect": "workforce.agency_staff",
+   "got": "workforce.agency_staff",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.total_staff",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many employees will you have next year?",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'workforce.agency_staff' is too weak (score 0.30 < 0.6) -- counting question: modifier ['next', 'will', 'year'] is not in the key, and the key adds ['agency'] which the question does not name; period differs: question names ['+1y'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "workforce.agency_staff",
+     "score": 0.3
+    },
+    {
+     "source": "workforce.total_staff",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Total number of vehicles in your fleet",
+   "category": "paraphrase",
+   "expect": "fleet.vehicles_total",
+   "got": "fleet.vehicles_total",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "fleet.electric_vehicles",
+     "score": 0.6
+    },
+    {
+     "source": "fleet.refrigerated_vehicles",
+     "score": 0.6
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many refrigerated vehicles do you run?",
+   "category": "paraphrase",
+   "expect": "fleet.refrigerated_vehicles",
+   "got": "fleet.refrigerated_vehicles",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "fleet.vehicles_total",
+     "score": 0.5
+    },
+    {
+     "source": "fleet.electric_vehicles",
+     "score": 0.4
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many diesel vehicles do you operate?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'fleet.electric_vehicles' is too weak (score 0.50 < 0.6) -- counting question: modifier ['diesel'] is not in the key, and the key adds ['electric'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "fleet.electric_vehicles",
+     "score": 0.5
+    },
+    {
+     "source": "fleet.refrigerated_vehicles",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Number of electric vans",
+   "category": "population",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'fleet.electric_vehicles' is too weak (score 0.50 < 0.6) -- counting question: modifier ['van'] is not in the key, and the key adds ['vehicle'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "fleet.electric_vehicles",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "In which city is your head office?",
+   "category": "paraphrase",
+   "expect": "sites.head_office_city",
+   "got": "sites.head_office_city",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "City of your main depot",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'sites.depot_count' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['city', 'main'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "sites.depot_count",
+     "score": 0.4
+    },
+    {
+     "source": "sites.head_office_city",
+     "score": 0.4
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many depots do you operate?",
+   "category": "paraphrase",
+   "expect": "sites.depot_count",
+   "got": "sites.depot_count",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Name of your bankers",
+   "category": "paraphrase",
+   "expect": "finance.bank_name",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'company.trading_name' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "company.trading_name",
+     "score": 0.5
+    },
+    {
+     "source": "finance.bank_name",
+     "score": 0.5
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Annual turnover (GBP)",
+   "category": "paraphrase",
+   "expect": "finance.turnover_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.48,
+   "reason": "best candidate 'finance.turnover_gbp' is too weak (score 0.48 < 0.6) -- question scope ['annual'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.48
+    },
+    {
+     "source": "finance.turnover_gbp_previous_year",
+     "score": 0.3429
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Turnover in the previous financial year",
+   "category": "period",
+   "expect": "finance.turnover_gbp_previous_year",
+   "got": "finance.turnover_gbp_previous_year",
+   "outcome": "correct",
+   "confidence": 0.75,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.3333
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Turnover two years ago",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'finance.turnover_gbp' is too weak (score 0.30 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['ago', 'two', 'year']); period differs: question names ['-2y'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "finance.turnover_gbp",
+     "score": 0.3
+    },
+    {
+     "source": "finance.turnover_gbp_previous_year",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Goods in transit insurance limit",
+   "category": "paraphrase",
+   "expect": "insurance.goods_in_transit_limit_gbp",
+   "got": "insurance.goods_in_transit_limit_gbp",
+   "outcome": "correct",
+   "confidence": 0.808,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.public_liability_limit_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Employers' liability insurance limit",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.556,
+   "reason": "best candidate 'insurance.public_liability_limit_gbp' is too weak (score 0.56 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "insurance.public_liability_limit_gbp",
+     "score": 0.5556
+    },
+    {
+     "source": "insurance.goods_in_transit_limit_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Are you ISO 9001 certified?",
+   "category": "paraphrase",
+   "expect": "accreditations.iso_9001",
+   "got": "accreditations.iso_9001",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "accreditations.iso_45001",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Do you hold ISO 45001?",
+   "category": "paraphrase",
+   "expect": "accreditations.iso_45001",
+   "got": "accreditations.iso_45001",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "accreditations.iso_9001",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Do you hold ISO 27001?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'accreditations.iso_45001' is too weak (score 0.30 < 0.6) -- identifier differs: question names ['27001'], key path names ['45001']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "accreditations.iso_45001",
+     "score": 0.3
+    },
+    {
+     "source": "accreditations.iso_9001",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "Are you not ISO 9001 certified?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'accreditations.iso_45001' is too weak (score 0.30 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['9001', 'certified', 'not']); identifier differs: question names ['9001'], key path names ['45001']; polarity differs: question has ['not'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "accreditations.iso_45001",
+     "score": 0.3
+    },
+    {
+     "source": "accreditations.iso_9001",
+     "score": 0.3
+    }
+   ],
+   "case": "w01_logistics_3pl"
+  },
+  {
+   "question": "How many people does the parent company employ?",
+   "category": "population",
+   "expect": "parent_company.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Subsidiary headcount",
+   "category": "population",
+   "expect": "subsidiary.employees",
+   "got": "subsidiary.employees",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['subsidiary'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.24
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How many employees does the business have?",
+   "category": "conflicting",
+   "expect": "REVIEW",
+   "got": "parent_company.employees",
+   "outcome": "unsafe_answer",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "subsidiary.employees",
+     "score": 0.6667
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Number of staff worldwide",
+   "category": "population",
+   "expect": "parent_company.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['worldwide'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How many staff work for the UK entity?",
+   "category": "population",
+   "expect": "subsidiary.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['entity', 'uk'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Employees in the United States",
+   "category": "population",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'parent_company.employees' is too weak (score 0.50 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['state', 'united'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "parent_company.employees",
+     "score": 0.5
+    },
+    {
+     "source": "subsidiary.employees",
+     "score": 0.5
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Name of the subsidiary",
+   "category": "paraphrase",
+   "expect": "subsidiary.name",
+   "got": "subsidiary.name",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [
+    "path names ['subsidiary'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "parent_company.name",
+     "score": 0.24
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Name of the group parent",
+   "category": "paraphrase",
+   "expect": "parent_company.name",
+   "got": "parent_company.name",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [
+    "path names ['parent'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "subsidiary.name",
+     "score": 0.18
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Name of the company",
+   "category": "conflicting",
+   "expect": "REVIEW",
+   "got": "parent_company.name",
+   "outcome": "unsafe_answer",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "subsidiary.name",
+     "score": 0.6667
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Where is the group headquartered?",
+   "category": "paraphrase",
+   "expect": "parent_company.headquarters",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "UK company registration number",
+   "category": "paraphrase",
+   "expect": "subsidiary.companies_house_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How many customers are active?",
+   "category": "paraphrase",
+   "expect": "product.active_customers",
+   "got": "product.active_customers",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Service availability over the last twelve months (%)",
+   "category": "paraphrase",
+   "expect": "product.uptime_pct_last_12_months",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.364,
+   "reason": "best candidate 'product.uptime_pct_last_12_months' is too weak (score 0.36 < 0.6) -- only 2 of 6 question words are explained by the key or its path (unexplained: ['availability', 'over', 'service', 'twelve'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "product.uptime_pct_last_12_months",
+     "score": 0.3636
+    },
+    {
+     "source": "security.last_pen_test",
+     "score": 0.2222
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Service availability over the last month (%)",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'product.uptime_pct_last_12_months' is too weak (score 0.30 < 0.6) -- only 2 of 5 question words are explained by the key or its path (unexplained: ['availability', 'over', 'service']); period differs: question names ['-1m'], key path names none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "product.uptime_pct_last_12_months",
+     "score": 0.3
+    },
+    {
+     "source": "security.last_pen_test",
+     "score": 0.25
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Which regions do you host data in?",
+   "category": "paraphrase",
+   "expect": "product.data_regions",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.8,
+   "reason": "'product.data_regions': ['eu-west-2', 'us-east-1'] cannot be entered as text",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "product.data_regions",
+     "score": 0.8
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Do you have a SOC 2 Type II report?",
+   "category": "paraphrase",
+   "expect": "security.soc2_type2",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Do you have a SOC 1 report?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "How often is penetration testing performed?",
+   "category": "paraphrase",
+   "expect": "security.pen_test_frequency",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.486,
+   "reason": "best candidate 'security.last_pen_test' is too weak (score 0.49 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "security.last_pen_test",
+     "score": 0.4857
+    },
+    {
+     "source": "security.pen_test_frequency",
+     "score": 0.4857
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "When was your last penetration test?",
+   "category": "paraphrase",
+   "expect": "security.last_pen_test",
+   "got": "security.last_pen_test",
+   "outcome": "correct",
+   "confidence": 0.85,
+   "reason": null,
+   "evidence": [
+    "soft match: 'penetration' ~ 'pen' [abbreviation] (0.85)"
+   ],
+   "alternatives": [
+    {
+     "source": "security.pen_test_frequency",
+     "score": 0.5667
+    },
+    {
+     "source": "product.uptime_pct_last_12_months",
+     "score": 0.25
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Do you run a bug bounty programme?",
+   "category": "paraphrase",
+   "expect": "security.bug_bounty",
+   "got": "security.bug_bounty",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Support response time commitment (hours)",
+   "category": "paraphrase",
+   "expect": "support.response_sla_hours",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.353,
+   "reason": "best candidate 'support.response_sla_hours' is too weak (score 0.35 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "support.response_sla_hours",
+     "score": 0.3529
+    }
+   ],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "Is support available around the clock?",
+   "category": "type",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w02_saas_group"
+  },
+  {
+   "question": "City",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'registered_office.city' and 'trading_address.city' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "registered_office.city",
+     "score": 1.0
+    },
+    {
+     "source": "trading_address.city",
+     "score": 1.0
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "City",
+   "category": "scope",
+   "expect": "trading_address.city",
+   "got": "trading_address.city",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [
+    "path names ['address', 'trading'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "registered_office.city",
+     "score": 0.6
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Town / city of registered office",
+   "category": "paraphrase",
+   "expect": "registered_office.city",
+   "got": "registered_office.city",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [
+    "path names ['office', 'registered'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "trading_address.city",
+     "score": 0.144
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Postcode of registered office",
+   "category": "paraphrase",
+   "expect": "registered_office.postcode",
+   "got": "registered_office.postcode",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [
+    "path names ['office', 'registered'], which the other candidates' paths do not carry"
+   ],
+   "alternatives": [
+    {
+     "source": "trading_address.postcode",
+     "score": 0.18
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Postcode",
+   "category": "ambiguous",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'registered_office.postcode' and 'trading_address.postcode' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "registered_office.postcode",
+     "score": 1.0
+    },
+    {
+     "source": "trading_address.postcode",
+     "score": 1.0
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "SRA authorisation number",
+   "category": "paraphrase",
+   "expect": "firm.sra_number",
+   "got": "firm.sra_number",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "How many partners are there?",
+   "category": "paraphrase",
+   "expect": "firm.partners",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'firm.partners' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 2 words are explained by the key or its path (unexplained modifier: ['there'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "firm.partners",
+     "score": 0.5
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Number of solicitors",
+   "category": "exact",
+   "expect": "firm.solicitors",
+   "got": "firm.solicitors",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "How many qualified lawyers do you have?",
+   "category": "population",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "How many trainees?",
+   "category": "paraphrase",
+   "expect": "firm.trainees",
+   "got": "firm.trainees",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Total number of fee earners",
+   "category": "population",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Professional indemnity cover (GBP)",
+   "category": "paraphrase",
+   "expect": "professional_indemnity.limit_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'professional_indemnity.limit_gbp' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "professional_indemnity.limit_gbp",
+     "score": 0.5
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Who insures you for professional indemnity?",
+   "category": "paraphrase",
+   "expect": "professional_indemnity.insurer",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "When does your PI insurance renew?",
+   "category": "paraphrase",
+   "expect": "professional_indemnity.renewal_date",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Cyber insurance limit",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'professional_indemnity.limit_gbp' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['cyber', 'insurance'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "professional_indemnity.limit_gbp",
+     "score": 0.4
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Are conflict checks automated?",
+   "category": "paraphrase",
+   "expect": "practice.conflict_checks_automated",
+   "got": "practice.conflict_checks_automated",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "Do you hold a legal aid contract?",
+   "category": "paraphrase",
+   "expect": "practice.legal_aid_contract",
+   "got": "practice.legal_aid_contract",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "What proportion of your clients are in the public sector?",
+   "category": "paraphrase",
+   "expect": "practice.clients_public_sector_pct",
+   "got": "practice.clients_public_sector_pct",
+   "outcome": "correct",
+   "confidence": 0.75,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "What proportion of your revenue comes from the public sector?",
+   "category": "population",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.444,
+   "reason": "best candidate 'practice.clients_public_sector_pct' is too weak (score 0.44 < 0.6) -- only 2 of 5 question words are explained by the key or its path (unexplained: ['come', 'proportion', 'revenue'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "practice.clients_public_sector_pct",
+     "score": 0.4444
+    }
+   ],
+   "case": "w03_law_firm"
+  },
+  {
+   "question": "In what year did the group start trading?",
+   "category": "paraphrase",
+   "expect": "group.founded_year",
+   "got": "group.founded_year",
+   "outcome": "correct",
+   "confidence": 0.731,
+   "reason": null,
+   "evidence": [
+    "soft match: 'found' ~ 'founded' [stem] (0.95)"
+   ],
+   "alternatives": [
+    {
+     "source": "sustainability.food_waste_tonnes_last_year",
+     "score": 0.2222
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many hotels do you own or manage?",
+   "category": "paraphrase",
+   "expect": "group.hotels",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'group.hotels' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['manage', 'own'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.hotels",
+     "score": 0.5
+    },
+    {
+     "source": "sustainability.green_key_certified_hotels",
+     "score": 0.2857
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many restaurants do you have?",
+   "category": "exact",
+   "expect": "group.restaurants",
+   "got": "group.restaurants",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many bars do you have?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Number of permanent staff",
+   "category": "paraphrase",
+   "expect": "people.permanent_employees",
+   "got": "people.permanent_employees",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.seasonal_workers",
+     "score": 0.3
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many seasonal staff do you hire?",
+   "category": "paraphrase",
+   "expect": "people.seasonal_workers",
+   "got": "people.seasonal_workers",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.permanent_employees",
+     "score": 0.4
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Total workforce including seasonal workers",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "people.seasonal_workers",
+   "outcome": "unsafe_answer",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.permanent_employees",
+     "score": 0.4
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many apprentices are currently employed?",
+   "category": "paraphrase",
+   "expect": "people.apprentices",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.apprentices' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['currently', 'employed'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.apprentices",
+     "score": 0.5
+    },
+    {
+     "source": "licences.fire_certificate_current",
+     "score": 0.3167
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many employees did you have last year?",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.444,
+   "reason": "best candidate 'sustainability.food_waste_tonnes_last_year' is too weak (score 0.44 < 0.6) -- counting question: modifier ['did'] is not in the key, and the key adds ['food', 'tonne', 'waste'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "sustainability.food_waste_tonnes_last_year",
+     "score": 0.4444
+    },
+    {
+     "source": "group.founded_year",
+     "score": 0.3333
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Guest nights per year",
+   "category": "paraphrase",
+   "expect": "guests.annual_guest_nights",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.571,
+   "reason": "best candidate 'guests.annual_guest_nights' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "guests.annual_guest_nights",
+     "score": 0.5714
+    },
+    {
+     "source": "group.founded_year",
+     "score": 0.3333
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Average guest rating",
+   "category": "paraphrase",
+   "expect": "guests.average_review_score",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'guests.average_review_score' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "guests.average_review_score",
+     "score": 0.4
+    },
+    {
+     "source": "guests.annual_guest_nights",
+     "score": 0.3333
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many of your hotels hold Green Key?",
+   "category": "paraphrase",
+   "expect": "sustainability.green_key_certified_hotels",
+   "got": "sustainability.green_key_certified_hotels",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.hotels",
+     "score": 0.5
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "How many of your restaurants hold Green Key?",
+   "category": "population",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.5,
+   "reason": "best candidate 'group.restaurants' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['green', 'key'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.restaurants",
+     "score": 0.5
+    },
+    {
+     "source": "sustainability.green_key_certified_hotels",
+     "score": 0.5
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Tonnes of food waste last year",
+   "category": "period",
+   "expect": "sustainability.food_waste_tonnes_last_year",
+   "got": "sustainability.food_waste_tonnes_last_year",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.founded_year",
+     "score": 0.2857
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Tonnes of food waste this year",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.333,
+   "reason": "best candidate 'group.founded_year' is too weak (score 0.33 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['food', 'tonne', 'waste'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "group.founded_year",
+     "score": 0.3333
+    },
+    {
+     "source": "sustainability.food_waste_tonnes_last_year",
+     "score": 0.3
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Is your electricity from renewable sources?",
+   "category": "paraphrase",
+   "expect": "sustainability.renewable_electricity",
+   "got": "sustainability.renewable_electricity",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Who holds the alcohol licence?",
+   "category": "paraphrase",
+   "expect": "licences.alcohol_licence_holder",
+   "got": "licences.alcohol_licence_holder",
+   "outcome": "correct",
+   "confidence": 0.8,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Is your fire certificate valid?",
+   "category": "paraphrase",
+   "expect": "licences.fire_certificate_current",
+   "got": "licences.fire_certificate_current",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Is your fire certificate expired?",
+   "category": "negation",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'licences.fire_certificate_current' is too weak (score 0.30 < 0.6) -- polarity differs: question has ['expired'], key path has none",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "licences.fire_certificate_current",
+     "score": 0.3
+    }
+   ],
+   "case": "w04_hospitality"
+  },
+  {
+   "question": "Registered company name",
+   "category": "paraphrase",
+   "expect": "business.legal_name",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'business.legal_name' is too weak (score 0.30 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.legal_name",
+     "score": 0.3
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Total employees",
+   "category": "paraphrase",
+   "expect": "business.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 1.0,
+   "reason": "ambiguous: 'business.employees' and 'divisions.nuclear.employees' are about equally relevant but disagree",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.employees",
+     "score": 1.0
+    },
+    {
+     "source": "divisions.nuclear.employees",
+     "score": 1.0
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many people work in your rail division?",
+   "category": "scope",
+   "expect": "divisions.rail.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many people work in your nuclear division?",
+   "category": "scope",
+   "expect": "divisions.nuclear.employees",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many people work in your marine division?",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Annual turnover",
+   "category": "paraphrase",
+   "expect": "business.turnover_gbp",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'business.turnover_gbp' is too weak (score 0.30 < 0.6) -- question scope ['annual'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.turnover_gbp",
+     "score": 0.3
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Turnover of the rail division",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'business.turnover_gbp' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['division', 'rail'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "business.turnover_gbp",
+     "score": 0.4
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Number of RIDDOR reportable incidents in 2025",
+   "category": "period",
+   "expect": "health_safety.riddor_reports_2025",
+   "got": "health_safety.riddor_reports_2025",
+   "outcome": "correct",
+   "confidence": 0.814,
+   "reason": null,
+   "evidence": [
+    "soft match: 'reportable' ~ 'report' [stem] (0.95)"
+   ],
+   "alternatives": [
+    {
+     "source": "health_safety.lost_time_incident_rate_2025",
+     "score": 0.4444
+    },
+    {
+     "source": "health_safety.riddor_reports_2024",
+     "score": 0.285
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Number of RIDDOR reportable incidents in 2024",
+   "category": "period",
+   "expect": "health_safety.riddor_reports_2024",
+   "got": "health_safety.riddor_reports_2024",
+   "outcome": "correct",
+   "confidence": 0.814,
+   "reason": null,
+   "evidence": [
+    "soft match: 'reportable' ~ 'report' [stem] (0.95)"
+   ],
+   "alternatives": [
+    {
+     "source": "health_safety.riddor_reports_2025",
+     "score": 0.285
+    },
+    {
+     "source": "health_safety.lost_time_incident_rate_2025",
+     "score": 0.2222
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Number of RIDDOR reportable incidents in 2023",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.285,
+   "reason": "best candidate 'health_safety.riddor_reports_2024' is too weak (score 0.28 < 0.6) -- counting question: modifier ['2023', 'incident'] is not in the key, and the key adds ['2024'] which the question does not name; period differs: question names ['2023'], key path names ['2024']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.riddor_reports_2024",
+     "score": 0.285
+    },
+    {
+     "source": "health_safety.riddor_reports_2025",
+     "score": 0.285
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Number of RIDDOR reportable incidents in the last three years",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.422,
+   "reason": "best candidate 'health_safety.riddor_reports_2024' is too weak (score 0.42 < 0.6) -- counting question: modifier ['incident', 'last', 'three', 'year'] is not in the key, and the key adds ['2024'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.riddor_reports_2024",
+     "score": 0.4222
+    },
+    {
+     "source": "health_safety.riddor_reports_2025",
+     "score": 0.4222
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Lost time incident rate for 2025",
+   "category": "period",
+   "expect": "health_safety.lost_time_incident_rate_2025",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 1.0,
+   "reason": "'health_safety.lost_time_incident_rate_2025': 0.21 is not a whole number (field step is 1)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.lost_time_incident_rate_2025",
+     "score": 1.0
+    },
+    {
+     "source": "health_safety.riddor_reports_2025",
+     "score": 0.25
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Any fatalities in the company's history?",
+   "category": "type",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'health_safety.fatalities_ever' is too weak (score 0.40 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.fatalities_ever",
+     "score": 0.4
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "How many fatalities have you had?",
+   "category": "paraphrase",
+   "expect": "health_safety.fatalities_ever",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'health_safety.fatalities_ever' is too weak (score 0.50 < 0.6) -- counting question: modifier ['had'] is not in the key, and the key adds ['ever'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "health_safety.fatalities_ever",
+     "score": 0.5
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "When was the safety policy last reviewed?",
+   "category": "paraphrase",
+   "expect": "health_safety.safety_policy_reviewed",
+   "got": "health_safety.safety_policy_reviewed",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Percentage of site staff holding a CSCS card",
+   "category": "paraphrase",
+   "expect": "certifications.cscs_card_holders_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.57,
+   "reason": "best candidate 'certifications.cscs_card_holders_pct' is too weak (score 0.57 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "certifications.cscs_card_holders_pct",
+     "score": 0.57
+    },
+    {
+     "source": "business.employees",
+     "score": 0.1714
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Are you registered with Achilles UVDB?",
+   "category": "paraphrase",
+   "expect": "certifications.achilles_uvdb",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.48,
+   "reason": "best candidate 'certifications.achilles_uvdb' is too weak (score 0.48 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "certifications.achilles_uvdb",
+     "score": 0.48
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Are you registered with Constructionline?",
+   "category": "scope",
+   "expect": "certifications.constructionline_gold",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.3,
+   "reason": "best candidate 'certifications.constructionline_gold' is too weak (score 0.30 < 0.6) -- question scope ['registered'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "certifications.constructionline_gold",
+     "score": 0.3
+    }
+   ],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Who are your bankers?",
+   "category": "paraphrase",
+   "expect": "finance.banker",
+   "got": "finance.banker",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Standard payment terms (days)",
+   "category": "paraphrase",
+   "expect": "finance.payment_terms_days",
+   "got": "finance.payment_terms_days",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w05_engineering"
+  },
+  {
+   "question": "Charity registration number",
+   "category": "paraphrase",
+   "expect": "charity.registered_number",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Year of registration",
+   "category": "paraphrase",
+   "expect": "charity.year_registered",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'charity.year_registered' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "charity.year_registered",
+     "score": 0.5
+    },
+    {
+     "source": "reach.beneficiaries_last_year",
+     "score": 0.4
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many trustees do you have?",
+   "category": "paraphrase",
+   "expect": "people.trustees",
+   "got": "people.trustees",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Number of paid employees",
+   "category": "paraphrase",
+   "expect": "people.paid_staff",
+   "got": "people.paid_staff",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many volunteers support your work?",
+   "category": "paraphrase",
+   "expect": "people.volunteers",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.volunteers' is too weak (score 0.50 < 0.6) -- counting question: only 1 of 3 words are explained by the key or its path (unexplained modifier: ['support', 'work'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.volunteers",
+     "score": 0.5
+    },
+    {
+     "source": "people.volunteer_hours_last_year",
+     "score": 0.2857
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many people work for the charity in total?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.0,
+   "reason": "no matching value in the source data",
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Volunteer hours given last year",
+   "category": "period",
+   "expect": "people.volunteer_hours_last_year",
+   "got": "people.volunteer_hours_last_year",
+   "outcome": "correct",
+   "confidence": 0.889,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "reach.beneficiaries_last_year",
+     "score": 0.5
+    },
+    {
+     "source": "people.volunteers",
+     "score": 0.3333
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Volunteer hours given this year",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.4,
+   "reason": "best candidate 'people.volunteers' is too weak (score 0.40 < 0.6) -- only 1 of 4 question words are explained by the key or its path (unexplained: ['given', 'hour', 'year'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.volunteers",
+     "score": 0.4
+    },
+    {
+     "source": "charity.year_registered",
+     "score": 0.3333
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Total income for 2025",
+   "category": "period",
+   "expect": "income.total_income_gbp_2025",
+   "got": "income.total_income_gbp_2025",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "income.total_income_gbp_2024",
+     "score": 0.3
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Total income for 2024",
+   "category": "period",
+   "expect": "income.total_income_gbp_2024",
+   "got": "income.total_income_gbp_2024",
+   "outcome": "correct",
+   "confidence": 0.857,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "income.total_income_gbp_2025",
+     "score": 0.3
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Total income for 2026",
+   "category": "period",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.3,
+   "reason": "best candidate 'income.total_income_gbp_2024' is too weak (score 0.30 < 0.6) -- period differs: question names ['2026'], key path names ['2024']",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "income.total_income_gbp_2024",
+     "score": 0.3
+    },
+    {
+     "source": "income.total_income_gbp_2025",
+     "score": 0.3
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Percentage of income from grants",
+   "category": "paraphrase",
+   "expect": "income.grants_pct",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'income.grants_pct' is too weak (score 0.50 < 0.6)",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "income.grants_pct",
+     "score": 0.5
+    },
+    {
+     "source": "income.total_income_gbp_2024",
+     "score": 0.2857
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Percentage of income from trading",
+   "category": "unsupported",
+   "expect": "REVIEW",
+   "got": "REVIEW",
+   "outcome": "correct_review",
+   "confidence": 0.171,
+   "reason": "best candidate 'income.total_income_gbp_2024' is too weak (score 0.17 < 0.6) -- question scope ['trading'] is not in the key or its path",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "income.total_income_gbp_2024",
+     "score": 0.1714
+    },
+    {
+     "source": "income.total_income_gbp_2025",
+     "score": 0.1714
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Do you have a safeguarding policy?",
+   "category": "paraphrase",
+   "expect": "governance.safeguarding_policy",
+   "got": "governance.safeguarding_policy",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "governance.safeguarding_lead",
+     "score": 0.5
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Who is your designated safeguarding officer?",
+   "category": "paraphrase",
+   "expect": "governance.safeguarding_lead",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.4,
+   "reason": "best candidate 'governance.safeguarding_lead' is too weak (score 0.40 < 0.6) -- only 1 of 3 question words are explained by the key or its path (unexplained: ['designated', 'officer'])",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "governance.safeguarding_lead",
+     "score": 0.4
+    },
+    {
+     "source": "governance.safeguarding_policy",
+     "score": 0.4
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Are your accounts independently examined?",
+   "category": "paraphrase",
+   "expect": "governance.accounts_independently_examined",
+   "got": "governance.accounts_independently_examined",
+   "outcome": "correct",
+   "confidence": 1.0,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  },
+  {
+   "question": "Are your accounts audited?",
+   "category": "scope",
+   "expect": "REVIEW",
+   "got": "governance.audit_required",
+   "outcome": "unsafe_answer",
+   "confidence": 0.633,
+   "reason": null,
+   "evidence": [
+    "soft match: 'audited' ~ 'audit' [stem] (0.95)"
+   ],
+   "alternatives": [
+    {
+     "source": "governance.accounts_independently_examined",
+     "score": 0.4
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many people benefited last year?",
+   "category": "period",
+   "expect": "reach.beneficiaries_last_year",
+   "got": "REVIEW",
+   "outcome": "missed",
+   "confidence": 0.5,
+   "reason": "best candidate 'people.volunteer_hours_last_year' is too weak (score 0.50 < 0.6) -- counting question: modifier ['benefited'] is not in the key, and the key adds ['hour', 'volunteer'] which the question does not name",
+   "evidence": [],
+   "alternatives": [
+    {
+     "source": "people.volunteer_hours_last_year",
+     "score": 0.5
+    },
+    {
+     "source": "reach.beneficiaries_last_year",
+     "score": 0.5
+    }
+   ],
+   "case": "w06_charity"
+  },
+  {
+   "question": "How many counties do you operate in?",
+   "category": "paraphrase",
+   "expect": "reach.counties_served",
+   "got": "reach.counties_served",
+   "outcome": "correct",
+   "confidence": 0.667,
+   "reason": null,
+   "evidence": [],
+   "alternatives": [],
+   "case": "w06_charity"
+  }
+ ]
+}

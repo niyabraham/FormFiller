@@ -1,0 +1,506 @@
+{
+ "benchmark": "semantic-dev-defects",
+ "version": "1.0.0",
+ "description": "Development fixtures for the four safety defects found by held-out v3 (entity qualifier, composite population, modality). Written AFTER the diagnosis, in different domains and wording from v3; v3 questions are not reused. Safe to tune against; NOT evaluation data. (x01 gained 4 generic-wording questions after the first run showed the family did not reproduce; recorded before any fix.)",
+ "cases": [
+  {
+   "id": "x01_entity_group",
+   "description": "Family A: a parent and a subsidiary both hold a value; a generic question names neither",
+   "source": {
+    "parent_company": {
+     "employees": 8000,
+     "legal_name": "Veridian Group plc",
+     "country": "Germany"
+    },
+    "subsidiary": {
+     "employees": 120,
+     "legal_name": "Veridian Components Ltd",
+     "country": "UK",
+     "turnover_gbp": 9000000
+    }
+   },
+   "questions": [
+    {
+     "question": "How many people does the enterprise employ?",
+     "expect": "REVIEW",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "How many staff does the parent company have?",
+     "expect": "parent_company.employees",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Number of employees at the subsidiary",
+     "expect": "subsidiary.employees",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Legal name of the company",
+     "expect": "REVIEW",
+     "category": "entity"
+    },
+    {
+     "question": "Legal name of the subsidiary",
+     "expect": "subsidiary.legal_name",
+     "category": "entity"
+    },
+    {
+     "question": "Which country is the business registered in?",
+     "expect": "REVIEW",
+     "category": "entity"
+    },
+    {
+     "question": "Country of the subsidiary",
+     "expect": "subsidiary.country",
+     "category": "entity"
+    },
+    {
+     "question": "Annual turnover",
+     "expect": "REVIEW",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover of the subsidiary",
+     "expect": "subsidiary.turnover_gbp",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "What is the company's name?",
+     "expect": "REVIEW",
+     "category": "entity"
+    },
+    {
+     "question": "How many employees does the company have?",
+     "expect": "REVIEW",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Number of people employed by the business",
+     "expect": "REVIEW",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Company country",
+     "expect": "REVIEW",
+     "category": "entity"
+    }
+   ]
+  },
+  {
+   "id": "x02_single_entity",
+   "description": "Family A control: one entity, the word 'company' is the key's own subject, so answering is right",
+   "source": {
+    "company": {
+     "employees": 300,
+     "name": "Tarn Valley Ltd",
+     "founded": 2011
+    }
+   },
+   "questions": [
+    {
+     "question": "How many employees does the business have?",
+     "expect": "company.employees",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Name of the firm",
+     "expect": "company.name",
+     "category": "entity"
+    },
+    {
+     "question": "What year was the company founded?",
+     "expect": "company.founded",
+     "category": "entity",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x03_affiliate_company",
+   "description": "Family A: company-level key and an affiliate key side by side",
+   "source": {
+    "company": {
+     "headcount": 600,
+     "name": "Ostrand Marine Ltd"
+    },
+    "affiliate": {
+     "headcount": 45,
+     "name": "Ostrand Services BV"
+    }
+   },
+   "questions": [
+    {
+     "question": "How many people work for the company?",
+     "expect": "company.headcount",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Affiliate headcount",
+     "expect": "affiliate.headcount",
+     "category": "entity",
+     "kind": "number"
+    },
+    {
+     "question": "Name of the affiliate",
+     "expect": "affiliate.name",
+     "category": "entity"
+    },
+    {
+     "question": "Name of the company",
+     "expect": "company.name",
+     "category": "entity"
+    }
+   ]
+  },
+  {
+   "id": "x04_holding_operating",
+   "description": "Family A: holding company and operating company, nested one level down",
+   "source": {
+    "group": {
+     "holding_company": {
+      "name": "Brackenfield Holdings"
+     },
+     "operating_company": {
+      "name": "Brackenfield Foods Ltd"
+     }
+    }
+   },
+   "questions": [
+    {
+     "question": "Name of the holding company",
+     "expect": "group.holding_company.name",
+     "category": "entity"
+    },
+    {
+     "question": "Name of the operating company",
+     "expect": "group.operating_company.name",
+     "category": "entity"
+    },
+    {
+     "question": "Name of the company",
+     "expect": "REVIEW",
+     "category": "entity"
+    }
+   ]
+  },
+  {
+   "id": "x05_composite_people",
+   "description": "Family B: a question for a total built from components; the source holds components only",
+   "source": {
+    "people": {
+     "seasonal_staff": 120,
+     "permanent_staff": 800,
+     "contractors": 60
+    }
+   },
+   "questions": [
+    {
+     "question": "Total staff including seasonal workers",
+     "expect": "REVIEW",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "Number of employees excluding contractors",
+     "expect": "REVIEW",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "Combined headcount of permanent and seasonal staff",
+     "expect": "REVIEW",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "Number of seasonal staff",
+     "expect": "people.seasonal_staff",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "How many permanent staff do you have?",
+     "expect": "people.permanent_staff",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "How many contractors?",
+     "expect": "people.contractors",
+     "category": "composite",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x06_composite_key_carries_it",
+   "description": "Family B control: the key itself carries the composite wording, so it may answer",
+   "source": {
+    "workforce": {
+     "total_including_contractors": 960,
+     "employees_only": 900
+    }
+   },
+   "questions": [
+    {
+     "question": "Total workforce including contractors",
+     "expect": "workforce.total_including_contractors",
+     "category": "composite",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x07_composite_money",
+   "description": "Family B: revenue components",
+   "source": {
+    "revenue": {
+     "product_gbp": 4000000,
+     "services_gbp": 2500000
+    }
+   },
+   "questions": [
+    {
+     "question": "Total revenue including services",
+     "expect": "REVIEW",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "Revenue from services",
+     "expect": "revenue.services_gbp",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "Product revenue",
+     "expect": "revenue.product_gbp",
+     "category": "composite",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x08_composite_sites",
+   "description": "Family B: site counts",
+   "source": {
+    "sites": {
+     "warehouses": 6,
+     "offices": 4
+    }
+   },
+   "questions": [
+    {
+     "question": "How many sites do you have including warehouses?",
+     "expect": "REVIEW",
+     "category": "composite",
+     "kind": "number"
+    },
+    {
+     "question": "Number of warehouses",
+     "expect": "sites.warehouses",
+     "category": "composite",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x09_modality_security",
+   "description": "Family C: a key about an obligation or a plan answering a question about what happened",
+   "source": {
+    "security": {
+     "mfa_required": true,
+     "mfa_enabled": true,
+     "audit_planned": "2027-03-01",
+     "last_audit": "2026-01-10"
+    }
+   },
+   "questions": [
+    {
+     "question": "Is MFA required?",
+     "expect": "security.mfa_required",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is MFA enabled?",
+     "expect": "security.mfa_enabled",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "When is your next audit planned?",
+     "expect": "security.audit_planned",
+     "category": "modality",
+     "kind": "date"
+    },
+    {
+     "question": "When was your last audit?",
+     "expect": "security.last_audit",
+     "category": "modality",
+     "kind": "date"
+    }
+   ]
+  },
+  {
+   "id": "x10_modality_compliance",
+   "description": "Family C: the only audit key is about a requirement",
+   "source": {
+    "compliance": {
+     "audit_required": false,
+     "policy_reviewed": true
+    }
+   },
+   "questions": [
+    {
+     "question": "Have your financial statements been audited?",
+     "expect": "REVIEW",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is an audit required?",
+     "expect": "compliance.audit_required",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are your records audited?",
+     "expect": "REVIEW",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x11_modality_training",
+   "description": "Family C: mandatory vs completed",
+   "source": {
+    "training": {
+     "induction_mandatory": true,
+     "induction_completed_pct": 97
+    }
+   },
+   "questions": [
+    {
+     "question": "Is induction mandatory?",
+     "expect": "training.induction_mandatory",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Have all staff completed induction?",
+     "expect": "REVIEW",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Percentage of staff who completed induction",
+     "expect": "training.induction_completed_pct",
+     "category": "modality",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x12_modality_cover",
+   "description": "Family C: requested vs held cover",
+   "source": {
+    "insurance": {
+     "cover_requested_gbp": 5000000,
+     "cover_held_gbp": 2000000
+    }
+   },
+   "questions": [
+    {
+     "question": "How much cover are you requesting?",
+     "expect": "insurance.cover_requested_gbp",
+     "category": "modality",
+     "kind": "number"
+    },
+    {
+     "question": "How much cover do you currently hold?",
+     "expect": "insurance.cover_held_gbp",
+     "category": "modality",
+     "kind": "number"
+    },
+    {
+     "question": "Insurance cover amount",
+     "expect": "REVIEW",
+     "category": "modality",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "x13_modality_cert",
+   "description": "Family C: a certified fact and a pending renewal",
+   "source": {
+    "certification": {
+     "renewal_pending": true,
+     "iso_9001_certified": true
+    }
+   },
+   "questions": [
+    {
+     "question": "Are you ISO 9001 certified?",
+     "expect": "certification.iso_9001_certified",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is your certification renewal pending?",
+     "expect": "certification.renewal_pending",
+     "category": "modality",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  }
+ ]
+}

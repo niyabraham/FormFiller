@@ -21,7 +21,7 @@ CAPTCHAs, login flows, Next buttons inside shadow roots/iframes, anything needin
 | 1 | documented end-to-end workflow runs | **met** | `python -m formfill fill ...`, `demo_web.py`, CLI subprocess tests |
 | 2 | JSON loading/normalisation as documented | **met** | `formfill/web/source.py`, `tests/web/test_cli_report.py` (invalid JSON, non-object, empty, placeholders, repeated names) |
 | 3 | semantic retrieval handles paraphrases, measured | **met within a stated boundary** | section 6: held-out v2 paraphrase 40/61 answered, 0 wrong-source answers; remaining paraphrases go to REVIEW |
-| 4 | unsupported/ambiguous handled conservatively | **met, with known exceptions** | held-out v2: 1 unsafe of 105 (label defect); `seen` set: 2 open; `benchmarks/rfi`: 1 disputed (section 6.4, 9) |
+| 4 | unsupported/ambiguous handled conservatively | **met, with known exceptions** | held-out v2: 1 unsafe of 105 (label defect); `seen`: 2 open; `benchmarks/rfi`: 1 disputed; v3: 4 found and fixed (6.4, 6.6, 9) |
 | 5 | scope/polarity/period/population/type validated | **met** | caps in `retrieve.py`, `validate.py`; 217+ unit tests; benchmark categories scope/negation/type |
 | 6 | provenance retained | **met** | `source`, `raw_value`, `evidence`, `alternatives` per item in `result.json` |
 | 7 | supported controls fill and verify | **met on local fixtures** | widgets 12/12, SPA 79/115 fills with the rest being deliberately unsupported/review fixtures |
@@ -98,7 +98,7 @@ implicit on both sides, without adding words to the question (adding them dilute
 evaluated; (b) the measured failures were morphological/lexical, which the closed layer fixes without a dependency, privacy cost or nondeterminism;
 (c) a similarity score is not an acceptance criterion in any case. The `TermProvider` hook is the integration point. I did measure the one resource that
 was obtainable, WordNet 3.0 from PyPI (`tools/wordnet_provider.py`, ablation only): **+0 correct on dev and held-out v2, +3 on the seen set, 0 added
-unsafe**, so it is not shipped. An embedding provider is **untested**; it would need an offline model and its own held-out evaluation.
+unsafe**, so it is not shipped. An embedding provider was later evaluated once a local copy of the model was supplied: see 6.5. Result: **inconclusive, not shipped**.
 
 ### 6.2 Datasets (never compared as if equivalent)
 
@@ -108,6 +108,8 @@ unsafe**, so it is not shipped. An embedding provider is **untested**; it would 
 | `benchmarks/heldout` | 276 (browser) | earlier additional set, frozen 2026-10-10; its own docs call it development evidence |
 | `benchmarks/semantic/dev.json` | 121 (no browser) | development for the semantic layer |
 | `benchmarks/semantic/seen.json` | 141 | written first, but its baseline failures were read while writing the lexicon: **contaminated, treated as development** |
+| `benchmarks/semantic/dev_defects.json` | 50 | development fixtures for the three safeguards in 6.6 (written after diagnosing v3, different domains and wording; safe to tune against) |
+| `benchmarks/semantic/heldout_v3.json` | 122 | **fresh held-out v3**: six new domains, written and frozen (`FROZEN_v3.txt`, digest `7cba9bef43a3b84d`) before any embedding code existed; never used to choose a threshold or rule. Same author as the code, not independently annotated |
 | `benchmarks/semantic/heldout.json` | 105 | held-out v2: written after tuning, new domains, digest frozen (`FROZEN.txt`) before its first run. **Same author as the code; no independent annotator.** |
 
 ### 6.3 Results (verified; "before" = untouched `main`, same evaluator)
@@ -139,11 +141,86 @@ held-out v2; WordNet adds 0 on top.
 - The `seen` set still has 2 unsafe (a wrong-source paraphrase "Name of your bankers" → `contractor.name`, and a conflicting `business.employees` vs
   `hr.total_employees` case). Neither was addressed: they are development-set findings left open and listed here.
 
-## 7. Final verification (verified on the working tree; outputs in `benchmarks/final_verification_stabilization/`; the earlier `benchmarks/final_verification/` run predates the counting-question fix and the SPA/widget runs there were not repeated, since no browser code changed afterwards)
+### 6.5 Local embedding experiment (all-MiniLM-L6-v2): inconclusive, not retained
+
+**Setup (verified).** The model files were supplied by the user (nine small files in a ZIP, `model.safetensors` as four 7-Zip volumes) and loaded
+from a local directory with `local_files_only=True`, offline flags set and sockets blocked (0 connection attempts); dimension 384.
+**The weights' SHA-256 (`53aa5117...d9db`) was computed but NOT compared with the official Hugging Face value**, which could not be fetched. Provenance of the
+weights is therefore unverified.
+
+**Integration tried** (kept as `benchmarks/embedding_experiment/embedding_integration.patch`, not applied): an optional `TermProvider` that scored word pairs
+by cosine similarity, vetoed scope/negation/period words, required a mutual-best link, applied a reduced weight, recorded evidence, and left every cap and the
+ambiguity rule in force. Off unless `FORMFILL_EMBEDDING_MODEL` named a complete local directory; missing directory or packages fell back to the baseline
+matcher (both fallbacks tested by hand). Optional extra: `sentence-transformers` (pulls `torch`).
+**Threshold 0.60** was chosen on `dev` and `seen` only (the lowest value with no regression there).
+
+| set | role | baseline correct / unsafe | embedding correct / unsafe |
+|---|---|---|---|
+| semantic dev (121) | tuning | 59 / 0 | 60 / 0 |
+| semantic seen (141) | tuning | 48 / 2 | 49 / 1 |
+| semantic held-out v2 (105) | evaluation (already tuned against earlier) | 50 / 1 | 50 / 1 |
+| **semantic held-out v3 (122)** | fresh evaluation | 48 / 4 | 49 / 4 |
+| `benchmarks/rfi` (195, browser) | fixed | 106 / 1 | 106 / 1 (+1 "data centers", **-1** "date of last penetration test" -> REVIEW) |
+| `benchmarks/heldout` (276, browser) | fixed | 119 / 0 | 119 / 0 (+1 "expiration date", **-1** "stored outside the EU" -> REVIEW) |
+
+Unsafe answers never increased on any set. Every gain was a spelling or morphology variant (employ~employee, requesting~requested, banker~bank, centers~centres,
+expiration~expires), which a deterministic rule can cover; the two browser sets show a gain and a loss each. The hard categories did not move: v3's
+conflicting-count and scope failures, and its 38 safe misses, were unchanged. **Decision: inconclusive, baseline kept**; the integration is not in the tree.
+Runtime cost when it was on: a torch + model import of about a second and roughly 0.5 GB RAM per process, and a new heavy optional dependency.
+
+**What fresh held-out v3 showed about the baseline** (diagnosed and fixed afterwards with separate development fixtures; see 6.6, which also says why v3 is no longer a clean estimate).
+Baseline first run: 52 answered, 48 correct, **4 unsafe**, precision 92.3 %, coverage 55.8 % (`benchmarks/semantic/results/heldout_v3_baseline_first_run/`).
+- "How many employees does the business have?" -> `parent_company.employees` and "Name of the company" -> `parent_company.name`, where a parent and a
+  subsidiary both hold a value: **conflicting-value defect**, the ambiguity rule does not fire because the parent's key scores higher through the word "parent"
+  in the path. This is the same family as the disputed company/subsidiary label, and it is real.
+- "Total workforce including seasonal workers" -> `people.seasonal_workers`: a subset answers a total question (scope defect).
+- "Are your accounts audited?" -> `governance.audit_required`: "audited" matched "audit_required", a different fact (stem-level defect).
+- Not wrong but missed (safe): bankers, "annual turnover", "registered ...", "how many staff ..." and many counting paraphrases.
+- Correct handling worth noting: both bare "City" / "Postcode" questions with two address blocks went to REVIEW; scope-by-section ("City" under "Trading address")
+  was answered correctly; period constraints (previous year, two years ago, 2023) were REVIEW unless the key named the period.
+
+### 6.6 Three safeguards added after held-out v3 (matcher changed after the embedding experiment)
+
+v3 exposed four unsafe answers. Root causes and the **class-level** rules that fix them (no field name and no question is special-cased; fixtures in
+`dev_defects.json`, tests in `tests/web/test_safeguards.py`, 34 tests, 8 of which fail on the pre-fix source and 26 are positive controls):
+
+1. **Entity qualifier** (parent company employees / parent company name). The word "company" in a generic question earned path credit from `parent_company`,
+   and nothing held a key's *own* entity word against it. Now a key whose path names another legal entity that the question does not name (`parent`,
+   `subsidiary`, `affiliate`, `holding`, `ultimate`, `sister`, or the modifier of any `<modifier>_company/_entity/_firm` segment) can never be the answer
+   to a generic question (score capped to REVIEW). It still counts as a *rival* for the ambiguity rule when the best answer does not explain more of the
+   question than it does: a plain `org.founded` and a differing `parent.founded` stay ambiguous for "Year founded", while "Name of the operating company" still reads
+   `operating_company.name`. (A first version removed the rival entirely and created three new unsafe answers on older sets; caught by the per-question comparison.)
+2. **Composite population** ("Total workforce including seasonal workers" read the seasonal-workers key). `including / excluding / inclusive / combined / plus` were
+   not scope words. They now have to be carried by the key itself (`total_including_contractors`), else REVIEW.
+3. **Modality** ("Are your accounts audited?" read `audit_required`). `required` and `mandatory` are stopwords, so `audit_required` tokenised as `audit` and
+   the stem link `audited ~ audit` looked perfect. The raw words of the question and the key path now carry a modality (obligation / plan / request): a key that
+   narrows by one the question does not name, or a question that insists on one the key lacks, is capped. Soft verbs ("enforce", "enforced") satisfy the other
+   side's obligation but never create a mismatch (two earlier correct answers, "Do you enforce MFA?" and "required for all users" vs `enforced_for_all_users`,
+   were lost by a stricter first version and restored).
+
+| set | role | before: correct / unsafe | after: correct / unsafe | per-question changes |
+|---|---|---|---|---|
+| semantic dev (121) | development | 59 / 0 | 59 / 0 | none |
+| semantic seen (141) | development | 48 / 2 | 48 / 2 | none |
+| semantic held-out v2 (105) | evaluation (tuned against earlier) | 50 / 1 | 50 / 1 | none |
+| **held-out v3 (122), frozen, digest unchanged** | evaluation | 48 / **4** | 48 / **0** | 4 unsafe -> REVIEW, no correct lost |
+| `dev_defects` (50) | development | 28 / 6 | 28 / 0 | 6 unsafe -> REVIEW, no correct lost |
+| `benchmarks/rfi` (195, browser) | fixed | 106 / 1 | 106 / 1 | none (195 of 195 outcomes identical) |
+| `benchmarks/heldout` (276, browser) | fixed | 119 / 0 | 119 / 0 | none (276 of 276 identical) |
+| SPA fixtures (26) / widgets (12) | local fixtures | fill 79/115, 12/12 | fill 79/115, 12/12 | none |
+
+**How to read this honestly.** v3's 0 unsafe is **not** a fair held-out estimate any more: the rules were designed from diagnosing v3's failures, then tested on
+separate development fixtures and re-checked on every other set. It shows the four known defects are closed and nothing else moved; it does not show
+that the next unseen source is free of the same classes. The class lists are finite: entity words outside `ENTITY_QUALIFIERS` and the `<modifier> <noun>` shape,
+composite words outside `COMPOSITE_MARKERS`, and modality words outside `_MODALITY` / `_SOFT_OBLIGATION` are not covered. A generic question against a source whose
+*only* entity-qualified key holds the answer (e.g. everything under `subsidiary.`) now goes to REVIEW; that is deliberate and costs an answer.
+Coverage did not change on any set (no unnecessary new REVIEW on the evaluated sets), but the rules can only add REVIEWs, so on other sources they may.
+
+## 7. Final verification (verified on the working tree; outputs in `benchmarks/final_verification_safeguards/`; the earlier `final_verification/` and `final_verification_stabilization/` directories are historical records of earlier states of the code)
 
 ```bash
 pip install -e ".[web,dev]" ruff mypy        # + a Chromium build; export FORMFILL_CHROMIUM=/path/to/chrome if Playwright's is unavailable
-python -m pytest -q -p no:cacheprovider      # 480 passed, 2 xfailed (173.1 s)
+python -m pytest -q -p no:cacheprovider      # 514 passed, 2 xfailed (182.0 s)
 ruff check .                                 # All checks passed
 mypy                                         # Success: no issues found in 23 source files
 python demo.py                               # Final verification: PASS (legacy PDF path)
@@ -162,7 +239,7 @@ The 2 xfails are the two pre-existing disputed-label cases (company vs subsidiar
 |---|---|
 | `benchmarks/rfi` / `benchmarks/heldout` (rerun on the final tree) | 106/108 correct, 1 unsafe (disputed label), coverage 56.2 % / 119 correct, 0 unsafe, coverage 43.8 % (identical to before the fix) |
 | semantic dev / seen / held-out v2 (final tree) | 59/0 · 48/2 · 50/1 (correct/unsafe) |
-| widget fixtures | 12/12 fill, 12/12 DOM read-back, 12/12 app state, conditional 3/3 (unchanged from Phase 3D) |
+| widget fixtures | 12/12 fill, 12/12 DOM read-back, 12/12 app state, conditional 3/3 (rerun on the final tree, unchanged) |
 | SPA fixtures (policy mode) | discovery 82/82, fill 79/115, DOM read-back 76/115, app-committed 76/115, **submit events 0, submissions 0**, safe stops 12/12 (unchanged from 3D) |
 | `tools/evaluate_baseline.py` submission cases | re-expressed as "ready for human review / left unsubmitted": 7/7 OK (their old CONFIRMED/UNCONFIRMED outcomes required a click) |
 
@@ -193,7 +270,7 @@ Other commands: `ask` (which source value answers this question; no browser) and
 - Test sets are **author-written** by the same engineer who wrote the code; none is independently validated. Held-out v2 has one author, was authored after the layer was designed, and is not clean after its first run; treat its first-run numbers as the honest estimate, and all
   figures as development evidence rather than proof of generalisation.
 - Dates other than ISO, "£2.4m", "six" and similar are REVIEW by design (no unit/currency parsing).
-- Embedding-based retrieval is untested.
+- Embedding-based retrieval was evaluated (6.5) and **not adopted**: the effect was too small and mixed to justify the dependency. The model's checksum has **not** been verified against Hugging Face (not reachable from the sandbox).
 - The disputed development label (company vs subsidiary employees) still produces 1 unsafe answer on `benchmarks/rfi`; "zero unsafe answers" is **not** claimed anywhere.
 - Environment blocker: Playwright's own browser download is blocked here; not a project defect.
 

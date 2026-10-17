@@ -1,0 +1,16 @@
+## git
+complete-formfiller
+bea0b206c5742579b5a0b865262de0febc8cd98e
+15
+## ruff
+All checks passed!
+## mypy
+Success: no issues found in 23 source files
+## pytest
+............                                                             [100%]
+514 passed, 2 xfailed in 181.97s (0:03:01)
+## demo.py
+Final verification: PASS
+## demo_web.py
+Run status: NEEDS_REVIEW
+Submission: not performed by FormFiller - a person must review the form and submit it themselves (ready for review: True)

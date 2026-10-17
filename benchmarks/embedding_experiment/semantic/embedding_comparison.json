@@ -1,0 +1,206 @@
+{
+ "model_dir": "/home/claude/models/all-MiniLM-L6-v2",
+ "splits": {
+  "dev": {
+   "digest": "cf5eb90bf822ae6c",
+   "baseline": {
+    "questions": 121,
+    "expected_answer": 76,
+    "expected_review": 45,
+    "auto_answered": 59,
+    "correct": 59,
+    "unsafe": 0,
+    "wrong_answer": 0,
+    "unsafe_answer": 0,
+    "missed": 17,
+    "correct_review": 45,
+    "precision_pct": 100.0,
+    "coverage_pct": 77.6,
+    "review_rate_pct": 51.2,
+    "unsafe_rate_pct": 0.0
+   },
+   "embedding": {
+    "0.6": {
+     "questions": 121,
+     "expected_answer": 76,
+     "expected_review": 45,
+     "auto_answered": 60,
+     "correct": 60,
+     "unsafe": 0,
+     "wrong_answer": 0,
+     "unsafe_answer": 0,
+     "missed": 16,
+     "correct_review": 45,
+     "precision_pct": 100.0,
+     "coverage_pct": 78.9,
+     "review_rate_pct": 50.4,
+     "unsafe_rate_pct": 0.0,
+     "changed": [
+      {
+       "question": "How many people do you employ in total?",
+       "case": "d06_counts_populations",
+       "expect": "people.employees.total",
+       "before": "missed",
+       "after": "correct",
+       "got_before": "REVIEW",
+       "got_after": "people.employees.total",
+       "evidence": [
+        "soft match: 'employ' ~ 'employee' [provider:embedding] (0.65)"
+       ]
+      }
+     ]
+    }
+   }
+  },
+  "seen": {
+   "digest": "a587b58a61ceb0e5",
+   "baseline": {
+    "questions": 141,
+    "expected_answer": 108,
+    "expected_review": 33,
+    "auto_answered": 50,
+    "correct": 48,
+    "unsafe": 2,
+    "wrong_answer": 1,
+    "unsafe_answer": 1,
+    "missed": 59,
+    "correct_review": 32,
+    "precision_pct": 96.0,
+    "coverage_pct": 44.4,
+    "review_rate_pct": 64.5,
+    "unsafe_rate_pct": 1.4
+   },
+   "embedding": {
+    "0.6": {
+     "questions": 141,
+     "expected_answer": 108,
+     "expected_review": 33,
+     "auto_answered": 50,
+     "correct": 49,
+     "unsafe": 1,
+     "wrong_answer": 0,
+     "unsafe_answer": 1,
+     "missed": 59,
+     "correct_review": 32,
+     "precision_pct": 98.0,
+     "coverage_pct": 45.4,
+     "review_rate_pct": 64.5,
+     "unsafe_rate_pct": 0.7,
+     "changed": [
+      {
+       "question": "Name of your bankers",
+       "case": "h03_construction",
+       "expect": "financial.bank_name",
+       "before": "wrong_answer",
+       "after": "missed",
+       "got_before": "contractor.name",
+       "got_after": "REVIEW",
+       "evidence": []
+      },
+      {
+       "question": "How much funding are you requesting?",
+       "case": "h04_university_grant",
+       "expect": "Requested funding (GBP)",
+       "before": "missed",
+       "after": "correct",
+       "got_before": "REVIEW",
+       "got_after": "Requested funding (GBP)",
+       "evidence": [
+        "soft match: 'requesting' ~ 'requested' [provider:embedding] (0.80)"
+       ]
+      }
+     ]
+    }
+   }
+  },
+  "heldout": {
+   "digest": "d727c02237d23cdc",
+   "baseline": {
+    "questions": 105,
+    "expected_answer": 73,
+    "expected_review": 32,
+    "auto_answered": 51,
+    "correct": 50,
+    "unsafe": 1,
+    "wrong_answer": 0,
+    "unsafe_answer": 1,
+    "missed": 23,
+    "correct_review": 31,
+    "precision_pct": 98.0,
+    "coverage_pct": 68.5,
+    "review_rate_pct": 51.4,
+    "unsafe_rate_pct": 1.0
+   },
+   "embedding": {
+    "0.6": {
+     "questions": 105,
+     "expected_answer": 73,
+     "expected_review": 32,
+     "auto_answered": 51,
+     "correct": 50,
+     "unsafe": 1,
+     "wrong_answer": 0,
+     "unsafe_answer": 1,
+     "missed": 23,
+     "correct_review": 31,
+     "precision_pct": 98.0,
+     "coverage_pct": 68.5,
+     "review_rate_pct": 51.4,
+     "unsafe_rate_pct": 1.0,
+     "changed": []
+    }
+   }
+  },
+  "heldout_v3": {
+   "digest": "7cba9bef43a3b84d",
+   "baseline": {
+    "questions": 122,
+    "expected_answer": 86,
+    "expected_review": 36,
+    "auto_answered": 52,
+    "correct": 48,
+    "unsafe": 4,
+    "wrong_answer": 0,
+    "unsafe_answer": 4,
+    "missed": 38,
+    "correct_review": 32,
+    "precision_pct": 92.3,
+    "coverage_pct": 55.8,
+    "review_rate_pct": 57.4,
+    "unsafe_rate_pct": 3.3
+   },
+   "embedding": {
+    "0.6": {
+     "questions": 122,
+     "expected_answer": 86,
+     "expected_review": 36,
+     "auto_answered": 53,
+     "correct": 49,
+     "unsafe": 4,
+     "wrong_answer": 0,
+     "unsafe_answer": 4,
+     "missed": 37,
+     "correct_review": 32,
+     "precision_pct": 92.5,
+     "coverage_pct": 57.0,
+     "review_rate_pct": 56.6,
+     "unsafe_rate_pct": 3.3,
+     "changed": [
+      {
+       "question": "Name of your bankers",
+       "case": "w01_logistics_3pl",
+       "expect": "finance.bank_name",
+       "before": "missed",
+       "after": "correct",
+       "got_before": "REVIEW",
+       "got_after": "finance.bank_name",
+       "evidence": [
+        "soft match: 'banker' ~ 'bank' [provider:embedding] (0.77)"
+       ]
+      }
+     ]
+    }
+   }
+  }
+ }
+}

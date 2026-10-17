@@ -1,0 +1,1009 @@
+{
+ "benchmark": "semantic-heldout-v3",
+ "version": "3.0.0",
+ "description": "Fresh held-out set written before any embedding code existed; author-written (same engineer as the code), NOT independently annotated. Never used to choose a threshold or rule.",
+ "cases": [
+  {
+   "id": "w01_logistics_3pl",
+   "description": "third-party logistics tender; one bank, one head-office city, previous-year keys",
+   "source": {
+    "company": {
+     "trading_name": "Harbourline Freight Ltd",
+     "registered_number": "09871234",
+     "founded": 1998
+    },
+    "workforce": {
+     "total_staff": 540,
+     "drivers": 310,
+     "agency_staff": 75
+    },
+    "fleet": {
+     "vehicles_total": 220,
+     "refrigerated_vehicles": 64,
+     "electric_vehicles": 18
+    },
+    "sites": {
+     "head_office_city": "Leeds",
+     "depot_count": 7
+    },
+    "finance": {
+     "bank_name": "Northern Mutual Bank",
+     "turnover_gbp": 48200000,
+     "turnover_gbp_previous_year": 44100000
+    },
+    "insurance": {
+     "goods_in_transit_limit_gbp": 2000000,
+     "public_liability_limit_gbp": 10000000
+    },
+    "accreditations": {
+     "iso_9001": true,
+     "iso_45001": false,
+     "fors_gold": true
+    }
+   },
+   "questions": [
+    {
+     "question": "Registered company number",
+     "expect": "company.registered_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Year the business was established",
+     "expect": "company.founded",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many staff do you employ?",
+     "expect": "workforce.total_staff",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many of your people are drivers?",
+     "expect": "workforce.drivers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of agency workers",
+     "expect": "workforce.agency_staff",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many employees will you have next year?",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Total number of vehicles in your fleet",
+     "expect": "fleet.vehicles_total",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many refrigerated vehicles do you run?",
+     "expect": "fleet.refrigerated_vehicles",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many diesel vehicles do you operate?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Number of electric vans",
+     "expect": "REVIEW",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "In which city is your head office?",
+     "expect": "sites.head_office_city",
+     "category": "paraphrase"
+    },
+    {
+     "question": "City of your main depot",
+     "expect": "REVIEW",
+     "category": "scope"
+    },
+    {
+     "question": "How many depots do you operate?",
+     "expect": "sites.depot_count",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Name of your bankers",
+     "expect": "finance.bank_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Annual turnover (GBP)",
+     "expect": "finance.turnover_gbp",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover in the previous financial year",
+     "expect": "finance.turnover_gbp_previous_year",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover two years ago",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Goods in transit insurance limit",
+     "expect": "insurance.goods_in_transit_limit_gbp",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Employers' liability insurance limit",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Are you ISO 9001 certified?",
+     "expect": "accreditations.iso_9001",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold ISO 45001?",
+     "expect": "accreditations.iso_45001",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold ISO 27001?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are you not ISO 9001 certified?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "w02_saas_group",
+   "description": "software vendor with a parent company and a UK subsidiary holding different employee counts",
+   "source": {
+    "parent_company": {
+     "name": "Lumenstack Holdings Inc.",
+     "employees": 2300,
+     "headquarters": "Austin, Texas"
+    },
+    "subsidiary": {
+     "name": "Lumenstack UK Ltd",
+     "employees": 410,
+     "companies_house_number": "12044871"
+    },
+    "product": {
+     "active_customers": 5400,
+     "uptime_pct_last_12_months": 99.97,
+     "data_regions": [
+      "eu-west-2",
+      "us-east-1"
+     ]
+    },
+    "security": {
+     "soc2_type2": true,
+     "pen_test_frequency": "annual",
+     "last_pen_test": "2026-05-20",
+     "bug_bounty": false
+    },
+    "support": {
+     "hours": "24x7",
+     "response_sla_hours": 4
+    }
+   },
+   "questions": [
+    {
+     "question": "How many people does the parent company employ?",
+     "expect": "parent_company.employees",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "Subsidiary headcount",
+     "expect": "subsidiary.employees",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "How many employees does the business have?",
+     "expect": "REVIEW",
+     "category": "conflicting",
+     "kind": "number"
+    },
+    {
+     "question": "Number of staff worldwide",
+     "expect": "parent_company.employees",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "How many staff work for the UK entity?",
+     "expect": "subsidiary.employees",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "Employees in the United States",
+     "expect": "REVIEW",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "Name of the subsidiary",
+     "expect": "subsidiary.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Name of the group parent",
+     "expect": "parent_company.name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Name of the company",
+     "expect": "REVIEW",
+     "category": "conflicting"
+    },
+    {
+     "question": "Where is the group headquartered?",
+     "expect": "parent_company.headquarters",
+     "category": "paraphrase"
+    },
+    {
+     "question": "UK company registration number",
+     "expect": "subsidiary.companies_house_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many customers are active?",
+     "expect": "product.active_customers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Service availability over the last twelve months (%)",
+     "expect": "product.uptime_pct_last_12_months",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Service availability over the last month (%)",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Which regions do you host data in?",
+     "expect": "product.data_regions",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Do you have a SOC 2 Type II report?",
+     "expect": "security.soc2_type2",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you have a SOC 1 report?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How often is penetration testing performed?",
+     "expect": "security.pen_test_frequency",
+     "category": "paraphrase"
+    },
+    {
+     "question": "When was your last penetration test?",
+     "expect": "security.last_pen_test",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Do you run a bug bounty programme?",
+     "expect": "security.bug_bounty",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Support response time commitment (hours)",
+     "expect": "support.response_sla_hours",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Is support available around the clock?",
+     "expect": "REVIEW",
+     "category": "type",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "w03_law_firm",
+   "description": "law firm with registered office and trading address in different cities",
+   "source": {
+    "firm": {
+     "name": "Aldwych & Pryce LLP",
+     "sra_number": "612045",
+     "partners": 38,
+     "solicitors": 214,
+     "trainees": 42
+    },
+    "registered_office": {
+     "address_line": "9 Corn Exchange",
+     "city": "Bristol",
+     "postcode": "BS1 1JQ"
+    },
+    "trading_address": {
+     "address_line": "120 Queen Street",
+     "city": "Cardiff",
+     "postcode": "CF10 2GE"
+    },
+    "professional_indemnity": {
+     "limit_gbp": 25000000,
+     "insurer": "Calder Re",
+     "renewal_date": "2027-01-01"
+    },
+    "practice": {
+     "conflict_checks_automated": true,
+     "legal_aid_contract": false,
+     "clients_public_sector_pct": 35
+    }
+   },
+   "questions": [
+    {
+     "question": "City",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "City",
+     "expect": "trading_address.city",
+     "category": "scope",
+     "section": "Trading address"
+    },
+    {
+     "question": "Town / city of registered office",
+     "expect": "registered_office.city",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Postcode of registered office",
+     "expect": "registered_office.postcode",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Postcode",
+     "expect": "REVIEW",
+     "category": "ambiguous"
+    },
+    {
+     "question": "SRA authorisation number",
+     "expect": "firm.sra_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "How many partners are there?",
+     "expect": "firm.partners",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of solicitors",
+     "expect": "firm.solicitors",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "How many qualified lawyers do you have?",
+     "expect": "REVIEW",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "How many trainees?",
+     "expect": "firm.trainees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Total number of fee earners",
+     "expect": "REVIEW",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "Professional indemnity cover (GBP)",
+     "expect": "professional_indemnity.limit_gbp",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Who insures you for professional indemnity?",
+     "expect": "professional_indemnity.insurer",
+     "category": "paraphrase"
+    },
+    {
+     "question": "When does your PI insurance renew?",
+     "expect": "professional_indemnity.renewal_date",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Cyber insurance limit",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Are conflict checks automated?",
+     "expect": "practice.conflict_checks_automated",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Do you hold a legal aid contract?",
+     "expect": "practice.legal_aid_contract",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "What proportion of your clients are in the public sector?",
+     "expect": "practice.clients_public_sector_pct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "What proportion of your revenue comes from the public sector?",
+     "expect": "REVIEW",
+     "category": "population",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "w04_hospitality",
+   "description": "hotel group; counts of different venue types and seasonal staff",
+   "source": {
+    "group": {
+     "brand": "Marlowe & Finch Hotels",
+     "founded_year": 1987,
+     "hotels": 14,
+     "restaurants": 9
+    },
+    "people": {
+     "permanent_employees": 1180,
+     "seasonal_workers": 320,
+     "apprentices": 46
+    },
+    "guests": {
+     "annual_guest_nights": 612000,
+     "average_review_score": 4.4
+    },
+    "sustainability": {
+     "green_key_certified_hotels": 6,
+     "food_waste_tonnes_last_year": 210,
+     "renewable_electricity": true
+    },
+    "licences": {
+     "alcohol_licence_holder": "Marlowe & Finch Hotels Ltd",
+     "fire_certificate_current": true
+    }
+   },
+   "questions": [
+    {
+     "question": "In what year did the group start trading?",
+     "expect": "group.founded_year",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many hotels do you own or manage?",
+     "expect": "group.hotels",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many restaurants do you have?",
+     "expect": "group.restaurants",
+     "category": "exact",
+     "kind": "number"
+    },
+    {
+     "question": "How many bars do you have?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Number of permanent staff",
+     "expect": "people.permanent_employees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many seasonal staff do you hire?",
+     "expect": "people.seasonal_workers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Total workforce including seasonal workers",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "How many apprentices are currently employed?",
+     "expect": "people.apprentices",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many employees did you have last year?",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Guest nights per year",
+     "expect": "guests.annual_guest_nights",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Average guest rating",
+     "expect": "guests.average_review_score",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many of your hotels hold Green Key?",
+     "expect": "sustainability.green_key_certified_hotels",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many of your restaurants hold Green Key?",
+     "expect": "REVIEW",
+     "category": "population",
+     "kind": "number"
+    },
+    {
+     "question": "Tonnes of food waste last year",
+     "expect": "sustainability.food_waste_tonnes_last_year",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Tonnes of food waste this year",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Is your electricity from renewable sources?",
+     "expect": "sustainability.renewable_electricity",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Who holds the alcohol licence?",
+     "expect": "licences.alcohol_licence_holder",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Is your fire certificate valid?",
+     "expect": "licences.fire_certificate_current",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Is your fire certificate expired?",
+     "expect": "REVIEW",
+     "category": "negation",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "w05_engineering",
+   "description": "engineering contractor with employees at two levels and safety statistics by year",
+   "source": {
+    "business": {
+     "legal_name": "Corvane Engineering Services Ltd",
+     "employees": 660,
+     "turnover_gbp": 91000000
+    },
+    "divisions": {
+     "rail": {
+      "employees": 240
+     },
+     "nuclear": {
+      "employees": 150
+     }
+    },
+    "health_safety": {
+     "riddor_reports_2025": 3,
+     "riddor_reports_2024": 5,
+     "lost_time_incident_rate_2025": 0.21,
+     "fatalities_ever": 0,
+     "safety_policy_reviewed": "2026-02-01"
+    },
+    "certifications": {
+     "cscs_card_holders_pct": 92,
+     "achilles_uvdb": true,
+     "constructionline_gold": false
+    },
+    "finance": {
+     "banker": "Westerham Private Bank",
+     "payment_terms_days": 45
+    }
+   },
+   "questions": [
+    {
+     "question": "Registered company name",
+     "expect": "business.legal_name",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Total employees",
+     "expect": "business.employees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many people work in your rail division?",
+     "expect": "divisions.rail.employees",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "How many people work in your nuclear division?",
+     "expect": "divisions.nuclear.employees",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "How many people work in your marine division?",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Annual turnover",
+     "expect": "business.turnover_gbp",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Turnover of the rail division",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Number of RIDDOR reportable incidents in 2025",
+     "expect": "health_safety.riddor_reports_2025",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Number of RIDDOR reportable incidents in 2024",
+     "expect": "health_safety.riddor_reports_2024",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Number of RIDDOR reportable incidents in 2023",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Number of RIDDOR reportable incidents in the last three years",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Lost time incident rate for 2025",
+     "expect": "health_safety.lost_time_incident_rate_2025",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Any fatalities in the company's history?",
+     "expect": "REVIEW",
+     "category": "type",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many fatalities have you had?",
+     "expect": "health_safety.fatalities_ever",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "When was the safety policy last reviewed?",
+     "expect": "health_safety.safety_policy_reviewed",
+     "category": "paraphrase",
+     "kind": "date"
+    },
+    {
+     "question": "Percentage of site staff holding a CSCS card",
+     "expect": "certifications.cscs_card_holders_pct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Are you registered with Achilles UVDB?",
+     "expect": "certifications.achilles_uvdb",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are you registered with Constructionline?",
+     "expect": "certifications.constructionline_gold",
+     "category": "scope",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Who are your bankers?",
+     "expect": "finance.banker",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Standard payment terms (days)",
+     "expect": "finance.payment_terms_days",
+     "category": "paraphrase",
+     "kind": "number"
+    }
+   ]
+  },
+  {
+   "id": "w06_charity",
+   "description": "charity grant application; volunteers vs employees, income by year, trustee counts",
+   "source": {
+    "charity": {
+     "name": "Bridgewater Community Trust",
+     "registered_number": "1098765",
+     "year_registered": 2004
+    },
+    "people": {
+     "trustees": 9,
+     "paid_staff": 28,
+     "volunteers": 410,
+     "volunteer_hours_last_year": 38500
+    },
+    "income": {
+     "total_income_gbp_2025": 3150000,
+     "total_income_gbp_2024": 2870000,
+     "grants_pct": 58,
+     "donations_pct": 22
+    },
+    "governance": {
+     "safeguarding_policy": true,
+     "safeguarding_lead": "Amira Haddad",
+     "accounts_independently_examined": true,
+     "audit_required": false
+    },
+    "reach": {
+     "beneficiaries_last_year": 12600,
+     "counties_served": 3
+    }
+   },
+   "questions": [
+    {
+     "question": "Charity registration number",
+     "expect": "charity.registered_number",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Year of registration",
+     "expect": "charity.year_registered",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many trustees do you have?",
+     "expect": "people.trustees",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Number of paid employees",
+     "expect": "people.paid_staff",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many volunteers support your work?",
+     "expect": "people.volunteers",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "How many people work for the charity in total?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "number"
+    },
+    {
+     "question": "Volunteer hours given last year",
+     "expect": "people.volunteer_hours_last_year",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Volunteer hours given this year",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Total income for 2025",
+     "expect": "income.total_income_gbp_2025",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Total income for 2024",
+     "expect": "income.total_income_gbp_2024",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Total income for 2026",
+     "expect": "REVIEW",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "Percentage of income from grants",
+     "expect": "income.grants_pct",
+     "category": "paraphrase",
+     "kind": "number"
+    },
+    {
+     "question": "Percentage of income from trading",
+     "expect": "REVIEW",
+     "category": "unsupported",
+     "kind": "number"
+    },
+    {
+     "question": "Do you have a safeguarding policy?",
+     "expect": "governance.safeguarding_policy",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Who is your designated safeguarding officer?",
+     "expect": "governance.safeguarding_lead",
+     "category": "paraphrase"
+    },
+    {
+     "question": "Are your accounts independently examined?",
+     "expect": "governance.accounts_independently_examined",
+     "category": "paraphrase",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "Are your accounts audited?",
+     "expect": "REVIEW",
+     "category": "scope",
+     "kind": "radio",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "question": "How many people benefited last year?",
+     "expect": "reach.beneficiaries_last_year",
+     "category": "period",
+     "kind": "number"
+    },
+    {
+     "question": "How many counties do you operate in?",
+     "expect": "reach.counties_served",
+     "category": "paraphrase",
+     "kind": "number"
+    }
+   ]
+  }
+ ]
+}
