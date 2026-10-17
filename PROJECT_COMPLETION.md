@@ -264,6 +264,7 @@ Other commands: `ask` (which source value answers this question; no browser) and
 ## 9. Known limitations and blockers
 
 - **No real portal has been tested.** All browser evidence is from local fixtures written by the same engineer. Real-portal reliability is unknown.
+- **One browser test is timing-sensitive.** `tests/web/test_spa_browser.py::test_document_navigation_stops_and_loss_is_reported` failed once in a full run during closeout (passed 3/3 in isolation and in a second full run: 514 passed, 2 xfailed). The cause was not diagnosed; rerun it before treating a single failure as a regression.
 - Client-side state verification needs a caller-supplied `state_reader`; without one only the DOM is checked. Server-side persistence is never verified.
 - Page-side blur handlers, reveals later than ~150 ms after a field blur (default mode), Next buttons inside shadow roots/iframes, and non-English forms are unsupported or untested.
 - A script-driven submission hidden behind a normal-looking "Next" button cannot be detected before the click (section 5.1).

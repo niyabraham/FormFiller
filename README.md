@@ -88,6 +88,7 @@ FormFiller is intended to assist with data entry, not to make the final business
 ## Current limitations
 
 - **Real-portal validation is pending.** The current evidence comes from local fixtures and local demo applications, not a real RFI portal.
+- **One browser test is timing-sensitive.** `tests/web/test_spa_browser.py::test_document_navigation_stops_and_loss_is_reported` failed once in a full run during closeout (passed 3/3 in isolation and in a second full run: 514 passed, 2 xfailed). The cause was not diagnosed; rerun it before treating a single failure as a regression.
 - **Late conditional fields may be missed.** Fields revealed well after an interaction may appear outside the current settling window.
 - **Widget coverage is incomplete.** Only supported and tested widget patterns are handled; other custom controls may stop with a review reason.
 - **Some navigation is unsupported.** Finding fields inside an open Shadow DOM does not mean navigation controls inside shadow roots or iframes are fully supported.
