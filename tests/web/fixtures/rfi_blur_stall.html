@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Blur stall RFI</title></head>
+<body>
+<!-- Fictional local page. After the first input event the main thread is busy for ?block ms (default 1500): the executor's
+     blur is queued behind that task and times out, yet the typed value stays on the page and reads back correctly. That is
+     the "commit never happened but the read-back looks right" case. The page counts real submit events in window.__submits
+     and shows a confirmation text, so a test can tell whether the form was submitted. Nothing leaves the browser. -->
+<form id="f" novalidate>
+  <label for="org">Organization name</label>
+  <input id="org" name="org" type="text" required>
+  <button type="submit" id="go">Submit application</button>
+</form>
+<p id="done" hidden>Thank you, your response was received</p>
+<script>
+  const BLOCK = +(new URLSearchParams(location.search).get('block') || 1500);
+  window.__submits = 0;
+  let armed = false;
+  document.addEventListener('input', () => {
+    if (armed) return; armed = true;
+    setTimeout(() => { const t = performance.now(); while (performance.now() - t < BLOCK); }, 0);
+  }, true);
+  document.getElementById('f').addEventListener('submit', e => {
+    e.preventDefault(); window.__submits++; document.getElementById('done').hidden = false;
+  });
+</script>
+</body></html>

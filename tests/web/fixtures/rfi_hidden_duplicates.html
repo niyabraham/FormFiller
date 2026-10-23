@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Hidden duplicates RFI</title>
+<!-- Fictional page modelled on a template gallery that shows a form two ways: a scaled, aria-hidden thumbnail of it in the
+     header, plus the real form. The page also carries a CSS-only menu toggle, an inert promo and a honeypot. None of
+     the aria-hidden / inert controls is a question; the real form, an explicit aria-hidden="false" control and two
+     conditional reveals (one by `hidden`, one by flipping aria-hidden) must keep working. -->
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .thumb { width: 560px; transform: scale(0.71); transform-origin: left top; pointer-events: none; user-select: none; }
+  #retention-wrap[aria-hidden="true"] { display: none; }
+</style></head>
+<body>
+<!-- CSS-only navigation toggle: id only, no label text -->
+<input type="checkbox" id="site-menu" class="sr-only" tabindex="-1" aria-hidden="true">
+
+<aside id="hero">
+  <div class="thumb" aria-hidden="true">
+    <label for="t-vendor">Vendor / company name *</label><input id="t-vendor" name="t_vendor" disabled>
+    <label for="t-product">Product or service name *</label><input id="t-product" name="t_product" disabled>
+    <label for="t-email">Security contact email *</label><input id="t-email" type="email" name="t_email" disabled>
+  </div>
+  <!-- aria-hidden but NOT disabled: the exclusion must come from aria-hidden, not from `disabled` -->
+  <div aria-hidden="true"><label for="preview-vendor">Preview vendor name</label><input id="preview-vendor" name="preview_vendor"></div>
+</aside>
+
+<section id="promo" inert>
+  <label for="promo-email">Promo signup email</label><input id="promo-email" type="email" name="promo_email">
+</section>
+
+<main id="try-it">
+  <form id="f" novalidate>
+    <label for="vendor">Vendor / company name *</label>
+    <input id="vendor" name="vendor" required aria-required="true">
+
+    <div class="name-group">
+      <input id="first" name="contact.first" placeholder="First name" autocomplete="given-name">
+      <input id="last" name="contact.last" placeholder="Last name" autocomplete="family-name">
+    </div>
+
+    <label for="sec-email">Security contact email *</label>
+    <input id="sec-email" type="email" name="sec_email" required>
+
+    <!-- explicit aria-hidden="false" is not hidden -->
+    <div aria-hidden="false"><label for="web">Company website</label><input id="web" name="web"></div>
+
+    <fieldset>
+      <legend>Do you process personal data?</legend>
+      <label><input type="radio" name="pd" value="yes"> Yes</label>
+      <label><input type="radio" name="pd" value="no"> No</label>
+    </fieldset>
+    <div id="dpo-wrap" hidden><label for="dpo">DPO name</label><input id="dpo" name="dpo"></div>
+    <!-- reveal that flips aria-hidden (an accordion-style panel) -->
+    <div id="retention-wrap" aria-hidden="true"><label for="retention">Data retention period</label><input id="retention" name="retention"></div>
+
+    <!-- honeypot: aria-hidden on the control itself -->
+    <input id="hp" name="website_url_confirm" aria-hidden="true" tabindex="-1" autocomplete="off">
+  </form>
+</main>
+<script>
+  document.querySelectorAll('input[name=pd]').forEach(r => r.addEventListener('change', () => {
+    const yes = document.querySelector('input[name=pd]:checked').value === 'yes';
+    document.getElementById('dpo-wrap').hidden = !yes;
+    document.getElementById('retention-wrap').setAttribute('aria-hidden', yes ? 'false' : 'true');
+  }));
+</script>
+</body></html>

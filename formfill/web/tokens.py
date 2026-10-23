@@ -59,12 +59,24 @@ NEUTRAL = {"total"}
 # entity is a QUALIFIERS word ("parent", "subsidiary"), which stays mandatory.
 SELF_REFERENCE = {"company"}
 
+# Words that say a question (or the form section it sits in) is about an organisation. A generic `name` key under an
+# organisation key (`company.name`, `vendor.name`) answers only such a question: "Name", "Full name" or "Contact name"
+# would otherwise be answered with the company's name. ("organization", "business", "firm" are already "company".)
+ORGANISATION_WORDS = {"company", "vendor", "supplier", "contractor", "institution", "employer", "entity", "enterprise",
+                      "corporation", "corp"}
+
 # Phrase fixes applied before splitting.
 _PHRASES = [
     (re.compile(r"\be[\s-]?mail\b"), "email"),
     (re.compile(r"\bfull[\s_-]?time\b"), "fulltime"),
     (re.compile(r"\bpart[\s_-]?time\b"), "parttime"),
     (re.compile(r"\bdate of birth\b"), "birth date"),
+    # Name parts are one concept each, not "name" plus a modifier. Left as two tokens, `company.name` explains half of
+    # "First name" and scores 0.67, so a company name was typed into a person's field. "Surname" (one word) and
+    # "last_name" / "lastName" (any key style) land on the same token as "Last name".
+    (re.compile(r"\b(?:first|given|fore)[\s_-]?name\b"), "firstname"),
+    (re.compile(r"\bmiddle[\s_-]?name\b"), "middlename"),
+    (re.compile(r"\b(?:last|family|sur)[\s_-]?name\b"), "lastname"),
     # spelled-out acronyms meet their short form on both sides (question text and JSON keys)
     (re.compile(r"\bmulti[\s-]?factor(?:\s+authentication)?\b"), "mfa"),
     (re.compile(r"\bsingle[\s-]?sign[\s-]?on\b"), "sso"),
@@ -88,7 +100,7 @@ SYNONYMS: dict[str, list[str]] = {
     "dob": ["birth", "date"], "birthdate": ["birth", "date"], "birthday": ["birth", "date"],
     "organization": ["company"], "organisation": ["company"], "org": ["company"],
     "firm": ["company"], "business": ["company"],
-    "surname": ["last", "name"], "zip": ["postal"], "postcode": ["postal"],
+    "zip": ["postal"], "postcode": ["postal"],  # ("surname" is a phrase fix above: it must meet "last name" as one token)
     "hq": ["headquarter"],
     # the two inflections the Phase 2 benchmark demonstrated (supported/support, encrypted/encryption)
     "supported": ["support"], "encrypted": ["encryption"], "encrypt": ["encryption"],

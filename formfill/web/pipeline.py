@@ -97,7 +97,10 @@ def run_form(
     submission: dict = {}
     if submit:
         blockers = [i for i in items.values() if i.plan.status == "REVIEW" and i.plan.required]
-        broken = [i for i in items.values() if i.plan.status == "ANSWER" and i.verified is False]
+        # An answer blocks submission if it failed verification OR was never successfully entered (filled=False: the fill or
+        # its blur-commit raised, e.g. a blur timeout on a busy page). Its text may still read back correctly, which proves
+        # only what the DOM holds, not that the application recorded it; overall_status already treats it as FAILED.
+        broken = [i for i in items.values() if i.plan.status == "ANSWER" and (not i.filled or i.verified is False)]
         if unsettled:
             submission = {"attempted": False, "outcome": "SKIPPED", "detail": f"{len(unsettled)} answer(s) were entered on a page that never settled"}
         elif incomplete:
@@ -107,7 +110,7 @@ def run_form(
                                        "completion unconfirmed: no recognised next-step control, so the last step cannot be told from an unknown Next button")}
         elif blockers or broken:
             submission = {"attempted": False, "outcome": "SKIPPED",
-                          "detail": f"{len(blockers)} required item(s) need review, {len(broken)} failed verification"}
+                          "detail": f"{len(blockers)} required item(s) need review, {len(broken)} answer(s) not entered or failed verification"}
         else:
             submission = submit_form(page, submit_selector, success_text, timeout_ms)
             if out:

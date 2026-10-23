@@ -29,9 +29,20 @@ _EXTRACT_JS = r"""
 (frameIndex) => {
   const SKIP = new Set(['hidden','submit','button','reset','image','file','password']);
   const txt = n => (n && n.textContent || '').replace(/\s+/g, ' ').trim();
+  // aria-hidden="true" / inert: the page itself says nobody is meant to use this subtree (a scaled preview thumbnail of the
+  // form, a CSS-only menu toggle, a backgrounded modal). Such a control is not a question. Walks the composed tree, so a
+  // control inside an open shadow root is judged by the ancestors of its host as well.
+  const hiddenByPage = el => {
+    for (let n = el; n; n = n.parentElement || (n.getRootNode && n.getRootNode().host)) {
+      if (n.nodeType === 1 && (n.getAttribute('aria-hidden') === 'true' || n.hasAttribute('inert'))) return true;
+    }
+    return false;
+  };
   const visible = el => {
-    try { return el.checkVisibility ? el.checkVisibility() : !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length); }
-    catch (e) { return true; }
+    try {
+      if (hiddenByPage(el)) return false;
+      return el.checkVisibility ? el.checkVisibility() : !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    } catch (e) { return true; }
   };
   const byIds = (ids, el) => { const root = (el && el.getRootNode && el.getRootNode().getElementById) ? el.getRootNode() : document; return (ids || '').split(/\s+/).filter(Boolean).map(i => root.getElementById(i)).filter(Boolean); };
   const labelText = lab => { const c = lab.cloneNode(true); c.querySelectorAll('input,select,textarea,button').forEach(x => x.remove()); return txt(c); };
@@ -149,7 +160,9 @@ def _extract(frame: Frame, index: int) -> list[Control]:
 def discover(page: Page) -> FormSchema:
     """Return every fillable control in the page and its same-process iframes,
     in document order. Hidden controls are included with `visible=False` so
-    callers can tell "not asked" from "not present"."""
+    callers can tell "not asked" from "not present". "Hidden" includes controls
+    inside an `aria-hidden="true"` or `inert` subtree, which the page has marked
+    as not for use (preview thumbnails, menu toggles): they are never questions."""
     controls: list[Control] = []
     notes: list[dict] = []
     for i, frame in enumerate(page.frames):

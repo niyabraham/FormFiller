@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Late reset</title></head>
+<body>
+<!-- Simulates a single-page app that is still booting when a field is filled: 500 ms after the FIRST input event the app
+     "re-renders" the control. ?mode=reset   -> the same element's value is wiped (a controlled input re-rendered)
+                                  ?mode=replace -> the element is replaced by a fresh node (the control re-mounted)
+                                  ?mode=none    -> nothing happens (an app that is ready) -->
+<form id="f" novalidate>
+  <label for="v">Vendor / company name</label>
+  <input id="v" name="vendor" type="text">
+</form>
+<script>
+  const mode = new URLSearchParams(location.search).get('mode') || 'reset';
+  const v = document.getElementById('v');
+  let armed = false;
+  v.addEventListener('input', () => {
+    if (armed) return;
+    armed = true;
+    setTimeout(() => {
+      if (mode === 'reset') { v.value = ''; }
+      else if (mode === 'replace') { const n = v.cloneNode(false); n.value = ''; v.replaceWith(n); }
+    }, 500);
+  });
+</script>
+</body></html>

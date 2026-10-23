@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Diagnostic controlled input</title></head>
+<body>
+<!-- Fictional local page: a controlled-input emulation. Typed text is not copied into app state until `mode=adopt`; a
+     later render writes state back into the input, which erases the typed text when the state is empty (mode=clear).
+     The write happens in renderControlled(), so a setter trace should name that function. -->
+<form id="f" novalidate>
+  <label for="a">Organization name</label>
+  <input id="a" name="a" type="text">
+</form>
+<script>
+  const mode = new URLSearchParams(location.search).get('mode') || 'clear';
+  const state = { value: '' };
+  const input = document.getElementById('a');
+  function renderControlled() { input.value = state.value; }
+  input.addEventListener('input', () => { if (mode === 'adopt') state.value = input.value; });
+  let armed = false;
+  document.addEventListener('input', () => {
+    if (armed) return; armed = true;
+    setTimeout(renderControlled, 500);
+  }, true);
+</script>
+</body></html>
