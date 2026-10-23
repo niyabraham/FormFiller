@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Diagnostic boot</title></head>
+<body>
+<!-- Fictional local page for the probe tests. It emulates a single-page app that boots late: a TanStack-like bootstrap flag
+     object (self.$_TSR) is deleted when "hydration" ends, and the app clears the field once during boot.
+     Params: trigger=input|load  (what starts the boot)   block=<ms> main-thread busy loop before the boot work
+             lag=<ms> delay before the block  order=reset-then-ready|ready-then-reset  gap=<ms> between the two events
+     window.__bootLog records the page's own truth: block-start, block-end, reset, ready (performance.now()). -->
+<form id="f" novalidate>
+  <label for="a">Organization name</label>
+  <input id="a" name="a" type="text">
+</form>
+<script>
+  const q = new URLSearchParams(location.search);
+  const num = (k, d) => +(q.get(k) ?? d);
+  const trigger = q.get('trigger') || 'input', BLOCK = num('block', 800), LAG = num('lag', 0), GAP = num('gap', 250);
+  const order = q.get('order') || 'reset-then-ready';
+  self.$_TSR = { hydrated: false, streamEnded: true, h() { this.hydrated = true; delete self.$_TSR; } };
+  window.__booted = false; window.__bootLog = [];
+  const log = e => window.__bootLog.push({ e, t: Math.round(performance.now()) });
+  const field = document.getElementById('a');
+  const reset = () => { field.value = ''; log('reset'); };
+  const ready = () => { self.$_TSR && self.$_TSR.h(); window.__booted = true; log('ready'); };
+  let started = false;
+  function boot() {
+    if (started) return; started = true;
+    setTimeout(() => {
+      log('block-start'); const t = performance.now(); while (performance.now() - t < BLOCK);
+      log('block-end');
+      if (order === 'reset-then-ready') { reset(); setTimeout(ready, GAP); } else { ready(); setTimeout(reset, GAP); }
+    }, LAG);
+  }
+  if (trigger === 'load') boot(); else document.addEventListener('input', boot, true);
+</script>
+</body></html>

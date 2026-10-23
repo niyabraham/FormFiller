@@ -56,6 +56,7 @@ from formfill.web.tokens import (
     IMPLICIT_NOUNS,
     NEGATORS,
     NEUTRAL,
+    ORGANISATION_WORDS,
     QUALIFIERS,
     SELF_REFERENCE,
     period_markers,
@@ -310,6 +311,43 @@ def _apply_context(scored: list[list], q: set[str], section: set[str], is_count:
                 r[1].append(f"counting question: unexplained modifier {sorted(mods)}; the named entity does not explain it")
 
 
+def _is_organisation_name(leaf: Leaf) -> bool:
+    """The organisation's own name key: `company.name`, `vendor.legal_name`, `company.trading_name` (a name key whose only
+    extra words are scope words, directly under an organisation key). `company.contact_name` is a person's name."""
+    return ("name" in leaf.leaf_tokens and leaf.leaf_tokens - {"name"} <= QUALIFIERS and len(leaf.shape) >= 2
+            and bool(set(tokenize(leaf.shape[-2])) & ORGANISATION_WORDS))
+
+
+def _apply_entity_name_guard(scored: list[list], q: set[str], section: set[str]) -> None:
+    """Whose name? A question that says only "name" ("Name", "Full name", "Contact name", "Project name") does not say
+    it asks for an organisation's name, yet `company.name` explains its one word and scored up to 1.0.
+
+    Applies only when the question and its form section name no organisation (ORGANISATION_WORDS) and the source has an
+    organisation-name candidate. Then every candidate whose only link to the question is the word "name" (no other
+    question word is in its key or path) is capped at UNEXPLAINED_CAP and stays visible to the reviewer:
+
+      * the organisation-name key, which is the bug;
+      * and the person-name keys too (`applicant.name`, `contact.full_name`): "Name" next to `company.name` is a genuine
+        tie, and capping only the company key would let a lone person key win it. Before this guard that tie was REVIEW
+        and it stays REVIEW.
+
+    A question that names more than "name" keeps the key it names: "Contact name" keeps `contact.name`, "Full name"
+    keeps `contact.full_name`. Only lowers scores, never raises one; without an organisation-name candidate, or when
+    the question names an organisation, nothing changes."""
+    if "name" not in q or (q | section) & ORGANISATION_WORDS:
+        return
+    live = [r for r in scored if r[0] > 0 and "name" in r[3].leaf_tokens]
+    if not any(_is_organisation_name(r[3]) for r in live):
+        return
+    held = [r for r in live if not (q & (r[3].leaf_tokens | r[3].parent_tokens)) - {"name"}]
+    ambiguous = len({str(r[3].value).strip().lower() for r in held}) > 1  # different entities' names, equally relevant
+    for r in held:
+        r[0] = min(r[0], UNEXPLAINED_CAP)
+        r[1].append(
+            ("ambiguous: " if ambiguous else "") + "the question says only \"name\" and names no organisation, so it is not known "
+            f"whether it asks for an organisation's name or a person's; {r[3].path!r} cannot be chosen on that word alone")
+
+
 def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Candidate]:
     q = set(question.concept_tokens)
     section = set(tokenize(question.control.section))
@@ -319,5 +357,6 @@ def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Can
         if s > 0:
             scored.append([s, flags, [], leaf])
     _apply_context(scored, q, section, question.is_count)
+    _apply_entity_name_guard(scored, q, section)
     scored.sort(key=lambda t: (-t[0], t[3].path))
     return [Candidate(leaf.path, leaf.value, round(s, 4), flags, evidence) for s, flags, evidence, leaf in scored[:top_k]]
