@@ -47,7 +47,15 @@ def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
     while True:
         try:
             for frame in page.frames:
-                if frame.locator(selector).count() > 0:
+                visible = frame.locator(selector).evaluate_all(
+                    """els => els.some(el => {
+                        if (typeof el.checkVisibility === "function") return el.checkVisibility();
+                        const style = window.getComputedStyle(el);
+                        return style.display !== "none" && style.visibility !== "hidden" &&
+                            !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+                    })"""
+                )
+                if visible:
                     return True
         except Exception:  # noqa: BLE001 - a frame may detach during discovery
             pass
