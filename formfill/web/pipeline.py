@@ -30,7 +30,7 @@ from formfill.web.retrieve import index_source
 from formfill.web.understand import understand
 
 
-def _wait_for_form_controls(page: Page, timeout_ms: int) -> bool:
+def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
     """Wait briefly for asynchronously rendered form controls.
 
     Navigation's load event does not guarantee that a client-rendered form
@@ -46,7 +46,7 @@ def _wait_for_form_controls(page: Page, timeout_ms: int) -> bool:
         page.wait_for_function(
             "(selector) => document.querySelector(selector) !== null",
             arg=selector,
-            timeout=min(max(timeout_ms, 1), 5000),
+            timeout=min(max(readiness_timeout_ms, 1), 10000),
         )
     except Exception:  # noqa: BLE001 - timeout or navigation; caller reports no controls if none exist
         pass
@@ -66,6 +66,7 @@ def run_form(
     out_dir: str | Path | None = None,
     max_rounds: int = 3,
     timeout_ms: int = 5000,
+    readiness_timeout_ms: int = 5000,
     policy: _steps.DiscoveryPolicy | None = None,
 ) -> RunResult:
     leaves = index_source(source)
@@ -78,7 +79,7 @@ def run_form(
     # before its first discovery so JS-rendered forms are not silently missed.
     controls_ready = True
     if policy is None:
-        controls_ready = _wait_for_form_controls(page, timeout_ms)
+        controls_ready = _wait_for_form_controls(page, readiness_timeout_ms)
         if not controls_ready:
             warnings.append(
                 "no form controls appeared before the readiness timeout; "
