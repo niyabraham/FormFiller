@@ -28,8 +28,10 @@ class ItemResult:
 
 
 def overall_status(items: list[ItemResult], submission: dict | None) -> str:
-    failed = any(i.plan.status == "ANSWER" and (not i.filled or i.verified is False) for i in items)
     outcome = (submission or {}).get("outcome")
+    if not items:
+        return "FAILED" if outcome in ("ERROR", "BLOCKED_BY_VALIDATION") else "NEEDS_REVIEW"
+    failed = any(i.plan.status == "ANSWER" and (not i.filled or i.verified is False) for i in items)
     if failed or outcome in ("ERROR", "BLOCKED_BY_VALIDATION"):
         return "FAILED"
     if outcome == "CONFIRMED":

@@ -74,6 +74,12 @@ def item(status, filled=False, verified=None):
     return ItemResult(plan=p, filled=filled, verified=verified)
 
 
+def test_empty_run_needs_review_not_filled():
+    assert overall_status([], None) == "NEEDS_REVIEW"
+    assert overall_status([], {"outcome": "SKIPPED"}) == "NEEDS_REVIEW"
+    assert overall_status([], {"outcome": "ERROR"}) == "FAILED"
+
+
 def test_status_matrix():
     ok = item("ANSWER", True, True)
     assert overall_status([ok], None) == "FILLED"

@@ -205,3 +205,75 @@ def test_read_back_reports_what_the_page_actually_holds(open_fixture):
     page.fill("#ft", "-5")  # violates min=0
     obs = read_back(page, ctl)
     assert obs.value == "-5" and obs.valid is False
+
+# ---- asynchronous readiness and empty-page safety ----------------------------
+
+
+def test_pipeline_waits_for_delayed_javascript_form(page):
+    page.set_content("""
+        <!doctype html><html><body>
+          <div id="mount"></div>
+          <script>
+            setTimeout(() => {
+              document.querySelector("#mount").innerHTML =
+                '<label for="org">Organization name</label><input id="org" name="org">';
+            }, 150);
+          </script>
+        </body></html>
+    """)
+
+    result = run_form(page, {"company": {"name": "Delayed Corp"}}, timeout_ms=1500)
+
+    assert len(result.items) == 1
+    assert result.items[0].plan.status == "ANSWER"
+    assert result.items[0].verified is True
+    assert page.input_value("#org") == "Delayed Corp"
+    assert result.status == "FILLED"
+
+
+def test_empty_page_is_not_filled_and_is_never_submitted(page):
+    page.set_content("""
+        <!doctype html><html><body>
+          <form id="f">
+            <button type="submit">Submit</button>
+          </form>
+          <script>
+            window.submitted = false;
+            document.querySelector("#f").addEventListener("submit", event => {
+              event.preventDefault();
+              window.submitted = true;
+            });
+          </script>
+        </body></html>
+    """)
+
+    result = run_form(page, {}, submit=True, readiness_timeout_ms=100)
+
+    assert result.items == []
+    assert result.status == "NEEDS_REVIEW"
+    assert result.submission["attempted"] is False
+    assert result.submission["outcome"] == "SKIPPED"
+    assert page.evaluate("() => window.submitted") is False
+    assert any("no form controls" in warning for warning in result.warnings)
+
+def test_pipeline_readiness_detects_controls_inside_iframes(page):
+    page.set_content("""
+        <!doctype html><html><body>
+          <iframe title="embedded form" srcdoc="
+            <label for='email'>Security contact email</label>
+            <input id='email' type='email'>
+          "></iframe>
+        </body></html>
+    """)
+
+    result = run_form(
+        page,
+        {"security": {"contact": {"email": "sec@example.test"}}},
+        timeout_ms=1500,
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].verified is True
+    assert page.frames[1].locator("#email").input_value() == "sec@example.test"
+    assert result.status == "FILLED"
+
