@@ -247,7 +247,7 @@ def test_empty_page_is_not_filled_and_is_never_submitted(page):
         </body></html>
     """)
 
-    result = run_form(page, {}, submit=True, timeout_ms=100)
+    result = run_form(page, {}, submit=True, readiness_timeout_ms=100)
 
     assert result.items == []
     assert result.status == "NEEDS_REVIEW"
