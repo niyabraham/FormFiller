@@ -102,7 +102,7 @@ FormFiller is intended to assist with data entry, not to make the final business
 
 ## Current limitations
 
-- **Real-portal validation is pending.** The current evidence includes local fixtures and a limited, non-submitting fill test on a public QA practice form using fictional data; this is not a full end-to-end validation of a real RFI portal.
+- **Real-portal validation is pending.** The current evidence is local fixtures and local demo applications, plus one limited, non-submitting observation on a public QA practice form that found 11 controls after the readiness wait. That observation covered control discovery only; it did not verify field matching, filling, read-back, or reset behaviour on that page, and it is not a validation of a real RFI portal.
 - **Late conditional fields may be missed.** Fields revealed well after an interaction may appear outside the current settling window.
 - **Widget coverage is incomplete.** Only supported and tested widget patterns are handled; other custom controls may stop with a review reason.
 - **Some navigation is unsupported.** Finding fields inside an open Shadow DOM does not mean navigation controls inside shadow roots or iframes are fully supported.
