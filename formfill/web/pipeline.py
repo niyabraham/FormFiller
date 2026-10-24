@@ -11,6 +11,7 @@ fixture pages. `run_url` is the convenience wrapper that does the launch.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import time
@@ -29,6 +30,12 @@ from formfill.web.plan import build_plan
 from formfill.web.result import ItemResult, RunResult, overall_status
 from formfill.web.retrieve import index_source
 from formfill.web.understand import understand
+
+# After the last answer is entered the run waits this long before its final read-back, so a page that wipes or replaces
+# a field shortly after it was typed (an app still booting) is reported as a failure instead of "verified". This is
+# detection only: nothing is re-entered, and a reset that happens later than the window is still not seen.
+DEFAULT_CONFIRM_MS = 1000
+MAX_CONFIRM_MS = 10000
 
 
 def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
@@ -79,8 +86,11 @@ def run_form(
     max_rounds: int = 3,
     timeout_ms: int = 5000,
     readiness_timeout_ms: int = 5000,
+    confirm_ms: int = DEFAULT_CONFIRM_MS,
     policy: _steps.DiscoveryPolicy | None = None,
 ) -> RunResult:
+    if not 0 <= confirm_ms <= MAX_CONFIRM_MS:
+        raise ValueError(f"confirm_ms must be between 0 and {MAX_CONFIRM_MS}, got {confirm_ms}")
     leaves = index_source(source)
     controls: dict[str, Control] = {}
     items: dict[str, ItemResult] = {}
@@ -111,6 +121,21 @@ def run_form(
                 items[plan.question_id] = _fill_one(page, question.control, plan, timeout_ms)
     else:
         navigation = _run_steps(page, leaves, controls, items, policy, timeout_ms)
+        if navigation.get("stop_reason") == "document_navigation":
+            # The document was replaced. Controls are located by ids stamped during discovery, so a final discover and
+            # read-back made while the reloaded app is still booting finds nothing and would keep the old "verified"
+            # verdict. Give the new document the same bounded readiness gate as a first load before judging it.
+            with contextlib.suppress(Exception):  # still navigating or closed: judged below as far as possible
+                page.wait_for_load_state("load", timeout=timeout_ms)
+            if not _wait_for_form_controls(page, readiness_timeout_ms):
+                warnings.append(
+                    "the document was replaced and no form controls reappeared before the readiness timeout; "
+                    "earlier answers could not be re-checked"
+                )
+
+    if confirm_ms and any(i.filled for i in items.values()):
+        with contextlib.suppress(Exception):  # page closed or navigating: the read-back below reports what it can
+            page.wait_for_timeout(confirm_ms)
 
     schema = discover(page)
     hidden = [c for c in schema.controls if not c.visible and c.control_id not in items]

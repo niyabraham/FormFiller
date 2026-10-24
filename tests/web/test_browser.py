@@ -277,3 +277,83 @@ def test_pipeline_readiness_detects_controls_inside_iframes(page):
     assert page.frames[1].locator("#email").input_value() == "sec@example.test"
     assert result.status == "FILLED"
 
+
+
+# ---- regression: a value wiped shortly after the read-back must not be reported as FILLED (confirmed bug) ----------
+# late_reset.html re-renders its control 500 ms after the first input event. Before the confirmation window existed the
+# only read-back ran within milliseconds of filling, so the run said FILLED/verified while the field was empty.
+
+SOURCE_VENDOR = {"company": {"name": "Acme Robotics Ltd"}}
+
+
+def _late_reset(page, mode):
+    from pathlib import Path
+
+    page.goto((Path(__file__).parent / "fixtures" / "late_reset.html").as_uri() + f"?mode={mode}")
+    return page
+
+
+@pytest.mark.parametrize("mode", ["reset", "replace"])
+def test_value_wiped_after_fill_is_reported_failed_not_filled(page, mode):
+    _late_reset(page, mode)
+    result = run_form(page, SOURCE_VENDOR)
+    item = result.items[0]
+    assert item.plan.status == "ANSWER" and item.filled is True
+    assert item.verified is False and item.observed == ""
+    assert result.status == "FAILED"
+
+
+def test_stable_page_is_still_filled(page):
+    _late_reset(page, "none")
+    result = run_form(page, SOURCE_VENDOR)
+    assert result.items[0].verified is True and result.status == "FILLED"
+
+
+def test_reset_blocks_submission(page):
+    _late_reset(page, "reset")
+    result = run_form(page, SOURCE_VENDOR, submit=True)
+    assert result.status == "FAILED"
+    assert result.submission["attempted"] is False and result.submission["outcome"] == "SKIPPED"
+
+
+def test_confirmation_window_can_be_disabled_and_is_bounded(page):
+    _late_reset(page, "reset")
+    assert run_form(page, SOURCE_VENDOR, confirm_ms=0).status == "FILLED"  # documents the old single-instant behaviour
+    with pytest.raises(ValueError):
+        run_form(page, SOURCE_VENDOR, confirm_ms=-1)
+    with pytest.raises(ValueError):
+        run_form(page, SOURCE_VENDOR, confirm_ms=60_000)
+
+
+def test_pipeline_waits_for_iframe_form_that_appears_late(page):
+    page.set_content("""
+        <!doctype html><html><body><script>
+          setTimeout(() => {
+            const f = document.createElement("iframe");
+            f.srcdoc = "<label for='email'>Security contact email</label><input id='email' type='email'>";
+            document.body.append(f);
+          }, 300);
+        </script></body></html>
+    """)
+    result = run_form(page, {"security": {"contact": {"email": "sec@example.test"}}}, timeout_ms=1500)
+    assert len(result.items) == 1 and result.items[0].verified is True
+    assert page.frames[1].locator("#email").input_value() == "sec@example.test"
+    assert result.status == "FILLED"
+
+
+def test_form_with_no_supported_answer_is_review_and_nothing_is_typed(page):
+    page.set_content("<body><label for='x'>Blood type of the chief executive</label><input id='x'></body>")
+    result = run_form(page, {"company": {"name": "Acme Robotics Ltd"}}, submit=True)
+    assert result.status == "NEEDS_REVIEW"
+    assert [i.plan.status for i in result.items] == ["REVIEW"]
+    assert page.input_value("#x") == ""
+    assert result.submission.get("attempted") is not True
+
+
+def test_form_that_renders_after_the_readiness_timeout_is_never_filled(page):
+    page.set_content("<body><div id='m'></div><script>setTimeout(() => { m.innerHTML = "
+                     "'<label for=a>Company website</label><input id=a>'; }, 1500)</script></body>")
+    result = run_form(page, {"company": {"website": "https://acme.example"}}, readiness_timeout_ms=300, submit=True)
+    assert result.items == [] and result.status == "NEEDS_REVIEW"
+    assert result.submission["attempted"] is False
+    assert any("no form controls" in w for w in result.warnings)

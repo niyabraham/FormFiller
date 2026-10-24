@@ -68,15 +68,27 @@ python demo_web.py    # fills the local example RFI page (examples/web/rfi_form.
 
 `demo_web.py` writes `output/web/result.json`, `filled.png` and `trace.zip`. Passing `--submit` also submits, but only the local example page and only when no required item needs review; the default never submits.
 
+### Validating on a page you are allowed to test (never submits)
+
+```bash
+python tools/validate_public_form.py --url https://example.test/form --source my_fictional_source.json [--policy] [--confirm-ms 1000]
+```
+
+This script has **no submit option**; it always runs the pipeline in non-submitting mode and a test checks that. Use fictional data and only pages whose owner permits testing. `--policy` walks multi-step forms (pressing only recognised Next-style buttons and refusing submit-type controls). It prints one row per question and the overall status, and writes `result.json`, `filled.png` and `trace.zip` to `--out-dir`. Raise `--confirm-ms` (up to 10000) if a page may reset fields several seconds after they are typed.
+
 ## Verification and test results
 
-Verified on `main` at merge commit `c0adc05` (PR #2), in a fresh clone with a fresh virtual environment (Python 3.13, Playwright Chromium 1194, Linux):
+**These are automated-test and local-fixture results. They are not a validation of any real portal** (see "Current limitations" below).
 
-- **Automated tests:** two full-suite runs were performed on this commit. One run had 562 passed and 2 xfailed (expected failures), in about 3 min 48 s. The other had 561 passed, 1 failed, and 2 xfailed. See the note on an intermittent test below.
-- **SPA fixtures:** `python tools/evaluate_spa.py --policy --out-dir <dir>` ran 26 fixtures with no crashes and reported 0 submit events, 0 submission attempts, 0 submissions in its `submit=True` probe, 0 dialogs accepted, and a correct safe stop on 12 of 12 expected cases. The 3 lost values it reports are planted resets and a full reload, which the run detects and ends as failed. Without `--policy` the script runs the pre-Phase-3C single-page behaviour as a baseline, and in that mode its `submit=True` probe does submit 10 local fixture pages (see `docs/PHASE3C_SPA_EVALUATION.md`).
+Re-verified after the reset/reload-reporting fix, built on `main` at `1ce69b9` (PR #5), in a fresh virtual environment (Python 3.13.17, Playwright 1.64.1, Chrome for Testing 153.0.8010.12 supplied through `FORMFILL_CHROMIUM`, Linux):
+
+- **Automated tests:** `python -m pytest -q` gave **578 passed, 2 xfailed (expected failures), 0 failed** in about 6 min 28 s. Before the fix, the same suite on `1ce69b9` gave 565 passed, 1 failed (the intermittent test described below), 2 xfailed, in about 4 min 25 s. The suite is slower now because every run that filled something waits `confirm_ms` (default 1 s) before its final read-back.
+- **CI:** the `Tests` workflow (pytest on Ubuntu, Python 3.11, Chromium installed by Playwright) passed on the final head of PR #5 (`c8e475f`, run 40065641372) before it was merged. CI for this change is recorded on its own pull request.
+- **SPA fixtures:** `python tools/evaluate_spa.py --policy --out-dir <dir>` ran 26 fixtures: 0 crashes, 0 submit events, 0 submission attempts, 0 submissions in its `submit=True` probe, 0 dialogs accepted, a correct safe stop on 12 of 12 expected cases, and all 3 planted resets detected (the 3 lost values it reports are those planted resets). Without `--policy` the script runs the pre-Phase-3C single-page behaviour as a baseline, and in that mode its `submit=True` probe does submit 10 local fixture pages (see `docs/PHASE3C_SPA_EVALUATION.md`); that mode was not re-run.
 - **Widget fixtures:** `python tools/evaluate_widgets3d.py --out-dir <dir>` reported 12 of 12 expected fields passing fill, DOM readback and fixture application-state commitment, conditional discovery 3/3, and no side-effect or unsettled-report mismatches.
 - **Demo scripts:** `demo.py` finished with "Final verification: PASS"; `demo_web.py` ran and reported `NEEDS_REVIEW` (the example page contains questions the source data does not answer, plus a consent checkbox that is never auto-ticked).
 - **Matching evaluations:** development and additional-set evaluations are recorded in `docs/` and `benchmarks/`. These are development evaluations, not proof of generalisation to unseen real-world portals. They were not re-run for this update.
+- **Lint and types:** neither is configured in the project or CI. Run ad hoc, ruff 0.17.2 reports 11 findings that already existed on `main` (none introduced by this change), and mypy 2.4.0 reports 7 errors, all in `formfill/web/plan.py`, which this change does not touch.
 
 Run the test suite from the repository root:
 
@@ -86,9 +98,14 @@ python -m pytest -q
 
 Both evaluation scripts require an output directory (`--out-dir`) and write there; nothing in `benchmarks/` is overwritten.
 
-**Intermittent test:** `tests/web/test_spa_browser.py::test_document_navigation_stops_and_loss_is_reported` passes on its own and in most full runs, but failed once in two full-suite runs of `c0adc05` (`assert 'NEEDS_REVIEW' == 'FAILED'`). The same failure also reproduced once in 12 parallel runs under CPU load on the earlier commit `4ffe03b`, so it predates PR #2. It appears to be timing-sensitive; the cause has not been investigated or fixed. If it fails, re-run it alone before treating it as a regression.
+### Bugs found and fixed in this round
 
-**Important:** These results are from automated tests and local fixtures. They do not establish production readiness or guarantee that a real website has saved the entered data.
+Both were reproduced locally before being fixed, and each has a regression test.
+
+1. **Outcome depended on timing after a page reload.** The old README listed `test_document_navigation_stops_and_loss_is_reported` as intermittent with an uninvestigated cause. Repeating the `nav_reload` scenario 25 times gave `NEEDS_REVIEW` 15 times and `FAILED` 10 times. Instrumenting the read-back showed the cause: after a document reload the final read-back sometimes ran before the reloaded app had re-mounted its controls, found nothing, and kept the earlier "verified" verdict; when it ran after the re-mount it saw the empty field and reported the loss. The run now waits (bounded, using the same readiness check as a first load) for controls to reappear after a document navigation before judging. After the fix: 40 of 40 runs gave `FAILED`, and 80 of 80 under 8-way parallel load. Regression test: `test_loss_after_reload_is_failed_even_when_the_app_remounts_late` (a page that re-mounts 400 ms after the reload, which failed deterministically before the fix).
+2. **A value wiped after the read-back was reported as `FILLED`.** With `tests/web/fixtures/late_reset.html` (the app wipes or replaces the field 500 ms after the first input) the run reported `FILLED` with the answer "verified" while the field was empty, and `submit=True` would not have been blocked. The only read-back ran within milliseconds of filling. The run now waits `confirm_ms` (default 1000 ms, configurable from 0 to 10000) after the last answer before its final read-back, so a reset inside that window is reported as `FAILED` and blocks submission. Regression tests: `test_value_wiped_after_fill_is_reported_failed_not_filled` (reset and replace modes), `test_reset_blocks_submission`, `test_stable_page_is_still_filled`, `test_confirmation_window_can_be_disabled_and_is_bounded`. This is detection only; nothing is re-entered.
+
+Also pinned by new tests (they already passed): an iframe form that appears late is filled, a form with no supported answer ends `NEEDS_REVIEW` with nothing typed and no submission, and a form that renders after the readiness timeout is never filled or submitted.
 
 ## Safety and human review
 
@@ -102,20 +119,20 @@ FormFiller is intended to assist with data entry, not to make the final business
 
 ## Current limitations
 
-- **Real-portal validation is pending.** The current evidence is local fixtures and local demo applications, plus one limited, non-submitting observation on a public QA practice form that found 11 controls after the readiness wait. That observation covered control discovery only; it did not verify field matching, filling, read-back, or reset behaviour on that page, and it is not a validation of a real RFI portal.
+- **Real-portal validation is not done.** The evidence is local fixtures and local demo applications, plus one earlier limited, non-submitting observation on a public QA practice form that found 11 controls after the readiness wait (control discovery only; field matching, filling, read-back and resets were not verified on it). In the latest round the development environment's network policy blocked the public practice sites, so no live-page run was possible there and nothing here is a claim about those pages. `tools/validate_public_form.py` exists so the run can be done from a machine that can reach the page.
 - **Late conditional fields may be missed.** Fields revealed well after an interaction may appear outside the current settling window.
 - **Widget coverage is incomplete.** Only supported and tested widget patterns are handled; other custom controls may stop with a review reason.
 - **Some navigation is unsupported.** Finding fields inside an open Shadow DOM does not mean navigation controls inside shadow roots or iframes are fully supported.
 - **Answer coverage is limited.** The matcher may abstain when it cannot identify a sufficiently supported answer. This is preferable to guessing but means some questions need manual completion.
 - **Answer correctness depends on source data and matching.** Correctly filling a field does not guarantee that the source answer is complete, current, or appropriate for the RFI.
-- **Post-fill resets are detected but not automatically recovered.** A page that clears or replaces an input shortly after it is typed (for example while an app finishes loading) is reported as a failed or unverified item rather than re-entered automatically. The read-only diagnostic `tools/probe_hydration.py` can measure this on a given page. The pipeline now waits up to 5 seconds by default (capped at 10 seconds) for visible supported controls before initial discovery on the ordinary single-page path, but it does not yet retry a value that resets after filling.
+- **Post-fill resets are detected within a window, not recovered.** The run re-reads answers `confirm_ms` (default 1000 ms) after the last one is entered and reports a changed value as a failure; it does not re-enter it. A reset that happens after that window is not seen. A reset observed earlier on one public template page appeared roughly 3 s after filling (not re-measured in this environment), which is longer than the default window, and its cause has not been established; the repository contains no site-specific handling for it. The read-only diagnostic `tools/probe_hydration.py` can measure timing on a given page. The pipeline also waits up to 5 seconds by default (capped at 10 seconds) for visible supported controls before initial discovery on the ordinary single-page path.
 - **Saving is not confirmed.** DOM readback and application-state checks do not prove server-side persistence.
 
 ## Repository guide
 
 - `formfill/web/` — web-form discovery, understanding, retrieval, validation, execution, and pipeline logic.
 - `tests/` — automated tests.
-- `tools/` — evaluation and provenance utilities, and `probe_hydration.py`, a read-only diagnostic that fills one text field with a fictional marker, never submits, and reports whether and when the page clears it.
+- `tools/` — evaluation and provenance utilities, `validate_public_form.py` (non-submitting run against a page you may test), and `probe_hydration.py`, a read-only diagnostic that fills one text field with a fictional marker, never submits, and reports whether and when the page clears it.
 - `benchmarks/spa/fixtures/` — local SPA and widget test fixtures.
 - `benchmarks/spa/results/` — recorded evaluation outputs.
 - `docs/` — design notes, evaluation reports, and implementation details.
@@ -124,4 +141,4 @@ FormFiller is intended to assist with data entry, not to make the final business
 
 FormFiller is a tested prototype for JSON-driven RFI web-form automation. Its current focus is reliable form discovery, conservative answer matching, supported browser interactions, verification, and safe handoff for human review.
 
-The next major validation milestone is a controlled, non-submitting run against a public or explicitly authorized form, using fictional data, followed by documenting field discovery, answer matching, fill/read-back verification, and any resets or unsupported widgets. Automated CI tests cover local fixtures; they do not replace this real-portal validation.
+The next major validation milestone is a controlled, non-submitting run against a public or explicitly authorized form, using fictional data, via `tools/validate_public_form.py`, followed by documenting field discovery, answer matching, fill/read-back verification, and any resets or unsupported widgets. Automated CI tests cover local fixtures; they do not replace this real-portal validation.

@@ -327,3 +327,37 @@ def test_evaluator_flags_wrong_stage_expectations(browser, base):
     gt["stages"] = [{"step": 1, "discoverable": ["name", "website"]}]  # nothing else is expected at all
     row = run_one(browser, base, "wiz_unmount", gt, SOURCE, True)
     assert row["stage_counts"]["unexpected"] == 4
+
+
+# ---- regression: read-back must not race a reloaded document (confirmed bug) ---------------------------------------
+# Found by repeating nav_reload: its outcome flipped between FAILED and NEEDS_REVIEW (15/25 vs 10/25 locally) because the
+# final discover/read-back sometimes ran while the reloaded app had not re-mounted, so "not found" kept the old verdict.
+
+_RELOAD_SLOW = """<!doctype html><html><body><div id="app"></div><script>
+  const reloaded = sessionStorage.getItem('reloaded') === '1';
+  function mount() {
+    document.getElementById('app').innerHTML =
+      '<label for="co">Legal company name</label><input id="co" name="co" type="text">' +
+      '<button type="button" id="nx">Next</button>';
+    document.getElementById('nx').addEventListener('click', () => {
+      sessionStorage.setItem('reloaded', '1');
+      setTimeout(() => location.reload(), 30);
+    });
+  }
+  if (reloaded) setTimeout(mount, 400); else mount();   // the booting app re-mounts well after the load event
+</script></body></html>"""
+
+
+def _serve_reload_slow(page):
+    page.route("http://reload.test/slow.html", lambda r: r.fulfill(status=200, content_type="text/html", body=_RELOAD_SLOW))
+    page.goto("http://reload.test/slow.html")
+
+
+def test_loss_after_reload_is_failed_even_when_the_app_remounts_late(page):
+    _serve_reload_slow(page)
+    res = run_form(page, SOURCE, policy=DiscoveryPolicy())
+    item = answered(res)["Legal company name"]
+    assert res.navigation["stop_reason"] == "document_navigation"
+    assert item.verified is False and item.observed == ""  # the reload wiped the value and that was actually observed
+    assert res.status == "FAILED"
+
