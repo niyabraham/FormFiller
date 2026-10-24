@@ -102,13 +102,13 @@ FormFiller is intended to assist with data entry, not to make the final business
 
 ## Current limitations
 
-- **Real-portal validation is pending.** The current evidence comes from local fixtures and local demo applications, not a real RFI portal.
+- **Real-portal validation is pending.** The current evidence is local fixtures and local demo applications, plus one limited, non-submitting observation on a public QA practice form that found 11 controls after the readiness wait. That observation covered control discovery only; it did not verify field matching, filling, read-back, or reset behaviour on that page, and it is not a validation of a real RFI portal.
 - **Late conditional fields may be missed.** Fields revealed well after an interaction may appear outside the current settling window.
 - **Widget coverage is incomplete.** Only supported and tested widget patterns are handled; other custom controls may stop with a review reason.
 - **Some navigation is unsupported.** Finding fields inside an open Shadow DOM does not mean navigation controls inside shadow roots or iframes are fully supported.
 - **Answer coverage is limited.** The matcher may abstain when it cannot identify a sufficiently supported answer. This is preferable to guessing but means some questions need manual completion.
 - **Answer correctness depends on source data and matching.** Correctly filling a field does not guarantee that the source answer is complete, current, or appropriate for the RFI.
-- **Pages that reset fields after they are filled are not handled.** A page that clears or replaces an input shortly after it is typed (for example while an app finishes loading) is reported as a failed or unverified item rather than re-entered automatically. The read-only diagnostic `tools/probe_hydration.py` measures this on a given page; there is no readiness gate or retry in the pipeline yet.
+- **Post-fill resets are detected but not automatically recovered.** A page that clears or replaces an input shortly after it is typed (for example while an app finishes loading) is reported as a failed or unverified item rather than re-entered automatically. The read-only diagnostic `tools/probe_hydration.py` can measure this on a given page. The pipeline now waits up to 5 seconds by default (capped at 10 seconds) for visible supported controls before initial discovery on the ordinary single-page path, but it does not yet retry a value that resets after filling.
 - **Saving is not confirmed.** DOM readback and application-state checks do not prove server-side persistence.
 
 ## Repository guide
@@ -124,4 +124,4 @@ FormFiller is intended to assist with data entry, not to make the final business
 
 FormFiller is a tested prototype for JSON-driven RFI web-form automation. Its current focus is reliable form discovery, conservative answer matching, supported browser interactions, verification, and safe handoff for human review.
 
-The next major validation milestone is to test the workflow on a real RFI portal in an authorized, non-submitting environment and document the results.
+The next major validation milestone is a controlled, non-submitting run against a public or explicitly authorized form, using fictional data, followed by documenting field discovery, answer matching, fill/read-back verification, and any resets or unsupported widgets. Automated CI tests cover local fixtures; they do not replace this real-portal validation.
