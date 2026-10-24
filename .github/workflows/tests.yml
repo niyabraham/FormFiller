@@ -27,4 +27,22 @@ jobs:
       - name: Install Chromium
         run: python -m playwright install --with-deps chromium
       - name: Run test suite
-        run: python -m pytest -q
+        run: python -m pytest -q -rf --junitxml=pytest-report.xml
+      - name: Annotate failed tests
+        if: failure()
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          try:
+              root = ET.parse("pytest-report.xml").getroot()
+          except Exception as exc:
+              print(f"::error::no pytest report to annotate: {exc}")
+              raise SystemExit(0)
+          for case in root.iter("testcase"):
+              for kind in ("failure", "error"):
+                  node = case.find(kind)
+                  if node is not None:
+                      text = (node.get("message") or "") + "\n" + (node.text or "")[-1500:]
+                      text = text.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+                      print(f"::error title={case.get('classname')}::{case.get('name')}: {text}")
+          PY
