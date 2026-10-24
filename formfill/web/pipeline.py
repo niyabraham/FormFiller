@@ -30,6 +30,32 @@ from formfill.web.retrieve import index_source
 from formfill.web.understand import understand
 
 
+def _wait_for_form_controls(page: Page, timeout_ms: int) -> bool:
+    """Wait briefly for asynchronously rendered form controls.
+
+    Navigation's load event does not guarantee that a client-rendered form
+    exists. This bounded wait observes controls, not an arbitrary sleep; it
+    never clicks or submits anything. A timeout is handled as an incomplete
+    run by the caller.
+    """
+    selector = (
+        'input, select, textarea, [role="textbox"], [role="combobox"], '
+        '[role="radio"], [role="checkbox"], [contenteditable="true"]'
+    )
+    try:
+        page.wait_for_function(
+            "(selector) => document.querySelector(selector) !== null",
+            arg=selector,
+            timeout=min(max(timeout_ms, 1), 5000),
+        )
+    except Exception:  # noqa: BLE001 - timeout or navigation; caller reports no controls if none exist
+        pass
+    try:
+        return page.locator(selector).count() > 0
+    except Exception:  # noqa: BLE001 - page may have navigated or closed
+        return False
+
+
 def run_form(
     page: Page,
     source: Any,
@@ -46,6 +72,18 @@ def run_form(
     controls: dict[str, Control] = {}
     items: dict[str, ItemResult] = {}
     navigation: dict = {}
+    warnings: list[str] = []
+
+    # The ordinary one-page path has no settle gate. Wait for real controls
+    # before its first discovery so JS-rendered forms are not silently missed.
+    controls_ready = True
+    if policy is None:
+        controls_ready = _wait_for_form_controls(page, timeout_ms)
+        if not controls_ready:
+            warnings.append(
+                "no form controls appeared before the readiness timeout; "
+                "the page may still be loading or may not contain a supported form"
+            )
 
     if policy is None:
         # Rounds handle conditional fields: answering one question can reveal more.
@@ -71,7 +109,10 @@ def run_form(
         _judge(page, controls[qid], item, navigation if policy is not None else None)
 
     incomplete = policy is not None and navigation.get("stop_reason") in _steps.INCOMPLETE_STOPS
-    warnings = []
+    if not items:
+        warnings.append(
+            "no form controls were processed; this run cannot be marked FILLED and submission is disabled"
+        )
     if incomplete:
         if navigation["stop_reason"] == "no_safe_next_control":
             navigation["completion"] = "unconfirmed"
@@ -96,26 +137,33 @@ def run_form(
 
     submission: dict = {}
     if submit:
-        blockers = [i for i in items.values() if i.plan.status == "REVIEW" and i.plan.required]
-        # An answer blocks submission if it failed verification OR was never successfully entered (filled=False: the fill or
-        # its blur-commit raised, e.g. a blur timeout on a busy page). Its text may still read back correctly, which proves
-        # only what the DOM holds, not that the application recorded it; overall_status already treats it as FAILED.
-        broken = [i for i in items.values() if i.plan.status == "ANSWER" and (not i.filled or i.verified is False)]
-        if unsettled:
-            submission = {"attempted": False, "outcome": "SKIPPED", "detail": f"{len(unsettled)} answer(s) were entered on a page that never settled"}
-        elif incomplete:
-            submission = {"attempted": False, "outcome": "SKIPPED",
-                          "detail": (f"navigation stopped early ({navigation['stop_reason']}); the form was not completed"
-                                       if navigation["completion"] == "incomplete" else
-                                       "completion unconfirmed: no recognised next-step control, so the last step cannot be told from an unknown Next button")}
-        elif blockers or broken:
-            submission = {"attempted": False, "outcome": "SKIPPED",
-                          "detail": f"{len(blockers)} required item(s) need review, {len(broken)} answer(s) not entered or failed verification"}
+        if not items:
+            submission = {
+                "attempted": False,
+                "outcome": "SKIPPED",
+                "detail": "no form controls were processed; refusing to submit an unverified page",
+            }
         else:
-            submission = submit_form(page, submit_selector, success_text, timeout_ms)
-            if out:
-                page.screenshot(path=str(out / "after_submit.png"), full_page=True)
-                artifacts["screenshot_after_submit"] = str(out / "after_submit.png")
+            blockers = [i for i in items.values() if i.plan.status == "REVIEW" and i.plan.required]
+            # An answer blocks submission if it failed verification OR was never successfully entered (filled=False: the fill or
+            # its blur-commit raised, e.g. a blur timeout on a busy page). Its text may still read back correctly, which proves
+            # only what the DOM holds, not that the application recorded it; overall_status already treats it as FAILED.
+            broken = [i for i in items.values() if i.plan.status == "ANSWER" and (not i.filled or i.verified is False)]
+            if unsettled:
+                submission = {"attempted": False, "outcome": "SKIPPED", "detail": f"{len(unsettled)} answer(s) were entered on a page that never settled"}
+            elif incomplete:
+                submission = {"attempted": False, "outcome": "SKIPPED",
+                              "detail": (f"navigation stopped early ({navigation['stop_reason']}); the form was not completed"
+                                           if navigation["completion"] == "incomplete" else
+                                           "completion unconfirmed: no recognised next-step control, so the last step cannot be told from an unknown Next button")}
+            elif blockers or broken:
+                submission = {"attempted": False, "outcome": "SKIPPED",
+                              "detail": f"{len(blockers)} required item(s) need review, {len(broken)} answer(s) not entered or failed verification"}
+            else:
+                submission = submit_form(page, submit_selector, success_text, timeout_ms)
+                if out:
+                    page.screenshot(path=str(out / "after_submit.png"), full_page=True)
+                    artifacts["screenshot_after_submit"] = str(out / "after_submit.png")
 
     status = overall_status(list(items.values()), submission if submit else None)
     if unsettled and status == "FILLED":
