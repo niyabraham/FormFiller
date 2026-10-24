@@ -24,7 +24,7 @@ from playwright.sync_api import Page
 
 from formfill.web import steps as _steps
 from formfill.web.discover import discover
-from formfill.web.execute import UNSETTLED, fill_control, matches, read_back
+from formfill.web.execute import TEXTLIKE_KINDS, UNSETTLED, fill_control, framework_attached, matches, read_back
 from formfill.web.execute import submit as submit_form
 from formfill.web.models import AnswerPlanItem, Control
 from formfill.web.plan import build_plan
@@ -146,7 +146,15 @@ def run_form(
 
     # Independent read-back of everything we touched or flagged.
     for qid, item in items.items():
-        _judge(page, controls[qid], item, navigation if policy is not None else None)
+        _judge(page, controls[qid], item, navigation if policy is not None else None, timeout_ms)
+
+    reentered = {q: i for q, i in items.items() if i.reentered}
+    if reentered and confirm_ms:
+        # the re-entered values must also survive a confirmation window of their own
+        with contextlib.suppress(Exception):
+            page.wait_for_timeout(confirm_ms)
+        for qid, item in reentered.items():
+            _judge(page, controls[qid], item, navigation if policy is not None else None, timeout_ms)
 
     incomplete = policy is not None and navigation.get("stop_reason") in _steps.INCOMPLETE_STOPS
     if not items:
@@ -164,6 +172,9 @@ def run_form(
             warnings.append(f"navigation stopped early ({navigation['stop_reason']}); later steps were not filled and the form was not submitted")
     if hidden:
         warnings.append(f"{len(hidden)} control(s) stayed hidden and were not asked")
+    if reentered:
+        warnings.append(f"{len(reentered)} answer(s) were cleared by the page after a UI framework attached to the field and were re-entered once; "
+                        "see each item's detail")
     interfering = [i for i in items.values() if INTERFERENCE in i.detail]
     if interfering:
         warnings.append(f"{len(interfering)} answer(s) were undone by the page when a later choice was entered "
@@ -226,10 +237,35 @@ def run_form(
     return result
 
 
-def _judge(page: Page, control: Control, item: ItemResult, nav: dict | None) -> None:
+REENTERED = "re-entered once"  # appears in the detail of an item that was entered a second time
+
+
+def _reenter_after_hydration(page: Page, control: Control, item: ItemResult, obs, timeout_ms: int):
+    """A text answer that is gone, on the SAME node, after a UI framework attached to that node since the answer was typed, was
+    most likely overwritten by the framework taking the server-rendered input over (a value typed before hydration is lost; one
+    typed after it is kept: measured on a public page, see README). Enter it once more and read it back. Only then: no framework
+    evidence at fill time or none now means a real reset and is left as a failure; a second loss is also left as a failure.
+    The answer re-entered is the one already planned and validated; nothing is chosen or guessed, and the report says so."""
+    if (item.reentered or not item.filled or item.framework_attached_at_fill is not False
+            or control.kind not in TEXTLIKE_KINDS or framework_attached(page, control) is not True):
+        return obs
+    try:
+        fill_control(page, control, item.plan.answer, timeout_ms)
+    except Exception as exc:  # noqa: BLE001 - recorded, the item stays failed
+        item.detail = f"{item.detail} re-entry after the framework attached failed: {str(exc).splitlines()[0]}".strip()
+        return obs
+    item.reentered = True
+    item.detail = (f"{item.detail} {REENTERED}: the value was cleared after a UI framework attached to this field "
+                   "(it had not when the answer was first typed)").strip()
+    return read_back(page, control)
+
+
+def _judge(page: Page, control: Control, item: ItemResult, nav: dict | None, timeout_ms: int = 5000) -> None:
     """Read the control back from the page and record what it holds. With `nav` (step navigation), a control that has
     left the DOM keeps its earlier verdict, and one that now differs from a verified answer is a reset."""
     obs = read_back(page, control)
+    if obs.found and item.plan.status == "ANSWER" and not matches(item.plan.answer, obs.value):
+        obs = _reenter_after_hydration(page, control, item, obs, timeout_ms)
     if nav is not None and not obs.found:
         if item.plan.status == "ANSWER" and item.verified:
             item.detail = (item.detail + " (verified when its step was on screen; no longer in the DOM, not re-checked)").strip()
@@ -451,7 +487,8 @@ def _fill_one(page: Page, control: Control, plan: AnswerPlanItem, timeout_ms: in
         warnings = fill_control(page, control, plan.answer, timeout_ms) or []
     except Exception as exc:  # noqa: BLE001 - recorded per item, run continues
         return ItemResult(plan=plan, filled=False, detail=f"fill failed: {str(exc).splitlines()[0]}")
-    return ItemResult(plan=plan, filled=True, detail="; ".join(warnings))
+    attached = framework_attached(page, control) if control.kind in TEXTLIKE_KINDS else None
+    return ItemResult(plan=plan, filled=True, detail="; ".join(warnings), framework_attached_at_fill=attached)
 
 
 def run_url(url: str, source_path: str | Path, *, out_dir: str | Path | None = None, trace: bool = True,
