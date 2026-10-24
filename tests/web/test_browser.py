@@ -256,3 +256,24 @@ def test_empty_page_is_not_filled_and_is_never_submitted(page):
     assert page.evaluate("() => window.submitted") is False
     assert any("no form controls" in warning for warning in result.warnings)
 
+def test_pipeline_readiness_detects_controls_inside_iframes(page):
+    page.set_content("""
+        <!doctype html><html><body>
+          <iframe title="embedded form" srcdoc="
+            <label for='email'>Security contact email</label>
+            <input id='email' type='email'>
+          "></iframe>
+        </body></html>
+    """)
+
+    result = run_form(
+        page,
+        {"security": {"contact": {"email": "sec@example.test"}}},
+        timeout_ms=1500,
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].verified is True
+    assert page.frames[1].locator("#email").input_value() == "sec@example.test"
+    assert result.status == "FILLED"
+
