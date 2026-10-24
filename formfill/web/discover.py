@@ -115,7 +115,10 @@ _EXTRACT_JS = r"""
       kind = ['number','range'].includes(type) ? 'number' : (['date','email','url','tel'].includes(type) ? type : (['text','search',''].includes(type) ? 'text' : type));
       label = labelOf(el); value = el.value;
     }
-    if (!label) label = el.placeholder || el.title || el.name || el.id || '';
+    // A bare format hint ("YYYY-MM-DD", "dd/mm/yyyy") describes how to write the answer, not what is asked: it must not
+    // outrank the control's own name/id as its identity. It is used as a label only when nothing else exists.
+    const hint = /^[ymdhs]{1,4}([\/.\-: ][ymdhs]{1,4}){1,3}$/i.test((el.placeholder || '').trim());
+    if (!label) label = (hint ? '' : el.placeholder) || el.title || el.name || el.id || el.placeholder || '';
     const num = a => { const v = el.getAttribute(a); return v === null || v === '' ? null : Number(v); };
     out.push({
       control_id: id, kind, label, name: el.name || null, html_id: el.id || null,
