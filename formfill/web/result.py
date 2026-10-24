@@ -51,6 +51,7 @@ class RunResult:
     submission: dict = field(default_factory=dict)
     artifacts: dict = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+    controls: list[dict] = field(default_factory=list)  # discovery metadata for every processed control (diagnostic)
     navigation: dict = field(default_factory=dict)  # step-navigation record (only with a DiscoveryPolicy): steps, stop reason, notes
     run_id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     started_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat(timespec="seconds"))

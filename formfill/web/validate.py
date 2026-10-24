@@ -88,6 +88,33 @@ def is_placeholder(value: Any) -> bool:
     return isinstance(value, str) and value.strip().casefold().rstrip(".") in _PLACEHOLDERS
 
 
+_DATE_HINT = re.compile(r"^[ymdhs]{1,4}([/.\-: ][ymdhs]{1,4}){1,3}$", re.IGNORECASE)
+_DATE_PARTS = {"yyyy": "%Y", "mm": "%m", "dd": "%d"}
+
+
+def is_date_format_hint(text: str) -> bool:
+    """A placeholder that is only a format picture ("YYYY-MM-DD", "dd/mm/yyyy"), and names a day, month and year part."""
+    t = (text or "").strip()
+    if not _DATE_HINT.match(t):
+        return False
+    parts = {p.lower()[:1] for p in re.split(r"[/.\-: ]", t)}
+    return {"y", "m", "d"} <= parts
+
+
+def date_format_from_hint(text: str) -> str | None:
+    """strftime format for an unambiguous date picture: four-digit year, two-digit month and day, one separator.
+    Anything else ("d/m/yy", "mm/dd/yy", mixed separators) returns None and the caller must not guess."""
+    t = (text or "").strip()
+    seps = set(re.findall(r"[/.\-: ]", t))
+    if len(seps) != 1:
+        return None
+    sep = seps.pop()
+    parts = [p.lower() for p in t.split(sep)]
+    if sorted(parts) != ["dd", "mm", "yyyy"]:
+        return None
+    return sep.join(_DATE_PARTS[p] for p in parts)
+
+
 def validate_answer(value: Any, control: Control) -> Validated:
     if value is None or (isinstance(value, str) and not value.strip()):
         return _fail("source value is empty")
@@ -146,6 +173,15 @@ def validate_answer(value: Any, control: Control) -> Validated:
     if isinstance(value, (list, dict)) or isinstance(value, bool):
         return _fail(f"{value!r} cannot be entered as text")
     text = str(value).strip()
+    if control.kind == "text" and is_date_format_hint(control.placeholder):
+        # A text box that says how a date must be written: write the ISO source date that way, or ask a human.
+        fmt = date_format_from_hint(control.placeholder)
+        if fmt is None:
+            return _fail(f"the field shows the date format {control.placeholder!r}, which is not a supported format")
+        try:
+            text = date.fromisoformat(text).strftime(fmt)
+        except ValueError:
+            return _fail(f"{value!r} is not an ISO date (YYYY-MM-DD), but the field expects a date written as {control.placeholder!r}")
     if kind == "email" and not _EMAIL.match(text):
         return _fail(f"{text!r} is not a valid email address")
     if kind == "url":

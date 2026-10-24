@@ -15,6 +15,7 @@ import contextlib
 import json
 import os
 import time
+from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -119,6 +120,7 @@ def run_form(
             for question, plan in zip(questions, build_plan(questions, leaves)):
                 controls[plan.question_id] = question.control
                 items[plan.question_id] = _fill_one(page, question.control, plan, timeout_ms)
+                _note_interference(page, controls, items, plan.question_id)
     else:
         navigation = _run_steps(page, leaves, controls, items, policy, timeout_ms)
         if navigation.get("stop_reason") == "document_navigation":
@@ -162,6 +164,10 @@ def run_form(
             warnings.append(f"navigation stopped early ({navigation['stop_reason']}); later steps were not filled and the form was not submitted")
     if hidden:
         warnings.append(f"{len(hidden)} control(s) stayed hidden and were not asked")
+    interfering = [i for i in items.values() if INTERFERENCE in i.detail]
+    if interfering:
+        warnings.append(f"{len(interfering)} answer(s) were undone by the page when a later choice was entered "
+                        "(the controls behave as one choice); see each item's detail - a human must decide the answer")
     unsettled = [i for i in items.values() if i.detail.startswith(UNSETTLED)]
     if unsettled:
         warnings.append(f"{len(unsettled)} answer(s) were entered while the page was still changing ({UNSETTLED} after leaving the field); "
@@ -211,6 +217,7 @@ def run_form(
     result = RunResult(
         url=page.url, status=status,
         items=list(items.values()), submission=submission, artifacts=artifacts, warnings=warnings, navigation=navigation,
+        controls=[asdict(controls[q]) for q in items],  # what discovery saw (name, id, placeholder, options...), so a run can be diagnosed from result.json alone
     )
     result.finished_at = datetime.now(UTC).isoformat(timespec="seconds")
     if out:
@@ -337,6 +344,7 @@ def _run_steps(page: Page, leaves, controls: dict, items: dict, policy: _steps.D
                 for question, plan in zip(questions, build_plan(questions, leaves)):
                     controls[plan.question_id] = question.control
                     items[plan.question_id] = _fill_one(page, question.control, plan, timeout_ms)
+                    _note_interference(page, controls, items, plan.question_id)
                     answered_sigs.add(_signature(question.control))
                     step_ids.append(plan.question_id)
                 if not stable(step, f"after filling round {rnd}"):
@@ -405,6 +413,35 @@ def _run_steps(page: Page, leaves, controls: dict, items: dict, policy: _steps.D
         page.remove_listener("dialog", on_dialog)
         page.remove_listener("popup", on_popup)
     return nav
+
+
+# Choice controls that are not grouped by the browser (different or missing `name`) can still be one choice to the
+# application: selecting one clears another. Left alone, the earlier answer is simply lost and the report says only that
+# the page "holds None". After each choice is entered, the earlier choice answers are read back so the report can say
+# which fill undid which answer. Detection only: nothing is re-entered and nothing is chosen between them.
+_CHOICE_KINDS = {"radio", "checkbox", "checkbox_group", "select", "multiselect"}
+INTERFERENCE = "overwritten by the page when"  # appears in the detail recorded on the earlier answer
+
+
+def _note_interference(page: Page, controls: dict[str, Control], items: dict[str, ItemResult], just_filled: str) -> None:
+    item = items[just_filled]
+    control = controls[just_filled]
+    if not item.filled or control.kind not in _CHOICE_KINDS:
+        return
+    for qid, earlier in items.items():
+        if qid == just_filled or not earlier.filled or earlier.plan.status != "ANSWER" or INTERFERENCE in earlier.detail:
+            continue
+        before = controls[qid]
+        if before.kind not in _CHOICE_KINDS or before.frame_index != control.frame_index:
+            continue
+        try:
+            obs = read_back(page, before)
+        except Exception:  # noqa: BLE001 - the control left the page: the final read-back reports it
+            obs = None
+        if obs is not None and obs.found and not matches(earlier.plan.answer, obs.value):
+            earlier.detail = (f"{earlier.detail} {INTERFERENCE} '{item.plan.question}' was entered (page now holds {obs.value!r}, "
+                              f"expected {earlier.plan.answer!r}): the page treats these controls as one choice; a human must decide").strip()
+            item.detail = f"{item.detail} entering this answer changed the earlier answer for '{earlier.plan.question}'".strip()
 
 
 def _fill_one(page: Page, control: Control, plan: AnswerPlanItem, timeout_ms: int) -> ItemResult:
