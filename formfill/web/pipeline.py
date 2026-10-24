@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -31,29 +32,32 @@ from formfill.web.understand import understand
 
 
 def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
-    """Wait briefly for asynchronously rendered form controls.
+    """Wait briefly for asynchronously rendered controls in the page or frames.
 
     Navigation's load event does not guarantee that a client-rendered form
-    exists. This bounded wait observes controls, not an arbitrary sleep; it
-    never clicks or submits anything. A timeout is handled as an incomplete
+    exists. This bounded wait polls actual controls, not an arbitrary sleep;
+    it never clicks or submits anything. A timeout is handled as an incomplete
     run by the caller.
     """
     selector = (
         'input, select, textarea, [role="textbox"], [role="combobox"], '
         '[role="radio"], [role="checkbox"], [contenteditable="true"]'
     )
-    try:
-        page.wait_for_function(
-            "(selector) => document.querySelector(selector) !== null",
-            arg=selector,
-            timeout=min(max(readiness_timeout_ms, 1), 10000),
-        )
-    except Exception:  # noqa: BLE001 - timeout or navigation; caller reports no controls if none exist
-        pass
-    try:
-        return page.locator(selector).count() > 0
-    except Exception:  # noqa: BLE001 - page may have navigated or closed
-        return False
+    deadline = time.monotonic() + min(max(readiness_timeout_ms, 1), 10000) / 1000
+    while True:
+        try:
+            for frame in page.frames:
+                if frame.locator(selector).count() > 0:
+                    return True
+        except Exception:  # noqa: BLE001 - a frame may detach during discovery
+            pass
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return False
+        try:
+            page.wait_for_timeout(min(50, max(1, int(remaining * 1000))))
+        except Exception:  # noqa: BLE001 - page may have navigated or closed
+            return False
 
 
 def run_form(
