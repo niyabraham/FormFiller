@@ -21,6 +21,8 @@ roles are not seen. Open shadow roots and ARIA comboboxes are traversed.
 
 from __future__ import annotations
 
+import contextlib
+
 from playwright.sync_api import Frame, Page
 
 from formfill.web.models import Control, FormSchema, Option
@@ -146,6 +148,81 @@ _OPAQUE_JS = """
   walk(document); return out;
 }
 """
+
+
+# Visible controls this pipeline can neither fill nor verify. They are never touched; they are listed so a person sees them and so a
+# run that left one behind cannot be reported as FILLED. Native text/select/radio/checkbox controls and ARIA comboboxes are handled by
+# _EXTRACT_JS and are not repeated here.
+_UNSUPPORTED_JS = r"""
+(frameIndex) => {
+  const txt = n => (n && n.textContent || '').replace(/\s+/g, ' ').trim();
+  const hiddenByPage = el => { for (let n = el; n; n = n.parentElement || (n.getRootNode && n.getRootNode().host)) {
+    if (n.nodeType === 1 && (n.getAttribute('aria-hidden') === 'true' || n.hasAttribute('inert'))) return true; } return false; };
+  const shown = el => { try { if (hiddenByPage(el)) return false;
+    return el.checkVisibility ? el.checkVisibility() : !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length); } catch (e) { return true; } };
+  const all = []; const walk = root => { for (const e of root.children) { all.push(e); if (e.shadowRoot) walk(e.shadowRoot); walk(e); } };
+  walk(document);
+  const root = e => (e.getRootNode && e.getRootNode().getElementById) ? e.getRootNode() : document;
+  const byIds = (ids, e) => (ids || '').split(/\s+/).filter(Boolean).map(i => root(e).getElementById(i)).filter(Boolean);
+  const comboPopups = new Set(all.filter(e => e.getAttribute('role') === 'combobox').flatMap(e => byIds((e.getAttribute('aria-controls') || '') + ' ' + (e.getAttribute('aria-owns') || ''), e).map(x => x)));
+  const label = e => {
+    const lb = e.getAttribute('aria-labelledby'); if (lb) { const t = byIds(lb, e).map(txt).join(' ').trim(); if (t) return t; }
+    const al = e.getAttribute('aria-label'); if (al && al.trim()) return al.trim();
+    if (e.labels && e.labels.length) { const t = Array.from(e.labels).map(txt).join(' ').trim(); if (t) return t; }
+    const lg = e.closest('fieldset') && e.closest('fieldset').querySelector('legend'); if (lg && txt(lg)) return txt(lg);
+    const wl = e.closest('label'); if (wl && txt(wl)) return txt(wl);
+    const prev = e.previousElementSibling; if (prev && /^(LABEL|LEGEND|H[1-6]|P|SPAN|DIV)$/.test(prev.tagName) && txt(prev) && txt(prev).length <= 120) return txt(prev);
+    return e.getAttribute('title') || e.getAttribute('data-placeholder') || e.getAttribute('placeholder') || e.name || e.id || '';
+  };
+  const REQ = /\*|\(required\)|\brequired\b/i;
+  const found = []; const flagged = [];
+  const add = (e, kind, reason) => {
+    if (flagged.some(f => f === e || f.contains(e))) return;   // one entry per widget: nested pieces of a flagged widget are part of it
+    flagged.push(e);
+    const lab = label(e).slice(0, 160);
+    const attr = e.required === true || e.getAttribute('aria-required') === 'true';
+    found.push({ kind, label: lab, tag: e.tagName.toLowerCase(), html_id: e.id || null, name: e.getAttribute('name'),
+      input_type: (e.type || '') || null, role: e.getAttribute('role'),
+      required: attr || REQ.test(lab), required_basis: attr ? 'attribute' : (REQ.test(lab) ? 'label text' : null),
+      reason, frame_index: frameIndex });
+  };
+  const off = e => e.disabled === true || e.getAttribute('aria-disabled') === 'true';
+  for (const e of all) {
+    const tag = e.tagName.toLowerCase(), type = (e.type || '').toLowerCase(), role = e.getAttribute('role');
+    if (off(e)) continue;
+    if (tag === 'input' && type === 'file') {
+      // a styled upload button is often a visible <label> for a visually hidden file input: the label is what a person sees
+      const vis = shown(e) || (e.labels && Array.from(e.labels).some(l => shown(l)));
+      if (vis) add(e, 'file_upload', 'file upload: a person must attach the file; FormFiller never uploads files');
+    } else if (tag === 'input' && type === 'password') {
+      if (shown(e)) add(e, 'password', 'password field: never filled by FormFiller');
+    } else if (e.isContentEditable && e.getAttribute('contenteditable') !== null && e.getAttribute('contenteditable') !== 'false' && e !== document.body) {
+      if (shown(e)) add(e, 'contenteditable', 'editable text region: not a supported control; the answer must be entered by a person');
+    } else if (tag === 'canvas') {
+      const r = e.getBoundingClientRect();
+      const ctx = [e.getAttribute('aria-label'), e.getAttribute('title'), e.id, e.className && e.className.baseVal === undefined ? e.className : '', label(e)].join(' ');
+      if (shown(e) && r.width >= 40 && r.height >= 20 && /sign|draw/i.test(ctx)) add(e, 'canvas_signature', 'signature/drawing canvas: must be completed by a person');
+    } else if (role && !['INPUT', 'SELECT', 'TEXTAREA'].includes(tag.toUpperCase()) && !comboPopups.has(e)) {
+      const r = role.toLowerCase();
+      if (['textbox', 'searchbox', 'listbox', 'radiogroup', 'checkbox', 'switch', 'slider', 'spinbutton', 'radio'].includes(r)) {
+        if (r === 'radio' && e.closest('[role=radiogroup]')) continue;   // reported once, as the group
+        if (shown(e)) add(e, 'aria_' + r, 'custom ARIA ' + r + ' control: there is no supported way to read or set it');
+      }
+    }
+  }
+  return found;
+}
+"""
+
+
+def find_unsupported(page: Page) -> list[dict]:
+    """Visible controls that cannot be filled or verified (file/password inputs, contenteditable regions, custom ARIA widgets,
+    signature canvases), in every same-process frame. Hidden, disabled and aria-hidden/inert controls are not reported."""
+    out: list[dict] = []
+    for i, frame in enumerate(page.frames):
+        with contextlib.suppress(Exception):  # a detached / inaccessible frame has nothing to report
+            out.extend(frame.evaluate(_UNSUPPORTED_JS, i))
+    return out
 
 
 def _extract(frame: Frame, index: int) -> list[Control]:

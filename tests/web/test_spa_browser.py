@@ -134,12 +134,12 @@ def test_submit_type_next_is_never_clicked(run, fid):
     assert res.status == "NEEDS_REVIEW" and any("stopped early" in w for w in res.warnings)
 
 
-def test_intercepted_submit_button_is_refused_by_default_but_opt_in_navigates(run):
-    res, _, _ = run("spa_submit_type_intercepted")
-    assert res.navigation["stop_reason"] == "submit_type_next_refused" and res.navigation["steps_visited"] == 1
-    res2, state2, page2 = run("spa_submit_type_intercepted", DiscoveryPolicy(allow_submit_type_navigation=True))
-    assert res2.navigation["steps_visited"] == 3 and state2["city"] == "Leeds"
-    assert page2.evaluate("() => window.__submitted") == 0
+def test_intercepted_submit_button_is_refused_even_with_the_deprecated_opt_in(run):
+    """An SPA that intercepts the submit cannot be told from one that does not before the click, so it is always refused."""
+    for policy in (None, DiscoveryPolicy(allow_submit_type_navigation=True)):
+        res, _, page = run("spa_submit_type_intercepted", policy) if policy else run("spa_submit_type_intercepted")
+        assert res.navigation["stop_reason"] == "submit_type_next_refused" and res.navigation["steps_visited"] == 1
+        assert page.evaluate("() => window.__submitted") == 0
 
 
 def test_opt_in_does_not_unlock_commit_labels(run):
@@ -175,10 +175,12 @@ def test_next_button_html_metadata(page, html, expect):
     assert next_button(page, DiscoveryPolicy())["state"] == expect
 
 
-def test_opt_in_policy_finds_submit_type(page):
+def test_opt_in_policy_no_longer_finds_submit_type(page):
     from formfill.web.steps import next_button
 
     page.set_content('<form><button type="submit">Next</button></form>')
+    assert next_button(page, DiscoveryPolicy(allow_submit_type_navigation=True))["state"] == "refused"
+    page.set_content('<div><button type="button">Next</button></div>')  # a plain navigation button is still pressed
     assert next_button(page, DiscoveryPolicy(allow_submit_type_navigation=True))["state"] == "found"
     page.set_content('<a role="button" href="/elsewhere">Next</a>')
     assert next_button(page, DiscoveryPolicy(allow_submit_type_navigation=True))["state"] == "refused"  # off-page links stay refused

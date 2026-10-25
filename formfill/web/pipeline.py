@@ -18,12 +18,13 @@ import time
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
+from collections.abc import Iterable
 from typing import Any
 
 from playwright.sync_api import Page
 
 from formfill.web import steps as _steps
-from formfill.web.discover import discover
+from formfill.web.discover import discover, find_unsupported
 from formfill.web.execute import TEXTLIKE_KINDS, UNSETTLED, fill_control, framework_attached, matches, read_back
 from formfill.web.execute import submit as submit_form
 from formfill.web.models import AnswerPlanItem, Control
@@ -89,7 +90,11 @@ def run_form(
     readiness_timeout_ms: int = 5000,
     confirm_ms: int = DEFAULT_CONFIRM_MS,
     policy: _steps.DiscoveryPolicy | None = None,
+    acknowledge_unsupported: Iterable[str] = (),
 ) -> RunResult:
+    """...`acknowledge_unsupported`: identifiers (the `ack_id` shown in `result.json`: html id, else name, else label, and only when unique) of OPTIONAL unsupported controls a person has
+    explicitly decided to leave unfilled. With submit=True, any unsupported control not listed refuses submission; a REQUIRED
+    unsupported control refuses it even when listed (it cannot be answered by this tool)."""
     if not 0 <= confirm_ms <= MAX_CONFIRM_MS:
         raise ValueError(f"confirm_ms must be between 0 and {MAX_CONFIRM_MS}, got {confirm_ms}")
     leaves = index_source(source)
@@ -144,6 +149,8 @@ def run_form(
     if policy is not None:
         navigation["notes"].extend(schema.notes)
 
+    unsupported = _assign_ack_ids(_merge_unsupported(navigation.get("unsupported", []) if policy is not None else [], find_unsupported(page)))
+
     # Independent read-back of everything we touched or flagged.
     for qid, item in items.items():
         _judge(page, controls[qid], item, navigation if policy is not None else None, timeout_ms)
@@ -175,6 +182,11 @@ def run_form(
     if reentered:
         warnings.append(f"{len(reentered)} answer(s) were cleared by the page after a UI framework attached to the field and were re-entered once; "
                         "see each item's detail")
+    if unsupported:
+        req = [u for u in unsupported if u["required"]]
+        names = "; ".join(f"{u['label'] or u['html_id'] or u['tag']} ({u['kind']}{', required' if u['required'] else ''})" for u in unsupported[:8])
+        warnings.append(f"{len(unsupported)} visible control(s) cannot be filled by FormFiller and were not touched ({len(req)} required): {names}"
+                        + (" ..." if len(unsupported) > 8 else "") + "; a person must handle them")
     interfering = [i for i in items.values() if INTERFERENCE in i.detail]
     if interfering:
         warnings.append(f"{len(interfering)} answer(s) were undone by the page when a later choice was entered "
@@ -200,6 +212,9 @@ def run_form(
             }
         else:
             blockers = [i for i in items.values() if i.plan.status == "REVIEW" and i.plan.required]
+            unsupported_required = [u for u in unsupported if u["required"]]
+            acked = {str(a) for a in ([acknowledge_unsupported] if isinstance(acknowledge_unsupported, str) else acknowledge_unsupported)}  # a bare string is one id, not its characters
+            unsupported_unacked = [u for u in unsupported if not u["required"] and (u["ack_id"] is None or u["ack_id"] not in acked)]
             # An answer blocks submission if it failed verification OR was never successfully entered (filled=False: the fill or
             # its blur-commit raised, e.g. a blur timeout on a busy page). Its text may still read back correctly, which proves
             # only what the DOM holds, not that the application recorded it; overall_status already treats it as FAILED.
@@ -211,9 +226,12 @@ def run_form(
                               "detail": (f"navigation stopped early ({navigation['stop_reason']}); the form was not completed"
                                            if navigation["completion"] == "incomplete" else
                                            "completion unconfirmed: no recognised next-step control, so the last step cannot be told from an unknown Next button")}
-            elif blockers or broken:
+            elif blockers or broken or unsupported_required or unsupported_unacked:
                 submission = {"attempted": False, "outcome": "SKIPPED",
-                              "detail": f"{len(blockers)} required item(s) need review, {len(broken)} answer(s) not entered or failed verification"}
+                              "detail": (f"{len(blockers)} required item(s) need review, {len(broken)} answer(s) not entered or failed verification, "
+                                         f"{len(unsupported_required)} required control(s) cannot be filled by FormFiller, "
+                                         f"{len(unsupported_unacked)} optional unsupported control(s) lack an explicit human decision "
+                                         "(pass their ack_id in acknowledge_unsupported to proceed; a control whose ack_id is null is ambiguous and cannot be acknowledged)")}
             else:
                 submission = submit_form(page, submit_selector, success_text, timeout_ms)
                 if out:
@@ -225,9 +243,12 @@ def run_form(
         status = "NEEDS_REVIEW"  # an unsettled page may hide dependent questions: never "FILLED"
     if incomplete and status in ("FILLED", "SUBMITTED", "SUBMITTED_UNCONFIRMED"):
         status = "NEEDS_REVIEW"  # a walk cut short is never "FILLED"
+    if unsupported and status == "FILLED":
+        status = "NEEDS_REVIEW"  # a visible control we cannot fill is still open: never "FILLED"
     result = RunResult(
         url=page.url, status=status,
         items=list(items.values()), submission=submission, artifacts=artifacts, warnings=warnings, navigation=navigation,
+        unsupported=unsupported,
         controls=[asdict(controls[q]) for q in items],  # what discovery saw (name, id, placeholder, options...), so a run can be diagnosed from result.json alone
     )
     result.finished_at = datetime.now(UTC).isoformat(timespec="seconds")
@@ -235,6 +256,29 @@ def run_form(
         (out / "result.json").write_text(result.to_json())
         result.artifacts["result_json"] = str(out / "result.json")
     return result
+
+
+def _assign_ack_ids(records: list[dict]) -> list[dict]:
+    """Give each record `ack_id`: its html id, else name, else label, but only when that identifier is non-empty and belongs to
+    exactly one unsupported control. An empty or shared identifier gets None: such a control can never be acknowledged by
+    id, so a duplicate id cannot acknowledge the wrong control (or two at once)."""
+    ids = [u.get("html_id") or u.get("name") or u.get("label") or "" for u in records]
+    for u, i in zip(records, ids):
+        u["ack_id"] = i if i and ids.count(i) == 1 else None
+    return records
+
+
+def _merge_unsupported(*groups: list[dict]) -> list[dict]:
+    """Union of unsupported-control records, one per widget (a wizard control seen on an earlier step stays reported)."""
+    seen: set = set()
+    out: list[dict] = []
+    for g in groups:
+        for u in g:
+            key = (u["kind"], u["label"], u["html_id"], u["name"], u["frame_index"])
+            if key not in seen:
+                seen.add(key)
+                out.append(u)
+    return out
 
 
 REENTERED = "re-entered once"  # appears in the detail of an item that was entered a second time
@@ -305,11 +349,10 @@ def _run_steps(page: Page, leaves, controls: dict, items: dict, policy: _steps.D
       pressed. The walk itself therefore presses no control that HTML marks as a form submitter. Every walk also ends
       with a stop reason that is in `INCOMPLETE_STOPS` (completion is never confirmed), so `run_form(submit=True)`
       skips the submit routine after a walk. A separate final-step policy would have to be designed before that changes.
-    * Explicit opt-in (`allow_submit_type_navigation=True`): the walk may click a submit-type control labelled like a
-      Next button. That is risky: if the portal does not intercept the click, the click IS a real submission. The
-      post-click submit-event counter (`submit_event_observed`) is only a second line of defence; it runs after the click,
-      sees DOM `submit` events in the main document only, and cannot detect script-driven submissions (fetch/XHR posts,
-      `form.submit()`, submissions from an iframe). Do not read any of this as "every submission is prevented".
+    * `allow_submit_type_navigation` is deprecated and has no effect: a submit-type control (or an off-page link) is always
+      refused before any click and the walk stops for a person, because a real submission cannot be told from an intercepted
+      one until after the click. The post-click submit-event counter (`submit_event_observed`) is only a tripwire, never the
+      safety argument.
     * Navigation controls are searched in the main document only, so a portal whose Next/Continue sits inside an open
       shadow root or an iframe stops safely as `no_safe_next_control` even when its fields were discovered and filled.
 
@@ -391,6 +434,7 @@ def _run_steps(page: Page, leaves, controls: dict, items: dict, policy: _steps.D
                 break
             for qid in step_ids:  # verify while the step is still on screen
                 _judge(page, controls[qid], items[qid], nav)
+            nav["unsupported"] = _merge_unsupported(nav.get("unsupported", []), find_unsupported(page))  # steps that will be left behind
             schema = discover(page)
             for c in schema.controls:
                 if c.visible and c.disabled and c.control_id not in items:

@@ -58,6 +58,7 @@ class RunResult:
     run_id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     started_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat(timespec="seconds"))
     finished_at: str = ""
+    unsupported: list[dict] = field(default_factory=list)  # visible controls that cannot be filled or verified (never touched); each needs a person
 
     @property
     def review_items(self) -> list[ItemResult]:
