@@ -228,7 +228,7 @@ def find_unsupported(page: Page) -> list[dict]:
 def _extract(frame: Frame, index: int) -> list[Control]:
     try:
         raw = frame.evaluate(_EXTRACT_JS, index)
-    except Exception:  # detached / inaccessible frame
+    except Exception:  # noqa: BLE001 - a detached / inaccessible frame has no controls
         return []
     controls = []
     for r in raw:
@@ -247,10 +247,8 @@ def discover(page: Page) -> FormSchema:
     notes: list[dict] = []
     for i, frame in enumerate(page.frames):
         controls.extend(_extract(frame, i))
-        try:
+        with contextlib.suppress(Exception):  # a detached / inaccessible frame has nothing to note
             for tag in frame.evaluate(_OPAQUE_JS):
                 notes.append({"kind": "opaque_custom_element", "frame_index": i, "element": tag,
                               "reason": "custom element exposes no readable shadow root (closed, or empty): its inner controls cannot be discovered"})
-        except Exception:  # noqa: BLE001 - detached / inaccessible frame
-            pass
     return FormSchema(url=page.url, title=page.title(), controls=controls, notes=notes)

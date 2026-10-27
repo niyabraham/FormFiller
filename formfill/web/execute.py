@@ -10,6 +10,7 @@ same thing as a successful fill (the lesson of the PDF PoC's verifier).
 
 from __future__ import annotations
 
+import contextlib
 from dataclasses import dataclass
 from typing import Any
 
@@ -275,10 +276,8 @@ def submit(page: Page, submit_selector: str | None = None, success_text: str | N
         loc.first.click(timeout=timeout_ms)
     except Exception as exc:  # noqa: BLE001 - any click failure is reported, not raised
         return {"attempted": True, "outcome": "ERROR", "detail": str(exc).splitlines()[0]}
-    try:
+    with contextlib.suppress(Exception):  # a page that never reaches "load" is judged by what is on screen below
         page.wait_for_load_state("load", timeout=timeout_ms)
-    except Exception:  # noqa: BLE001
-        pass
     invalid = page.evaluate(
         "() => Array.from(document.querySelectorAll(':invalid')).map(e => e.dataset.ffId || e.name || e.id)"
     )
