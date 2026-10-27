@@ -146,6 +146,15 @@ def validate_answer(value: Any, control: Control) -> Validated:
                     pass
         return Validated(True, d.isoformat())
 
+    if kind == "color":
+        m = re.fullmatch(r"#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})", str(value).strip())
+        if not m:
+            return _fail(f"{value!r} is not a hex colour (#rgb or #rrggbb)")
+        h = m.group(1).lower()
+        if len(h) == 3:
+            h = "".join(c * 2 for c in h)
+        return Validated(True, "#" + h)  # a colour input always holds lower-case #rrggbb
+
     if kind in ("select", "radio"):
         if isinstance(value, (list, dict)):
             return _fail("a single value is required but the source has a list")
