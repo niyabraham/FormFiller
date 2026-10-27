@@ -78,6 +78,15 @@ def _match_option(value: Any, control: Control) -> str | None:
     return None
 
 
+def _shared_value(matched: str, control: Control) -> str | None:
+    """Why `matched` cannot identify one option: several options carry the same value (e.g. radios that all submit "on"), so entering
+    that value would pick the first of them whatever the source meant. None when the value is unique."""
+    n = sum(1 for o in control.options if o.value == matched)
+    if n > 1:
+        return f"{n} options share the value {matched!r}, so the chosen option cannot be told apart by value"
+    return None
+
+
 _PLACEHOLDERS = {"none", "n/a", "n.a", "not applicable", "not available", "tbd", "tba", "tbc", "unknown", "null", "nil",
                  "to be determined", "to be confirmed", "-", "--", "\u2013", "\u2014"}
 
@@ -161,6 +170,8 @@ def validate_answer(value: Any, control: Control) -> Validated:
         matched = _match_option(value, control)
         if matched is None:
             return _fail(f"{value!r} is not one of the allowed options {[o.value for o in control.options]}")
+        if (why := _shared_value(matched, control)):
+            return _fail(why)
         return Validated(True, matched)
 
     if kind in ("multiselect", "checkbox_group"):
@@ -170,6 +181,8 @@ def validate_answer(value: Any, control: Control) -> Validated:
             m = _match_option(item, control)
             if m is None:
                 return _fail(f"{item!r} is not one of the allowed options {[o.value for o in control.options]}")
+            if (why := _shared_value(m, control)):
+                return _fail(why)
             if m not in chosen:
                 chosen.append(m)
         return Validated(True, chosen)
