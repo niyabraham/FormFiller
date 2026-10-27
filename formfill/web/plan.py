@@ -22,6 +22,7 @@ place once there is a labelled sample of real RFIs.
 from __future__ import annotations
 
 import re
+from dataclasses import replace
 from typing import Any
 
 from formfill.web.models import AnswerPlanItem, Candidate, Question
@@ -55,10 +56,7 @@ def _alts(cands: list[Candidate], skip: int = 0) -> list[dict]:
 
 def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
     c = question.control
-    base = dict(
-        question_id=question.question_id, question=question.text,
-        field_type=c.kind, required=c.required,
-    )
+    base = {"question_id": question.question_id, "question": question.text, "field_type": c.kind, "required": c.required}
 
     def review(reason: str, cands: list[Candidate], confidence: float = 0.0) -> AnswerPlanItem:
         return AnswerPlanItem(**base, status="REVIEW", reason=reason, confidence=confidence, alternatives=_alts(cands))
@@ -102,4 +100,24 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
 
 
 def build_plan(questions: list[Question], leaves: list[Leaf]) -> list[AnswerPlanItem]:
-    return [plan_question(q, leaves) for q in questions]
+    plans = [plan_question(q, leaves) for q in questions]
+    # Two questions whose wording differs ONLY in a parenthetical qualifier, e.g. "Dropdown (select)" / "Dropdown (datalist)". Matching
+    # drops parentheticals as hints, so both reduce to the same tokens and one source value would answer both, silently putting the
+    # value meant for one control into the other. Such answers go to a human. (Questions that merely share tokens, such as
+    # "Is SSO supported?" / "Do you support SSO?", are ordinary rephrasings of one fact and are not affected.)
+    def split(text: str) -> tuple[str, str]:
+        hints = " ".join(re.findall(r"\(([^)]*)\)", text)).lower().strip()
+        return re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", " ", text)).strip().lower(), hints
+
+    groups: dict[tuple[str, str], list[int]] = {}
+    for i, (q, p) in enumerate(zip(questions, plans)):
+        if p.status == "ANSWER" and p.source:
+            groups.setdefault((split(q.text)[0], p.source), []).append(i)
+    for idxs in groups.values():
+        if len(idxs) > 1 and len({split(questions[i].text)[1] for i in idxs}) > 1:
+            for i in idxs:
+                plans[i] = replace(plans[i], status="REVIEW", answer=None, confidence=0.0,
+                                   reason=(f"{len(idxs)} questions that differ only in a parenthetical qualifier matched the same source value "
+                                           f"({plans[i].source!r}); it may belong to only one of them"),
+                                   alternatives=[{"source": plans[i].source, "value": plans[i].raw_value, "score": plans[i].confidence}])
+    return plans

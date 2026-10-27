@@ -15,17 +15,24 @@ import contextlib
 import json
 import os
 import time
+from collections.abc import Iterable
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
-from collections.abc import Iterable
 from typing import Any
 
 from playwright.sync_api import Page
 
 from formfill.web import steps as _steps
 from formfill.web.discover import discover, find_unsupported
-from formfill.web.execute import TEXTLIKE_KINDS, UNSETTLED, fill_control, framework_attached, matches, read_back
+from formfill.web.execute import (
+    TEXTLIKE_KINDS,
+    UNSETTLED,
+    fill_control,
+    framework_attached,
+    matches,
+    read_back,
+)
 from formfill.web.execute import submit as submit_form
 from formfill.web.models import AnswerPlanItem, Control
 from formfill.web.plan import build_plan
@@ -54,7 +61,7 @@ def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
     )
     deadline = time.monotonic() + min(max(readiness_timeout_ms, 1), 10000) / 1000
     while True:
-        try:
+        with contextlib.suppress(Exception):  # a frame may detach during discovery
             for frame in page.frames:
                 visible = frame.locator(selector).evaluate_all(
                     """els => els.some(el => {
@@ -66,8 +73,6 @@ def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
                 )
                 if visible:
                     return True
-        except Exception:  # noqa: BLE001 - a frame may detach during discovery
-            pass
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             return False
@@ -371,10 +376,8 @@ def _run_steps(page: Page, leaves, controls: dict, items: dict, policy: _steps.D
     def on_popup(p):
         events["popup"] = p.url
         nav["popups_closed"] += 1
-        try:
+        with contextlib.suppress(Exception):  # the popup may already be gone
             p.close()
-        except Exception:  # noqa: BLE001
-            pass
 
     def stop(code: str, **note) -> None:
         nav["stop_reason"] = code
@@ -477,10 +480,8 @@ def _run_steps(page: Page, leaves, controls: dict, items: dict, policy: _steps.D
                 break
             if not stable(step, "after Next"):
                 if nav["stop_reason"] == "document_navigation":
-                    try:
+                    with contextlib.suppress(Exception):  # best effort: the walk stops here either way
                         page.wait_for_load_state("load", timeout=timeout_ms)
-                    except Exception:  # noqa: BLE001
-                        pass
                 break
             if _steps.submits(page) > before_submits:
                 stop("submit_event_observed", step=step, reason="a form submit event fired during navigation")

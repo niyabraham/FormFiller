@@ -179,7 +179,7 @@ def validate_answer(value: Any, control: Control) -> Validated:
         return Validated(True, b) if b is not None else _fail(f"{value!r} is not a yes/no value")
 
     # text-like: text, textarea, email, url, tel, anything else
-    if isinstance(value, (list, dict)) or isinstance(value, bool):
+    if isinstance(value, (list, dict, bool)):
         return _fail(f"{value!r} cannot be entered as text")
     text = str(value).strip()
     if control.kind == "text" and is_date_format_hint(control.placeholder):
