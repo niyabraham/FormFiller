@@ -119,5 +119,5 @@ def build_plan(questions: list[Question], leaves: list[Leaf]) -> list[AnswerPlan
                 plans[i] = replace(plans[i], status="REVIEW", answer=None, confidence=0.0,
                                    reason=(f"{len(idxs)} questions that differ only in a parenthetical qualifier matched the same source value "
                                            f"({plans[i].source!r}); it may belong to only one of them"),
-                                   alternatives=[{"source": plans[i].source, "value": plans[i].raw_value, "score": plans[i].confidence}])
+                                   alternatives=[{"source": plans[i].source, "value": plans[i].raw_value, "score": plans[i].confidence}] + plans[i].alternatives)
     return plans
