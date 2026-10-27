@@ -18,7 +18,7 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
 from formfill.web.models import Control
 
-_TEXTLIKE = {"text", "textarea", "email", "url", "tel", "number", "date"}
+_TEXTLIKE = {"text", "textarea", "email", "url", "tel", "number", "date", "color"}
 
 TEXTLIKE_KINDS = _TEXTLIKE
 
