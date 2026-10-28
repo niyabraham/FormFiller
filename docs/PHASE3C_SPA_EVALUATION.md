@@ -68,3 +68,6 @@ Retrieval files (`retrieve.py`, `plan.py`, `validate.py`, `tokens.py`, `understa
 
 ## Recommended next step
 Gokul/Niya to supply 2–3 sanitized *saved* snapshots (or a sandbox instance) of the real RFI SPA so fixtures can mimic its actual widgets and Next/Save labels; then tune only the allow list and combobox handling, and add a Back-and-recheck pass for unmounted steps.
+
+
+**Update (final safety pass):** `allow_submit_type_navigation` is now deprecated and has no effect. Because an intercepted submit cannot be told from a real one before the click, submit-type controls and off-page links are always refused and the walk stops for a person; the post-click submit-event counter is only a tripwire. The "needs the explicit opt-in" wording above is superseded.

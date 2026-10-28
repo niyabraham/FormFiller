@@ -78,6 +78,15 @@ def _match_option(value: Any, control: Control) -> str | None:
     return None
 
 
+def _shared_value(matched: str, control: Control) -> str | None:
+    """Why `matched` cannot identify one option: several options carry the same value (e.g. radios that all submit "on"), so entering
+    that value would pick the first of them whatever the source meant. None when the value is unique."""
+    n = sum(1 for o in control.options if o.value == matched)
+    if n > 1:
+        return f"{n} options share the value {matched!r}, so the chosen option cannot be told apart by value"
+    return None
+
+
 _PLACEHOLDERS = {"none", "n/a", "n.a", "not applicable", "not available", "tbd", "tba", "tbc", "unknown", "null", "nil",
                  "to be determined", "to be confirmed", "-", "--", "\u2013", "\u2014"}
 
@@ -146,12 +155,23 @@ def validate_answer(value: Any, control: Control) -> Validated:
                     pass
         return Validated(True, d.isoformat())
 
+    if kind == "color":
+        m = re.fullmatch(r"#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})", str(value).strip())
+        if not m:
+            return _fail(f"{value!r} is not a hex colour (#rgb or #rrggbb)")
+        h = m.group(1).lower()
+        if len(h) == 3:
+            h = "".join(c * 2 for c in h)
+        return Validated(True, "#" + h)  # a colour input always holds lower-case #rrggbb
+
     if kind in ("select", "radio"):
         if isinstance(value, (list, dict)):
             return _fail("a single value is required but the source has a list")
         matched = _match_option(value, control)
         if matched is None:
             return _fail(f"{value!r} is not one of the allowed options {[o.value for o in control.options]}")
+        if (why := _shared_value(matched, control)):
+            return _fail(why)
         return Validated(True, matched)
 
     if kind in ("multiselect", "checkbox_group"):
@@ -161,6 +181,8 @@ def validate_answer(value: Any, control: Control) -> Validated:
             m = _match_option(item, control)
             if m is None:
                 return _fail(f"{item!r} is not one of the allowed options {[o.value for o in control.options]}")
+            if (why := _shared_value(m, control)):
+                return _fail(why)
             if m not in chosen:
                 chosen.append(m)
         return Validated(True, chosen)
@@ -170,7 +192,7 @@ def validate_answer(value: Any, control: Control) -> Validated:
         return Validated(True, b) if b is not None else _fail(f"{value!r} is not a yes/no value")
 
     # text-like: text, textarea, email, url, tel, anything else
-    if isinstance(value, (list, dict)) or isinstance(value, bool):
+    if isinstance(value, (list, dict, bool)):
         return _fail(f"{value!r} cannot be entered as text")
     text = str(value).strip()
     if control.kind == "text" and is_date_format_hint(control.placeholder):

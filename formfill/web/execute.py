@@ -10,6 +10,7 @@ same thing as a successful fill (the lesson of the PDF PoC's verifier).
 
 from __future__ import annotations
 
+import contextlib
 from dataclasses import dataclass
 from typing import Any
 
@@ -18,7 +19,24 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
 from formfill.web.models import Control
 
-_TEXTLIKE = {"text", "textarea", "email", "url", "tel", "number", "date"}
+_TEXTLIKE = {"text", "textarea", "email", "url", "tel", "number", "date", "color"}
+
+TEXTLIKE_KINDS = _TEXTLIKE
+
+# A server-rendered page shows its inputs before the framework has taken them over. When React/Vue/Svelte later attaches to
+# a node ("hydration") it may set the node's value to its own state, wiping what was typed before. These internal keys on the
+# DOM node are how the framework marks that it now owns it (observed on a public page: the keys first appeared on the field at
+# the moment the page's own code assigned `.value = ""`; a value entered after they existed was kept).
+_FRAMEWORK_JS = "el => Object.getOwnPropertyNames(el).some(k => /^__(react|vue|svelte)/.test(k))"
+
+
+def framework_attached(page: Page, control: Control) -> bool | None:
+    """True/False: does a UI framework's internal bookkeeping exist on the control's node. None if it cannot be read."""
+    try:
+        return bool(_locator(page, control).first.evaluate(_FRAMEWORK_JS, timeout=1000))
+    except Exception:  # noqa: BLE001 - the node is gone or the page is navigating
+        return None
+
 
 _READ_JS = """
 els => {
@@ -258,10 +276,8 @@ def submit(page: Page, submit_selector: str | None = None, success_text: str | N
         loc.first.click(timeout=timeout_ms)
     except Exception as exc:  # noqa: BLE001 - any click failure is reported, not raised
         return {"attempted": True, "outcome": "ERROR", "detail": str(exc).splitlines()[0]}
-    try:
+    with contextlib.suppress(Exception):  # a page that never reaches "load" is judged by what is on screen below
         page.wait_for_load_state("load", timeout=timeout_ms)
-    except Exception:  # noqa: BLE001
-        pass
     invalid = page.evaluate(
         "() => Array.from(document.querySelectorAll(':invalid')).map(e => e.dataset.ffId || e.name || e.id)"
     )

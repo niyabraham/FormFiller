@@ -25,6 +25,8 @@ class ItemResult:
     browser_valid: bool | None = None  # HTML constraint validation on the control
     detail: str = ""
     prefilled_warning: bool = False  # a REVIEW control already held a value (template default)
+    framework_attached_at_fill: bool | None = None  # text-like answers: did a UI framework (React/Vue/Svelte) already own the node when it was filled? None = not checked
+    reentered: bool = False  # the value was cleared after the framework attached to the node, and was entered once more
 
 
 def overall_status(items: list[ItemResult], submission: dict | None) -> str:
@@ -56,6 +58,7 @@ class RunResult:
     run_id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     started_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat(timespec="seconds"))
     finished_at: str = ""
+    unsupported: list[dict] = field(default_factory=list)  # visible controls that cannot be filled or verified (never touched); each needs a person
 
     @property
     def review_items(self) -> list[ItemResult]:
