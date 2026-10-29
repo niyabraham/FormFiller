@@ -124,6 +124,25 @@ def test_recorded_baseline_matches_current_benchmark_files():
         "benchmarks changed since baseline.json was recorded; re-run tools/evaluate_baseline.py"
 
 
+def test_benchmark_digest_is_independent_of_crlf_or_lf(tmp_path, monkeypatch):
+    import evaluate_baseline as ev
+
+    content = b"<form>\r\n  <input name=\"vendor\">\r\n</form>\r\n"
+    crlf_bench = tmp_path / "crlf"
+    lf_bench = tmp_path / "lf"
+    for bench, fixture in ((crlf_bench, content), (lf_bench, content.replace(b"\r\n", b"\n"))):
+        case = bench / "case"
+        case.mkdir(parents=True)
+        (case / "form.html").write_bytes(fixture)
+
+    monkeypatch.setattr(ev, "BENCH", crlf_bench)
+    crlf_digest = ev.benchmark_digest()
+    monkeypatch.setattr(ev, "BENCH", lf_bench)
+    lf_digest = ev.benchmark_digest()
+
+    assert crlf_digest == lf_digest
+
+
 def test_summarise_partition_on_synthetic_records():
     import evaluate_baseline as ev
 

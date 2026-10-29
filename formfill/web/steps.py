@@ -51,7 +51,8 @@ _DENY = re.compile(
 # submitted automatically. A future, explicit final-step policy must be designed separately; absence of a Next button is not evidence.
 INCOMPLETE_STOPS = frozenset({
     "no_safe_next_control", "page_not_settled", "document_navigation", "dialog_on_navigation", "popup_opened", "submit_type_next_refused",
-    "next_click_failed", "submit_event_observed", "next_disabled", "no_change_after_next", "max_steps",
+    "next_click_failed", "submit_event_observed", "outbound_request_blocked", "network_guard_unavailable",
+    "service_worker_controls_page", "service_worker_registered", "next_disabled", "no_change_after_next", "max_steps",
 })
 
 
@@ -81,7 +82,13 @@ _INSTALL_JS = """
   if (f) window.fetch = function () { window.__ffPending++; return f.apply(this, arguments).finally(() => { window.__ffPending--; }); };
   const s = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function () { window.__ffPending++; this.addEventListener('loadend', () => { window.__ffPending--; }); return s.apply(this, arguments); };
-  document.addEventListener('submit', () => { window.__ffSubmits++; }, true);
+  document.addEventListener('submit', event => {
+    window.__ffSubmits++;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
+  // SharedWorker attempts (see formfill.web.sharedworkers) are collected here, whichever frame made them.
+  window.__ffBlockedApis = window.__ffBlockedApis || [];
 }
 """
 
@@ -126,8 +133,16 @@ _BUTTONS_JS = """
 
 
 def install(page: Page) -> None:
-    """Install the page-side counters (pending fetch/XHR, submit events). Lost on a full navigation."""
+    """Track network/submit activity and cancel submit events during a wizard walk. Main frame only; lost on full navigation."""
     page.evaluate(_INSTALL_JS)
+
+
+def blocked_apis(page: Page) -> list[str]:
+    """Browser APIs the page tried to use while the walk had them disabled (see _INSTALL_JS), oldest first."""
+    try:
+        return list(page.evaluate("() => window.__ffBlockedApis || []"))
+    except Exception:  # noqa: BLE001 - mid-navigation
+        return []
 
 
 def installed(page: Page) -> bool:

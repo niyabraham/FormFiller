@@ -10,7 +10,7 @@ import pytest
 
 from formfill.web.discover import discover
 from formfill.web.execute import framework_attached
-from formfill.web.pipeline import run_form
+from formfill.web.pipeline import release_wizard_network_guard, run_form
 
 pytestmark = pytest.mark.browser
 
@@ -20,6 +20,7 @@ SOURCE = {"company": {"name": "Acme Robotics Ltd"}}
 def _open(page, mode, ms=700):
     from pathlib import Path
 
+    release_wizard_network_guard(page)
     page.goto((Path(__file__).parent / "fixtures" / "late_hydrate.html").as_uri() + f"?mode={mode}&ms={ms}")
 
 
@@ -34,6 +35,7 @@ def test_value_wiped_by_hydration_is_re_entered_once_and_reported(page):
     assert item.reentered and item.verified is True and item.observed == "Acme Robotics Ltd"
     assert "re-entered once" in item.detail and res.status == "FILLED"
     assert any("re-entered once" in w for w in res.warnings)  # a recovery is never silent
+    assert page.evaluate("() => window.__hydrationEvents") == ["initial-answer-input", "hydration-reset"]
     assert page.input_value("#v") == "Acme Robotics Ltd"
 
 
@@ -48,12 +50,19 @@ def test_a_reset_without_framework_evidence_is_a_failure_not_retried(page):
     res = _run(page, "reset_nokeys")
     item = res.items[0]
     assert not item.reentered and item.verified is False and item.observed == "" and res.status == "FAILED"
+    assert item.framework_attached_at_fill is False
+    assert page.evaluate("() => window.__hydrationEvents") == [
+        "initial-answer-input", "reset-without-framework"
+    ]
 
 
 def test_a_second_loss_after_re_entry_is_still_a_failure(page):
     res = _run(page, "hydrate_twice")
     item = res.items[0]
     assert item.reentered and item.verified is False and res.status == "FAILED"
+    assert page.evaluate("() => window.__hydrationEvents") == [
+        "initial-answer-input", "hydration-reset", "reentry-input", "second-reset"
+    ]
 
 
 def test_failed_run_after_re_entry_blocks_submission(page):

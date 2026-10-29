@@ -1,5 +1,7 @@
 """Question-driven retrieval + the never-guess answer policy (no browser)."""
 
+import pytest
+
 from formfill.web.models import Control, Option
 from formfill.web.plan import plan_question
 from formfill.web.retrieve import index_source, retrieve
@@ -98,9 +100,39 @@ def test_weak_evidence_is_review():
     assert item.status == "REVIEW" and "too weak" in item.reason
 
 
-def test_attestation_checkbox_is_never_auto_ticked_even_if_the_source_says_true():
-    item = plan_question(q("I confirm the answers are accurate", "checkbox"), index_source({"answers_accurate": True}))
+@pytest.mark.parametrize("kind", ["checkbox", "radio", "select", "text"])
+@pytest.mark.parametrize("wording", [
+    "I confirm the answers are accurate",
+    "Do you agree that the information is accurate?",
+    "Declaration: I certify that the answers are complete and accurate.",
+    "Do you consent to processing of this information?",
+    "Please acknowledge acceptance of the terms and conditions.",
+    "By submitting, you authorize this organization to verify the information.",
+    "Authorized signature",
+])
+def test_legal_attestation_is_never_auto_answered_from_source(kind, wording):
+    options = [Option("yes", "Yes"), Option("no", "No")] if kind in {"radio", "select"} else []
+    item = plan_question(
+        q(wording, kind, options=options),
+        index_source({
+            "information_is_accurate": True,
+            "answers_complete": True,
+            "consent": True,
+            "terms_accepted": True,
+            "authorized": True,
+            "signature": "Fictional Vendor LLC",
+        }),
+    )
     assert item.status == "REVIEW" and "attestation" in item.reason
+
+
+def test_attestation_context_in_help_text_stays_review():
+    ctl = Control(control_id="c1", kind="text", label="Your name", help_text="Sign to acknowledge the declaration.")
+    item = plan_question(understand_control(ctl), index_source({"name": "Fictional Vendor LLC"}))
+    assert item.status == "REVIEW" and "attestation" in item.reason
+
+
+def test_ordinary_boolean_checkbox_is_still_answered():
     ordinary = plan_question(q("Has SSO enabled", "checkbox"), index_source({"sso_enabled": True}))
     assert ordinary.status == "ANSWER" and ordinary.answer is True
 

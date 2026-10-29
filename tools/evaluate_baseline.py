@@ -482,7 +482,8 @@ def benchmark_digest() -> str:
     h = hashlib.sha256()
     for f in sorted(BENCH.glob("*/*")):
         if f.name in ("form.html", "source.json", "truth.json", "thanks.html"):
-            h.update(f.relative_to(BENCH).as_posix().encode() + f.read_bytes())
+            content = f.read_bytes().replace(b"\r\n", b"\n")
+            h.update(f.relative_to(BENCH).as_posix().encode() + content)
     return h.hexdigest()[:16]
 
 

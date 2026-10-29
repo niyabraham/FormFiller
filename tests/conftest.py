@@ -37,7 +37,10 @@ def page(browser):
 
 @pytest.fixture
 def open_fixture(page):
+    from formfill.web.pipeline import release_wizard_network_guard
+
     def _open(name: str):
+        release_wizard_network_guard(page)
         page.goto((FIXTURES / name).as_uri())
         return page
 

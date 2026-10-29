@@ -86,7 +86,11 @@ def test_status_matrix():
     assert overall_status([ok, item("REVIEW")], None) == "NEEDS_REVIEW"
     assert overall_status([item("ANSWER", False)], None) == "FAILED"
     assert overall_status([item("ANSWER", True, False)], None) == "FAILED"
+    assert overall_status([item("ANSWER", True, None)], None) == "NEEDS_REVIEW"
     assert overall_status([ok], {"outcome": "CONFIRMED"}) == "SUBMITTED"
     assert overall_status([ok], {"outcome": "UNCONFIRMED"}) == "SUBMITTED_UNCONFIRMED"
     assert overall_status([ok], {"outcome": "BLOCKED_BY_VALIDATION"}) == "FAILED"
     assert overall_status([ok, item("REVIEW")], {"outcome": "SKIPPED"}) == "NEEDS_REVIEW"
+    assert overall_status([ok], {"outcome": "SKIPPED"}) == "NEEDS_REVIEW"  # a refused submission is never "FILLED"
+    assert overall_status([item("ANSWER", True, False)], {"outcome": "SKIPPED"}) == "FAILED"  # a failure still outranks it
+    assert overall_status([ok], {"outcome": "NO_SUBMIT_CONTROL"}) == "FILLED"  # nothing was refused: there was nothing to press

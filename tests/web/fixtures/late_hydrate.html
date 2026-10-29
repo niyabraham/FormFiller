@@ -1,14 +1,15 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Late hydration</title></head>
 <body>
-<!-- Simulates a server-rendered page whose UI framework takes the inputs over after load (measured on a public page: the framework
-     attaches its internal keys to the node and assigns value = "" about 1.5 s after an early fill). Written from that behaviour; not a
-     copy of any page.  ?ms=700 (when hydration happens)
+<!-- Simulates a server-rendered page whose UI framework takes the inputs over after an early fill (measured on a public page).
+     Written from that behaviour; not a copy of any page. Hydration in these modes is triggered by the first answer input so
+     browser startup time cannot make the framework attach before the simulated early fill.
        ?mode=hydrate        keys appear on the node, then value is cleared          -> a single re-entry is justified
-       ?mode=hydrate_twice  as hydrate, and the next input is cleared again        -> still a failure
+       ?mode=hydrate_twice  as hydrate, and the re-entry input is cleared again     -> still a failure
        ?mode=keep           keys appear, value is kept                              -> nothing to recover
        ?mode=reset_nokeys   value is cleared with no framework keys                 -> a genuine reset, not recovered
-       ?mode=already        keys exist from the start, nothing is cleared (page was ready) -->
+       ?mode=already        keys exist from the start, nothing is cleared (page was ready)
+     ?ms=700 controls the load-time framework attachment in keep mode only. -->
 <form id="f" novalidate>
   <label for="v">Vendor / company name</label>
   <input id="v" name="vendor" type="text">
@@ -18,14 +19,38 @@
   const mode = q.get('mode') || 'hydrate', ms = +(q.get('ms') || 700);
   const v = document.getElementById('v');
   const attach = () => { v['__reactFiber$fixture'] = {}; v['__reactProps$fixture'] = {}; };
+  window.__hydrationEvents = [];
   if (mode === 'already') attach();
+  else if (mode === 'hydrate' || mode === 'hydrate_twice') {
+    v.addEventListener('input', () => {
+      window.__hydrationEvents.push('initial-answer-input');
+      setTimeout(() => {
+        attach();
+        v.value = '';
+        window.__hydrationEvents.push('hydration-reset');
+        if (mode === 'hydrate_twice') {
+          v.addEventListener('input', () => {
+            window.__hydrationEvents.push('reentry-input');
+            setTimeout(() => {
+              v.value = '';
+              window.__hydrationEvents.push('second-reset');
+            }, 0);
+          }, { once: true });
+        }
+      }, 0);
+    }, { once: true });
+  }
+  else if (mode === 'reset_nokeys') {
+    v.addEventListener('input', () => {
+      window.__hydrationEvents.push('initial-answer-input');
+      setTimeout(() => {
+        v.value = '';
+        window.__hydrationEvents.push('reset-without-framework');
+      }, 0);
+    }, { once: true });
+  }
   else setTimeout(() => {
-    if (mode !== 'reset_nokeys') attach();
-    if (mode !== 'keep') v.value = '';
-    if (mode === 'hydrate_twice') {
-      let n = 0;
-      v.addEventListener('input', () => { if (n++ === 0) setTimeout(() => { v.value = ''; }, 300); });
-    }
+    attach();
   }, ms);
 </script>
 </body></html>
