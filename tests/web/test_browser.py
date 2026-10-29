@@ -100,17 +100,20 @@ def test_submit_blocked_while_required_items_need_review(open_fixture):
     assert page.locator("#done").is_hidden()  # nothing was sent
 
 
-def test_submit_confirmed_when_all_required_answered(open_fixture):
+def test_optional_attestation_blocks_submission_even_when_all_required_answers_are_present(open_fixture):
     page = open_fixture("rfi_basic.html")
     result = run_form(page, BASIC_SOURCE, submit=True, success_text="Thank you, your response was received")
-    assert result.submission["outcome"] == "CONFIRMED"
-    assert result.status == "SUBMITTED" and len(result.review_items) == 2  # optional blanks stay visible in the result
+    assert result.submission["outcome"] == "SKIPPED"
+    assert result.status == "NEEDS_REVIEW"
+    assert any("attestation" in item.plan.reason for item in result.items if item.plan.status == "REVIEW")
+    assert page.locator("#done").is_hidden()
 
 
-def test_submit_unconfirmed_when_no_confirmation_text_appears(open_fixture):
+def test_optional_attestation_blocks_submission_without_confirmation_text(open_fixture):
     page = open_fixture("rfi_basic.html")
     result = run_form(page, BASIC_SOURCE, submit=True, success_text="Never appears", out_dir=None)
-    assert result.submission["outcome"] == "UNCONFIRMED" and result.status == "SUBMITTED_UNCONFIRMED"
+    assert result.submission["outcome"] == "SKIPPED" and result.status == "NEEDS_REVIEW"
+    assert page.locator("#done").is_hidden()
 
 
 def test_browser_validation_blocks_submission_and_is_reported(open_fixture):
@@ -121,6 +124,96 @@ def test_browser_validation_blocks_submission_and_is_reported(open_fixture):
     assert page.locator("#ok").is_hidden()
     page.fill("#code", "ABC-1234")
     assert submit(page, "button[type=submit]", success_text="Registration accepted")["outcome"] == "CONFIRMED"
+
+
+def test_invalid_dom_readback_is_not_verified_or_filled(page):
+    page.set_content(
+        "<label for='org'>Organization name</label><input id='org'>"
+        "<script>document.getElementById('org').addEventListener('input', e => "
+        "e.target.setCustomValidity('fixture says invalid'))</script>"
+    )
+    result = run_form(page, BASIC_SOURCE, confirm_ms=0)
+    item = next(i for i in result.items if i.plan.status == "ANSWER")
+    assert item.observed == "Acme Corp" and item.browser_valid is False
+    assert item.verified is False and result.status == "FAILED"
+
+
+def test_optional_attestation_blocks_requested_submission(page):
+    page.set_content(
+        "<form onsubmit=\"window.__submitted=true;event.preventDefault()\">"
+        "<label><input type='checkbox'>Do you agree that the information is accurate?</label>"
+        "<button id='send' type='submit'>Send</button></form><script>window.__submitted=false</script>"
+    )
+    result = run_form(
+        page,
+        {"company": {"information_is_accurate": True}},
+        submit=True,
+        submit_selector="#send",
+        confirm_ms=0,
+    )
+    assert result.items[0].plan.status == "REVIEW"
+    assert result.submission["outcome"] == "SKIPPED"
+    assert page.evaluate("() => window.__submitted") is False
+
+
+ATTESTATION_FORM = (
+    "<form onsubmit=\"window.__submitted=true;event.preventDefault()\">"
+    "<label for='org'>Organization name</label><input id='org'>{extra}"
+    "<button id='send' type='submit'>Send</button></form><script>window.__submitted=false</script>"
+)
+ATTESTATION_SOURCE = {
+    "company": {"name": "Fictional Vendor LLC"}, "data_processing_addendum": "agree", "full_name": "Fictional Vendor LLC",
+    "information_provided_accurate": "yes", "marketing_consent": True,
+}
+
+
+def test_control_the_same_form_without_an_attestation_is_submitted(page):
+    page.set_content(ATTESTATION_FORM.format(extra=""))
+    result = run_form(page, ATTESTATION_SOURCE, submit=True, submit_selector="#send", confirm_ms=0)
+    assert [i.plan.status for i in result.items] == ["ANSWER"] and page.input_value("#org") == "Fictional Vendor LLC"
+    assert result.submission["attempted"] is True and page.evaluate("() => window.__submitted") is True
+
+
+def test_a_submission_the_page_never_confirms_is_reported_unconfirmed_not_submitted(page):
+    """End to end through run_form: the form is clean, so the request is made; the page then says nothing, which must never be
+    reported as a confirmed submission (local fixture; nothing leaves the machine)."""
+    page.set_content(ATTESTATION_FORM.format(extra=""))
+    result = run_form(page, ATTESTATION_SOURCE, submit=True, submit_selector="#send", success_text="Thank you, your response was received",
+                      confirm_ms=0, timeout_ms=800)
+    assert result.submission["attempted"] is True and page.evaluate("() => window.__submitted") is True
+    assert result.submission["outcome"] == "UNCONFIRMED" and result.status == "SUBMITTED_UNCONFIRMED"
+
+
+def test_the_same_clean_form_is_confirmed_when_the_page_does_say_so(page):
+    page.set_content(ATTESTATION_FORM.format(extra="").replace(
+        "window.__submitted=true;event.preventDefault()", "window.__submitted=true;event.preventDefault();document.body.append('Thank you, your response was received')"))
+    result = run_form(page, ATTESTATION_SOURCE, submit=True, submit_selector="#send", success_text="Thank you, your response was received",
+                      confirm_ms=0, timeout_ms=800)
+    assert result.submission["outcome"] == "CONFIRMED" and result.status == "SUBMITTED"
+
+
+@pytest.mark.parametrize("extra", [
+    # the agreement is in the option labels, the question itself is neutral
+    "<fieldset><legend>Data processing addendum</legend><label><input type='radio' name='dpa' value='agree'> I agree</label>"
+    "<label><input type='radio' name='dpa' value='no'> I do not agree</label></fieldset>",
+    # the signature instruction is only in the placeholder
+    "<label for='n'>Full name</label><input id='n' placeholder='Type your full name to sign'>",
+    # a vouching question with no verb
+    "<label for='a'>Is the information provided in this questionnaire accurate?</label>"
+    "<select id='a'><option value=''>-</option><option value='yes'>Yes</option><option value='no'>No</option></select>",
+    # a statement-style consent radio
+    "<fieldset><legend>Marketing consent</legend><label><input type='radio' name='mc' value='yes'> Yes</label>"
+    "<label><input type='radio' name='mc' value='no'> No</label></fieldset>",
+])
+def test_optional_attestation_variants_block_requested_submission(page, extra):
+    page.set_content(ATTESTATION_FORM.format(extra=extra))
+    result = run_form(page, ATTESTATION_SOURCE, submit=True, submit_selector="#send", confirm_ms=0)
+    flagged = [i for i in result.items if i.plan.status == "REVIEW"]
+    assert flagged and all(i.plan.reason.startswith("attestation/consent") and not i.plan.required for i in flagged)
+    assert any(i.plan.status == "ANSWER" and i.verified for i in result.items)  # the ordinary answer was entered ...
+    assert result.submission["outcome"] == "SKIPPED" and result.submission["attempted"] is False  # ... but nothing is submitted
+    assert result.status == "NEEDS_REVIEW" and page.evaluate("() => window.__submitted") is False
+    assert page.locator("input:checked").count() == 0 and page.input_value("#org") == "Fictional Vendor LLC"
 
 
 # ---- widgets, conditional fields, defaults -----------------------------------

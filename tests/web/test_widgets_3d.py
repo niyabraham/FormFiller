@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from formfill.web import execute
-from formfill.web.pipeline import run_form
+from formfill.web.pipeline import release_wizard_network_guard, run_form
 from formfill.web.steps import DiscoveryPolicy
 
 pytestmark = pytest.mark.browser
@@ -35,6 +35,7 @@ def base():
 @pytest.fixture
 def run(page, base):
     def _run(fid, policy=False, **kw):
+        release_wizard_network_guard(page)
         page.goto(f"{base}/{fid}")
         res = run_form(page, SOURCE, policy=DiscoveryPolicy() if policy else None, **kw)
         return res, page.evaluate("() => window.__state || {}"), page

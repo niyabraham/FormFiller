@@ -21,7 +21,8 @@ class ItemResult:
     plan: AnswerPlanItem
     filled: bool = False
     observed: Any = None  # what the page holds after the run
-    verified: bool | None = None  # None = nothing to verify (REVIEW item)
+    verified: bool | None = None  # current read-back matched; None = unobservable or no ANSWER to verify
+    ever_verified: bool = False  # at least one read-back matched while the control was mounted
     browser_valid: bool | None = None  # HTML constraint validation on the control
     detail: str = ""
     prefilled_warning: bool = False  # a REVIEW control already held a value (template default)
@@ -36,6 +37,10 @@ def overall_status(items: list[ItemResult], submission: dict | None) -> str:
     failed = any(i.plan.status == "ANSWER" and (not i.filled or i.verified is False) for i in items)
     if failed or outcome in ("ERROR", "BLOCKED_BY_VALIDATION"):
         return "FAILED"
+    if any(i.plan.status == "ANSWER" and i.verified is None for i in items):
+        return "NEEDS_REVIEW"
+    if outcome == "SKIPPED":
+        return "NEEDS_REVIEW"  # submission was asked for and refused for a safety reason: never "FILLED"
     if outcome == "CONFIRMED":
         return "SUBMITTED"
     if outcome == "UNCONFIRMED":

@@ -1,11 +1,13 @@
 """Phase 3C: SPA browser behaviour against local fixtures (benchmarks/spa). Nothing here touches a real portal."""
 
 import json
+import threading
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import pytest
 
-from formfill.web.pipeline import run_form
+from formfill.web.pipeline import release_wizard_network_guard, run_form
 from formfill.web.steps import DiscoveryPolicy
 
 pytestmark = pytest.mark.browser
@@ -29,6 +31,25 @@ def base():
 @pytest.fixture
 def run(page, base):
     def _run(fid, policy=True, **kw):
+        release_wizard_network_guard(page)
+        # The wizard guard blocks every request, so the fixtures' /api/delay call (a slow endpoint on the local benchmark server)
+        # can no longer be answered by that server during a guarded walk. This init script answers it inside the page after the
+        # same delay instead. What the tests still exercise is FormFiller's settle logic, which waits on the page's own pending
+        # fetch (its counter wraps whatever `window.fetch` is when the walk starts); what they no longer exercise is a real
+        # server round trip, which the guard exists to prevent. Tests of the guard itself are in test_network_guard.py.
+        page.add_init_script(
+            """(() => {
+              if (window.__ffLocalDelayMock) return;
+              window.__ffLocalDelayMock = true;
+              const originalFetch = window.fetch.bind(window);
+              window.fetch = (input, init) => {
+                const url = new URL(typeof input === 'string' ? input : input.url, location.href);
+                if (url.pathname !== '/api/delay') return originalFetch(input, init);
+                const ms = Math.min(3000, Math.max(0, Number(url.searchParams.get('ms')) || 0));
+                return new Promise(resolve => setTimeout(() => resolve(new Response('ok')), ms));
+              };
+            })();"""
+        )
         page.goto(f"{base}/{fid}.html")
         pol = policy if isinstance(policy, DiscoveryPolicy) else (DiscoveryPolicy() if policy else None)
         res = run_form(page, SOURCE, policy=pol, **kw)
@@ -36,6 +57,57 @@ def run(page, base):
         return res, state, page
 
     return _run
+
+
+@pytest.fixture
+def request_target():
+    received = []
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path == "/form":
+                body = b"""<!doctype html><form id="f" action="/collect" method="post">
+                  <label for="org">Legal company name</label><input id="org">
+                  <button type="button" id="next">Next</button></form>"""
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            received.append(("GET", self.path))
+            self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def do_POST(self):
+            self.rfile.read(int(self.headers.get("Content-Length", "0")))
+            received.append(("POST", self.path))
+            self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def do_OPTIONS(self):
+            received.append(("OPTIONS", self.path))
+            self.send_response(200)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "POST")
+            self.send_header("Access-Control-Allow-Headers", "content-type")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def log_message(self, *_):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_address[1]}", received
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
 
 
 def answered(res):
@@ -47,7 +119,10 @@ def test_wizard_all_steps_filled_and_committed(run, fid):
     res, state, page = run(fid)
     assert res.navigation["steps_visited"] == 3
     assert {k: state[k] for k in GT[fid]["expected"]} == GT[fid]["expected"]
-    assert all(i.verified for i in answered(res).values())
+    assert all(i.ever_verified for i in answered(res).values())
+    # an answer on an earlier step is no longer on the page, so it cannot be read back now (None, with nothing observed); an
+    # answer that IS on the page must read back as verified. A failed read-back (False) is never acceptable.
+    assert all(i.verified is True or (i.verified is None and i.observed is None) for i in answered(res).values())
     assert page.evaluate("() => window.__submitted") == 0
 
 
@@ -93,10 +168,11 @@ def test_dialog_dismissed_and_run_stops(run):
     assert res.navigation["stop_reason"] == "dialog_on_navigation" and res.navigation["dialogs_accepted"] == 0
 
 
-def test_document_navigation_stops_and_loss_is_reported(run):
+def test_document_navigation_request_is_blocked_before_leaving_browser(run):
     res, _, _ = run("nav_reload")
-    assert res.navigation["stop_reason"] == "document_navigation"
-    assert res.status == "FAILED"
+    assert res.navigation["stop_reason"] == "outbound_request_blocked"
+    assert res.navigation["blocked_requests"][-1]["navigation"] is True
+    assert res.status == "NEEDS_REVIEW"
 
 
 def test_reset_during_navigation_is_detected(run):
@@ -108,6 +184,68 @@ def test_reset_during_navigation_is_detected(run):
 def test_attestation_stays_review(run):
     _, state, _ = run("attest")
     assert "certify" not in state and state.get("signer", "") == ""
+
+
+@pytest.mark.parametrize(("attack", "expected_stop"), [
+    ("document.getElementById('f').requestSubmit()", "submit_event_observed"),
+    ("HTMLFormElement.prototype.submit.call(document.getElementById('f'))", "outbound_request_blocked"),
+    ("fetch('/collect', {method:'POST', body:'fictional'}).catch(() => {})", "outbound_request_blocked"),
+    ("const x=new XMLHttpRequest(); x.open('POST','/collect'); x.send('fictional')", "outbound_request_blocked"),
+    ("location.assign('/collect?fictional=1')", "outbound_request_blocked"),
+    ("new WebSocket('ws://' + location.host + '/collect')", "outbound_request_blocked"),
+])
+def test_network_from_safe_next_is_blocked_before_local_server(request_target, page, attack, expected_stop):
+    base, received = request_target
+    page.goto(f"{base}/form")
+    page.evaluate("(code) => document.querySelector('#next').addEventListener('click', new Function(code))", attack)
+
+    result = run_form(page, SOURCE, policy=DiscoveryPolicy(), confirm_ms=0)
+
+    assert result.navigation["stop_reason"] == expected_stop
+    assert result.status == "NEEDS_REVIEW"
+    assert received == []
+    assert result.navigation["network_guard_active"] is True
+    if expected_stop == "submit_event_observed":
+        assert page.evaluate("() => window.__ffSubmits") == 1
+        assert result.navigation["blocked_requests"] == []
+    else:
+        assert result.navigation["blocked_requests"]
+
+
+def test_delayed_next_request_remains_blocked_after_run_returns(request_target, page):
+    base, received = request_target
+    page.goto(f"{base}/form")
+    page.evaluate(
+        "() => document.querySelector('#next').addEventListener('click', "
+        "() => setTimeout(() => fetch('/collect', {method:'POST', body:'fictional'}).catch(() => {}), 400))"
+    )
+
+    result = run_form(page, SOURCE, policy=DiscoveryPolicy(), confirm_ms=0)
+    assert result.status == "NEEDS_REVIEW"
+    page.wait_for_timeout(600)
+
+    assert received == []
+    assert result.navigation["blocked_requests"]
+    assert result.navigation["blocked_requests"][-1]["method"] == "POST"
+
+
+def test_remounted_wizard_answer_is_rechecked_and_reset_detected(page):
+    page.set_content(
+        "<div id='app'></div><script>"
+        "const app=document.getElementById('app');"
+        "function showFirst(){app.innerHTML='<label for=\"org\">Legal company name</label>'"
+        "+'<input id=\"org\"><button type=\"button\" id=\"next\">Next</button>'; "
+        "document.getElementById('next').onclick=()=>{app.innerHTML="
+        "'<label for=\"org\">Legal company name</label><input id=\"org\">';};}"
+        "showFirst();</script>"
+    )
+    result = run_form(page, SOURCE, policy=DiscoveryPolicy(), confirm_ms=0)
+    item = answered(result)["Legal company name"]
+    assert item.ever_verified is True
+    assert item.verified is False and item.observed == ""
+    assert "no longer in the DOM" not in item.detail
+    assert result.navigation["resets_detected"] == ["Legal company name"]
+    assert result.status == "FAILED"
 
 
 @pytest.mark.parametrize("text,ok", [("Next", True), ("Continue", True), ("Save and continue", True), ("Submit application", False),
@@ -220,7 +358,11 @@ def test_timeout_is_a_policy_knob(run):
 def test_complete_walk_is_unconfirmed_not_filled(run):
     """The walk reaches step 3, but the page cannot say that step 3 is the last: completion stays unconfirmed."""
     res, _, _ = run("wiz_unmount")
-    assert res.navigation["steps_visited"] == 3 and all(i.verified for i in answered(res).values())
+    items = answered(res)
+    assert res.navigation["steps_visited"] == 3 and all(i.ever_verified for i in items.values())
+    assert items["Legal company name"].verified is None
+    assert items["Legal company name"].observed is None
+    assert items["Headquarters country"].verified is True
     assert res.navigation["stop_reason"] == "no_safe_next_control" and res.navigation["completion"] == "unconfirmed"
     assert res.status == "NEEDS_REVIEW" and any("could not confirm" in w for w in res.warnings)
     assert any(n["kind"] == "completion_unconfirmed" for n in res.navigation["notes"])
@@ -351,6 +493,9 @@ _RELOAD_SLOW = """<!doctype html><html><body><div id="app"></div><script>
 
 
 def _serve_reload_slow(page):
+    # Answered locally by a page-level route (no network is involved). A guarded walk would abort the page's own reload request
+    # (see test_document_navigation_request_is_blocked_before_leaving_browser), so this is how the regression (read-back racing
+    # a reloaded document) is still reproduced; it is a test of read-back, not of the guard.
     page.route("http://reload.test/slow.html", lambda r: r.fulfill(status=200, content_type="text/html", body=_RELOAD_SLOW))
     page.goto("http://reload.test/slow.html")
 
@@ -362,4 +507,3 @@ def test_loss_after_reload_is_failed_even_when_the_app_remounts_late(page):
     assert res.navigation["stop_reason"] == "document_navigation"
     assert item.verified is False and item.observed == ""  # the reload wiped the value and that was actually observed
     assert res.status == "FAILED"
-

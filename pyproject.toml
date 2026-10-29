@@ -12,8 +12,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-web = ["playwright>=1.45"]
-dev = ["pytest>=8.0", "reportlab>=4.0", "playwright>=1.45"]
+web = ["playwright>=1.48"]
+dev = ["pytest>=8.0", "reportlab>=4.0", "playwright>=1.48"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["formfill"]
