@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Custom dropdown without ARIA</title></head><body>
+<!-- Local fixture (fictional). A dropdown built from divs with no role, no input and no ARIA: there is nothing a tool can read
+     or set reliably. FormFiller must not guess at it. -->
+<h1>Profile</h1>
+<label for="org">Legal company name</label><input id="org">
+<div class="label">Industry</div>
+<div class="dropdown" tabindex="0"><div class="selected">Choose an industry</div>
+  <div class="menu" hidden><div class="opt">Software</div><div class="opt">Manufacturing</div></div></div>
+<script>
+document.querySelector('.dropdown').addEventListener('click', () => { document.querySelector('.menu').hidden = !document.querySelector('.menu').hidden; });
+document.querySelectorAll('.opt').forEach(o => o.addEventListener('click', () => { document.querySelector('.selected').textContent = o.textContent; window.__industry = o.textContent; }));
+</script></body></html>

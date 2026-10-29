@@ -10,10 +10,14 @@ concurrency:
   group: tests-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
-  pytest:
+  quality:
+    name: Lint, types, dependency audit, matching report
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -22,12 +26,82 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
+      - name: Install project, test and quality dependencies (validates pyproject.toml)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: Lint (ruff, rules in pyproject.toml)
+        run: python -m ruff check formfill tools tests benchmarks
+      - name: Type check (mypy, settings in pyproject.toml)
+        run: python -m mypy
+      - name: Audit dependencies for known vulnerabilities (pip-audit)
+        run: python -m pip_audit --progress-spinner off --skip-editable
+      - name: Matching evaluation report (no browser; separate precision / coverage / false positives / abstentions)
+        run: |
+          python tools/evaluate_matching.py --out-dir matching-report | tee matching.txt
+          { echo "### Matching evaluation"; echo '```'; cat matching.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the matching report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: matching-report
+          path: matching-report
+          if-no-files-found: ignore
+
+  pytest:
+    name: Tests (Python ${{ matrix.python-version }}, Chromium required)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    env:
+      FORMFILL_REQUIRE_BROWSER: "1"  # a missing or broken Chromium fails the job instead of skipping browser tests
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
       - name: Install project and test dependencies
-        run: python -m pip install -e ".[dev]"
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
       - name: Install Chromium
+        timeout-minutes: 8
         run: python -m playwright install --with-deps chromium
+      - name: Verify Chromium launches
+        timeout-minutes: 2
+        run: |
+          python - <<'PY'
+          from importlib.metadata import version
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              print(f"Playwright {version('playwright')}, Chromium {browser.version}")
+              browser.close()
+          PY
       - name: Run test suite
-        run: python -m pytest -q -rf --junitxml=pytest-report.xml
+        timeout-minutes: 20
+        run: python -m pytest -q -rfEs --durations=15 --junitxml=pytest-report.xml
+      - name: Test summary
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import xml.etree.ElementTree as ET
+          try:
+              root = ET.parse("pytest-report.xml").getroot()
+          except Exception as exc:
+              print(f"No pytest report: {exc}")
+              raise SystemExit(0)
+          suite = root if root.tag == "testsuite" else root.find("testsuite")
+          a = suite.attrib
+          print(f"### Tests on Python ${{ matrix.python-version }}")
+          print(f"tests {a.get('tests')}, failures {a.get('failures')}, errors {a.get('errors')}, skipped {a.get('skipped')}, time {a.get('time')} s")
+          PY
       - name: Annotate failed tests
         if: failure()
         run: |
@@ -46,3 +120,23 @@ jobs:
                       text = text.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
                       print(f"::error title={case.get('classname')}::{case.get('name')}: {text}")
           PY
+      - name: Keep the test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-report-${{ matrix.python-version }}
+          path: pytest-report.xml
+          if-no-files-found: ignore
+      - name: Wizard navigation and safety benchmark (separate report; fails on any final submission or unrecorded request)
+        if: matrix.python-version == '3.11'
+        timeout-minutes: 5
+        run: |
+          python tools/evaluate_wizards.py --out-dir wizard-report
+          cat wizard-report/wizards.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the wizard report
+        if: always() && matrix.python-version == '3.11'
+        uses: actions/upload-artifact@v4
+        with:
+          name: wizard-report
+          path: wizard-report
+          if-no-files-found: ignore

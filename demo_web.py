@@ -26,6 +26,7 @@ def main() -> None:
         (ROOT / "examples" / "web" / "rfi_form.html").as_uri(),
         ROOT / "examples" / "web" / "rfi_source.json",
         out_dir=out, submit=submit, success_text="Thank you, your response was received",
+        trace=True,  # a local example page with fictional data; run_url records no trace unless asked
     )
     print(f"{'QUESTION':<44}{'STATUS':<8}{'ANSWER':<24}SOURCE / REASON")
     print("-" * 110)

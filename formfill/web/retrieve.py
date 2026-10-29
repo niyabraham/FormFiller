@@ -53,12 +53,14 @@ from typing import Any
 
 from formfill.web.models import Candidate, Question
 from formfill.web.tokens import (
+    ENTITY_SCOPE,
     IMPLICIT_NOUNS,
     NEGATORS,
     NEUTRAL,
     ORGANISATION_WORDS,
     QUALIFIERS,
     SELF_REFERENCE,
+    TOPICS,
     period_markers,
     tokenize,
 )
@@ -206,6 +208,10 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
     if q_period and (leaf.period and q_period != leaf.period or not leaf.period and q_period - _IMPLICIT_PERIODS):
         flags.append(f"period differs: question names {sorted(q_period)}, key path names {sorted(leaf.period) or 'none'}")
         score = min(score, PERIOD_CAP)
+    q_topics, key_topics = q_eff & TOPICS, (leaf.parent_tokens | leaf.leaf_tokens) & TOPICS
+    if q_topics and key_topics and not q_topics & key_topics:
+        flags.append(f"topic differs: the question is about {sorted(q_topics)}, the key about {sorted(key_topics)}")
+        score = min(score, UNEXPLAINED_CAP)
     neg_q, neg_l = q_tokens & NEGATORS, explained_by & NEGATORS
     if neg_q != neg_l:
         flags.append(f"polarity differs: question has {sorted(neg_q) or 'none'}, key path has {sorted(neg_l) or 'none'}")
@@ -359,4 +365,13 @@ def retrieve(question: Question, leaves: list[Leaf], top_k: int = 5) -> list[Can
     _apply_context(scored, q, section, question.is_count)
     _apply_entity_name_guard(scored, q, section)
     scored.sort(key=lambda t: (-t[0], t[3].path))
-    return [Candidate(leaf.path, leaf.value, round(s, 4), flags, evidence) for s, flags, evidence, leaf in scored[:top_k]]
+    return [Candidate(leaf.path, leaf.value, round(s, 4), flags, evidence, foreign_entity(leaf, q, section))
+            for s, flags, evidence, leaf in scored[:top_k]]
+
+
+def foreign_entity(leaf: Leaf, q: set[str], section: set[str]) -> str | None:
+    """Requirement C: the other legal entity (subsidiary, affiliate, parent, ...) this fact belongs to, when the question and
+    its section do not name it. Such a fact can never be the answer (plan.py); it is not down-scored, so a question that
+    several entities could answer still reads as ambiguous rather than defaulting to one of them."""
+    scope = ((leaf.parent_tokens | leaf.leaf_tokens) & ENTITY_SCOPE) - q - section
+    return "/".join(sorted(scope)) if scope else None

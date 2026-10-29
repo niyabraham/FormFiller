@@ -1,0 +1,4 @@
+# Benchmark datasets are identified by their sha256 in reports and docs (docs/MATCHING.md, docs/PROGRESS.md): keep their bytes
+# identical on every platform (no line-ending conversion on checkout).
+benchmarks/semantic/*.json -text
+benchmarks/wizards/scenarios.json -text

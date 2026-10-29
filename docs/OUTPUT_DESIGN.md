@@ -46,23 +46,59 @@ Reading: the **browser agents return task-level results with no provenance**; th
         "answer": 210,                   // after validation/transformation
         "confidence": 0.87,
         "reason": null,                  // why REVIEW
-        "alternatives": [{"source": "company.employees", "value": 250, "score": 0.40}]
+        "alternatives": [{"source": "company.employees", "value": 250, "score": 0.40}],
+        "evidence": [],                  // parent/sibling context that singled the candidate out
+        "method": "deterministic",       // deterministic | status_evidence | semantic | llm | human_approved | human_edited
+        "normalized_question": ["full", "time", "employee"],
+        "confidence_category": "medium", // high | medium | low (docs/MATCHING.md); null for REVIEW
+        "conflicts": [],                 // other source facts that contradict the proposal
+        "validation": "ok",              // outcome of validating the value against the control
+        "proposed_answer": null          // for REVIEW items: a suggestion for the reviewer, never entered
       },
       "filled": true,
+      "attempted": true,                 // FormFiller tried to enter it
       "observed": "210",                 // read back from the page afterwards
       "verified": true,                  // observed == answer
       "ever_verified": true,             // at least one matching read-back while the control was mounted
+      "revisit_verified": null,          // Back re-verification: true / false (value changed) / null (not revisited)
       "browser_valid": true,             // HTML constraint validation
+      "section": "Company",              // section heading / legend, step number (multi-step walks)
+      "step": 1,
+      "state": "verified",               // proposed | entered | verified | rejected | skipped | needs_review
+      "state_detail": "current read-back matched",
       "detail": "",
       "prefilled_warning": false         // a REVIEW control already held a page default
     }
   ],
+  "summary": {                           // the questionnaire-level review summary (result.review_summary)
+    "counts": {"verified": 8, "needs_review": 1}, "total": 9,
+    "required_unanswered": [], "needs_review": [], "rejected": [], "invalid": [], "attestations": [],
+    "conflicts": [], "duplicates": [], "unsupported_controls": 0, "blocked_actions": [], "submission": "not attempted",
+    "note": "Approving or filling answers is not submitting the questionnaire and is not a signature; ..."
+  },
+  "navigation": {                        // multi-step walks only (formfill/web/navigation.py)
+    "state": "stopped", "state_history": [{"state": "preflight"}, "..."],
+    "steps_visited": 4, "stop_reason": "required_unresolved", "completion": "incomplete",
+    "steps": [{"step": 1, "fingerprint": "...", "heading": "1. Company", "transition": "advanced", "required_unresolved": []}],
+    "revisit": {"steps_checked": [3, 2, 1, 2, 3, 4], "reverified": ["..."], "mismatched": [], "returned_to_last_step": true},
+    "network_mode": "block_all", "network_policy": null, "blocked_requests": [], "permitted_requests": [],
+    "versions": {"playwright": "1.64.1", "browser": "156.0.8078.4"}, "notes": [], "resets_detected": []
+  },
   "review_items": [ { "question_id": "...", "question": "...", "required": true, "reason": "...", "alternatives": [] } ],
   "submission": { "attempted": true, "outcome": "CONFIRMED", "final_url": "...", "confirmation_text": "Thank you, ..." },
-  "artifacts": { "screenshot_filled": "filled.png", "screenshot_after_submit": "after_submit.png", "trace": "trace.zip", "result_json": "result.json" },
+  "artifacts": { "screenshot_filled": "filled.png", "screenshot_after_submit": "after_submit.png", "result_json": "result.json", "audit_report": "audit_report.md" },
+  "unsupported": [],
   "warnings": ["1 control(s) stayed hidden and were not asked"]
 }
 ```
+
+`url` and `submission.final_url` are kept as scheme, host and path only (a query string can carry tokens or form data).
+
+Field states (`formfill/web/result.py::field_state`): **proposed** (an ANSWER that was not entered, for example because the walk
+stopped first), **entered** (entered, not yet read back), **verified** (the current read-back matched, or it matched while the
+control was on screen and a multi-step walk has moved on), **rejected** (the fill failed, the page holds something else or
+marked it invalid, or Back re-verification found it gone or changed), **skipped** (the control is disabled), **needs_review**
+(REVIEW: no or weak evidence, conflicting evidence, an attestation, or a proposal for the reviewer).
 
 ## 4. Status vocabulary (business outcome)
 
@@ -82,14 +118,17 @@ Submission outcomes: `CONFIRMED`, `UNCONFIRMED`, `BLOCKED_BY_VALIDATION`, `NO_SU
 
 ### Wizard network guard
 
-With a `DiscoveryPolicy`, `run_form` blocks the browser context's network traffic while it walks. It does not block every channel a browser has: it blocks the channels listed here, each measured with a local server that records what it receives (`tests/web/test_network_guard.py`, Playwright 1.64.1 with its Chromium), and the last section lists what is known to get through or was not tested. Layers, because routing alone was measured to be incomplete:
+With a `DiscoveryPolicy`, `run_form` blocks the browser context's network traffic while it walks. **`docs/SECURITY_MODEL.md` is the reference** (modes, blocked / permitted / monitored / untested channels, failure behaviour); this section keeps the measurement details. It does not block every channel a browser has: it blocks the channels listed here, each measured with a local server that records what it receives (`tests/web/test_network_guard.py`, `tests/web/test_network_guard_extra.py`, Playwright 1.64.1 with its Chromium), and the last section lists what is known to get through or was not tested.
+
+By default nothing is let out (`block_all`). With `run_form(..., network_policy=NetworkPolicy(rules=(AllowRule(...), ...)))` (`formfill/web/netpolicy.py`, `allow_listed` mode) requests matching an explicit rule are relayed by FormFiller while the browser itself stays offline: each redirect hop is checked against the rules again, a request carrying an entered answer needs `answer_data=True`, and a submit-type Next needs `form_navigation=True`. Relayed requests are recorded in `navigation.permitted_requests`. Layers, because routing alone was measured to be incomplete:
 
 | layer | what it stops |
 |---|---|
-| context route (`pipeline._activate_wizard_network_guard`) | every HTTP(S) request Playwright can see, aborted before it is sent and recorded in `navigation.blocked_requests` (scheme, host and path only): form navigation, `form.submit()`, `requestSubmit()`, fetch, XHR, `sendBeacon`, images, scripts, CSS, iframes, popups, `EventSource`, `a[ping]`, requests from dedicated workers and from service workers, and the script request of a `SharedWorker` loaded from a URL |
+| context route (`guard._activate_wizard_network_guard`) | every HTTP(S) request Playwright can see, aborted before it is sent (or relayed, if a rule allows it) and recorded in `navigation.blocked_requests` (scheme, host and path only): form navigation, `form.submit()`, `requestSubmit()`, fetch, XHR, `sendBeacon`, images, scripts, CSS, iframes (cross-origin ones included), popups, `EventSource`, `a[ping]`, requests from dedicated workers and from service workers, and the script request of a `SharedWorker` loaded from a URL |
+| download gate (`sharedworkers.DownloadGate`, Chromium) | `<a download>` requests, which were measured to bypass both routing and offline emulation (`accept_downloads=False` and the DevTools "deny downloads" setting do not stop the request either). Browser-level DevTools request interception fails requests from the walked context's frames and records them as `download`; it is released when the context closes, so other contexts are never affected |
 | context WebSocket route | new WebSocket connections: they are not forwarded, and no upgrade request reaches the server. **On Playwright 1.64.1 the page sees an OPEN socket** (`readyState` 1, `onopen` fires, `send()` succeeds) whose messages go nowhere; it is not a closed socket. (On 1.48.0 see the version differences below.) Playwright cannot remove a WebSocket route and the first matching one wins, so the guard's route is kept in front of the caller's while the guard is active and behind them after release (see Lifecycle) |
 | `context.set_offline(True)` | what routing cannot see: `<link rel=prefetch>`, a WebSocket opened inside a dedicated worker, WebRTC STUN/ICE traffic to a local UDP listener, and requests that a caller's own `page.route(...)` passes through with `continue_()` (a page-level route runs before the context route and would otherwise send the request). Failures it causes are reported through `requestfailed`. Measured on 1.64.1: offline alone also fails a main-frame WebSocket, even one a caller routed with `connect_to_server()`, so a WebSocket route registered after the guard cannot open one either |
-| SharedWorker fence (`formfill/web/sharedworkers.py`) | a SharedWorker's requests escape the layers above. The page's `SharedWorker` constructor is replaced in every frame of every page in the context when the guard starts and, through a context init script, in every document the context loads later (same-origin iframes, `about:blank` and `srcdoc` frames included), and `SharedWorker.prototype.constructor` points at the replacement; it throws while the browser reports offline, and the attempt is recorded and stops the walk. On Chromium, SharedWorkers that already exist in the context are put offline through the DevTools protocol, and a scan at every settle point reports and puts offline any that appeared. Release ends the DevTools part; the replacement constructor stays in the page but behaves as the original once the browser is online |
+| SharedWorker and WebTransport fence (`formfill/web/sharedworkers.py`) | `WebTransport` construction is refused the same way while offline (constructor fence only; no HTTP/3 traffic was tested). A SharedWorker's requests escape the layers above. The page's `SharedWorker` constructor is replaced in every frame of every page in the context when the guard starts and, through a context init script, in every document the context loads later (same-origin iframes, `about:blank` and `srcdoc` frames included), and `SharedWorker.prototype.constructor` points at the replacement; it throws while the browser reports offline, and the attempt is recorded and stops the walk. On Chromium, SharedWorkers that already exist in the context are put offline through the DevTools protocol, and a scan at every settle point reports and puts offline any that appeared. Release ends the DevTools part; the replacement constructor stays in the page but behaves as the original once the browser is online |
 
 A recorded blocked request stops the walk (`outbound_request_blocked`), makes the run incomplete, and keeps `submit=True` skipped. The result carries a warning naming the first blocked request.
 
@@ -112,12 +151,13 @@ A recorded blocked request stops the walk (`outbound_request_blocked`), makes th
   - A worker created during the walk by a script that holds the browser's original constructor (kept before the guard started) is not stopped when its script is a `blob:` or `data:` URL: the worker is found by the next scan and the walk stops, but one that sends from its start-up script has already sent (measured: 8 of 8 reached the local server). With an `http(s)` script URL the script request is blocked.
   - An event-driven attach to a new worker lost the race 4 times in 15 against a start-up fetch, so a scan cannot prevent that case; Playwright's `CDPSession` cannot use the browser-level auto-attach that would.
   - Without the DevTools protocol (not Chromium, or a persistent context) a SharedWorker that exists before the walk cannot be found or stopped; the result then carries a `shared_worker_check_unavailable` note.
-  - Cross-origin iframes were not tested.
+  - In a cross-origin iframe the constructor is refused too (tested), but the attempt cannot be reported to the top page.
 - The guard is per browser context: other tabs in the same context are blocked and offline too. (A route the caller adds after the guard is active, even a pass-through one, cannot send anything: the offline layer fails the request.)
 - Submit events are cancelled by a capturing listener on `document`. A capturing handler the page registered on `window` runs before it, so it sees the event first; whatever request it then makes is stopped by the network layers, not by the cancellation.
 - A service worker is refused up front: one that controls the page (`service_worker_controls_page`), and any other that is registered for the page's origin or running in the context (`service_worker_registered`). Routing blocked a registered, non-controlling worker's request on Playwright 1.64.1, but on 1.48.0 such a request reached the local server (measured on Linux), so the walk does not rely on it. Create the context with `service_workers="block"` (`run_url` does); `run_form` cannot enforce that for a context it did not create. A worker registered for another origin and not running is not seen.
-- Tested channels beyond HTTP: WebRTC STUN/ICE to a local UDP listener (blocked). Not tested: other WebRTC traffic, WebTransport, DNS lookups for resource hints, anything outside the browser.
-- A multi-step portal that fetches from its server between steps (loading the next step, validating a field) will be stopped by this guard with `outbound_request_blocked`: it is a safety trade-off, not a bug.
+- Tested channels beyond HTTP: WebRTC STUN/ICE to a local UDP listener (blocked), `<a download>` (blocked by the download gate), the `WebTransport` constructor (refused). Not tested: other WebRTC traffic, real WebTransport traffic, DNS lookups for resource hints, anything outside the browser.
+- A multi-step portal that fetches from its server between steps (loading the next step, validating a field) is stopped with `outbound_request_blocked` unless a `NetworkPolicy` rule names that endpoint: a safety trade-off, not a bug.
+- Requests the page makes before the walk begins (its own start-up) are outside the guard; see `docs/SECURITY_MODEL.md`.
 - Single-page runs without a policy have no network guard. Filling a field can fire the page's own change/blur handlers, including autosave calls.
 
 ### Attestations and consent
@@ -142,12 +182,19 @@ Ordinary facts stay answerable: "Single sign-on", "Sign-in method", "Payment ter
 | `result.json` | **yes** | primary output |
 | full-page screenshot before submit | **yes** | `filled.png` |
 | screenshot after submit | **yes** | `after_submit.png` (confirmation evidence) |
-| Playwright trace (`trace.zip`) | **yes** (via `run_url`) | `playwright show-trace`; contains screenshots, DOM snapshots, actions [FINDING: playwright.dev trace viewer docs] |
+| audit report (`audit_report.md`) | **yes** | per-question state, evidence, method and reason; navigation, blocked and relayed requests; `redact_report=True` hides the values (`formfill/web/report.py`) |
+| progress file (`progress_path`) | opt-in | schema `formfill.progress` v1, written atomically; no cookies, tokens or query strings; refused when corrupt, from another version, older than 72 h, or for another page; resume reads every restored value back (`formfill/web/progress.py`) |
+| review file (`review.json`) | opt-in | schema `formfill.review` v1: reviewer decisions (approve, edit, reject; attestations can only be acknowledged), re-validated before use; local review page `python -m formfill.web.review_server` (`formfill/web/review.py`, `review_server.py`) |
+| Playwright trace (`trace.zip`) | opt-in (`run_url(trace=True)`, `--trace`) | was on by default before this version. Playwright records request and response headers, so a portal's session cookie was stored in it (measured); cookie and authorization values are now removed (`artifacts.scrub_trace`). It still holds page snapshots, response bodies and the answers entered |
 | confirmation text + final URL | **yes** | inside `submission` |
 | submission/confirmation ID | [FUTURE] | needs a per-portal extraction rule; [OPEN] whether portals show one |
 | HAR / network log, DOM snapshot of the confirmation page | [FUTURE] | add when audit requirements are known |
 | PDF/print of the confirmation | [FUTURE] | only if a customer needs a receipt |
-| persistence (DB) of runs, reviewer decisions | [FUTURE] | files are enough until there is a review UI |
+| persistence (DB) of runs, reviewer decisions | [FUTURE] | files (the review file) are enough for one local reviewer; several reviewers would need a store with accounts |
+
+All artifacts are written atomically, files owner-only (0600) and folders 0700 on POSIX; on Windows they inherit the folder's
+permissions, so keep them under the user's profile (`formfill/web/artifacts.py`). Nothing is deleted automatically; `output/`
+and the artifact file names are git-ignored.
 
 ## 6. Open questions for the guide
 

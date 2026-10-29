@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Vendor onboarding</title>
+<style>body{font:15px sans-serif;margin:2rem} .field{margin:.7rem 0} label{display:block}</style></head>
+<body>
+<!-- Local fixture (fictional). A single-page app that loads each section definition from its server
+     (GET /api/section/N) and, with ?autosave=1, saves the section's answers to the server before moving on
+     (POST /api/answers, JSON). The last section has a "Submit questionnaire" button that must never be pressed. -->
+<h1>Vendor onboarding</h1>
+<div id="app" aria-busy="true"><p>Loading...</p></div>
+<script>
+(function () {
+  const autosave = new URLSearchParams(location.search).get('autosave') === '1';
+  const state = (window.__state = {});
+  window.__submitted = 0;
+  let current = null;
+  const app = document.getElementById('app');
+  const el = (tag, props = {}, kids = []) => { const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) { if (k === 'text') e.textContent = v; else if (k in e) e[k] = v; else e.setAttribute(k, v); }
+    kids.forEach(c => e.append(c)); return e; };
+  function render(sec) {
+    current = sec; app.innerHTML = ''; app.removeAttribute('aria-busy');
+    app.append(el('h2', {text: sec.title}));
+    for (const f of sec.fields) {
+      const id = 'f_' + f.key; const wrap = el('div', {className: 'field'});
+      wrap.append(el('label', {htmlFor: id, text: f.label}));
+      const c = el('input', {type: f.type, id, name: f.key}); c.value = state[f.key] || '';
+      c.addEventListener('input', () => { state[f.key] = c.value; });
+      wrap.append(c); app.append(wrap);
+    }
+    if (sec.last) {
+      const b = el('button', {type: 'button', id: 'submit', text: 'Submit questionnaire'});
+      b.addEventListener('click', () => { window.__submitted++; fetch('/api/submit', {method: 'POST', body: JSON.stringify(state)}); });
+      app.append(b);
+    } else {
+      const b = el('button', {type: 'button', id: 'next', text: 'Next'});
+      b.addEventListener('click', next); app.append(b);
+    }
+  }
+  async function load(n) {
+    app.setAttribute('aria-busy', 'true');
+    const r = await fetch('/api/section/' + n);
+    render(await r.json());
+  }
+  async function next() {
+    if (autosave) {
+      const answers = {}; current.fields.forEach(f => { answers[f.key] = state[f.key] || ''; });
+      const r = await fetch('/api/answers', {method: 'POST', headers: {'Content-Type': 'application/json'},
+                                             body: JSON.stringify({section: current.n, answers})});
+      if (!r.ok) { app.append(el('p', {role: 'alert', text: 'Could not save your answers.'})); return; }
+    }
+    await load(current.n + 1);
+  }
+  load(1);
+})();
+</script>
+</body></html>

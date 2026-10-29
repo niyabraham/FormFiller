@@ -1,0 +1,60 @@
+{
+  "name": "semantic-eval",
+  "version": 1,
+  "role": "evaluation only: written before the layered matcher was implemented; never used to choose thresholds or rules",
+  "note": "Fictional companies. Each case is one question asked of one source. expect=ANSWER means a correct, evidence-backed answer exists (answer = the option value or text the control should receive); expect=REVIEW means no answer may be entered without a person (no evidence, inference, contradiction, other entity, or mention without status).",
+  "sources": {
+    "acme": {
+      "company": {"legal_name": "Acme Fictional Ltd",
+                  "subsidiaries": [{"name": "Acme Cloud GmbH", "soc2_type2_certified": true, "iso27001_certified": true}]},
+      "security": {"incident_response_plan": true, "incident_response_plan_last_tested": "2026-02-01",
+                   "soc2_controls_mapped": true, "soc2_readiness_assessment": "completed 2025",
+                   "encryption_at_rest": "AES-256", "mfa_enforced": true, "penetration_test_last_date": "2026-01-15",
+                   "vulnerability_scanning_frequency": "weekly", "business_continuity_plan": true, "disaster_recovery_rto_hours": 4},
+      "privacy": {"regulations_in_scope": ["GDPR", "CCPA"], "dpo_email": "dpo@acme.example"},
+      "policies": {"password_min_length": 12, "data_retention_days": 365},
+      "hr": {"background_checks": true}
+    },
+    "contradict": {
+      "policies": {"password_min_length": 12},
+      "security": {"password_policy": {"min_length": 8}, "incident_response_plan": true},
+      "governance": {"incident_response": {"status": "draft"}}
+    },
+    "certified": {
+      "certifications": {"soc2_type2": {"status": "certified", "report_date": "2026-03-01"}, "iso27001": {"certified": true}},
+      "privacy": {"gdpr_compliant": true}
+    }
+  },
+  "cases": [
+    {"id": "e01", "source": "acme", "question": "Do you maintain a documented incident response process?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "incident_response_plan: true, worded differently"},
+    {"id": "e02", "source": "acme", "question": "Are you SOC 2 certified?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "only controls mapping and a readiness assessment; the certified entity is a subsidiary"},
+    {"id": "e03", "source": "acme", "question": "Is your organisation ISO 27001 certified?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "only the subsidiary is certified"},
+    {"id": "e04", "source": "acme", "question": "Are you GDPR compliant?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "GDPR is listed as in scope, which is not a compliance statement"},
+    {"id": "e05", "source": "contradict", "question": "Minimum password length", "kind": "number", "expect": "REVIEW", "why": "12 and 8 in two places"},
+    {"id": "e06", "source": "contradict", "question": "Do you have a documented incident response plan?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "plan: true, but governance says the incident response policy is a draft"},
+    {"id": "e07", "source": "certified", "question": "Are you SOC 2 Type II certified?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "status: certified"},
+    {"id": "e08", "source": "certified", "question": "Is your organisation ISO 27001 certified?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "certified: true"},
+    {"id": "e09", "source": "certified", "question": "Are you GDPR compliant?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "gdpr_compliant: true"},
+    {"id": "e10", "source": "acme", "question": "Date of the last penetration test", "kind": "date", "expect": "ANSWER", "answer": "2026-01-15", "why": "direct"},
+    {"id": "e11", "source": "acme", "question": "How often do you scan for vulnerabilities?", "kind": "text", "expect": "ANSWER", "answer": "weekly", "why": "vulnerability_scanning_frequency, different wording"},
+    {"id": "e12", "source": "acme", "question": "Do you have a business continuity plan?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "direct"},
+    {"id": "e13", "source": "acme", "question": "Do you have a BCP?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "abbreviation of business continuity plan"},
+    {"id": "e14", "source": "acme", "question": "Recovery time objective (hours)", "kind": "number", "expect": "ANSWER", "answer": "4", "why": "disaster_recovery_rto_hours"},
+    {"id": "e15", "source": "acme", "question": "Is multi-factor authentication enforced for all users?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "mfa_enforced"},
+    {"id": "e16", "source": "acme", "question": "Do you perform background checks on employees?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "hr.background_checks"},
+    {"id": "e17", "source": "acme", "question": "What is the name of your data protection officer?", "kind": "text", "expect": "REVIEW", "why": "only the DPO email is known"},
+    {"id": "e18", "source": "acme", "question": "Data retention period (days)", "kind": "number", "expect": "ANSWER", "answer": "365", "why": "direct"},
+    {"id": "e19", "source": "acme", "question": "Are you HIPAA compliant?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "no evidence"},
+    {"id": "e20", "source": "acme", "question": "Is your subsidiary Acme Cloud GmbH SOC 2 Type II certified?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "the question names the subsidiary, whose certification is stated"},
+    {"id": "e21", "source": "acme", "question": "Encryption algorithm used for data at rest", "kind": "text", "expect": "ANSWER", "answer": "AES-256", "why": "encryption_at_rest"},
+    {"id": "e22", "source": "acme", "question": "Do you encrypt data at rest?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "the source names an algorithm; 'Yes' would be an inference"},
+    {"id": "e23", "source": "acme", "question": "Are you PCI DSS compliant?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "no evidence"},
+    {"id": "e24", "source": "acme", "question": "Have you completed a SOC 2 readiness assessment?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "a free-text status, not a yes/no fact"},
+    {"id": "e25", "source": "acme", "question": "Contact email for privacy matters", "kind": "email", "expect": "ANSWER", "answer": "dpo@acme.example", "why": "privacy.dpo_email, different wording"},
+    {"id": "e26", "source": "acme", "question": "Number of employees", "kind": "number", "expect": "REVIEW", "why": "no evidence"},
+    {"id": "e27", "source": "acme", "question": "Is your parent company SOC 2 certified?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "nothing about a parent company"},
+    {"id": "e28", "source": "acme", "question": "Do you enforce MFA?", "kind": "radio", "options": ["Yes", "No"], "expect": "ANSWER", "answer": "Yes", "why": "mfa_enforced, other inflection"},
+    {"id": "e29", "source": "acme", "question": "Is incident response tested at least annually?", "kind": "radio", "options": ["Yes", "No"], "expect": "REVIEW", "why": "a date of the last test is not a frequency commitment"},
+    {"id": "e30", "source": "acme", "question": "Legal name of the company", "kind": "text", "expect": "ANSWER", "answer": "Acme Fictional Ltd", "why": "direct"}
+  ]
+}

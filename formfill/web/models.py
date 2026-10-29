@@ -81,6 +81,7 @@ class Candidate:
     score: float
     flags: list[str] = field(default_factory=list)  # why the score was capped (unexplained scope, polarity), for reviewers
     evidence: list[str] = field(default_factory=list)  # context that set rivals aside (path / sibling-value evidence), for reviewers
+    foreign_entity: str | None = None  # the fact belongs to another entity (subsidiary, affiliate, parent) the question does not name
 
 
 @dataclass
@@ -97,6 +98,15 @@ class AnswerPlanItem:
     reason: str | None = None  # why REVIEW
     alternatives: list[dict] = field(default_factory=list)  # other candidates, for the reviewer
     evidence: list[str] = field(default_factory=list)  # for an ANSWER: the parent/sibling context that singled this candidate out
+    # Provenance (Requirement C). `method` says which layer produced the answer or proposal: "deterministic" (exact/normalised/
+    # synonym token match), "status_evidence" (a certification/compliance claim answered from a stated status), "semantic" and
+    # "llm" (proposals only, never entered automatically), "human_approved" / "human_edited" (a reviewer's decision).
+    method: str = "deterministic"
+    normalized_question: list[str] = field(default_factory=list)  # the concept tokens the question was matched with
+    confidence_category: str | None = None  # "high" | "medium" | "low" | None: calibrated band, see formfill/web/matching.py
+    conflicts: list[dict] = field(default_factory=list)  # other source facts that contradict the proposal
+    validation: str | None = None  # outcome of validating the value against the control ("ok" or the failure reason)
+    proposed_answer: Any = None  # a candidate a reviewer may approve, for items that stay REVIEW (never entered automatically)
 
     def to_dict(self) -> dict:
         return asdict(self)

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Supplier security questionnaire</title>
+<style>body{font:15px sans-serif;margin:2rem} .field{margin:.7rem 0} label{display:block} .nav{margin-top:1rem} [role=alert]{color:#a00}
+ol.progress li[aria-current=step]{font-weight:bold}</style></head>
+<body>
+<!-- Local fixture (fictional). A client-side wizard with four sections: only the current section is in the DOM (re-rendered
+     from app state on every move, as React/Vue apps do), a conditional field, required-field validation on Next, a Back button,
+     and a final "Submit questionnaire" control that the tool must never press.
+     ?variant=   plain (default) | loop (Next on step 3 returns to step 1) | lose (Back clears the website answer)
+                 | stuck (Next on step 2 does nothing)
+     ?persist=1  keep a draft (answers and current step) in localStorage and restore it on reload, as portals with drafts do.
+     window.__edits counts input/change events per question, so a test can tell "entered again" from "left alone". -->
+<h1>Supplier security questionnaire</h1>
+<ol class="progress" id="progress"></ol>
+<form id="wizard" action="/collect" method="post" novalidate>
+  <div id="section"></div>
+  <p id="errors" role="alert"></p>
+  <div class="nav">
+    <button type="button" id="back">Back</button>
+    <button type="button" id="next">Next</button>
+    <button type="submit" id="submit">Submit questionnaire</button>
+  </div>
+</form>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const variant = params.get('variant') || 'plain';
+  const persist = params.get('persist') === '1';
+  const state = (window.__state = {});
+  window.__submitted = 0; window.__moves = []; window.__edits = {};
+  let step = 1;
+  if (persist) { try { const d = JSON.parse(localStorage.getItem('ff_draft') || 'null'); if (d) { Object.assign(state, d.state); step = d.step; } } catch (e) {} }
+  const save = () => { if (persist) localStorage.setItem('ff_draft', JSON.stringify({state, step})); };
+  const edited = k => { window.__edits[k] = (window.__edits[k] || 0) + 1; save(); };
+  const SECTIONS = [
+    {title: 'Company', fields: [
+      {key: 'legal_name', label: 'Legal company name', type: 'text', required: true},
+      {key: 'website', label: 'Company website', type: 'url'},
+      {key: 'employees', label: 'Number of employees', type: 'number'}]},
+    {title: 'Security practices', fields: [
+      {key: 'ir_plan', label: 'Do you have a documented incident response plan?', type: 'radio', options: ['Yes', 'No'], required: true},
+      {key: 'ir_test_date', label: 'Date of the last incident response exercise', type: 'date', required: true, when: s => s.ir_plan === 'Yes'},
+      {key: 'encryption', label: 'Encryption at rest', type: 'select', options: ['AES-256', 'Other', 'None']}]},
+    {title: 'Contacts', fields: [
+      {key: 'sec_email', label: 'Security contact email', type: 'email', required: true},
+      {key: 'sec_phone', label: 'Security contact phone', type: 'tel'}]},
+    {title: 'Declaration', fields: [
+      {key: 'certify', label: 'I certify that the information provided in this questionnaire is accurate', type: 'checkbox', required: true}]},
+  ];
+  const el = (tag, props = {}, kids = []) => { const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) { if (k === 'text') e.textContent = v; else if (k in e) e[k] = v; else e.setAttribute(k, v); }
+    kids.forEach(c => e.append(c)); return e; };
+  const visibleFields = n => SECTIONS[n - 1].fields.filter(f => !f.when || f.when(state));
+
+  function renderProgress() {
+    const ol = document.getElementById('progress'); ol.innerHTML = '';
+    SECTIONS.forEach((s, i) => { const li = el('li', {text: s.title}); if (i + 1 === step) li.setAttribute('aria-current', 'step'); ol.append(li); });
+  }
+  function input(f) {
+    const id = 'f_' + f.key;
+    if (f.type === 'radio') {
+      const fs = el('fieldset', {}, [el('legend', {text: f.label + (f.required ? ' *' : '')})]);
+      f.options.forEach(o => { const r = el('input', {type: 'radio', name: f.key, value: o, id: id + '_' + o, required: !!f.required});
+        r.checked = state[f.key] === o; r.addEventListener('change', () => { state[f.key] = o; edited(f.key); sync(); });
+        fs.append(el('label', {}, [r, ' ' + o])); });
+      return fs;
+    }
+    const wrap = el('div', {className: 'field'});
+    wrap.append(el('label', {htmlFor: id, text: f.label + (f.required ? ' *' : '')}));
+    let c;
+    if (f.type === 'select') {
+      c = el('select', {id, name: f.key}); c.append(el('option', {value: '', text: 'Select...'}));
+      f.options.forEach(o => c.append(el('option', {value: o, text: o}))); c.value = state[f.key] || '';
+      c.addEventListener('change', () => { state[f.key] = c.value; edited(f.key); });
+    } else if (f.type === 'checkbox') {
+      c = el('input', {type: 'checkbox', id, name: f.key}); c.checked = !!state[f.key];
+      c.addEventListener('change', () => { state[f.key] = c.checked; edited(f.key); });
+      wrap.innerHTML = ''; wrap.append(el('label', {}, [c, ' ' + f.label + (f.required ? ' *' : '')]));
+      if (f.required) c.required = true;
+      return wrap;
+    } else {
+      c = el('input', {type: f.type, id, name: f.key}); c.value = state[f.key] || '';
+      c.addEventListener('input', () => { state[f.key] = c.value; edited(f.key); });
+    }
+    if (f.required) c.required = true;
+    wrap.append(c); return wrap;
+  }
+  let mounted = {};  // key -> element, for the section on screen (a step change unmounts everything, like a React route)
+  function sync() {  // same step, an answer changed what is shown: add or remove only the conditional fields, keep the rest
+    const sec = document.getElementById('section');
+    const want = visibleFields(step).map(f => f.key);
+    for (const k of Object.keys(mounted)) if (!want.includes(k)) { mounted[k].remove(); delete mounted[k]; }
+    let prev = sec.querySelector('h2');
+    for (const f of visibleFields(step)) { if (!mounted[f.key]) { mounted[f.key] = input(f); prev.after(mounted[f.key]); } prev = mounted[f.key]; }
+  }
+  function render() {
+    renderProgress();
+    const sec = document.getElementById('section'); sec.innerHTML = ''; mounted = {};
+    sec.append(el('h2', {text: step + '. ' + SECTIONS[step - 1].title}));
+    visibleFields(step).forEach(f => { mounted[f.key] = input(f); sec.append(mounted[f.key]); });
+    document.getElementById('back').hidden = step === 1;
+    document.getElementById('next').hidden = step === SECTIONS.length;
+    document.getElementById('submit').hidden = step !== SECTIONS.length;
+  }
+  function missing(n) { return visibleFields(n).filter(f => f.required && (state[f.key] === undefined || state[f.key] === '' || state[f.key] === false)); }
+  document.getElementById('next').addEventListener('click', () => {
+    if (variant === 'stuck' && step === 2) return;
+    const m = missing(step);
+    if (m.length) { document.getElementById('errors').textContent = 'Please complete: ' + m.map(f => f.label).join(', '); return; }
+    document.getElementById('errors').textContent = '';
+    window.__moves.push('next ' + step);
+    step = (variant === 'loop' && step === 3) ? 1 : step + 1;
+    save(); render();
+  });
+  document.getElementById('back').addEventListener('click', () => {
+    document.getElementById('errors').textContent = '';
+    window.__moves.push('back ' + step);
+    if (variant === 'lose') delete state.website;
+    step = Math.max(1, step - 1); save(); render();
+  });
+  document.getElementById('wizard').addEventListener('submit', e => { e.preventDefault(); window.__submitted++; });
+  render();
+})();
+</script>
+</body></html>

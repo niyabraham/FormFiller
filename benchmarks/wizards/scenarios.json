@@ -1,0 +1,60 @@
+{
+  "description": "Navigation and safety benchmark for the multi-step wizard fixtures (benchmarks/wizards; 127.0.0.1 only). Each scenario names the fixture URL, the source, the discovery and network policies, and the outcome the walk must reach. '{base}' is replaced by the local server's origin. Fictional data only. Run: python tools/evaluate_wizards.py --out-dir <dir>.",
+  "sources": {
+    "full": {
+      "company": {"legal_name": "Fictional Vendor LLC", "website": "https://vendor.example", "employees": 120, "headquarters_city": "Leeds"},
+      "security": {"incident_response_plan": true, "incident_response_exercise_date": "2026-03-14", "encryption_at_rest": "AES-256",
+                   "contact": {"email": "security@vendor.example", "phone": "+44 20 7946 0000"}}
+    },
+    "missing_security_email": {
+      "company": {"legal_name": "Fictional Vendor LLC", "website": "https://vendor.example", "employees": 120, "headquarters_city": "Leeds"},
+      "security": {"incident_response_plan": true, "incident_response_exercise_date": "2026-03-14", "encryption_at_rest": "AES-256",
+                   "contact": {"phone": "+44 20 7946 0000"}}
+    }
+  },
+  "rules": {
+    "sections": {"origin": "{base}", "path": "/api/section/*", "methods": ["GET"], "resource_types": ["fetch"], "note": "load the next section"},
+    "autosave": {"origin": "{base}", "path": "/api/answers", "methods": ["POST"], "resource_types": ["fetch"], "answer_data": true,
+                 "note": "autosave of the section's answers"},
+    "classic_steps": {"origin": "{base}", "path": "/classic/step/*", "methods": ["GET", "POST"], "resource_types": ["document"],
+                      "answer_data": true, "form_navigation": true, "note": "step-to-step form POST"},
+    "classic_step1_only": {"origin": "{base}", "path": "/classic/step/1", "methods": ["GET", "POST"], "resource_types": ["document"],
+                           "answer_data": true, "form_navigation": true, "note": "only the first step POST"}
+  },
+  "scenarios": [
+    {"id": "client_default", "kind": "client", "url": "/client_wizard.html", "source": "full",
+     "expect": {"steps_visited": 4, "stop_reason": "required_unresolved", "status": "NEEDS_REVIEW", "verified_min": 8}},
+    {"id": "client_submit_true", "kind": "client", "url": "/client_wizard.html", "source": "full", "submit": true,
+     "expect": {"steps_visited": 4, "stop_reason": "required_unresolved", "submission_attempted": false}},
+    {"id": "client_back_reverify", "kind": "client", "url": "/client_wizard.html", "source": "full", "policy": {"revisit_with_back": true},
+     "expect": {"steps_visited": 4, "stop_reason": "required_unresolved", "revisit_returned": true, "revisit_mismatched": []}},
+    {"id": "client_value_lost_on_back", "kind": "client", "url": "/client_wizard.html?variant=lose", "source": "full",
+     "policy": {"revisit_with_back": true},
+     "expect": {"status": "FAILED", "revisit_mismatched": ["Company website"], "rejected_min": 1}},
+    {"id": "client_loop", "kind": "client", "url": "/client_wizard.html?variant=loop", "source": "full",
+     "expect": {"stop_reason": "navigation_loop"}},
+    {"id": "client_next_does_nothing", "kind": "client", "url": "/client_wizard.html?variant=stuck", "source": "full",
+     "expect": {"steps_visited": 2, "stop_reason": "no_change_after_next"}},
+    {"id": "client_required_missing", "kind": "client", "url": "/client_wizard.html", "source": "missing_security_email",
+     "expect": {"steps_visited": 3, "stop_reason": "required_unresolved"}},
+    {"id": "client_required_missing_pressed_anyway", "kind": "client", "url": "/client_wizard.html", "source": "missing_security_email",
+     "policy": {"advance_with_unresolved_required": true},
+     "expect": {"steps_visited": 3, "stop_reason": "validation_error_after_next"}},
+    {"id": "spa_default_blocks", "kind": "server", "url": "/server_spa.html", "source": "full",
+     "expect": {"steps_visited": 1, "stop_reason": "outbound_request_blocked", "server_requests": 0}},
+    {"id": "spa_sections_rule", "kind": "server", "url": "/server_spa.html", "source": "full", "rules": ["sections"],
+     "expect": {"steps_visited": 3, "stop_reason": "no_safe_next_control", "permitted": 2, "carrying_answers": 0}},
+    {"id": "spa_autosave_without_rule", "kind": "server", "url": "/server_spa.html?autosave=1", "source": "full", "rules": ["sections"],
+     "expect": {"stop_reason": "outbound_request_blocked", "autosaves": 0}},
+    {"id": "spa_autosave_with_rule", "kind": "server", "url": "/server_spa.html?autosave=1", "source": "full", "rules": ["sections", "autosave"],
+     "expect": {"steps_visited": 3, "stop_reason": "no_safe_next_control", "autosaves": 2, "carrying_answers": 2}},
+    {"id": "classic_default_refused", "kind": "server", "url": "/classic/start", "source": "full",
+     "expect": {"steps_visited": 1, "stop_reason": "submit_type_next_refused", "server_posts": 0}},
+    {"id": "classic_form_navigation_rule", "kind": "server", "url": "/classic/start", "source": "full", "rules": ["classic_steps"],
+     "expect": {"steps_visited": 3, "stop_reason": "no_safe_next_control", "server_posts": 2}},
+    {"id": "classic_post_redirect_get", "kind": "server", "url": "/classic/start?prg=1", "source": "full", "rules": ["classic_steps"],
+     "expect": {"steps_visited": 3, "stop_reason": "no_safe_next_control", "server_posts": 2}},
+    {"id": "classic_rule_for_step1_only", "kind": "server", "url": "/classic/start", "source": "full", "rules": ["classic_step1_only"],
+     "expect": {"steps_visited": 2, "stop_reason": "submit_type_next_refused", "server_posts": 1}}
+  ]
+}

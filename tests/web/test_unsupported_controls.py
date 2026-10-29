@@ -220,10 +220,22 @@ _WIZARD = """<!doctype html><html><body><div id="app"></div><script>
 def test_unsupported_control_on_an_earlier_wizard_step_is_still_reported(page):
     page.route("http://wiz.test/w.html", lambda r: r.fulfill(status=200, content_type="text/html", body=_WIZARD))
     page.goto("http://wiz.test/w.html")
-    res = run_form(page, {"company": {"legal_name": "Northwind Ltd", "website": "https://n.example"}}, policy=DiscoveryPolicy(), confirm_ms=0)
+    # opt out of the required-question gate so the walk leaves the step that holds the required upload (see the next test)
+    policy = DiscoveryPolicy(advance_with_unresolved_required=True)
+    res = run_form(page, {"company": {"legal_name": "Northwind Ltd", "website": "https://n.example"}}, policy=policy, confirm_ms=0)
     assert [(u["kind"], u["required"]) for u in res.unsupported] == [("file_upload", True)]
     assert res.status in ("NEEDS_REVIEW", "FAILED") and res.status != "FILLED"
     assert page.query_selector("#site") is not None  # the walk did move on to step 2
+
+
+def test_by_default_a_required_unsupported_control_keeps_the_walk_on_its_step(page):
+    page.route("http://wiz.test/w.html", lambda r: r.fulfill(status=200, content_type="text/html", body=_WIZARD))
+    page.goto("http://wiz.test/w.html")
+    res = run_form(page, {"company": {"legal_name": "Northwind Ltd", "website": "https://n.example"}}, policy=DiscoveryPolicy(), confirm_ms=0)
+    assert res.navigation["stop_reason"] == "required_unresolved"
+    note = next(n for n in res.navigation["notes"] if n["kind"] == "required_unresolved")
+    assert note["questions"] == ["Upload the certificate (required)"]
+    assert page.query_selector("#site") is None and res.status == "NEEDS_REVIEW"  # Next was not pressed: a person attaches the file first
 
 
 _WIZ_LATE = """<!doctype html><html><body><div id="app"></div><script>

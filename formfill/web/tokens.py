@@ -59,6 +59,18 @@ NEUTRAL = {"total"}
 # entity is a QUALIFIERS word ("parent", "subsidiary"), which stays mandatory.
 SELF_REFERENCE = {"company"}
 
+# Requirement C: words that name a DIFFERENT legal entity than the one filling in the form. A fact stored under such a key
+# (`subsidiaries.0.soc2_certified`, `affiliates.0.pci_dss_compliant`, `parent_company.iso27001`) answers only a question that
+# names that entity too; otherwise a subsidiary's certification would be attributed to the company itself. (The inverse, a
+# question naming the scope while the key lacks it, is already handled by QUALIFIERS.)
+ENTITY_SCOPE = {"subsidiary", "affiliate", "parent", "holding", "sister"}
+
+# Requirement C: security/compliance TOPICS. When a question names a topic and the key names a different one, they are about
+# different things even if other words match ("Date of last disaster recovery test" is not `pentest.last_date`). Found on the
+# development benchmark once "pentest" was expanded to "penetration test" (docs/MATCHING.md).
+TOPICS = {"penetration", "vulnerability", "disaster", "continuity", "incident", "encryption", "backup", "audit", "training",
+          "insurance", "malware", "phishing", "patch", "firewall", "logging", "retention"}
+
 # Words that say a question (or the form section it sits in) is about an organisation. A generic `name` key under an
 # organisation key (`company.name`, `vendor.name`) answers only such a question: "Name", "Full name" or "Contact name"
 # would otherwise be answered with the company's name. ("organization", "business", "firm" are already "company".)
@@ -83,6 +95,28 @@ _PHRASES = [
     (re.compile(r"\bdata protection officer\b"), "dpo"),
     (re.compile(r"\bchief information security officer\b"), "ciso"),
     (re.compile(r"\bpersonally identifiable information\b"), "pii"),
+    # Requirement C, domain terms: a standard's name is one concept however it is written, so "SOC 2", "soc2" and "SOC II"
+    # meet, and "ISO/IEC 27001", "ISO 27001" and `iso27001` meet. (A key such as `soc2_type2` used to share nothing with the
+    # question "SOC 2 Type II": "soc", "2" vs "soc2", "type2".)
+    (re.compile(r"\bsoc[\s_-]*(?:2|ii)\b"), "soc2"),
+    (re.compile(r"\bsoc[\s_-]*(?:1|i)\b(?![\s_-]*(?:agree|accept|certify|confirm|consent))"), "soc1"),
+    (re.compile(r"\btype[\s_-]*(?:2|ii)\b"), "type2"),
+    (re.compile(r"\btype[\s_-]*(?:1|i)\b(?![\s_-]*(?:agree|accept|certify|confirm|consent|have|am))"), "type1"),
+    (re.compile(r"\biso[\s_/-]*(?:iec[\s_/-]*)?(\d{4,5})\b"), r"iso\1"),
+    (re.compile(r"\bpci(?:[\s_-]*dss)?\b"), "pcidss"),  # "PCI" alone means PCI DSS in questionnaires and their data
+    (re.compile(r"\bcyber[\s_-]*essentials\b"), "cyberessentials"),
+    # abbreviations that security questionnaires and their source data use interchangeably with the spelled-out phrase
+    (re.compile(r"\bincident[\s_-]+response\b"), "incident response"),
+    (re.compile(r"\bir(?=[\s_-]+(?:plan|team|process|policy|procedure|owner|playbook)s?\b)"), "incident response"),
+    (re.compile(r"\bbcp\b"), "business continuity plan"),
+    (re.compile(r"\bdrp\b"), "disaster recovery plan"),
+    (re.compile(r"\bdr(?=[\s_-]+(?:plan|rto|rpo|site|test)s?\b)"), "disaster recovery"),
+    (re.compile(r"\brto\b"), "recovery time objective"),
+    (re.compile(r"\brpo\b"), "recovery point objective"),
+    (re.compile(r"\bpen[\s_-]?tests?\b|\bpentests?\b"), "penetration test"),
+    (re.compile(r"\bvulns?\b"), "vulnerability"),
+    (re.compile(r"\b(?:2\s?fa|two[\s_-]?factor(?:\s+authentication)?)\b"), "mfa"),  # "2FA" arrives as "2 fa" (camelCase split)
+    (re.compile(r"\bhow\s+(?:often|frequently)\b"), "frequency"),
 ]
 
 # "State" the noun (address.state) vs "state" the imperative ("Please state your name").
@@ -104,6 +138,8 @@ SYNONYMS: dict[str, list[str]] = {
     "hq": ["headquarter"],
     # the two inflections the Phase 2 benchmark demonstrated (supported/support, encrypted/encryption)
     "supported": ["support"], "encrypted": ["encryption"], "encrypt": ["encryption"],
+    # Requirement C: how often something happens
+    "cadence": ["frequency"], "frequently": ["frequency"], "often": ["frequency"],
 }
 
 

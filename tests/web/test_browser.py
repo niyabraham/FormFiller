@@ -273,21 +273,21 @@ def test_field_vanishing_mid_run_is_a_recorded_failure_not_a_crash(open_fixture)
     result = run_form(page, BASIC_SOURCE)
     assert all(i.plan.question != "Website" for i in result.items)  # simply not in the form any more
     page2 = open_fixture("rfi_basic.html")
-    # remove the element *after* discovery, before fill: patch discover to delay removal
-    from formfill.web import pipeline
+    # remove the element *after* discovery, before fill: patch the fill call (it lives in formfill/web/verify.py)
+    from formfill.web import verify
 
-    real = pipeline.fill_control
+    real = verify.fill_control
 
     def sabotage(pg, control, answer, timeout_ms=5000):
         if control.label == "Website":
             pg.evaluate("document.getElementById('web').remove()")
         return real(pg, control, answer, 800)
 
-    pipeline.fill_control = sabotage
+    verify.fill_control = sabotage
     try:
         result = run_form(page2, BASIC_SOURCE, timeout_ms=800)
     finally:
-        pipeline.fill_control = real
+        verify.fill_control = real
     web = next(i for i in result.items if i.plan.question == "Website")
     assert web.filled is False and "fill failed" in web.detail and result.status == "FAILED"
 

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Delayed form with validation</title></head><body>
+<!-- Local fixture (fictional). The form is rendered 800 ms after load (a client-side app booting), and a field validates on
+     blur, marking itself aria-invalid with a message when the value does not look like a VAT number. -->
+<h1>Registration</h1><div id="root"><p aria-busy="true">Loading...</p></div>
+<script>
+setTimeout(() => {
+  document.getElementById('root').innerHTML = `
+    <label for="org">Legal company name</label><input id="org">
+    <label for="vat">VAT number</label><input id="vat" aria-describedby="vat_err"><p id="vat_err" role="alert"></p>`;
+  const vat = document.getElementById('vat');
+  vat.addEventListener('blur', () => {
+    const ok = /^[A-Z]{2}[0-9]{8,12}$/.test(vat.value);
+    vat.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    vat.setCustomValidity(ok ? '' : 'Enter a VAT number such as GB123456789');
+    document.getElementById('vat_err').textContent = ok ? '' : 'Enter a VAT number such as GB123456789';
+  });
+}, 800);
+</script></body></html>

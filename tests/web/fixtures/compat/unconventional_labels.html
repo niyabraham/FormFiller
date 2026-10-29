@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Unconventional labels</title></head><body>
+<!-- Local fixture (fictional). Labels that are not <label for>: a table header referenced with aria-labelledby, aria-label,
+     a wrapping label, a title attribute only, and plain text in a preceding <div> with no association at all. -->
+<h1>Vendor details</h1>
+<table><tr><th id="h_web">Company website</th><td><input id="web" aria-labelledby="h_web"></td></tr></table>
+<input id="email" aria-label="Contact email">
+<label>Headquarters city <input id="city"></label>
+<input id="phone" title="Contact phone number">
+<div class="q">Year founded</div><input id="founded" name="field_7">
+</body></html>

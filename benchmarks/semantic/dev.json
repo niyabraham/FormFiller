@@ -1,0 +1,396 @@
+{
+  "name": "semantic-dev",
+  "version": 1,
+  "role": "development: rules and thresholds may be tuned on these cases (never on eval.json)",
+  "note": "Fictional companies, different wording and different sources from eval.json. Same scoring rules.",
+  "sources": {
+    "globex": {
+      "org": {
+        "registered_name": "Globex Fictional Inc",
+        "affiliates": [
+          {
+            "name": "Globex Labs",
+            "pci_dss_compliant": true
+          }
+        ]
+      },
+      "infosec": {
+        "ir_plan": true,
+        "ir_plan_owner": "CISO",
+        "soc2_type1_in_progress": true,
+        "iso27001_gap_analysis_done": true,
+        "data_at_rest_encryption": "AES-256",
+        "two_factor_required": true,
+        "pentest_last_completed": "2025-11-30",
+        "vuln_scan_cadence": "monthly",
+        "bcp_documented": true,
+        "dr_rpo_hours": 24,
+        "siem_tool": "Fictional SIEM"
+      },
+      "compliance": {
+        "frameworks_referenced": [
+          "SOC 2",
+          "ISO 27001",
+          "HIPAA"
+        ],
+        "hipaa_compliant": false
+      },
+      "people": {
+        "security_training_frequency": "annual",
+        "headcount": 480
+      }
+    },
+    "conflicted": {
+      "infosec": {
+        "vuln_scan_cadence": "monthly"
+      },
+      "operations": {
+        "vulnerability_scans": {
+          "frequency": "quarterly"
+        }
+      },
+      "policies": {
+        "retention": {
+          "logs_days": 90
+        }
+      },
+      "security": {
+        "log_retention_days": 180
+      }
+    },
+    "proven": {
+      "attestations": {
+        "soc2": {
+          "type": "Type 2",
+          "status": "certified",
+          "period_end": "2025-12-31"
+        }
+      },
+      "iso": {
+        "iso_27001_certified": true
+      },
+      "privacy": {
+        "ccpa_compliant": true
+      }
+    },
+    "conflicted2": {
+      "security": {
+        "business_continuity_plan": true
+      },
+      "governance": {
+        "business_continuity": {
+          "status": "planned"
+        }
+      },
+      "policies": {
+        "mfa_required": true
+      },
+      "it": {
+        "mfa": {
+          "rollout_status": "in progress"
+        }
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "d01",
+      "source": "globex",
+      "question": "Do you have an incident response plan in place?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "Yes",
+      "why": "ir_plan (abbreviation)"
+    },
+    {
+      "id": "d02",
+      "source": "globex",
+      "question": "Do you hold a current SOC 2 report?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "Type 1 in progress is not a report"
+    },
+    {
+      "id": "d03",
+      "source": "globex",
+      "question": "Is your company certified to ISO/IEC 27001?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "only a gap analysis"
+    },
+    {
+      "id": "d04",
+      "source": "globex",
+      "question": "Are you compliant with HIPAA?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "No",
+      "why": "hipaa_compliant: false is an explicit status"
+    },
+    {
+      "id": "d05",
+      "source": "globex",
+      "question": "Are you PCI DSS compliant?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "an affiliate is, the company is not stated"
+    },
+    {
+      "id": "d06",
+      "source": "globex",
+      "question": "Is the SOC 2 framework referenced in your security program?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "a list membership question; not answered from a list automatically"
+    },
+    {
+      "id": "d07",
+      "source": "globex",
+      "question": "When was your last penetration test completed?",
+      "kind": "date",
+      "expect": "ANSWER",
+      "answer": "2025-11-30",
+      "why": "pentest abbreviation"
+    },
+    {
+      "id": "d08",
+      "source": "globex",
+      "question": "How frequently are vulnerability scans run?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "monthly",
+      "why": "vuln_scan_cadence"
+    },
+    {
+      "id": "d09",
+      "source": "globex",
+      "question": "Is two-factor authentication required?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "Yes",
+      "why": "two_factor_required"
+    },
+    {
+      "id": "d10",
+      "source": "globex",
+      "question": "Do you require MFA for remote access?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "scope 'remote access' is not stated"
+    },
+    {
+      "id": "d11",
+      "source": "globex",
+      "question": "Do you have a documented business continuity plan?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "Yes",
+      "why": "bcp_documented"
+    },
+    {
+      "id": "d12",
+      "source": "globex",
+      "question": "Recovery point objective in hours",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": "24",
+      "why": "dr_rpo_hours"
+    },
+    {
+      "id": "d13",
+      "source": "globex",
+      "question": "Which SIEM product do you use?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Fictional SIEM",
+      "why": "siem_tool"
+    },
+    {
+      "id": "d14",
+      "source": "globex",
+      "question": "How often is security awareness training delivered?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "annual",
+      "why": "security_training_frequency"
+    },
+    {
+      "id": "d15",
+      "source": "globex",
+      "question": "Total number of employees",
+      "kind": "number",
+      "expect": "ANSWER",
+      "answer": "480",
+      "why": "headcount"
+    },
+    {
+      "id": "d16",
+      "source": "globex",
+      "question": "Who owns the incident response plan?",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "CISO",
+      "why": "ir_plan_owner"
+    },
+    {
+      "id": "d17",
+      "source": "globex",
+      "question": "Registered company name",
+      "kind": "text",
+      "expect": "ANSWER",
+      "answer": "Globex Fictional Inc",
+      "why": "registered_name"
+    },
+    {
+      "id": "d18",
+      "source": "globex",
+      "question": "Are you FedRAMP authorized?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "no evidence"
+    },
+    {
+      "id": "d19",
+      "source": "conflicted",
+      "question": "How often are vulnerability scans performed?",
+      "kind": "text",
+      "expect": "REVIEW",
+      "why": "monthly and quarterly"
+    },
+    {
+      "id": "d20",
+      "source": "conflicted",
+      "question": "Log retention period (days)",
+      "kind": "number",
+      "expect": "REVIEW",
+      "why": "90 and 180"
+    },
+    {
+      "id": "d21",
+      "source": "proven",
+      "question": "Do you have a SOC 2 Type 2 certification?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "Yes",
+      "why": "status: certified"
+    },
+    {
+      "id": "d22",
+      "source": "proven",
+      "question": "Are you ISO 27001 certified?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "Yes",
+      "why": "iso_27001_certified"
+    },
+    {
+      "id": "d23",
+      "source": "proven",
+      "question": "Are you CCPA compliant?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "ANSWER",
+      "answer": "Yes",
+      "why": "ccpa_compliant"
+    },
+    {
+      "id": "d24",
+      "source": "proven",
+      "question": "Are you GDPR compliant?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "no evidence (CCPA is another regulation)"
+    },
+    {
+      "id": "d25",
+      "source": "globex",
+      "question": "Do you encrypt stored data?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "an algorithm name is not a yes/no answer"
+    },
+    {
+      "id": "d26",
+      "source": "conflicted2",
+      "question": "Do you have a business continuity plan?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "plan: true, but its status elsewhere is 'planned'"
+    },
+    {
+      "id": "d27",
+      "source": "conflicted2",
+      "question": "Is MFA required for all staff?",
+      "kind": "radio",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "expect": "REVIEW",
+      "why": "required: true, but the MFA rollout is in progress"
+    }
+  ]
+}

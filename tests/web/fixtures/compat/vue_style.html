@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Vue-style form</title></head><body>
+<!-- Local fixture (fictional). Imitates Vue's v-model: every field is bound to reactive state through `input` events, and any
+     state change re-renders every field's value FROM state (a value set without an input event is overwritten). -->
+<h1>Supplier profile</h1>
+<div id="app"></div>
+<script>
+const state = (window.__state = {name: '', country: '', employees: '', iso: false});
+const app = document.getElementById('app');
+app.innerHTML = `
+  <div><label for="name">Legal company name</label><input id="name"></div>
+  <div><label for="country">Country of registration</label><select id="country"><option value="">Choose</option><option>United Kingdom</option><option>Germany</option></select></div>
+  <div><label for="employees">Number of employees</label><input id="employees" type="number"></div>
+  <div><label><input id="iso" type="checkbox"> ISO 27001 certified</label></div>`;
+const els = {name: app.querySelector('#name'), country: app.querySelector('#country'), employees: app.querySelector('#employees'), iso: app.querySelector('#iso')};
+const render = () => { els.name.value = state.name; els.country.value = state.country; els.employees.value = state.employees; els.iso.checked = state.iso; };
+els.name.addEventListener('input', e => { state.name = e.target.value; render(); });
+els.country.addEventListener('change', e => { state.country = e.target.value; render(); });
+els.employees.addEventListener('input', e => { state.employees = e.target.value; render(); });
+els.iso.addEventListener('change', e => { state.iso = e.target.checked; render(); });
+render();
+</script></body></html>

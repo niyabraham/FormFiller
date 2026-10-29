@@ -24,7 +24,11 @@ roots or iframes), which is a narrower reach than field discovery.
     popup_opened           Next opened a new window (closed)
     document_navigation    Next replaced the whole document (SPA state and our handles are gone)
     submit_event_observed  a form `submit` event fired while navigating (should be impossible with the deny list)
-    no_change_after_next   Next was pressed and the set of visible controls did not change
+    no_change_after_next   Next was pressed and the step did not change (same URL, headings and visible questions)
+    validation_error_after_next  Next was pressed, the step did not change, and the page shows validation messages
+    navigation_loop        Next led back to a step that was already visited
+    unexpected_redirect    the page moved to another origin
+    required_unresolved    a REQUIRED question on the step is not verified (REVIEW, failed, unsupported): Next is not pressed
     max_steps              the policy's step limit was reached
 """
 
@@ -39,6 +43,13 @@ _ALLOW = re.compile(
     r"^(?:next(?:\s+step)?|continue(?:\s+to\b.*)?|proceed(?:\s+to\s+next)?|forward|go\s+to\s+next(?:\s+step)?|"
     r"save\s*(?:and|&)\s*(?:continue|next)|next\s*(?:>|›|»|→)|(?:>|›|»|→))$"
 )
+# "Go back one step" labels. Used only by the optional re-verification pass (DiscoveryPolicy.revisit_with_back): moving back
+# changes nothing on the server in a client-side wizard, and the same metadata refusals as Next apply (no submit controls,
+# no links that leave the page).
+_BACK = re.compile(r"^(?:back|go\s+back|previous(?:\s+step)?|prev|(?:<|\u2039|\u00ab|\u2190)\s*(?:back|previous)?|back\s+to\s+previous(?:\s+step)?)$")
+_BACK_DENY = re.compile(r"\b(?:submit|send|finish|finali[sz]e|complete|confirm|pay|sign|certify|attest|agree|accept|delete|remove|"
+                        r"cancel|reset|clear|discard|exit|logout|log\s*out|home)\b")
+
 _DENY = re.compile(
     r"\b(?:submit|send|finish|finali[sz]e|complete|apply|confirm|pay|purchase|order|register|sign|certify|attest|agree|accept|"
     r"delete|remove|cancel|reset|clear|discard|back|previous|prev|save\s+draft)\b"
@@ -53,6 +64,7 @@ INCOMPLETE_STOPS = frozenset({
     "no_safe_next_control", "page_not_settled", "document_navigation", "dialog_on_navigation", "popup_opened", "submit_type_next_refused",
     "next_click_failed", "submit_event_observed", "outbound_request_blocked", "network_guard_unavailable",
     "service_worker_controls_page", "service_worker_registered", "next_disabled", "no_change_after_next", "max_steps",
+    "validation_error_after_next", "navigation_loop", "unexpected_redirect", "required_unresolved", "resume_ambiguous",
 })
 
 
@@ -68,10 +80,22 @@ class DiscoveryPolicy:
     settle_timeout_ms: int = 4000
     allow: re.Pattern = field(default=_ALLOW, repr=False)
     deny: re.Pattern = field(default=_DENY, repr=False)
+    # Before pressing Next, every REQUIRED question on the step must be verified. Otherwise the walk stops with
+    # `required_unresolved` so a person answers it first. Set True only for a portal that is known to validate on its own.
+    advance_with_unresolved_required: bool = False
+    # After the forward walk reaches the last recognisable step, go Back step by step and read every earlier answer again (a
+    # wizard that unmounts its steps cannot be checked otherwise), then return forward. Client-side wizards only.
+    revisit_with_back: bool = False
+    back: re.Pattern = field(default=_BACK, repr=False)
+    back_deny: re.Pattern = field(default=_BACK_DENY, repr=False)
 
     def is_safe_next(self, text: str) -> bool:
         t = re.sub(r"\s+", " ", text or "").strip().casefold()
         return bool(t) and bool(self.allow.match(t)) and not self.deny.search(t)
+
+    def is_safe_back(self, text: str) -> bool:
+        t = re.sub(r"\s+", " ", text or "").strip().casefold()
+        return bool(t) and bool(self.back.match(t)) and not self.back_deny.search(t)
 
 
 _INSTALL_JS = """
@@ -82,7 +106,11 @@ _INSTALL_JS = """
   if (f) window.fetch = function () { window.__ffPending++; return f.apply(this, arguments).finally(() => { window.__ffPending--; }); };
   const s = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function () { window.__ffPending++; this.addEventListener('loadend', () => { window.__ffPending--; }); return s.apply(this, arguments); };
+  window.__ffPermittedSubmits = 0;
   document.addEventListener('submit', event => {
+    // One submit may pass when the walk itself pressed a Next button that a network-policy rule allows to post its form
+    // (a server-rendered wizard step). The flag is set immediately before that click and consumed here.
+    if (window.__ffAllowNextSubmit) { window.__ffAllowNextSubmit = false; window.__ffPermittedSubmits++; return; }
     window.__ffSubmits++;
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -123,7 +151,9 @@ _BUTTONS_JS = """
     const href = tag === 'a' ? (e.getAttribute('href') || '') : null;
     out.push({index: n++, text, disabled: e.disabled === true || e.getAttribute('aria-disabled') === 'true',
               tag, type, role: e.getAttribute('role'), in_form: !!e.form, form_index: e.form ? Array.from(document.forms).indexOf(e.form) : null,
-              form_action: e.formAction || null, href,
+              // button.formAction is the document URL when the button has no formaction attribute; the form owner's action is what posts
+              form_action: e.getAttribute && e.getAttribute('formaction') ? e.formAction : (e.form ? e.form.action : null), href,
+              form_method: e.form ? String(e.getAttribute('formmethod') || e.form.getAttribute('method') || 'get').toLowerCase() : null,
               submit_type: !!e.form && (type === 'submit' || type === 'image'),
               leaves_page: tag === 'a' && !!href && !href.startsWith('#') && !/^javascript:/i.test(href)});
   });
@@ -161,16 +191,36 @@ def settle(page: Page, policy: DiscoveryPolicy) -> dict:
         return {"settled": False, "waited": 0, "navigated": True}
 
 
-def next_button(page: Page, policy: DiscoveryPolicy) -> dict:
-    """Find the one button we are willing to press. Returns {"state": "found"|"disabled"|"none", "text", "index", "seen": [...]}"""
-    buttons = page.evaluate(_BUTTONS_JS)
-    safe = [b for b in buttons if policy.is_safe_next(b["text"])]
+def next_button(page: Page, policy: DiscoveryPolicy, form_navigation=None) -> dict:
+    """Find the one button we are willing to press. Returns {"state": "found"|"disabled"|"refused"|"none", "text", "index",
+    "seen": [...]}. A form submit control is refused, except when `form_navigation(action_url, method)` (the network policy's
+    explicit rule lookup) returns a rule for that form's action: then it is "found" with `"form_navigation": rule`."""
+    return _pick(page.evaluate(_BUTTONS_JS), policy.is_safe_next, form_navigation)
+
+
+def back_button(page: Page, policy: DiscoveryPolicy) -> dict:
+    """Like next_button, for the optional Back re-verification pass. Submit controls and off-page links are always refused."""
+    return _pick(page.evaluate(_BUTTONS_JS), policy.is_safe_back, None)
+
+
+def _pick(buttons: list[dict], acceptable, form_navigation) -> dict:
+    safe = [b for b in buttons if acceptable(b["text"])]
     seen = [{k: b[k] for k in ("text", "tag", "type", "in_form", "submit_type", "disabled")} for b in buttons]
-    refused = [b for b in safe if b["submit_type"] or b["leaves_page"]]
-    usable = [b for b in safe if b not in refused]
+    refused, usable = [], []
+    for b in safe:
+        rule = None
+        if b["submit_type"] and not b["leaves_page"] and form_navigation is not None and b.get("form_action"):
+            rule = form_navigation(b["form_action"], (b.get("form_method") or "get").upper())
+        if rule is not None:
+            usable.append({**b, "form_navigation": rule})
+        elif b["submit_type"] or b["leaves_page"]:
+            refused.append(b)
+        else:
+            usable.append(b)
     for b in usable:
         if not b["disabled"]:
-            return {"state": "found", "text": b["text"], "index": b["index"], "seen": seen}
+            return {"state": "found", "text": b["text"], "index": b["index"], "seen": seen,
+                    **({"form_navigation": b["form_navigation"]} if b.get("form_navigation") else {})}
     if usable:
         return {"state": "disabled", "text": usable[0]["text"], "index": usable[0]["index"], "seen": seen}
     if refused:
@@ -179,6 +229,17 @@ def next_button(page: Page, policy: DiscoveryPolicy) -> dict:
         return {"state": "refused", "text": b["text"], "index": b["index"], "seen": seen,
                 "detail": f"<{b['tag']}{' type=' + b['type'] if b['type'] else ''}> {b['text']!r}: {why}"}
     return {"state": "none", "seen": seen}
+
+
+def allow_next_submit(page: Page) -> None:
+    """Let exactly one form submit event through (see _INSTALL_JS); used only for a policy-permitted form navigation."""
+    page.evaluate("() => { window.__ffAllowNextSubmit = true; }")
+
+
+def set_id_floor(page: Page, floor: int) -> None:
+    """Make discovery continue numbering above `floor` in a freshly loaded document, so control ids from an earlier document
+    of the same walk are never reused for a different control."""
+    page.evaluate("(n) => { window.__ffCounter = Math.max(window.__ffCounter || 0, n); }", floor)
 
 
 def click_next(page: Page, index: int, timeout_ms: int) -> None:
