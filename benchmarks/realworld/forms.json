@@ -1,0 +1,29 @@
+{
+  "description": "Public demo / template / practice forms used for real-world compatibility testing (docs: REAL_WORLD_TESTING_REPORT.md). None is a company's live questionnaire, none needs an account, and none is ever submitted: the harness never passes submit=True, FormFiller never presses a final-action button, and every walk runs with the network guard on. Fictional data only.",
+  "sources": {
+    "full": "benchmarks/heldout/h01_saas_security/source.json",
+    "tricky": "benchmarks/rfi/c07_ambiguity/source.json"
+  },
+  "forms": [
+    {"id": "opnform_vendor", "name": "OpnForm - Vendor Registration Form (template preview)", "url": "https://opnform.com/templates/vendor-registration-form-template",
+     "platform": "OpnForm (Nuxt/Vue)", "pages": "1", "exercises": "company-fact questions, custom radio group (business type), file upload, phone widget"},
+    {"id": "opnform_credit", "name": "OpnForm - Business Credit Application (template preview)", "url": "https://opnform.com/templates/business-credit-application-form-template",
+     "platform": "OpnForm (Nuxt/Vue)", "pages": "1", "exercises": "company-fact questions, numbers, dates"},
+    {"id": "opnform_scholarship", "name": "OpnForm - Scholarship Application (multi-page template preview)", "url": "https://opnform.com/templates/scholarship-application-form-template",
+     "platform": "OpnForm (Nuxt/Vue)", "pages": "2+", "walk": true, "exercises": "multi-page Next navigation in a Vue app; personal (non-company) questions that must stay in review"},
+    {"id": "formbuilder123_vendor", "name": "123FormBuilder - Vendor Registration Form (template)", "url": "https://www.123formbuilder.com/free-form-templates/Vendor-Registration-Form-836121/",
+     "platform": "123FormBuilder (server-rendered, form in a same-site frame)", "pages": "1", "exercises": "company-fact questions, address block, radio group, textareas"},
+    {"id": "surveyjs_wizard", "name": "SurveyJS - Multi-Step Form Wizard", "url": "https://surveyjs.io/form-library/examples/multi-step-form-wizard/reactjs",
+     "platform": "SurveyJS (React); client-side only, Complete only logs to the console", "pages": "one question per page", "walk": true, "back": true, "exercises": "wizard Next/Previous, required questions, answer persistence"},
+    {"id": "surveyjs_conditional", "name": "SurveyJS - Conditional question visibility", "url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+     "platform": "SurveyJS (Vue 3); client-side only", "pages": "1", "walk": true, "exercises": "custom rating/radio group, follow-up question revealed by an answer"},
+    {"id": "surveyjs_dropdown", "name": "SurveyJS - Dropdown menu", "url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+     "platform": "SurveyJS (React); client-side only", "pages": "1", "exercises": "custom (non-native) dropdown"},
+    {"id": "formio_wizard", "name": "Form.io - Wizard example", "url": "https://formio.github.io/formio.js/app/examples/wizard.html",
+     "platform": "Form.io (formio.js)", "pages": "4", "walk": true, "exercises": "wizard whose Next control is a submit-type button; form schema loaded from a remote server"},
+    {"id": "demoqa_practice", "name": "DemoQA - Student Registration practice form", "url": "https://demoqa.com/automation-practice-form",
+     "platform": "DemoQA (React, react-select, third-party ads and recaptcha frames)", "pages": "1", "exercises": "react-select dropdowns, date picker, radio, checkbox group, upload"},
+    {"id": "selenium_webform", "name": "Selenium - web-form practice page", "url": "https://www.selenium.dev/selenium/web/web-form.html",
+     "platform": "Plain HTML (Bootstrap)", "pages": "1", "exercises": "regression check against the earlier recorded run: native select, datalist, range, colour, disabled/readonly, password, file"}
+  ]
+}

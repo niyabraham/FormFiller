@@ -1,0 +1,57 @@
+{
+ "form": "opnform_scholarship",
+ "source": "tricky",
+ "policy": "answer only when the source states exactly what is asked; see make_truth.py header in the report",
+ "questions": [
+  {
+   "match": "Full Name",
+   "expect": "answer",
+   "accept": [
+    "Jane Doe"
+   ],
+   "why": "applicant.name states the applicant's name"
+  },
+  {
+   "match": "Email",
+   "expect": "review",
+   "accept": [],
+   "why": "ops@acme.example and jane@acme.example: several distinct addresses"
+  },
+  {
+   "match": "123-456-7890",
+   "expect": "review",
+   "accept": [],
+   "why": "no phone in the source"
+  },
+  {
+   "match": "Current School/University",
+   "expect": "review",
+   "accept": [],
+   "why": "personal question"
+  },
+  {
+   "match": "GPA",
+   "expect": "review",
+   "accept": [],
+   "why": "personal question"
+  },
+  {
+   "match": "Major/Area of Study",
+   "expect": "review",
+   "accept": [],
+   "why": "personal question"
+  },
+  {
+   "match": "Why do you deserve this scholarship?",
+   "expect": "review",
+   "accept": [],
+   "why": "personal narrative"
+  },
+  {
+   "match": "Agree to Terms and Conditions",
+   "expect": "review",
+   "accept": [],
+   "why": "attestation: never answered from data"
+  }
+ ]
+}

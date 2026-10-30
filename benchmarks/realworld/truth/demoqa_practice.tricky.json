@@ -1,0 +1,79 @@
+{
+ "form": "demoqa_practice",
+ "source": "tricky",
+ "policy": "answer only when the source states exactly what is asked; see make_truth.py header in the report",
+ "questions": [
+  {
+   "match": "First Name",
+   "expect": "review",
+   "accept": [],
+   "why": "applicant.name vs account_manager: ambiguous, and the form is for a student"
+  },
+  {
+   "match": "Last Name",
+   "expect": "review",
+   "accept": [],
+   "why": "applicant.name vs account_manager: ambiguous"
+  },
+  {
+   "match": "name@example.com",
+   "expect": "review",
+   "accept": [],
+   "why": "several distinct e-mail addresses"
+  },
+  {
+   "match": "gender",
+   "expect": "review",
+   "accept": [],
+   "why": "personal"
+  },
+  {
+   "match": "Mobile Number",
+   "expect": "review",
+   "accept": [],
+   "why": "no phone in the source"
+  },
+  {
+   "match": "dateOfBirthInput",
+   "expect": "review",
+   "accept": [],
+   "why": "personal"
+  },
+  {
+   "match": "subjectsInput",
+   "expect": "review",
+   "accept": [],
+   "why": "personal"
+  },
+  {
+   "match": "Sports",
+   "expect": "review",
+   "accept": [],
+   "why": "personal"
+  },
+  {
+   "match": "Reading",
+   "expect": "review",
+   "accept": [],
+   "why": "personal"
+  },
+  {
+   "match": "Music",
+   "expect": "review",
+   "accept": [],
+   "why": "personal"
+  },
+  {
+   "match": "Current Address",
+   "expect": "review",
+   "accept": [],
+   "why": "address.billing vs address.mailing: ambiguous"
+  },
+  {
+   "match": "react-select-3-input",
+   "expect": "review",
+   "accept": [],
+   "why": "label unknown, no matching fact"
+  }
+ ]
+}

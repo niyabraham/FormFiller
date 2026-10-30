@@ -1,0 +1,84 @@
+{
+ "form": "opnform_vendor",
+ "source": "full",
+ "policy": "answer only when the source states exactly what is asked; see make_truth.py header in the report",
+ "questions": [
+  {
+   "match": "Company Name",
+   "expect": "answer",
+   "accept": [
+    "Brightloop Software Inc."
+   ],
+   "why": "company.legal_name"
+  },
+  {
+   "match": "Contact Person",
+   "expect": "review",
+   "accept": [],
+   "why": "the source holds no person's name"
+  },
+  {
+   "match": "Email",
+   "expect": "review",
+   "accept": [],
+   "why": "only security.ciso_email (a CISO mailbox), not a general contact address"
+  },
+  {
+   "match": "123-456-7890",
+   "expect": "review",
+   "accept": [],
+   "why": "phone: only security.incident_contact_phone (an incident line), not a general number"
+  },
+  {
+   "match": "Address",
+   "expect": "review",
+   "accept": [],
+   "why": "no street address in the source"
+  },
+  {
+   "match": "City",
+   "expect": "answer",
+   "accept": [
+    "Austin"
+   ],
+   "why": "company.hq.city"
+  },
+  {
+   "match": "State",
+   "expect": "answer",
+   "accept": [
+    "TX"
+   ],
+   "why": "company.hq.state"
+  },
+  {
+   "match": "Zip Code",
+   "expect": "review",
+   "accept": [],
+   "why": "not in the source"
+  },
+  {
+   "match": "Country",
+   "expect": "answer",
+   "accept": [
+    "US",
+    "United States"
+   ],
+   "why": "company.hq.country"
+  },
+  {
+   "match": "Website",
+   "expect": "answer",
+   "accept": [
+    "https://www.brightloop.io"
+   ],
+   "why": "company.website"
+  },
+  {
+   "match": "Additional Information",
+   "expect": "review",
+   "accept": [],
+   "why": "free text, nothing to state"
+  }
+ ]
+}
