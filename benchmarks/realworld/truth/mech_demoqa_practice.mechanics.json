@@ -1,0 +1,116 @@
+{
+ "form": "mech_demoqa_practice",
+ "source": "mechanics",
+ "questions": [
+  {
+   "match": "First Name",
+   "expect": "answer",
+   "accept": [
+    "Test"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Last Name",
+   "expect": "answer",
+   "accept": [
+    "User"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "name@example.com",
+   "expect": "answer",
+   "accept": [
+    "test.user@example.test"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "gender",
+   "expect": "answer",
+   "accept": [
+    "Other"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Mobile Number",
+   "expect": "answer",
+   "accept": [
+    "5551234567"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "dateOfBirthInput",
+   "expect": "answer",
+   "accept": [
+    "15 Mar 1990"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "subjectsInput",
+   "expect": "answer",
+   "accept": [
+    "Maths"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Sports",
+   "expect": "answer",
+   "accept": [
+    "true",
+    "yes",
+    "on",
+    "checked",
+    "sports"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Reading",
+   "expect": "answer",
+   "accept": [
+    "true",
+    "yes",
+    "on",
+    "checked",
+    "reading"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Music",
+   "expect": "review",
+   "accept": [],
+   "why": "no fact for it"
+  },
+  {
+   "match": "Current Address",
+   "expect": "answer",
+   "accept": [
+    "1 Example Street, Testville"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "react-select-3-input",
+   "expect": "answer",
+   "accept": [
+    "NCR"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "react-select-4-input",
+   "expect": "answer",
+   "accept": [
+    "Delhi"
+   ],
+   "why": "mechanics fact"
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "form": "mech_selenium_webform",
+ "source": "mechanics",
+ "questions": [
+  {
+   "match": "Text input",
+   "expect": "answer",
+   "accept": [
+    "Mechanics text"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Textarea",
+   "expect": "answer",
+   "accept": [
+    "Mechanics notes"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Readonly input",
+   "expect": "review",
+   "accept": [],
+   "why": "read-only, no fact"
+  },
+  {
+   "match": "Dropdown (select)",
+   "expect": "answer",
+   "accept": [
+    "Two",
+    "2"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Dropdown (datalist)",
+   "expect": "answer",
+   "accept": [
+    "Seattle"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "my-check",
+   "expect": "review",
+   "accept": [],
+   "why": "no fact"
+  },
+  {
+   "match": "my-radio",
+   "expect": "review",
+   "accept": [],
+   "why": "no fact"
+  },
+  {
+   "match": "Color picker",
+   "expect": "answer",
+   "accept": [
+    "#336699"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Date picker",
+   "expect": "answer",
+   "accept": [
+    "03/14/2026"
+   ],
+   "why": "mechanics fact"
+  },
+  {
+   "match": "Example range",
+   "expect": "answer",
+   "accept": [
+    "7"
+   ],
+   "why": "mechanics fact"
+  }
+ ]
+}

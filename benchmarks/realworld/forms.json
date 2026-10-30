@@ -149,6 +149,50 @@
         }
       ],
       "exercises": "server-backed wizard step with an explicit allow rule; anything else (and any write) stays blocked"
+    },
+    {
+      "id": "mech_surveyjs_dropdown",
+      "mechanics": true,
+      "name": "MECHANICS: SurveyJS dropdown (custom combobox)",
+      "url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+      "platform": "SurveyJS (React)",
+      "pages": "1",
+      "setup_js": "document.querySelectorAll('[class*=banner--cookies]').forEach(e => e.remove())",
+      "exercises": "a non-native dropdown: open, choose the option, does the page display it?",
+      "oracle_js": "() => ({\n  displayed: (document.querySelector('.sd-dropdown__value-container, .sd-dropdown') || {innerText: null}).innerText,\n  inputValue: (document.querySelector('.sd-dropdown input') || {}).value ?? null})"
+    },
+    {
+      "id": "mech_surveyjs_conditional",
+      "mechanics": true,
+      "name": "MECHANICS: SurveyJS conditional visibility (rating + follow-up)",
+      "url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+      "platform": "SurveyJS (Vue 3)",
+      "pages": "1",
+      "walk": true,
+      "setup_js": "document.querySelectorAll('[class*=banner--cookies]').forEach(e => e.remove())",
+      "exercises": "a styled radio group; answering it reveals a follow-up question: is it found, and is it left for review (no fact)?",
+      "oracle_js": "() => ({\n  checked: (document.querySelector('input[type=radio]:checked') || {}).value ?? null,\n  questionTitles: [...document.querySelectorAll('.sd-question__title, .sd-element__title')].map(e => e.innerText.trim().replace(/\\s+/g, ' ').slice(0, 90))})"
+    },
+    {
+      "id": "mech_demoqa_practice",
+      "mechanics": true,
+      "name": "MECHANICS: DemoQA registration form (react-select, date picker, tag input, styled radio/checkbox)",
+      "url": "https://demoqa.com/automation-practice-form",
+      "platform": "DemoQA (React)",
+      "pages": "1",
+      "exercises": "react-select State then dependent City, multi-value subjects input, date picker, styled radio and checkboxes",
+      "oracle_js": "() => {\n  const v = id => (document.getElementById(id) || {}).value ?? null;\n  const t = s => { const e = document.querySelector(s); return e ? e.innerText.trim().replace(/\\s+/g, ' ') : null; };\n  const lbl = i => { const l = document.querySelector('label[for=\"' + i.id + '\"]'); return l ? l.innerText.trim() : i.value; };\n  return {first: v('firstName'), last: v('lastName'), email: v('userEmail'),\n    gender: [...document.querySelectorAll('input[name=gender]:checked')].map(lbl), mobile: v('userNumber'), dob: v('dateOfBirthInput'),\n    subjects: [...document.querySelectorAll('#subjectsContainer [class*=multiValue]')].map(e => e.innerText.trim()),\n    hobbies: [...document.querySelectorAll('#hobbiesWrapper input:checked')].map(lbl), address: v('currentAddress'),\n    state: t('#state [class*=singleValue]'), city: t('#city [class*=singleValue]')};\n}"
+    },
+    {
+      "id": "mech_selenium_webform",
+      "mechanics": true,
+      "name": "MECHANICS: Selenium web-form (native select, datalist, colour, date text, range)",
+      "url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "platform": "plain HTML",
+      "pages": "1",
+      "exercises": "native and near-native controls as the control group for the custom ones",
+      "oracle_js": "() => {\n  const q = n => document.querySelector('[name=' + n + ']');\n  const sel = q('my-select');\n  return {text: q('my-text').value, textarea: q('my-textarea').value, select: sel.options[sel.selectedIndex].text,\n    datalist: q('my-datalist').value, color: q('my-colors').value, date: q('my-date').value, range: q('my-range').value};\n}"
     }
-  ]
+  ],
+  "mechanics_source": "benchmarks/realworld/mechanics/source_mechanics.json"
 }

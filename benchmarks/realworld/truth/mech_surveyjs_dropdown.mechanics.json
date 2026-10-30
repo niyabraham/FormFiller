@@ -1,0 +1,14 @@
+{
+ "form": "mech_surveyjs_dropdown",
+ "source": "mechanics",
+ "questions": [
+  {
+   "match": "Which is the brand of your car?",
+   "expect": "answer",
+   "accept": [
+    "Toyota"
+   ],
+   "why": "mechanics fact"
+  }
+ ]
+}

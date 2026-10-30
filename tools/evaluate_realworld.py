@@ -61,9 +61,13 @@ TRIPWIRE_JS = r"""
 """
 
 
-def load_forms(only: set[str] | None) -> tuple[dict, list[dict]]:
+def load_forms(only: set[str] | None, mechanics: bool = False) -> tuple[dict, list[dict]]:
+    """Mechanics forms (forms.json "mechanics": true) and the mechanics source are a separate evaluation: they never mix with the
+    answer-matching forms and sources (benchmarks/realworld/mechanics/README.md)."""
     data = json.loads(FORMS.read_text(encoding="utf-8"))
-    forms = [f for f in data["forms"] if not only or f["id"] in only]
+    forms = [f for f in data["forms"] if (not only or f["id"] in only) and bool(f.get("mechanics")) == mechanics]
+    if mechanics:
+        data = {**data, "sources": {"mechanics": data["mechanics_source"]}}
     return data, forms
 
 
@@ -161,6 +165,11 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         (out / "crash.txt").write_text(traceback.format_exc(), encoding="utf-8")
     finally:
         st["phase"] = "after"
+    if form.get("oracle_js") and result is not None:
+        try:
+            row["oracle"] = page.evaluate(form["oracle_js"])  # what the page itself shows, read independently of FormFiller
+        except Exception as exc:  # noqa: BLE001
+            row["oracle"] = f"oracle failed: {type(exc).__name__}"
     row["elapsed_s"] = round(time.perf_counter() - t0, 1)
     try:
         page.screenshot(path=str(out / "final_view.png"))
@@ -230,7 +239,7 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
 def cmd_run(args) -> int:
     from playwright.sync_api import sync_playwright
 
-    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None)
+    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None, args.mechanics)
     names = args.sources.split(",") if args.sources else list(data["sources"])
     sources = {n: json.loads((ROOT / data["sources"][n]).read_text(encoding="utf-8")) for n in names}
     out_root = Path(args.out_dir)
@@ -340,7 +349,7 @@ def pct(x) -> str:
 
 
 def cmd_score(args) -> int:
-    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None)
+    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None, args.mechanics)
     names = args.sources.split(",") if args.sources else list(data["sources"])
     out_root = Path(args.out_dir)
     rows = [r for f in forms for n in names if (r := score_one(out_root, f["id"], n))]
@@ -371,6 +380,7 @@ def main(argv: list[str] | None = None) -> int:
         sp.add_argument("--out-dir", required=True)
         sp.add_argument("--forms")
         sp.add_argument("--sources")
+        sp.add_argument("--mechanics", action="store_true", help="the mechanics-only evaluation (separate forms and source; never mixed with matching metrics)")
     args = ap.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     return cmd_run(args) if args.cmd == "run" else cmd_score(args)
