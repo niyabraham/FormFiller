@@ -108,10 +108,10 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
                 return warnings
         raise ValueError(f"no radio option with value {answer!r}")
     elif kind == "checkbox":
-        loc.set_checked(bool(answer), timeout=timeout_ms)
+        _set_checkbox(member=loc, want=bool(answer), timeout_ms=timeout_ms)
     elif kind == "checkbox_group":
         for member in loc.all():
-            member.set_checked(member.get_attribute("value") in answer, timeout=timeout_ms)
+            _set_checkbox(member=member, want=member.get_attribute("value") in answer, timeout_ms=timeout_ms)
     else:
         raise ValueError(f"unsupported control kind {kind!r}")
     return warnings
@@ -173,6 +173,34 @@ def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None
     label.click(timeout=timeout_ms)
     if not member.is_checked():
         raise ValueError("styled radio: clicking its label did not select it (selection not confirmed)")
+
+
+# A label that holds something a click could activate other than its own checkbox (a link to the terms, a button): a click on the
+# label's centre could land on it and navigate or act. Such a label is never clicked.
+_LABEL_ACTIVE_JS = "l => !!l.querySelector('a[href],button,select,textarea,summary,[role=button],[role=link],input:not([type=checkbox])')"
+
+
+def _set_checkbox(member, want: bool, timeout_ms: int) -> None:
+    """Set one checkbox to `want`. One that already holds it is not touched. A native input that can be hit is set as before. A styled
+    checkbox (the input sits under a label that draws the box, so a click on the input is intercepted) is set through its accessible
+    label, the visible target a person clicks, exactly as `_select_radio` does for radios. The checked state is read back and a click
+    that did not produce it is an error; nothing is set through JavaScript, a disabled box is never changed, and a label that holds a
+    link or button is never clicked (RW-11)."""
+    if member.is_checked() == want:
+        return
+    if member.evaluate(_RADIO_HIT_JS):
+        member.set_checked(want, timeout=timeout_ms)
+        return
+    if member.is_disabled():
+        raise ValueError("styled checkbox is disabled: not changed")
+    label = member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element()
+    if label is None:
+        raise ValueError("unsupported styled checkbox: the native input is covered and it has no label to click")
+    if label.evaluate(_LABEL_ACTIVE_JS):
+        raise ValueError("unsupported styled checkbox: its label holds a link or button that a click could activate instead")
+    label.click(timeout=timeout_ms)
+    if member.is_checked() != want:
+        raise ValueError("styled checkbox: clicking its label did not change it (selection not confirmed)")
 
 
 _OPEN_TIMEOUT_MS = 1500
