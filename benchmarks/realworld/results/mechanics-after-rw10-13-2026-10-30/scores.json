@@ -1,0 +1,491 @@
+[
+  {
+    "oracle_check": {
+      "inputValue": {
+        "expected": "Toyota",
+        "page": "Toyota",
+        "ok": true
+      }
+    },
+    "form": "mech_surveyjs_dropdown",
+    "source": "mechanics",
+    "status": "NEEDS_REVIEW",
+    "steps": 1,
+    "stop": "no_safe_next_control",
+    "questions": 1,
+    "expected_answerable": 1,
+    "entered": 1,
+    "correct": 1,
+    "wrong_value": 0,
+    "unsafe": 0,
+    "missed": 0,
+    "correct_abstentions": 0,
+    "answer_not_entered": 0,
+    "page_chrome": 0,
+    "unsupported": 0,
+    "unlabelled": 0,
+    "verified_of_correct": 1,
+    "right_value_not_confirmed": 0,
+    "precision": 1.0,
+    "coverage": 1.0,
+    "violations": [],
+    "detail": [
+      {
+        "question": "Which is the brand of your car?",
+        "expect": "answer",
+        "entered": true,
+        "held": "Toyota",
+        "outcome": "CORRECT",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "oracle_check": {
+      "checked": {
+        "expected": "9",
+        "page": "9",
+        "ok": true
+      }
+    },
+    "form": "mech_surveyjs_conditional",
+    "source": "mechanics",
+    "status": "NEEDS_REVIEW",
+    "steps": 1,
+    "stop": "required_unresolved",
+    "questions": 9,
+    "expected_answerable": 1,
+    "entered": 1,
+    "correct": 1,
+    "wrong_value": 0,
+    "unsafe": 0,
+    "missed": 0,
+    "correct_abstentions": 8,
+    "answer_not_entered": 0,
+    "page_chrome": 0,
+    "unsupported": 0,
+    "unlabelled": 0,
+    "verified_of_correct": 1,
+    "right_value_not_confirmed": 0,
+    "precision": 1.0,
+    "coverage": 1.0,
+    "violations": [],
+    "detail": [
+      {
+        "question": "On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague?",
+        "expect": "answer",
+        "entered": true,
+        "held": "9",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "What can we do to make your experience more satisfying?",
+        "expect": "review",
+        "entered": false,
+        "held": "",
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Performance",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Stability",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "User interface",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Complete functionality",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Learning materials (documentation, demos, code examples)",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Quality support",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Other features",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      }
+    ]
+  },
+  {
+    "oracle_check": {
+      "first": {
+        "expected": "Test",
+        "page": "Test",
+        "ok": true
+      },
+      "last": {
+        "expected": "User",
+        "page": "User",
+        "ok": true
+      },
+      "email": {
+        "expected": "test.user@example.test",
+        "page": "test.user@example.test",
+        "ok": true
+      },
+      "gender": {
+        "expected": [
+          "Other"
+        ],
+        "page": [
+          "Other"
+        ],
+        "ok": true
+      },
+      "mobile": {
+        "expected": "5551234567",
+        "page": "5551234567",
+        "ok": true
+      },
+      "dob": {
+        "expected": "15 Mar 1990",
+        "page": "15 Mar 1990",
+        "ok": true
+      },
+      "subjects": {
+        "expected": [
+          "Maths"
+        ],
+        "page": [
+          "Maths"
+        ],
+        "ok": true
+      },
+      "hobbies": {
+        "expected": [
+          "Sports",
+          "Reading"
+        ],
+        "page": [],
+        "ok": false
+      },
+      "address": {
+        "expected": "1 Example Street, Testville",
+        "page": "1 Example Street, Testville",
+        "ok": true
+      },
+      "state": {
+        "expected": "NCR",
+        "page": "NCR",
+        "ok": true
+      },
+      "city": {
+        "expected": "Delhi",
+        "page": "Delhi",
+        "ok": true
+      }
+    },
+    "form": "mech_demoqa_practice",
+    "source": "mechanics",
+    "status": "FAILED",
+    "steps": 1,
+    "stop": "no_safe_next_control",
+    "questions": 13,
+    "expected_answerable": 12,
+    "entered": 10,
+    "correct": 10,
+    "wrong_value": 0,
+    "unsafe": 0,
+    "missed": 2,
+    "correct_abstentions": 1,
+    "answer_not_entered": 2,
+    "page_chrome": 0,
+    "unsupported": 1,
+    "unlabelled": 0,
+    "verified_of_correct": 10,
+    "right_value_not_confirmed": 0,
+    "precision": 1.0,
+    "coverage": 0.8333333333333334,
+    "violations": [],
+    "detail": [
+      {
+        "question": "First Name",
+        "expect": "answer",
+        "entered": true,
+        "held": "Test",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Last Name",
+        "expect": "answer",
+        "entered": true,
+        "held": "User",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "name@example.com",
+        "expect": "answer",
+        "entered": true,
+        "held": "test.user@example.test",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "gender",
+        "expect": "answer",
+        "entered": true,
+        "held": "Other",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Mobile Number",
+        "expect": "answer",
+        "entered": true,
+        "held": "5551234567",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "dateOfBirthInput",
+        "expect": "answer",
+        "entered": true,
+        "held": "15 Mar 1990",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "subjectsInput",
+        "expect": "answer",
+        "entered": true,
+        "held": "Maths",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Sports",
+        "expect": "answer",
+        "entered": false,
+        "held": false,
+        "outcome": "ANSWER_NOT_ENTERED",
+        "reason": ""
+      },
+      {
+        "question": "Reading",
+        "expect": "answer",
+        "entered": false,
+        "held": false,
+        "outcome": "ANSWER_NOT_ENTERED",
+        "reason": ""
+      },
+      {
+        "question": "Music",
+        "expect": "review",
+        "entered": false,
+        "held": false,
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Current Address",
+        "expect": "answer",
+        "entered": true,
+        "held": "1 Example Street, Testville",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "react-select-3-input",
+        "expect": "answer",
+        "entered": true,
+        "held": "NCR",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "react-select-4-input",
+        "expect": "answer",
+        "entered": true,
+        "held": "Delhi",
+        "outcome": "CORRECT",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "oracle_check": {
+      "text": {
+        "expected": "Mechanics text",
+        "page": "Mechanics text",
+        "ok": true
+      },
+      "textarea": {
+        "expected": "Mechanics notes",
+        "page": "Mechanics notes",
+        "ok": true
+      },
+      "select": {
+        "expected": "Two",
+        "page": "Open this select menu",
+        "ok": false
+      },
+      "datalist": {
+        "expected": "Seattle",
+        "page": "",
+        "ok": false
+      },
+      "color": {
+        "expected": "#336699",
+        "page": "#336699",
+        "ok": true
+      },
+      "date": {
+        "expected": "03/14/2026",
+        "page": "03/14/2026",
+        "ok": true
+      },
+      "range": {
+        "expected": "7",
+        "page": "7",
+        "ok": true
+      }
+    },
+    "form": "mech_selenium_webform",
+    "source": "mechanics",
+    "status": "NEEDS_REVIEW",
+    "steps": 1,
+    "stop": "no_safe_next_control",
+    "questions": 10,
+    "expected_answerable": 7,
+    "entered": 5,
+    "correct": 5,
+    "wrong_value": 0,
+    "unsafe": 0,
+    "missed": 2,
+    "correct_abstentions": 3,
+    "answer_not_entered": 0,
+    "page_chrome": 0,
+    "unsupported": 2,
+    "unlabelled": 0,
+    "verified_of_correct": 5,
+    "right_value_not_confirmed": 0,
+    "precision": 1.0,
+    "coverage": 0.7142857142857143,
+    "violations": [],
+    "detail": [
+      {
+        "question": "Text input",
+        "expect": "answer",
+        "entered": true,
+        "held": "Mechanics text",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Textarea",
+        "expect": "answer",
+        "entered": true,
+        "held": "Mechanics notes",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Readonly input",
+        "expect": "review",
+        "entered": false,
+        "held": "Readonly input",
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "best candidate 'Text input' is too weak (score 0.50 < 0.6); semantic proposal for a review"
+      },
+      {
+        "question": "Dropdown (select)",
+        "expect": "answer",
+        "entered": false,
+        "held": "Open this select menu",
+        "outcome": "MISSED (review, answer expected)",
+        "reason": "ambiguous: 'Dropdown (datalist)' and 'Dropdown (select)' are about equally relevant but di"
+      },
+      {
+        "question": "Dropdown (datalist)",
+        "expect": "answer",
+        "entered": false,
+        "held": "",
+        "outcome": "MISSED (review, answer expected)",
+        "reason": "ambiguous: 'Dropdown (datalist)' and 'Dropdown (select)' are about equally relevant but di"
+      },
+      {
+        "question": "my-check",
+        "expect": "review",
+        "entered": false,
+        "held": [
+          "on"
+        ],
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "my-radio",
+        "expect": "review",
+        "entered": false,
+        "held": "on",
+        "outcome": "CORRECT_ABSTENTION",
+        "reason": "no matching value in the source data"
+      },
+      {
+        "question": "Color picker",
+        "expect": "answer",
+        "entered": true,
+        "held": "#336699",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Date picker",
+        "expect": "answer",
+        "entered": true,
+        "held": "03/14/2026",
+        "outcome": "CORRECT",
+        "reason": ""
+      },
+      {
+        "question": "Example range",
+        "expect": "answer",
+        "entered": true,
+        "held": "7",
+        "outcome": "CORRECT",
+        "reason": ""
+      }
+    ]
+  }
+]
