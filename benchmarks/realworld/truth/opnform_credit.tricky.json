@@ -1,0 +1,65 @@
+{
+ "form": "opnform_credit",
+ "source": "tricky",
+ "policy": "answer only when the source states exactly what is asked; see make_truth.py header in the report",
+ "questions": [
+  {
+   "match": "Business Name",
+   "expect": "answer",
+   "accept": [
+    "Acme Corp"
+   ],
+   "why": "company.name (NOT subsidiary.name)"
+  },
+  {
+   "match": "Business Address",
+   "expect": "review",
+   "accept": [],
+   "why": "address.billing vs address.mailing: ambiguous"
+  },
+  {
+   "match": "Contact Person",
+   "expect": "review",
+   "accept": [],
+   "why": "applicant.name vs account_manager: ambiguous"
+  },
+  {
+   "match": "Contact Email",
+   "expect": "answer",
+   "accept": [
+    "ops@acme.example"
+   ],
+   "why": "contact_email (exact key); company.email agrees"
+  },
+  {
+   "match": "123-456-7890",
+   "expect": "review",
+   "accept": [],
+   "why": "no phone in the source"
+  },
+  {
+   "match": "Years in Business",
+   "expect": "review",
+   "accept": [],
+   "why": "not in the source"
+  },
+  {
+   "match": "Annual Revenue",
+   "expect": "review",
+   "accept": [],
+   "why": "revenue.2023 vs revenue.2024: period not stated by the form"
+  },
+  {
+   "match": "Business Description",
+   "expect": "review",
+   "accept": [],
+   "why": "not in the source"
+  },
+  {
+   "match": "Agree to Terms and Conditions",
+   "expect": "review",
+   "accept": [],
+   "why": "attestation: never answered from data"
+  }
+ ]
+}

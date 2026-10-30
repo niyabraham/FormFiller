@@ -85,3 +85,25 @@ SPA fixtures (`tools/evaluate_spa.py --policy`) and widget fixtures unchanged by
     case-sensitive text check); the changed test files then passed on 1.48.0 (42 passed) and 1.64.1 (42 passed).
   - ruff (rules in pyproject.toml): no findings; mypy: no issues in 33 files; pip-audit of the declared dependencies (core, dev
     and the `llm` extra; the `semantic` extra was not audited because it pulls in PyTorch): no known vulnerabilities.
+
+## Real-world compatibility testing (30 Oct 2026)
+
+Full report: `REAL_WORLD_TESTING_REPORT.md`. Harness: `tools/evaluate_realworld.py`; forms, ground truth and a result snapshot:
+`benchmarks/realworld/`. Branch `test/real-world-compat`, code under test `main` at `bc193c3`. No implementation file changed.
+
+Note: `IMPLEMENTATION_PROGRESS.md`, `source_full.json` and `source_tricky.json` do not exist in this repository. With approval, existing
+fictional sources were used ("full" = heldout `h01_saas_security`, "tricky" = rfi `c07_ambiguity`), and progress is recorded here.
+
+| item | status |
+|---|---|
+| 10 public demo/template forms x 2 sources (+4 supplemental variants), 28 runs, never submitted | DONE |
+| Safety: 0 submit events, 0 final-action clicks, 0 walk requests completed outside one explicit read-only rule | DONE (all 28 runs) |
+| Precision 62% (10/16), coverage 59% (10/17) on the 10 main forms; 6 wrong fills from 2 root causes | MEASURED |
+| What-if for the main matching bug (rule A): precision 62% -> 77%, benchmarks -4 answers of 213 | MEASURED, not implemented |
+| Fixes RW-1 to RW-9 (see the report's section 11) | NOT STARTED, awaiting approval |
+| Custom dropdown / date-picker / conditional *filling* | NOT ASSESSED: no matching facts in the approved sources; needs a mechanics-only probe source (approval) |
+| A real multi-page company questionnaire (needs a portal you are allowed to test) | NOT DONE |
+
+Remaining work, in order: approve and implement RW-1 and RW-2 (each starts with a failing test from the reproduction in the
+report); decide on RW-5 (tolerate-list) and RW-6 (guard for single-page runs); measure RW-3 on the benchmarks before changing the
+veto; re-run `tools/evaluate_realworld.py` after each fix and compare with `benchmarks/realworld/results/2026-10-30/`.

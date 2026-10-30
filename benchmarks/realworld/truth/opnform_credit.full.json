@@ -1,0 +1,63 @@
+{
+ "form": "opnform_credit",
+ "source": "full",
+ "policy": "answer only when the source states exactly what is asked; see make_truth.py header in the report",
+ "questions": [
+  {
+   "match": "Business Name",
+   "expect": "answer",
+   "accept": [
+    "Brightloop Software Inc."
+   ],
+   "why": "company.legal_name"
+  },
+  {
+   "match": "Business Address",
+   "expect": "review",
+   "accept": [],
+   "why": "no street address in the source"
+  },
+  {
+   "match": "Contact Person",
+   "expect": "review",
+   "accept": [],
+   "why": "the source holds no person's name"
+  },
+  {
+   "match": "Contact Email",
+   "expect": "review",
+   "accept": [],
+   "why": "only a CISO mailbox"
+  },
+  {
+   "match": "123-456-7890",
+   "expect": "review",
+   "accept": [],
+   "why": "phone: only an incident line"
+  },
+  {
+   "match": "Years in Business",
+   "expect": "review",
+   "accept": [],
+   "why": "would be derived from company.founded: an inference, not a stated fact"
+  },
+  {
+   "match": "Annual Revenue",
+   "expect": "review",
+   "accept": [],
+   "why": "not in the source"
+  },
+  {
+   "match": "Business Description",
+   "expect": "review",
+   "accept": [],
+   "why": "not in the source"
+  },
+  {
+   "match": "Agree to Terms and Conditions",
+   "expect": "review",
+   "accept": [],
+   "why": "attestation: never answered from data"
+  }
+ ]
+}
