@@ -1,6 +1,6 @@
 # Real-world compatibility testing report
 
-> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation).
+> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation). Section 14 records fixes RW-10 to RW-13 and a new finding, RW-14.
 
 Date: 30 Oct 2026. Code under test: `main` at `bc193c3` (PRs #19, #20 and #21 merged), Windows 11, Python 3.12, Playwright 1.64.1,
 Chromium 156. Branch `test/real-world-compat`. **No implementation file was changed**; this branch adds a test harness, test
@@ -322,3 +322,106 @@ New findings (numbering continues the baseline list):
 * **Not a defect: parenthetical ambiguity.** The two Selenium misses (`Dropdown (select)`, `Dropdown (datalist)`) are blocked by the documented guard for questions that differ only in a bracketed qualifier. My ground truth expected answers, which was wrong by design; it is left as pre-registered and counted as misses.
 
 None of RW-3 to RW-13 is implemented. Mechanics results do not enter any precision or coverage figure in this report.
+
+## 14. Follow-up (30 Oct 2026): RW-10 to RW-13 and a new finding, RW-14
+
+Branch `feat/rw10-13-widget-compat`, cut from `main` at `aaffff6` (after PR #23). **Not merged.** Sections 1 to 13 and every earlier result
+folder are unchanged; new results are in `benchmarks/realworld/results/after-rw10-13-2026-10-30/` (the 10 main forms and the 4
+supplemental ones, 28 runs) and `.../mechanics-after-rw10-13-2026-10-30/` (4 runs). The forms, sources, ground truth and scoring
+rules are the pre-committed ones, untouched; nothing under `benchmarks/realworld/truth/`, `forms.json` or `mechanics/` changed.
+
+Method for each issue: reproduce it against the current code first, with a small local page that has the DOM structure captured
+from the real site (read-only capture, nothing submitted); write the tests, see them fail; make the smallest change; run the
+neighbouring suites; commit. The fixtures are written for this project: they model the structure, they are not the libraries.
+
+### 14.1 What was wrong and what changed
+
+| id | reproduced as | root cause | change | new tests |
+|---|---|---|---|---|
+| RW-10 | `expected 'NCR', page holds ''` | a react-select `<input role=combobox>` only holds the search text; the choice is drawn in a sibling `singleValue` / `multiValue` element, so read-back saw an empty input and rejected a correct fill | read-back takes the choice from that element inside the widget (the search stops at the first ancestor that also holds another form control); no such element: the input's own value, as before (`execute._READ_JS`) | 10 |
+| RW-11 | `Locator.set_checked: Timeout ... <label> intercepts pointer events` | checkbox interaction clicked the covered native input; radios already had a label path | `execute._set_checkbox`: already-correct boxes untouched; hit-testable native inputs set as before; otherwise the box's own label is clicked and the state read back; disabled boxes, labels holding a link or button, labels that belong to another input, and label-less covered inputs are refused | 16 |
+| RW-12 | the picker's month and year selects listed as questions; heading "March 1990" became a section and the step title | an open calendar popup was ordinary page content | month/year selects and number boxes inside a calendar popup are not questions; headings and ARIA widgets inside a popup are ignored by the section, unsupported-control and step-title scans (`discover.PICKER_ROOT_JS`, shared) | 22 |
+| RW-13 | a verified rating also listed as `aria_radiogroup` | the wrapper was scanned as a custom control although its native radios are what is handled | a `role=radiogroup` around native radios is not reported; the wrapper's `aria-required` is now carried to the radio control; a group of `role=radio` elements, or a mixed one, is still reported | 14 |
+
+Total: 62 new tests (1290 before, **1352 passed, 2 xfailed, 0 failed, 0 skipped** after).
+
+Findings made while testing, each acted on:
+
+* **RW-10, a second false positive.** With a menu that ignores the click, the typed search text remained in the input and read back as "the value", so the item's `verified` flag was True although nothing was chosen. The reported outcome was already right (`filled=False` makes the field `rejected` and the run `FAILED`), so this was not changed; the tests assert the outcome (state and run status), and the open-menu case is pinned (an option merely listed in an open menu is never read as held).
+* **RW-11, found by testing the wrong-box case.** A `<label>` that wraps two inputs activates only the first. The first version would have clicked it for the second box and noticed afterwards. A label is now used only when its own control is that input (separate commit `08b7cd4`, with a failing test first). The existing radio path has the same shape and was left unchanged (technical debt, section 14.5).
+* **RW-12, found by the real-page run, not by the fixtures.** The walk titles a step with its last visible heading and fingerprints it with its headings, so DemoQA's step was titled "March 1990" even after discovery was fixed. Fixed with a failing test first; the real step title is now "Practice Form".
+
+### 14.2 Results
+
+The 10 main forms x 2 sources, scored with the same rules against the same pre-committed ground truth (all 28 runs of this evaluation, including the 4 supplemental forms, are in the result folder):
+
+| measurement | baseline | after RW-1 | after RW-1 + RW-2 | after RW-10 to RW-13 |
+|---|---|---|---|---|
+| precision | 62% (10/16) | 77% (10/13) | 100% (10/10) | **100% (10/10)** |
+| coverage | 59% (10/17) | 59% (10/17) | 59% (10/17) | **59% (10/17)** |
+| wrong fills (unsafe) | 6 | 3 | 0 | **0** |
+| correct abstentions | 129 | 132 | 129 | 129 |
+| read-back verification failures (right value, not confirmed) | 0 | 0 | 0 | 0 |
+| unsupported controls reported | 20 | 20 | 20 | **18** |
+
+Question by question, the outcomes of all 28 runs are identical to the RW-1 + RW-2 run (0 differences); the only change is that
+SurveyJS conditional no longer lists its filled rating as unsupported (RW-13), which is the 2 fewer in the last row.
+
+Benchmarks and fixture evaluations, on the final commit (all unchanged from the RW-1 + RW-2 values):
+
+| set | result |
+|---|---|
+| RFI development benchmark (192 questions) | 105 correct, precision 98.1%, coverage 55.7%, 1 known disputed unsafe |
+| held-out benchmark (272) | 109 correct, precision 100%, coverage 40.1%, 0 unsafe |
+| matching sets, dev and eval | 1.00 / 0.933 and 1.00 / 0.706; 4 of 4 proposals right; 0 unsafe |
+| SPA fixtures (policy mode) | 77 of 82 discovered, 11 of 12 safe stops, 0 submit events, 0 submissions, 0 dialogs accepted |
+| wizard scenarios | 16 of 16 expected, 0 safety violations, 0 final submissions |
+| widget fixtures | 12 of 12 filled and read back, 3 of 3 conditional fields found |
+
+**Mechanics-only evaluation (kept apart; never part of the precision and coverage above).** Same four forms, same source, same independent page-state oracle:
+
+| | expected fills | confirmed | right on the page, not confirmed | failed | blocked by design | page holds | wrong fills | unsupported | picker selects listed as questions |
+|---|---|---|---|---|---|---|---|---|---|
+| 30 Oct, section 13.2 | 21 | 14 | 3 | 2 | 2 | 17 of 20 | 0 | 4 | 2 |
+| after RW-10 to RW-13 | 21 | **17** | **0** | 2 | 2 | 17 of 20 | 0 | **3** | **0** |
+
+The three react-select fills (Subjects, State, City) are now `verified`; the SurveyJS rating is no longer also unsupported; the date
+picker's two selects are no longer asked. The page holds the same 17 of 20 values because the three react-select values were
+already on the page: the gain is that FormFiller now confirms them, and the run is no longer failed for them.
+
+### 14.3 What did not work: RW-11 on the real DemoQA page, and why (new finding RW-14)
+
+The two Hobbies checkboxes (`Sports`, `Reading`) are **still not checked on the real page**, although the fix works on the fixture
+and in isolation on the real page. A read-only probe against the live page showed both facts:
+
+* filling `Sports` alone: `checked = True` (the label path works on DemoQA's real DOM);
+* filling the date first, then `Sports`: `ElementHandle.click: Timeout ... <div class="react-datepicker__day-name"> from <div id="dateOfBirth-wrapper"> subtree intercepts pointer events`.
+
+The date popup that FormFiller's date entry opens stays open (react-datepicker closes on Tab or an outside click; the field is left
+by a blur) and covers the Hobbies row. Playwright correctly refuses to click through it, so the answer is reported `rejected`
+and the run `FAILED`, which is the safe outcome: nothing was clicked through the popup and nothing was set by script
+(`test_a_label_covered_by_an_open_popup_fails_safely_and_clicks_what_covers_it_never` pins that).
+
+**RW-14 (Medium, execution): a popup left open by a text entry can cover the controls below it.** Not implemented. Closing it means
+sending a key (Escape or Tab) after a text entry, which changes how every field is left and could close a modal that holds the form;
+that is a design decision, not a bug fix, and is left for approval. Smallest candidate: after entering a date, if a calendar popup
+(`PICKER_ROOT_JS`) is open, press Escape once with focus still on that field, and only when no dialog other than the popup is open.
+
+### 14.4 Safety
+
+Over all 32 runs (28 main, 4 mechanics): 0 submit events, 0 clicks on final-action controls, 0 requests completed during a guarded
+walk, 0 dialogs accepted, 0 critical flags, 0 crashes, the guard observed in 32 of 32. The only recorded violation rows are the
+same two as in the baseline: 123FormBuilder's own analytics and chat beacons (events, SnapEngage errors, Microsoft Clarity),
+11 write attempts in this run, every one blocked by the guard (4 in the baseline, 7 in the RW-2 run; the count follows the page's
+timing). `evaluate_realworld.py run` exits 1 because of those two rows, as it did for the baseline. New interactions: a
+checkbox label click is the same kind of click `_select_radio` already makes, never on a submit control, refused when the label holds
+a link or button, and the tests assert no form submission. `docs/SECURITY_MODEL.md` needed no change: no documented guarantee or
+limitation was altered, and absolute network isolation is still not claimed.
+
+### 14.5 Disclosures, remaining issues and debt
+
+* **Two runs were discarded, and why.** The first evaluation run was made before the step-title fix and was replaced by a complete rerun on the final commit. In that rerun, six runs crashed on `Page.goto` with `ERR_NAME_NOT_RESOLVED` / `ERR_NETWORK_IO_SUSPENDED` (this machine lost its network) and the DemoQA mechanics run stopped before any question because a third-party ad beacon (`match.adsrvr.org/track`) was blocked by the guard (RW-5, timing-dependent). Neither says anything about the code; both were repeated once, and the repeat is the reported result. The 123FormBuilder write-attempt counts differ from run to run for the same timing reason.
+* **Tests changed while writing them, never to hide a result:** two RW-10 negative tests asserted an internal field instead of the outcome (corrected to assert the state and the run status), a fixture chip contained literal text that the real library draws as an icon (corrected to an svg), and `close` mode now clears the search text as the real library does when focus leaves.
+* **Limits of the evidence.** The fixtures model DOM structure captured from DemoQA and SurveyJS and the documented structure of flatpickr and jQuery UI pickers; the real libraries were exercised only on the two public demo pages. RW-10 relies on a class-name convention (`...singleValue`, `...multiValue`) and reads several chips as one comma-joined value. RW-12 recognises pickers by class or ARIA label and month names in English only.
+* **Still open from before:** RW-3 to RW-9 (matching veto, overlay error text, tracking pixels, guard for single-page runs, unassociated labels, step headings from page chrome, disabled controls in walk mode). Not part of this work.
+* **Technical debt:** `_select_radio` clicks `labels[0] or closest('label')` without the "label's own control" check that checkboxes now have; `role=checkbox` / `switch` widgets are reported but not handled; native inputs hidden with `display:none` are not discovered; `Control.value` for a combobox still reads the input, not the displayed selection.
