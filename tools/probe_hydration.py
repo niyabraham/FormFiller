@@ -127,7 +127,7 @@ _INIT = r"""
 
   const tick = () => {
     const now = T();
-    P.ticks.push(Math.round(now));
+    P.ticks.push(now);  // the same value a sample logged on this tick carries (a rounded tick could sort before its own sample)
     for (const name in SIGNALS) { try { sig(name, SIGNALS[name]()); } catch (e) { sig(name, 'error:' + short(e && e.message, 40)); } }
     if (!el) { const f = document.querySelector(CFG.selector); if (f) { el = f; P.events.push([now, 'field-found', {connected: f.isConnected}]); } }
     if (el) {
@@ -247,7 +247,7 @@ def analyse(samples: list, fill_start_ms: float, until_ms: float | None = None, 
         # if the text had still been there at the first tick after the input, that tick would have logged it: it was
         # already gone by then (the page cleared it inside the same busy stretch). The reset time is bounded, not exact.
         nxt = [t for t in ticks if t > inputs[0] and (until_ms is None or t < until_ms)]
-        known = [x for x in samples if nxt and x[0] <= nxt[0]]
+        known = [x for x in samples if nxt and x[0] <= nxt[0] + 1]  # +1: results saved with ticks rounded to whole ms
         if nxt and known:
             verdict, early = "VALUE_RESET", True
             seen_at = None
