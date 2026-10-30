@@ -173,11 +173,12 @@ _EXTRACT_JS = r"""
     const hint = /^[ymdhs]{1,4}([\/.\-: ][ymdhs]{1,4}){1,3}$/i.test((el.placeholder || '').trim());
     if (!label) label = (hint ? '' : el.placeholder) || el.title || el.name || el.id || el.placeholder || '';
     const num = a => { const v = el.getAttribute(a); return v === null || v === '' ? null : Number(v); };
+    const groupRequired = type === 'radio' && !!el.closest('[role=radiogroup][aria-required=true]');  // RW-13
     out.push({
       control_id: id, kind, label, name: el.name || null, html_id: el.id || null,
       help_text: byIds(el.getAttribute('aria-describedby'), el).map(txt).join(' ').trim(),
       section: sectionOf(el), placeholder: el.getAttribute('placeholder') || '',
-      required: members.some(m => m.required || m.getAttribute('aria-required') === 'true'),
+      required: groupRequired || members.some(m => m.required || m.getAttribute('aria-required') === 'true'),
       visible: members.some(visible), disabled: members.every(m => m.disabled || m.getAttribute('aria-disabled') === 'true'),
       options, min: el.getAttribute('min'), max: el.getAttribute('max'), step: el.getAttribute('step'),
       minlength: num('minlength'), maxlength: num('maxlength'), pattern: el.getAttribute('pattern'),
@@ -260,6 +261,10 @@ _UNSUPPORTED_JS = r"""
       const r = role.toLowerCase();
       if (['textbox', 'searchbox', 'listbox', 'radiogroup', 'checkbox', 'switch', 'slider', 'spinbutton', 'radio'].includes(r)) {
         if (r === 'radio' && e.closest('[role=radiogroup]')) continue;   // reported once, as the group
+        // A wrapper around native radios (SurveyJS ratings): those radios are discovered, chosen through their labels and read back, so
+        // the wrapper is not a second, unsupported control (RW-13). A group of role=radio elements without native inputs, or one that
+        // also holds such elements, is still reported.
+        if (r === 'radiogroup' && Array.from(e.querySelectorAll('input[type=radio]')).some(x => !hiddenByPage(x)) && !e.querySelector('[role=radio]:not(input)')) continue;
         if (shown(e)) add(e, 'aria_' + r, 'custom ARIA ' + r + ' control: there is no supported way to read or set it');
       }
     }
