@@ -25,8 +25,12 @@ import re
 from dataclasses import replace
 from typing import Any
 
+from formfill.web.evidence import assess_claim, find_conflicts
+from formfill.web.matching import DEFAULT_MATCHER, MatcherConfig, confidence_category
 from formfill.web.models import AnswerPlanItem, Candidate, Question
-from formfill.web.retrieve import Leaf, retrieve
+from formfill.web.retrieve import Leaf, foreign_entity, retrieve
+from formfill.web.semantic import rank as semantic_rank
+from formfill.web.tokens import tokenize
 from formfill.web.validate import is_placeholder, validate_answer
 
 MIN_CONFIDENCE = 0.6
@@ -234,6 +238,19 @@ def is_attestation(control, text: str) -> bool:
     return False
 
 
+def _yes_no(control) -> bool:
+    if control.kind == "checkbox":
+        return True
+    vals = {str(o.value).strip().casefold() for o in control.options} | {str(o.label).strip().casefold() for o in control.options}
+    return control.kind in ("radio", "select") and bool(vals & {"yes", "true"}) and bool(vals & {"no", "false"})
+
+
+def _kind_fits(value: Any, control) -> bool:
+    if _yes_no(control):
+        return isinstance(value, bool) or validate_answer(value, control).ok
+    return not isinstance(value, bool)
+
+
 def _same_value(a: Any, b: Any) -> bool:
     return str(a).strip().lower() == str(b).strip().lower()
 
@@ -250,27 +267,57 @@ def _alts(cands: list[Candidate], skip: int = 0) -> list[dict]:
             for c in cands[skip:3 + skip]]
 
 
-def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
+def plan_question(question: Question, leaves: list[Leaf], config: MatcherConfig | None = None) -> AnswerPlanItem:
+    """Decide one question (see the module docstring for the policy and formfill/web/matching.py for the layers). Every
+    outcome records its provenance: method, normalised question, source path, confidence and category, conflicts, validation,
+    and the reason for review."""
+    config = config or DEFAULT_MATCHER
     c = question.control
-    base = {"question_id": question.question_id, "question": question.text, "field_type": c.kind, "required": c.required}
+    base: dict[str, Any] = {"question_id": question.question_id, "question": question.text, "field_type": c.kind, "required": c.required,
+            "normalized_question": list(question.concept_tokens)}
 
-    def review(reason: str, cands: list[Candidate], confidence: float = 0.0) -> AnswerPlanItem:
-        return AnswerPlanItem(**base, status="REVIEW", reason=reason, confidence=confidence, alternatives=_alts(cands))
+    def review(reason: str, cands: list[Candidate], confidence: float = 0.0, *, propose: bool = False, **extra) -> AnswerPlanItem:
+        item = AnswerPlanItem(**base, status="REVIEW", reason=reason, confidence=confidence, alternatives=_alts(cands), **extra)
+        if propose and config.semantic:
+            _propose(item, question, leaves, config)
+        return item
 
     if c.disabled:
         return review("control is disabled", [])
     if is_attestation(c, question.text):
         return review(ATTESTATION_REASON, [])
 
-    cands = retrieve(question, leaves)
+    claim = assess_claim(question, leaves) if config.evidence_checks else None
+    if claim is not None:  # "Are you SOC 2 certified?": decided by stated status only, never by a similar-sounding key
+        if claim.answer is None:
+            item = review(f"certification/compliance claim: {claim.reason}", [], conflicts=claim.conflicts)
+            item.alternatives = [{"source": e["source"], "value": e["value"], "reads_as": e["reads_as"]} for e in claim.evidence]
+            return item
+        result = validate_answer(claim.answer, c)
+        if not result.ok:
+            return review(f"certification/compliance claim: {claim.reason}; {result.reason}", [], validation=result.reason)
+        return AnswerPlanItem(**base, status="ANSWER", source=claim.source, raw_value=claim.evidence[0]["value"], answer=result.value,
+                              confidence=1.0, evidence=[claim.reason], method="status_evidence", validation="ok",
+                              confidence_category=confidence_category(1.0, "status_evidence"))
+
+    found = retrieve(question, leaves)
+    # A yes/no fact answers only a yes/no question, and a yes/no question only a yes/no fact (or an option it offers): a name
+    # or a date next to a boolean is a different fact, not a rival, and never makes the question ambiguous.
+    cands = [x for x in found if _kind_fits(x.value, c)]
     if not cands:
-        return review("no matching value in the source data", [])
+        if found:
+            return review(f"the matching facts ({', '.join(repr(x.path) for x in found[:3])}) are not of a kind this "
+                          f"{c.kind} control can take", found, found[0].score, propose=True)
+        return review("no matching value in the source data", [], propose=True)
 
     top = cands[0]
+    if top.foreign_entity:
+        return review(f"the best matching fact {top.path!r} belongs to a {top.foreign_entity}, which the question does not ask about; "
+                      "it is not attributed to the organisation", cands, top.score)
     if top.score < MIN_CONFIDENCE:
         why = f" -- {'; '.join(top.flags)}" if top.flags else ""
         return review(
-            f"best candidate {top.path!r} is too weak (score {top.score:.2f} < {MIN_CONFIDENCE}){why}", cands, top.score
+            f"best candidate {top.path!r} is too weak (score {top.score:.2f} < {MIN_CONFIDENCE}){why}", cands, top.score, propose=True
         )
 
     if is_placeholder(top.value) and not _option_equals(c, top.value):
@@ -282,21 +329,89 @@ def plan_question(question: Question, leaves: list[Leaf]) -> AnswerPlanItem:
         if top.score - runner.score < MIN_MARGIN and not _same_value(top.value, runner.value):
             return review(
                 f"ambiguous: {top.path!r} and {runner.path!r} are about equally relevant but disagree",
-                cands, top.score,
+                cands, top.score, conflicts=[{"source": runner.path, "value": runner.value, "why": "about equally relevant"}],
             )
 
     result = validate_answer(top.value, c)
     if not result.ok:
-        return review(f"{top.path!r}: {result.reason}", cands, top.score)
+        return review(f"{top.path!r}: {result.reason}", cands, top.score, validation=result.reason)
+
+    if config.evidence_checks:
+        conflicts = find_conflicts(question, top, cands, leaves)
+        if conflicts:
+            return review(f"the source contradicts itself: {top.path!r} = {top.value!r}, but "
+                          + "; ".join(f"{x['source']!r} = {x['value']!r}" for x in conflicts[:3]), cands, top.score, conflicts=conflicts)
 
     return AnswerPlanItem(
         **base, status="ANSWER", source=top.path, raw_value=top.value, answer=result.value,
         confidence=min(1.0, top.score), alternatives=_alts(cands, skip=1), evidence=list(top.evidence),
+        method="deterministic", validation="ok", confidence_category=confidence_category(top.score, "deterministic"),
     )
 
 
-def build_plan(questions: list[Question], leaves: list[Leaf]) -> list[AnswerPlanItem]:
-    plans = [plan_question(q, leaves) for q in questions]
+def _gated_candidates(question: Question, leaves: list[Leaf], config: MatcherConfig, limit: int = 5) -> list[dict]:
+    """The most similar keys whose value could be offered at all: not another entity's fact, valid for this control, not a
+    placeholder, and (with evidence checks) not contradicted elsewhere in the source. Contradicted ones are returned separately."""
+    q = set(question.concept_tokens)
+    section = set(tokenize(question.control.section))
+    out: list[dict] = []
+    for leaf, sim in semantic_rank(question.text, leaves, config.backend)[: limit * 3]:
+        if len(out) >= limit or sim <= 0:
+            break
+        if foreign_entity(leaf, q, section) or is_placeholder(leaf.value):
+            continue
+        result = validate_answer(leaf.value, question.control)
+        if not result.ok:
+            continue
+        contradicted = find_conflicts(question, Candidate(leaf.path, leaf.value, sim), [], leaves) if config.evidence_checks else []
+        out.append({"source": leaf.path, "value": leaf.value, "answer": result.value, "similarity": round(sim, 4),
+                    "contradicted": contradicted})
+    return out
+
+
+def _propose(item: AnswerPlanItem, question: Question, leaves: list[Leaf], config: MatcherConfig) -> None:
+    """Attach a proposal to a REVIEW item (never an answer). Semantic layer: the most similar gated key above the calibrated
+    threshold. Optional LLM layer (config.reranker): may pick another of the same gated candidates, or none; it cannot add one."""
+    cands = _gated_candidates(question, leaves, config)
+    best = next((c for c in cands if c["similarity"] >= config.semantic_min_similarity), None)
+    if best is not None and best["contradicted"]:  # never offer what the source itself contradicts; show the reviewer why
+        item.conflicts = item.conflicts + best["contradicted"]
+        item.reason = f"{item.reason}; the closest fact {best['source']!r} is contradicted elsewhere in the source"
+        best = None
+    offerable = [c for c in cands if not c["contradicted"]]
+    if best is not None:
+        rivals = [c for c in offerable if c is not best and c["similarity"] >= best["similarity"] - 0.05
+                  and not _same_value(c["value"], best["value"])]
+        item.proposed_answer = best["answer"]
+        item.method = "semantic"
+        item.confidence_category = confidence_category(best["similarity"], "semantic")
+        item.reason = (f"{item.reason}; semantic proposal for a reviewer: {best['source']!r} = {best['value']!r} "
+                       f"(similarity {best['similarity']:.2f}, not entered automatically)")
+        item.alternatives = [{"source": c["source"], "value": c["value"], "score": c["similarity"], "method": "semantic"}
+                             for c in [best, *rivals[:2]]] + item.alternatives
+        if rivals:
+            item.conflicts = item.conflicts + [{"source": c["source"], "value": c["value"], "why": "an almost equally similar key disagrees"}
+                                               for c in rivals[:2]]
+    if config.reranker is not None and offerable:
+        choice = config.reranker.choose(question.text, offerable)
+        if choice is None:
+            return  # no opinion (not configured, refused, failed): the semantic layer's proposal, if any, stands
+        if choice.candidate is None:
+            if item.proposed_answer is not None:
+                item.reason = f"{item.reason}; the LLM reviewer found no candidate that answers it: {choice.reason}"
+            return
+        pick = offerable[choice.candidate]
+        item.proposed_answer = pick["answer"]
+        item.method = "llm"
+        item.confidence_category = confidence_category(0.0, "llm")
+        item.reason = (f"{item.reason}; LLM proposal for a reviewer ({getattr(config.reranker, 'name', 'llm')}): {pick['source']!r} = "
+                       f"{pick['value']!r} - {choice.reason} (not entered automatically)")
+        item.alternatives = [{"source": pick["source"], "value": pick["value"], "score": pick["similarity"], "method": "llm"}] + [
+            a for a in item.alternatives if a.get("source") != pick["source"]]
+
+
+def build_plan(questions: list[Question], leaves: list[Leaf], config: MatcherConfig | None = None) -> list[AnswerPlanItem]:
+    plans = [plan_question(q, leaves, config) for q in questions]
     # Two questions whose wording differs ONLY in a parenthetical qualifier, e.g. "Dropdown (select)" / "Dropdown (datalist)". Matching
     # drops parentheticals as hints, so both reduce to the same tokens and one source value would answer both, silently putting the
     # value meant for one control into the other. Such answers go to a human. (Questions that merely share tokens, such as
@@ -306,7 +421,7 @@ def build_plan(questions: list[Question], leaves: list[Leaf]) -> list[AnswerPlan
         return re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", " ", text)).strip().lower(), hints
 
     groups: dict[tuple[str, str], list[int]] = {}
-    for i, (q, p) in enumerate(zip(questions, plans)):
+    for i, (q, p) in enumerate(zip(questions, plans, strict=True)):
         if p.status == "ANSWER" and p.source:
             groups.setdefault((split(q.text)[0], p.source), []).append(i)
     for idxs in groups.values():

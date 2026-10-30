@@ -217,7 +217,8 @@ class TestTokenisation:
             assert understand_control(Control("c", "radio", label)).concept_tokens == ["support", "sso"], label
         # but an alphanumeric word that merely starts a label is content
         assert "q3" in understand_control(Control("c", "text", "Q3 revenue")).concept_tokens
-        assert "soc" in understand_control(Control("c", "text", "SOC 2 report date")).concept_tokens
+        # ("SOC 2" is one domain term since Requirement C: the canonical token is "soc2")
+        assert "soc2" in understand_control(Control("c", "text", "SOC 2 report date")).concept_tokens
 
 
 # --------------------------------------------------------------------------

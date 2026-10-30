@@ -13,11 +13,34 @@ dependencies = [
 
 [project.optional-dependencies]
 web = ["playwright>=1.48"]
-dev = ["pytest>=8.0", "reportlab>=4.0", "playwright>=1.48"]
+dev = ["pytest>=8.0", "reportlab>=4.0", "playwright>=1.48", "ruff>=0.15", "mypy>=1.10", "pip-audit>=2.7"]
+# optional answer-matching layers (never required): a local sentence-transformers model, and the Anthropic SDK for the opt-in LLM layer
+semantic = ["sentence-transformers>=3.0"]
+llm = ["anthropic>=1.0"]  # exercised only against a fake client in tests; never called by default
 
 [tool.hatch.build.targets.wheel]
 packages = ["formfill"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-markers = ["browser: needs Playwright and a Chromium build (skipped automatically when unavailable)"]
+markers = ["browser: needs Playwright and a Chromium build (skipped when unavailable; required when FORMFILL_REQUIRE_BROWSER=1)"]
+
+[tool.ruff]
+line-length = 160
+target-version = "py311"
+extend-exclude = ["benchmarks/**/results", "benchmarks/heldout/authoring", "output"]  # frozen benchmark authoring scripts are not edited
+
+[tool.ruff.lint]
+# pyflakes, pycodestyle errors/warnings, bugbear, import order. Line length is not enforced (the code base uses long lines).
+select = ["E", "F", "W", "B", "I"]
+ignore = ["E501", "E731", "E741", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B011", "B017", "B905", "E402"]  # tests put the repository root on sys.path before importing benchmarks
+"tools/**" = ["E402"]  # tools put the code under test on sys.path first
+
+[tool.mypy]
+files = ["formfill"]
+python_version = "3.11"
+ignore_missing_imports = true  # playwright ships types; anthropic and sentence-transformers are optional and may be absent
+warn_unused_ignores = true

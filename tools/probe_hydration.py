@@ -325,7 +325,7 @@ def build_timeline(data: dict, nav: dict | None, analyses: list[tuple[str, dict]
         add(s, "frame", f"long animation frame {d} ms (blocking {b}); {who}")
     for s, e, kind, name in data["resources"]:
         add(s, "network", f"{kind} {name} ({e - s} ms)")
-    for t, prop, before, to, after, stack in data["setters"]:
+    for t, prop, before, to, _after, stack in data["setters"]:
         add(t, "setter", f"{prop}: {before!r} -> {to!r} by {stack.split(' | ')[0]}")
     for label, a in analyses:
         if a.get("value_set_ms") is not None:

@@ -16,3 +16,17 @@ benchmarks/**/trace*/
 benchmarks/**/*.trace
 test-results/
 playwright-report/
+
+# tool caches and CI reports
+.ruff_cache/
+.mypy_cache/
+pytest-report.xml
+matching-report/
+wizard-report/
+
+# run artifacts hold questionnaire answers and portal content; never commit them, wherever a run wrote them
+**/result.json
+**/review.json
+**/audit_report.md
+**/*progress*.json
+**/trace.zip

@@ -18,6 +18,7 @@ from playwright.sync_api import Page
 from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
 from formfill.web.models import Control
+from formfill.web.netpolicy import redact_url
 
 _TEXTLIKE = {"text", "textarea", "email", "url", "tel", "number", "date", "color"}
 
@@ -281,7 +282,7 @@ def submit(page: Page, submit_selector: str | None = None, success_text: str | N
     invalid = page.evaluate(
         "() => Array.from(document.querySelectorAll(':invalid')).map(e => e.dataset.ffId || e.name || e.id)"
     )
-    info: dict = {"attempted": True, "final_url": page.url, "url_changed": page.url != before}
+    info: dict = {"attempted": True, "final_url": redact_url(page.url), "url_changed": page.url != before}
     if invalid and page.url == before and not success_text:
         return {**info, "outcome": "BLOCKED_BY_VALIDATION", "invalid_controls": invalid}
     if success_text:

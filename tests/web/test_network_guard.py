@@ -16,7 +16,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
 
-from formfill.web import pipeline
+from formfill.web import guard, pipeline
 from formfill.web.pipeline import release_wizard_network_guard, run_form
 from formfill.web.steps import DiscoveryPolicy
 
@@ -128,8 +128,8 @@ def mechanisms(base):
         "script src": ("const s=document.createElement('script'); s.src='/script.js'; document.head.append(s)", "/script.js"),
         "css url()": ("const s=document.createElement('style'); s.textContent='body{background:url(/css-bg)}'; document.head.append(s)", "/css-bg"),
         "iframe src": ("const i=document.createElement('iframe'); i.src='/frame'; document.body.append(i)", "/frame"),
-        "fetch keepalive": (f"fetch('/keepalive',{{method:'POST',body:'fictional',keepalive:true}}).catch(()=>{{}})", "/keepalive"),
-        "fetch no-cors": (f"fetch('/nocors',{{mode:'no-cors',method:'POST',body:'fictional'}}).catch(()=>{{}})", "/nocors"),
+        "fetch keepalive": ("fetch('/keepalive',{method:'POST',body:'fictional',keepalive:true}).catch(()=>{})", "/keepalive"),
+        "fetch no-cors": ("fetch('/nocors',{mode:'no-cors',method:'POST',body:'fictional'}).catch(()=>{})", "/nocors"),
         "link rel=prefetch": ("const l=document.createElement('link'); l.rel='prefetch'; l.href='/prefetch'; document.head.append(l)", "/prefetch"),
         "dedicated Worker fetch": (f"new Worker(URL.createObjectURL(new Blob([\"fetch('{base}/worker-fetch',{post}).catch(()=>{{}})\"])))", "/worker-fetch"),
         "WebSocket inside a Worker": (f"new Worker(URL.createObjectURL(new Blob([\"new WebSocket('ws://{h}/worker-ws')\"])))", "/worker-ws"),
@@ -648,7 +648,9 @@ def test_a_page_that_is_not_walked_leaves_the_context_alone(page, base):
 
 def test_an_exception_during_the_walk_is_reported_and_the_guard_can_be_released(page, base, received, monkeypatch):
     open_page(page, base, "fetch('/collect', {method:'POST', body:'fictional'}).catch(() => {})")
-    real = pipeline.discover
+    from formfill.web import navigation
+
+    real = navigation.discover
     calls = []
 
     def crash_on_the_second_discovery(pg):
@@ -657,7 +659,7 @@ def test_an_exception_during_the_walk_is_reported_and_the_guard_can_be_released(
             raise RuntimeError("simulated crash during discovery")
         return real(pg)
 
-    monkeypatch.setattr(pipeline, "discover", crash_on_the_second_discovery)
+    monkeypatch.setattr(navigation, "discover", crash_on_the_second_discovery)
     with pytest.raises(RuntimeError, match="simulated crash") as raised:
         walk(page)
     monkeypatch.undo()
@@ -782,7 +784,7 @@ def test_a_websocket_without_a_mock_connects_normally_after_release(page, base, 
 def test_if_the_websocket_route_cannot_be_parked_the_release_warns(page, base, monkeypatch):
     open_page(page, base, "")
     walk(page)
-    monkeypatch.setattr(pipeline, "_place_websocket_route", lambda *a, **k: False)
+    monkeypatch.setattr(guard, "_place_websocket_route", lambda *a, **k: False)
     with pytest.warns(RuntimeWarning, match="shadowed"):
         release_wizard_network_guard(page)
 
@@ -791,7 +793,7 @@ def test_a_guard_whose_websocket_route_cannot_be_put_back_in_front_refuses_to_st
     open_page(page, base, "")
     walk(page)
     release_wizard_network_guard(page)  # parked behind the caller's routes
-    monkeypatch.setattr(pipeline, "_place_websocket_route", lambda *a, **k: False)
+    monkeypatch.setattr(guard, "_place_websocket_route", lambda *a, **k: False)
     open_page(page, base, "fetch('/collect', {method:'POST', body:'fictional'}).catch(() => {})")
     result = walk(page)
     assert result.navigation["stop_reason"] == "network_guard_unavailable" and result.items == []
@@ -977,7 +979,7 @@ def test_the_shared_worker_fence_covers_other_tabs_of_the_context_too(browser, b
 def test_without_the_client_internal_the_guard_still_works_across_cycles_and_release_warns(browser, monkeypatch):
     """If Playwright's WebSocket route list is not where the guard expects it, nothing can be parked: release says so, and the
     guard (never moved) keeps working for later walks instead of refusing to start."""
-    monkeypatch.setattr(pipeline, "_websocket_route_entry", lambda *a, **k: None)
+    monkeypatch.setattr(guard, "_websocket_route_entry", lambda *a, **k: None)
     context, pg = form_page(browser)
     try:
         walk(pg)

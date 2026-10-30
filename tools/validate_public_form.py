@@ -1,14 +1,14 @@
 """Non-submitting validation run against a page you are allowed to test, using a fictional JSON source.
 
     python tools/validate_public_form.py --url https://example.test/form --source my_fictional_source.json \
-        [--policy] [--out-dir output/public_validation] [--confirm-ms 1000] [--readiness-timeout-ms 5000] [--headed]
+        [--policy] [--out-dir output/public_validation] [--confirm-ms 1000] [--readiness-timeout-ms 5000] [--headed] [--trace]
 
 Safety: this script has no submit option. It always calls the pipeline in its non-submitting mode, and a test checks that
 the file never asks the pipeline to submit. Use it only on pages whose owner permits testing, with fictional data. Use `--policy` for
 multi-step (wizard) forms: it presses only recognised Next-style buttons and refuses submit-type controls.
 
 It prints one row per question (ANSWER/REVIEW, what the page holds afterwards, whether it matched), the overall status and
-any warnings, and writes result.json, filled.png and trace.zip to --out-dir. Set FORMFILL_CHROMIUM to use a specific
+any warnings, and writes result.json, audit_report.md and filled.png (plus trace.zip with --trace) to --out-dir. Set FORMFILL_CHROMIUM to use a specific
 Chromium. A finished run on a real page is evidence for that page only; it does not show the pipeline works elsewhere.
 """
 
@@ -36,6 +36,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--confirm-ms", type=int, default=DEFAULT_CONFIRM_MS, help="wait before the final read-back; 0 disables")
     ap.add_argument("--readiness-timeout-ms", type=int, default=5000)
     ap.add_argument("--headed", action="store_true", help="show the browser window")
+    ap.add_argument("--trace", action="store_true",
+                    help="also save a Playwright trace (trace.zip). It holds the page content and the answers entered; cookie and "
+                         "authorization values are removed from it")
     args = ap.parse_args(argv)
     if not args.url.lower().startswith(("http://", "https://")):
         ap.error("--url must start with http:// or https://")
@@ -43,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
     kwargs: dict = {"submit": False, "confirm_ms": args.confirm_ms, "readiness_timeout_ms": args.readiness_timeout_ms}
     if args.policy:
         kwargs["policy"] = DiscoveryPolicy()
-    result = run_url(args.url, args.source, out_dir=args.out_dir, headless=not args.headed, **kwargs)
+    result = run_url(args.url, args.source, out_dir=args.out_dir, headless=not args.headed, trace=args.trace, **kwargs)
 
     print(f"{'QUESTION':<46}{'PLAN':<8}{'FILLED':<8}{'VERIFIED':<10}PAGE HOLDS / REASON")
     print("-" * 120)

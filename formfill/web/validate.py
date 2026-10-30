@@ -178,13 +178,13 @@ def validate_answer(value: Any, control: Control) -> Validated:
         items = value if isinstance(value, list) else [value]
         chosen: list[str] = []
         for item in items:
-            m = _match_option(item, control)
-            if m is None:
+            picked = _match_option(item, control)
+            if picked is None:
                 return _fail(f"{item!r} is not one of the allowed options {[o.value for o in control.options]}")
-            if (why := _shared_value(m, control)):
+            if (why := _shared_value(picked, control)):
                 return _fail(why)
-            if m not in chosen:
-                chosen.append(m)
+            if picked not in chosen:
+                chosen.append(picked)
         return Validated(True, chosen)
 
     if kind == "checkbox":
