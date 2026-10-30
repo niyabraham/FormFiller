@@ -176,3 +176,12 @@ def test_a_disabled_native_checkbox_still_fails_as_before(page):
     with pytest.raises(Exception):  # noqa: B017, PT011 - the native path is Playwright's own and keeps its own error
         fill_control(page, box, True, 500)
     assert not page.is_checked("#d")
+
+
+def test_a_wrapping_label_that_belongs_to_another_checkbox_is_never_clicked(page):
+    """A label wrapping two inputs activates only the first. Clicking it for the second would change the wrong box, so it is refused."""
+    load(page, '<div class="cb"><label><input id="a" type="checkbox"><input id="b" type="checkbox"><span>Both options</span></label></div>')
+    second = next(c for c in discover(page).controls if c.html_id == "b")
+    with pytest.raises(ValueError, match="no label"):
+        fill_control(page, second, True, 2000)
+    assert checked(page, "a", "b") == [False, False] and page.evaluate("window.changes") == 0

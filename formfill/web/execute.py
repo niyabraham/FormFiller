@@ -193,9 +193,10 @@ def _set_checkbox(member, want: bool, timeout_ms: int) -> None:
         return
     if member.is_disabled():
         raise ValueError("styled checkbox is disabled: not changed")
-    label = member.evaluate_handle("e => (e.labels && e.labels[0]) || e.closest('label')").as_element()
+    # Only a label whose own control is this input: a label wrapping several inputs activates the first one, not this one.
+    label = member.evaluate_handle("e => { const l = (e.labels && e.labels[0]) || e.closest('label'); return l && l.control === e ? l : null; }").as_element()
     if label is None:
-        raise ValueError("unsupported styled checkbox: the native input is covered and it has no label to click")
+        raise ValueError("unsupported styled checkbox: the native input is covered and it has no label of its own to click")
     if label.evaluate(_LABEL_ACTIVE_JS):
         raise ValueError("unsupported styled checkbox: its label holds a link or button that a click could activate instead")
     label.click(timeout=timeout_ms)
