@@ -27,6 +27,24 @@ from playwright.sync_api import Frame, Page
 
 from formfill.web.models import Control, FormSchema, Option
 
+# The calendar popup that an element is part of, or null (RW-12). Shared by the question scan and the unsupported-control scan so both
+# agree on what a date picker's own UI is.
+_PICKER_ROOT_JS = r"""const PICKER_CLASS = /(^|[\s_-])(date-?picker|calendar|flatpickr)/i;
+  const PICKER_ARIA = /\b(date|calendar)\b/i;
+  const NOT_TEXT = new Set(['number', 'hidden', 'button', 'submit', 'reset', 'image', 'checkbox', 'radio']);
+  const pickerRoot = n => {
+    try {
+      for (let a = n, i = 0; a && a.nodeType === 1 && i < 10; a = a.parentElement, i++) {
+        const cls = typeof a.className === 'string' ? a.className : '';
+        const dialog = ['dialog', 'application', 'grid'].includes(a.getAttribute('role') || '') && PICKER_ARIA.test(a.getAttribute('aria-label') || '');
+        if (!(PICKER_CLASS.test(cls) || dialog)) continue;
+        if (Array.from(a.querySelectorAll('input,textarea')).some(x => !NOT_TEXT.has((x.type || '').toLowerCase()))) continue;
+        return a;
+      }
+    } catch (e) { /* not a picker */ }
+    return null;
+  };"""
+
 _EXTRACT_JS = r"""
 (frameIndex) => {
   const SKIP = new Set(['hidden','submit','button','reset','image','file','password']);
@@ -55,9 +73,27 @@ _EXTRACT_JS = r"""
       return Array.from(lm.querySelectorAll('input,select,textarea')).filter(e => !SKIP.has((e.type || '').toLowerCase())).length === 1;
     } catch (e) { return false; }
   };
+  // A date picker's own controls are not questions (RW-12): the month / year select and the numeric year / hour / minute box of an
+  // open calendar popup, and the popup's heading ("March 1990"), which is not the section of the fields below it. A calendar popup is
+  // an ancestor that names itself as one (a class such as datepicker / calendar / flatpickr, or role dialog / application / grid with a
+  // date or calendar label) and holds no other kind of input: a text field in the same box means it is a form, not a popup. Only a
+  // select of month names or of years, or a number box, inside such a popup is excluded: a labelled "Birth month" select, an "Age"
+  // box, a native date input and a text date input outside a popup are still asked.
+  /*PICKER_ROOT*/
+  const pickerUi = el => {
+    try {
+      if (el.tagName === 'SELECT') {
+        const o = Array.from(el.options).map(x => txt(x));
+        const months = o.length >= 12 && o.filter(x => /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(x)).length >= 12;
+        const years = o.length >= 5 && o.every(x => /^\d{4}$/.test(x));
+        if (!months && !years) return false;
+      } else if ((el.type || '').toLowerCase() !== 'number') return false;
+      return !!pickerRoot(el);
+    } catch (e) { return false; }
+  };
   const visible = el => {
     try {
-      if (hiddenByPage(el) || pageFurniture(el)) return false;
+      if (hiddenByPage(el) || pageFurniture(el) || pickerUi(el)) return false;
       return el.checkVisibility ? el.checkVisibility() : !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     } catch (e) { return true; }
   };
@@ -76,7 +112,7 @@ _EXTRACT_JS = r"""
     const fs = el.closest('fieldset'); const lg = fs && fs.querySelector('legend');
     return lg ? txt(lg) : '';
   };
-  const headings = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6'));
+  const headings = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6')).filter(h => !pickerRoot(h));
   const sectionOf = el => {
     const fs = el.closest('fieldset'); const lg = fs && fs.querySelector('legend');
     if (lg && !el.matches('input[type=radio],input[type=checkbox]')) return txt(lg);
@@ -153,6 +189,8 @@ _EXTRACT_JS = r"""
 }
 """
 
+_EXTRACT_JS = _EXTRACT_JS.replace("/*PICKER_ROOT*/", _PICKER_ROOT_JS)
+
 # Elements that look like encapsulated widgets whose inside we cannot read (a custom element with no open shadow
 # root and no light children: closed shadow root, or an empty component). Reported, never guessed at.
 _OPAQUE_JS = """
@@ -202,9 +240,10 @@ _UNSUPPORTED_JS = r"""
       reason, frame_index: frameIndex });
   };
   const off = e => e.disabled === true || e.getAttribute('aria-disabled') === 'true';
+  /*PICKER_ROOT*/
   for (const e of all) {
     const tag = e.tagName.toLowerCase(), type = (e.type || '').toLowerCase(), role = e.getAttribute('role');
-    if (off(e)) continue;
+    if (off(e) || pickerRoot(e)) continue;   // a date picker's own day grid and controls are not controls to report
     if (tag === 'input' && type === 'file') {
       // a styled upload button is often a visible <label> for a visually hidden file input: the label is what a person sees
       const vis = shown(e) || (e.labels && Array.from(e.labels).some(l => shown(l)));
@@ -228,6 +267,9 @@ _UNSUPPORTED_JS = r"""
   return found;
 }
 """
+
+
+_UNSUPPORTED_JS = _UNSUPPORTED_JS.replace("/*PICKER_ROOT*/", _PICKER_ROOT_JS)
 
 
 def find_unsupported(page: Page) -> list[dict]:
@@ -258,7 +300,8 @@ def discover(page: Page) -> FormSchema:
     callers can tell "not asked" from "not present". "Hidden" includes controls
     inside an `aria-hidden="true"` or `inert` subtree, which the page has marked
     as not for use (preview thumbnails, menu toggles): they are never questions. So is page furniture: the site's own search
-    or filter box in a navigation landmark, outside any form (see `pageFurniture` in _EXTRACT_JS)."""
+    or filter box in a navigation landmark, outside any form (see `pageFurniture` in _EXTRACT_JS). So are the month / year controls
+    and heading of an open date-picker popup (see `pickerUi`)."""
     controls: list[Control] = []
     notes: list[dict] = []
     for i, frame in enumerate(page.frames):
