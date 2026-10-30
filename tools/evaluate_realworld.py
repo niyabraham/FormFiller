@@ -45,6 +45,7 @@ FINAL_ACTION = re.compile(r"\b(submit|send|complete|finish|finali[sz]e|sign|cert
 TRIPWIRE_JS = r"""
 (() => {
   const log = (kind, data) => { try { console.log('__ff_' + kind + '__' + JSON.stringify(data)); } catch (e) {} };
+  window.addEventListener('offline', () => log('offline', {}));  // FormFiller's guard puts the context offline when it engages
   document.addEventListener('submit', e => log('submit', {action: (e.target && e.target.action) || ''}), true);
   document.addEventListener('click', e => {
     const t = e.target && e.target.closest ? e.target.closest('button, a, input, [role=button], label') : null;
@@ -60,9 +61,13 @@ TRIPWIRE_JS = r"""
 """
 
 
-def load_forms(only: set[str] | None) -> tuple[dict, list[dict]]:
+def load_forms(only: set[str] | None, mechanics: bool = False) -> tuple[dict, list[dict]]:
+    """Mechanics forms (forms.json "mechanics": true) and the mechanics source are a separate evaluation: they never mix with the
+    answer-matching forms and sources (benchmarks/realworld/mechanics/README.md)."""
     data = json.loads(FORMS.read_text(encoding="utf-8"))
-    forms = [f for f in data["forms"] if not only or f["id"] in only]
+    forms = [f for f in data["forms"] if (not only or f["id"] in only) and bool(f.get("mechanics")) == mechanics]
+    if mechanics:
+        data = {**data, "sources": {"mechanics": data["mechanics_source"]}}
     return data, forms
 
 
@@ -105,13 +110,17 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         t = msg.text
         if t.startswith("__ff_click__"):
             st["clicks"].append(json.loads(t[len("__ff_click__"):]))
+        elif t.startswith("__ff_offline__"):
+            if st["phase"] == "prewalk":
+                st["phase"] = "walk"
+                st["guard_seen"] = True
         elif t.startswith("__ff_submit__"):
             st["submits"].append(json.loads(t[len("__ff_submit__"):]))
         elif msg.type in ("error", "warning"):
             st["console"].append({"type": msg.type, "text": t[:200], "phase": st["phase"]})
 
     def write_guard(route, request):  # the harness's own, stricter layer on top of FormFiller's guard
-        if st["phase"] == "walk" and request.method not in ("GET", "HEAD", "OPTIONS"):
+        if st["phase"] in ("prewalk", "walk") and request.method not in ("GET", "HEAD", "OPTIONS"):
             st["harness_blocked"].append({"method": request.method, "url": short(request.url)})
             return route.abort("blockedbyclient")
         return route.fallback()
@@ -147,7 +156,7 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
             page.wait_for_timeout(500)
         row["loaded_url"] = short(page.url)
         row["title"] = page.title()[:80]
-        st["phase"] = "walk"
+        st["phase"] = "prewalk"  # run_form has started; FormFiller's guard engages a little later (the page then sees `offline`)
         result = run_form(page, source, policy=DiscoveryPolicy(**{"revisit_with_back": bool(form.get("back")), **form.get("policy", {})}), confirm_ms=1500,
                           readiness_timeout_ms=15000, out_dir=out,
                           network_policy=NetworkPolicy.from_dict({"rules": rules}) if rules else None)
@@ -156,6 +165,11 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         (out / "crash.txt").write_text(traceback.format_exc(), encoding="utf-8")
     finally:
         st["phase"] = "after"
+    if form.get("oracle_js") and result is not None:
+        try:
+            row["oracle"] = page.evaluate(form["oracle_js"])  # what the page itself shows, read independently of FormFiller
+        except Exception as exc:  # noqa: BLE001
+            row["oracle"] = f"oracle failed: {type(exc).__name__}"
     row["elapsed_s"] = round(time.perf_counter() - t0, 1)
     try:
         page.screenshot(path=str(out / "final_view.png"))
@@ -164,8 +178,12 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
 
     reqs = list(st["reqs"].values())
     walk = [r for r in reqs if r["phase"] == "walk"]
+    pre = [r for r in reqs if r["phase"] == "prewalk"]
+    row["guard_observed"] = bool(st.get("guard_seen"))
     row["requests"] = {
         "before_walk": sum(1 for r in reqs if r["phase"] == "load"),
+        "before_guard_in_run": len(pre),  # run_form started, guard not yet engaged: documented as outside the guard (SECURITY_MODEL.md)
+        "before_guard_completed": [{k: r[k] for k in ("method", "type", "url")} for r in pre if r["outcome"] == "finished"],
         "before_walk_hosts": dict(Counter(r["host"] for r in reqs if r["phase"] == "load").most_common(8)),
         "during_walk": len(walk),
         "during_walk_failed": sum(1 for r in walk if r["outcome"] == "failed"),
@@ -189,6 +207,9 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         row["violations"].append(f"{len(row['requests']['during_walk_completed'])} request(s) completed during the walk")
     # critical = something may have got out or been pressed: the batch stops. A blocked write attempt is recorded but is not critical.
     row["critical"] = list(row["violations"])
+    if result is not None and not row["guard_observed"]:
+        row["violations"].append("the page never saw the guard engage (no offline event): the walk cannot be treated as guarded")
+        row["critical"].append(row["violations"][-1])
     if row["requests"]["during_walk_writes"] or st["harness_blocked"]:
         row["violations"].append("write request(s) attempted during the walk (blocked)")
 
@@ -218,7 +239,7 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
 def cmd_run(args) -> int:
     from playwright.sync_api import sync_playwright
 
-    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None)
+    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None, args.mechanics)
     names = args.sources.split(",") if args.sources else list(data["sources"])
     sources = {n: json.loads((ROOT / data["sources"][n]).read_text(encoding="utf-8")) for n in names}
     out_root = Path(args.out_dir)
@@ -288,10 +309,13 @@ def score_one(out_root: Path, form_id: str, source: str) -> dict | None:
         held = i.get("observed")
         if entered:
             c["entered_chrome" if chrome else "entered"] += 1
-            if expect == "answer" and any(same(held, a) or same(p["answer"], a) for a in t["accept"]):
+            if expect == "answer" and any(same(held, a) for a in t["accept"]):
                 outcome = "CORRECT"
                 c["correct"] += 1
                 c["correct_verified"] += bool(i["verified"])
+            elif expect == "answer" and any(same(p["answer"], a) for a in t["accept"]):
+                outcome = "RIGHT_VALUE_NOT_CONFIRMED"  # planned right, but the read-back disagreed: not counted as correct
+                c["right_not_confirmed"] += 1
             elif expect == "answer":
                 outcome = "WRONG_VALUE"
                 c["wrong_value"] += 1
@@ -314,11 +338,16 @@ def score_one(out_root: Path, form_id: str, source: str) -> dict | None:
                        "reason": (p.get("reason") or "")[:90]})
     entered_n = c["entered"] + c["entered_chrome"]
     run = json.loads((out_root / form_id / source / "run.json").read_text(encoding="utf-8"))
-    return {"form": form_id, "source": source, "status": result["status"], "steps": run.get("steps_visited"), "stop": run.get("stop_reason"),
+    oracle_check = None
+    expected_state = next((f.get("oracle_expect") for f in json.loads(FORMS.read_text(encoding="utf-8"))["forms"] if f["id"] == form_id), None)
+    if expected_state and isinstance(run.get("oracle"), dict):
+        oracle_check = {k: {"expected": v, "page": run["oracle"].get(k), "ok": norm(json.dumps(run["oracle"].get(k))) == norm(json.dumps(v))}
+                        for k, v in expected_state.items()}
+    return {"oracle_check": oracle_check, "form": form_id, "source": source, "status": result["status"], "steps": run.get("steps_visited"), "stop": run.get("stop_reason"),
             "questions": c["questions"], "expected_answerable": c["expected_answerable"], "entered": entered_n, "correct": c["correct"],
             "wrong_value": c["wrong_value"], "unsafe": c["unsafe"], "missed": c["missed"],
             "correct_abstentions": c["correct_abstentions"], "answer_not_entered": c["answer_not_entered"], "page_chrome": c["page_chrome"],
-            "unsupported": len(result.get("unsupported", [])), "unlabelled": c["unlabelled"], "verified_of_correct": c["correct_verified"],
+            "unsupported": len(result.get("unsupported", [])), "unlabelled": c["unlabelled"], "verified_of_correct": c["correct_verified"], "right_value_not_confirmed": c["right_not_confirmed"],
             "precision": (c["correct"] / entered_n) if entered_n else None, "coverage": (c["correct"] / c["expected_answerable"]) if c["expected_answerable"] else None,
             "violations": run["violations"], "detail": detail}
 
@@ -328,7 +357,7 @@ def pct(x) -> str:
 
 
 def cmd_score(args) -> int:
-    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None)
+    data, forms = load_forms(set(args.forms.split(",")) if args.forms else None, args.mechanics)
     names = args.sources.split(",") if args.sources else list(data["sources"])
     out_root = Path(args.out_dir)
     rows = [r for f in forms for n in names if (r := score_one(out_root, f["id"], n))]
@@ -347,6 +376,13 @@ def cmd_score(args) -> int:
         print(f"{'TOTAL':<29}{'':<13}{tot['questions']:>3}{tot['expected_answerable']:>5}{tot['entered']:>4}{tot['correct']:>4}{tot['wrong_value']:>4}{tot['unsafe']:>7}"
               f"{tot['missed']:>5}{tot['correct_abstentions']:>5}{tot['unsupported']:>6}  "
               f"{pct(tot['correct'] / tot['entered'] if tot['entered'] else None):>9}  {pct(tot['correct'] / tot['expected_answerable'] if tot['expected_answerable'] else None):>8}")
+    for r in rows:
+        oc = r.get("oracle_check")
+        if oc:
+            print(f"  page state (independent oracle) {r['form']}: {sum(v['ok'] for v in oc.values())}/{len(oc)} fields as expected")
+            for k, v in oc.items():
+                if not v["ok"]:
+                    print(f"      {k}: expected {v['expected']!r}, page shows {v['page']!r}")
     (out_root / "scores.json").write_text(json.dumps(rows, indent=1, ensure_ascii=False), encoding="utf-8")
     return 0
 
@@ -359,6 +395,7 @@ def main(argv: list[str] | None = None) -> int:
         sp.add_argument("--out-dir", required=True)
         sp.add_argument("--forms")
         sp.add_argument("--sources")
+        sp.add_argument("--mechanics", action="store_true", help="the mechanics-only evaluation (separate forms and source; never mixed with matching metrics)")
     args = ap.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     return cmd_run(args) if args.cmd == "run" else cmd_score(args)

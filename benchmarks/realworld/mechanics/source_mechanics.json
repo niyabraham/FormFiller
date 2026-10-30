@@ -1,0 +1,23 @@
+{
+  "brand_of_your_car": "Toyota",
+  "on_a_scale_from_0_to_10_how_likely_are_you_to_recommend_us_to_a_friend_or_colleague": 9,
+  "First Name": "Test",
+  "Last Name": "User",
+  "name@example.com": "test.user@example.test",
+  "gender": "Other",
+  "Mobile Number": "5551234567",
+  "dateOfBirthInput": "15 Mar 1990",
+  "subjectsInput": "Maths",
+  "Sports": true,
+  "Reading": true,
+  "Current Address": "1 Example Street, Testville",
+  "react-select-3-input": "NCR",
+  "react-select-4-input": "Delhi",
+  "Text input": "Mechanics text",
+  "Textarea": "Mechanics notes",
+  "Dropdown (select)": "Two",
+  "Dropdown (datalist)": "Seattle",
+  "Color picker": "#336699",
+  "Date picker": "03/14/2026",
+  "Example range": 7
+}

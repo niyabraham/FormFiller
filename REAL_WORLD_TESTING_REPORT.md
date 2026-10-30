@@ -1,5 +1,7 @@
 # Real-world compatibility testing report
 
+> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation).
+
 Date: 30 Oct 2026. Code under test: `main` at `bc193c3` (PRs #19, #20 and #21 merged), Windows 11, Python 3.12, Playwright 1.64.1,
 Chromium 156. Branch `test/real-world-compat`. **No implementation file was changed**; this branch adds a test harness, test
 data and this report.
@@ -244,3 +246,79 @@ python benchmarks/realworld/make_truth.py benchmarks/realworld/truth            
 ```
 
 Files: `tools/evaluate_realworld.py`, `benchmarks/realworld/{forms.json,make_truth.py,truth/,results/2026-10-30/}`.
+
+## 13. Follow-up (30 Oct 2026): RW-1, RW-2 and the mechanics-only evaluation
+
+Branch `fix/rw1-rw2-matching-discovery`, **not merged**. Baseline numbers above were not edited; new results are in separate folders
+(`benchmarks/realworld/results/after-rw1-2026-10-30/`, `after-rw2-2026-10-30/`, `mechanics-2026-10-30/`).
+
+### 13.1 RW-1 and RW-2 implemented
+
+Each fix: failing tests first, smallest change, full browser-required suite, benchmarks, then the original 10-form evaluation with
+the same sources and the same pre-committed ground truth.
+
+| measurement | baseline | after RW-1 | after RW-1 + RW-2 |
+|---|---|---|---|
+| original 10 forms x 2 sources: precision | 62% (10/16) | 77% (10/13) | **100% (10/10)** |
+| coverage | 59% (10/17) | 59% | 59% |
+| wrong fills | 6 | 3 | **0** |
+| RFI dev benchmark: correct / precision / coverage | 104 / 98.1% / 55.2% | 105 / 98.1% / 55.7% | 105 / 98.1% / 55.7% |
+| held-out benchmark | 109 / 100% / 40.1% | unchanged | unchanged |
+| matching sets (dev, eval), SPA and widget fixtures | - | unchanged | unchanged |
+| full suite (browser required) | 1258 passed, 2 xfailed | 1274 passed, 2 xfailed | 1290 passed, 2 xfailed |
+| safety (20 runs each): submit events / final-action clicks / walk requests completed | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+
+**The four lost benchmark answers.** The first version of RW-1 (cap any one-word question against a longer key) lost four correct
+answers, and I did not accept that: "Total staff headcount" and "Number of personnel" (to `workforce_size`), "Do you have
+subsidiaries?" (to `subsidiaries_exist`) and "Who is your Data Protection Officer?" (to `dpo_name`) on the RFI set, plus "Number of
+customers" (to `Customer count`) on the held-out set. In every case the extra key word is a *slot word* that says what kind of value
+the key holds and that the question implies (size, exist, name, count), whereas the harmful extra words are qualifiers (`ciso`,
+and `date` after a bare `Last`). The shipped rule exempts `name`, `size`, `count`, `exist` (`tokens.SLOT_WORDS`). Result: no answer lost
+on either benchmark, and the DPO question, previously an ambiguity review between `dpo_name` and `dpo_email`, is now answered.
+
+**One benchmark number that is not a gain.** One RW-2 run showed 106 correct on the RFI set; two repeats showed 105. The fixture
+`c16_dynamic_inputs` fills a select 600 ms after load, so its "Region" answer depends on timing (the original baseline missed it
+too). RW-2 changes no benchmark answer.
+
+**Harness findings during validation.** (a) Two `GET`s for a chat widget's font and config script completed in the short window
+between `run_form` starting and the guard engaging in one run. That window is documented in `docs/SECURITY_MODEL.md`; the harness
+now switches phase when the page sees `offline` (the guard engaging) and reports pre-guard requests separately, and a run in which
+the guard is never observed is critical. (b) The scorer now counts an answer as correct only when the page's read-back matches (it
+had also accepted a matching plan with a failed read-back; no main-matrix number changes, because all 10 correct fills were verified).
+
+### 13.2 Mechanics-only evaluation (kept apart from precision and coverage)
+
+Can FormFiller operate custom dropdowns, styled radio groups, conditional follow-ups, dependent selects, date pickers and tag inputs?
+Source: `benchmarks/realworld/mechanics/source_mechanics.json`, fictional values keyed to each demo form's own wording (**not company
+data**, so matching is trivially exact and these runs say nothing about matching quality). Four forms (SurveyJS dropdown, SurveyJS
+conditional, DemoQA registration, Selenium practice page), one run each, guarded, never submitted. Ground truth and page-state
+expectations are derived from the source values only. Two facts about the process: the labels of the 8 follow-up questions revealed on
+the SurveyJS page and of the date-picker popup's two selects were added to the ground truth after the first run, from the question
+list only; and the oracle expectations were added after the first run, derived from the source values.
+
+An independent **oracle** reads what the page itself displays after the run, so the result is not graded by FormFiller's own read-back.
+
+| form | expected fills | confirmed by FormFiller | right on the page, not confirmed | failed | blocked by design |
+|---|---|---|---|---|---|
+| SurveyJS dropdown (custom combobox) | 1 | 1 | 0 | 0 | 0 |
+| SurveyJS rating + conditional follow-up | 1 | 1 | 0 | 0 | 0 |
+| DemoQA registration (react-select, date picker, tags, styled radio/checkbox) | 12 | 7 | 3 | 2 | 0 |
+| Selenium practice page | 7 | 5 | 0 | 0 | 2 |
+| **total** | **21** | **14** | **3** | **2** | **2** |
+
+Page state by the oracle: 17 of 20 fields hold the expected value. 0 wrong fills, 0 submit events, 0 final-action clicks, guard observed in 4 of 4 runs.
+
+What worked: a non-native combobox (value verified); styled radio groups (`Other`, and the 0-10 rating); **conditional reveal** (answering 9
+revealed a textarea and a required checkbox group, 8 new questions, all discovered, left in review for lack of a fact, and the required one
+stopped the walk as designed); a masked date text field (`15 Mar 1990`); a multi-value tag input (`Maths`); and a dependent select (City
+was disabled until State was chosen, and was then filled).
+
+New findings (numbering continues the baseline list):
+
+* **RW-10 (Medium, verification) react-select fills are not confirmed.** Subjects, State and City were filled correctly (the oracle shows `Maths`, `NCR`, `Delhi`), but FormFiller read the empty search input, marked them `rejected`, and the whole run `FAILED`. A false failure on a working fill. *Existing coverage:* none (no react-select test). *Smallest fix:* for a combobox, read the displayed selection from the widget container (selected-value element) when the input's own value is empty.
+* **RW-11 (Medium, execution) styled checkboxes cannot be checked.** `Sports` and `Reading` failed with `Locator.set_checked: Timeout 5000ms exceeded` (hidden input, clickable label); the page holds no hobbies. Radios already have a styled-label path (`execute._select_radio`); checkboxes call `set_checked` directly. *Existing coverage:* styled radio only (`test_widgets_3d`). *Smallest fix:* give single checkboxes and checkbox groups the same label-click fallback and confirmation.
+* **RW-12 (Low, discovery) a date picker's popup selects become questions.** Typing a date opened DemoQA's picker, and its month and year `<select>`s (labelled `f0-c14`, `f0-c15`) were then listed as questions (left in review). The step heading also became "March 1990". *Smallest fix:* ignore controls inside an open popup widget opened by FormFiller's own entry, or close the popup after entering.
+* **RW-13 (Low, reporting) a filled radio group is also reported unsupported.** The SurveyJS rating was filled and verified, yet its `role=radiogroup` wrapper appears under `unsupported`, which would block submission and contradicts the run. *Smallest fix:* do not report a custom group whose native radios were handled.
+* **Not a defect: parenthetical ambiguity.** The two Selenium misses (`Dropdown (select)`, `Dropdown (datalist)`) are blocked by the documented guard for questions that differ only in a bracketed qualifier. My ground truth expected answers, which was wrong by design; it is left as pre-registered and counted as misses.
+
+None of RW-3 to RW-13 is implemented. Mechanics results do not enter any precision or coverage figure in this report.

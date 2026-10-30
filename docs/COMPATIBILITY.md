@@ -30,6 +30,7 @@ Outcomes: **supported** (filled and read back); **review** (left for a person, w
 | styled radio (hidden input, clickable label) | radio | supported (label click, never forced) | - | `test_widgets_3d.py::test_styled_radio_selected_through_label_not_forced` |
 | options sharing one value (`on`) | radio, checkbox | review | cannot tell options apart | `test_duplicate_option_values.py` |
 | hidden copies of fields (`aria-hidden`, `inert`, honeypots) | any | hidden ones ignored, never touched | - | `test_hidden_duplicates.py` |
+| the site's own search / filter box (lone control or search-type box in nav, header, footer, aside, outside any form) | text, search | not a question: not asked, never typed into | a lone, form-less questionnaire control placed inside a landmark would be missed | `test_page_furniture.py` (RW-2) |
 | open shadow DOM, same-origin iframe | any supported | supported | - | `test_spa_browser.py::test_open_shadow_and_iframe_found_closed_shadow_reported`, `test_browser.py::test_iframe_control_is_filled` |
 | closed shadow root, cross-origin iframe | - | reported / not inspected | contents cannot be read | same tests; README limitations |
 | file upload, password, `contenteditable`, signature canvas, custom ARIA textbox / listbox / slider | - | reported, never touched | a canvas without "sign"/"draw" wording may be missed | `test_unsupported_controls.py` |

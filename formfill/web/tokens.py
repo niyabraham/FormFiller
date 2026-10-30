@@ -52,6 +52,11 @@ NEGATORS = {"not", "non", "optional", "disabled", "disable", "without", "unsuppo
 # held against a key (see retrieve.assess_leaf); every other unexplained word is a modifier the key must carry.
 IMPLICIT_NOUNS = {"employee"}
 
+# Words that only say what KIND of value a key holds (`workforce_size`, `dpo_name`, `customer count`, `subsidiaries_exist`). A question
+# implies them ("Number of ...", "Who is ...", "Do you have ..."), so a one-word question is not held back by them. Every other extra
+# word in the key ("ciso" in `ciso_email`, "date" in `last_date`) is a qualifier the question does not carry (retrieve.assess_leaf).
+SLOT_WORDS = {"name", "size", "count", "exist"}
+
 # "in total" widens a question: it is dropped unless the key carries "total" itself (customers.total).
 NEUTRAL = {"total"}
 # "your organization" / "company" is the form-filler referring to itself. It still scores (a key under
