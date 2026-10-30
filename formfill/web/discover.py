@@ -40,9 +40,24 @@ _EXTRACT_JS = r"""
     }
     return false;
   };
+  // Page furniture is not a question (RW-2): the site's own search / filter box. A control in a navigation landmark, outside any form,
+  // that is a search-type box or the only fillable control in that landmark. A questionnaire placed in a side panel or header has a
+  // form element or several controls, so it is still asked. <header>/<footer> are page landmarks only when not inside an
+  // article/aside/main/nav/section.
+  const LANDMARK = 'nav,header,footer,aside,[role=search],[role=navigation],[role=banner],[role=contentinfo],[role=complementary]';
+  const pageFurniture = el => {
+    try {
+      if (el.form || el.closest('form,[role=form]')) return false;
+      const lm = el.closest(LANDMARK);
+      if (!lm) return false;
+      if (lm.matches('header,footer') && !lm.hasAttribute('role') && lm.parentElement && lm.parentElement.closest('article,aside,main,nav,section')) return false;
+      if ((el.type || '').toLowerCase() === 'search' || el.getAttribute('role') === 'searchbox' || lm.matches('[role=search]')) return true;
+      return Array.from(lm.querySelectorAll('input,select,textarea')).filter(e => !SKIP.has((e.type || '').toLowerCase())).length === 1;
+    } catch (e) { return false; }
+  };
   const visible = el => {
     try {
-      if (hiddenByPage(el)) return false;
+      if (hiddenByPage(el) || pageFurniture(el)) return false;
       return el.checkVisibility ? el.checkVisibility() : !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     } catch (e) { return true; }
   };
@@ -242,7 +257,8 @@ def discover(page: Page) -> FormSchema:
     in document order. Hidden controls are included with `visible=False` so
     callers can tell "not asked" from "not present". "Hidden" includes controls
     inside an `aria-hidden="true"` or `inert` subtree, which the page has marked
-    as not for use (preview thumbnails, menu toggles): they are never questions."""
+    as not for use (preview thumbnails, menu toggles): they are never questions. So is page furniture: the site's own search
+    or filter box in a navigation landmark, outside any form (see `pageFurniture` in _EXTRACT_JS)."""
     controls: list[Control] = []
     notes: list[dict] = []
     for i, frame in enumerate(page.frames):

@@ -1,0 +1,1333 @@
+[
+ {
+  "form": "demoqa_practice",
+  "source": "full",
+  "url": "https://demoqa.com/automation-practice-form",
+  "crashed": null,
+  "loaded_url": "https://demoqa.com/automation-practice-form",
+  "title": "demosite",
+  "elapsed_s": 13.9,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 50,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "control_stayed_disabled",
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): uploadPicture (file_upload); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "file_upload",
+    "label": "uploadPicture",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 12
+  }
+ },
+ {
+  "form": "demoqa_practice",
+  "source": "tricky",
+  "url": "https://demoqa.com/automation-practice-form",
+  "crashed": null,
+  "loaded_url": "https://demoqa.com/automation-practice-form",
+  "title": "demosite",
+  "elapsed_s": 12.8,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 52,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "control_stayed_disabled",
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): uploadPicture (file_upload); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "file_upload",
+    "label": "uploadPicture",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 12
+  }
+ },
+ {
+  "form": "formbuilder123_vendor",
+  "source": "full",
+  "url": "https://www.123formbuilder.com/free-form-templates/Vendor-Registration-Form-836121/",
+  "crashed": null,
+  "loaded_url": "https://www.123formbuilder.com/free-form-templates/Vendor-Registration-Form-836121/",
+  "title": "Vendor Registration Form Template | FREE | 123FormBuilder",
+  "elapsed_s": 15.7,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 105,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 6,
+   "during_walk_failed": 6,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://i.clarity.ms/collect",
+     "host": "i.clarity.ms",
+     "type": "xhr",
+     "outcome": "failed"
+    },
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://i.clarity.ms/collect",
+     "host": "i.clarity.ms",
+     "type": "xhr",
+     "outcome": "failed"
+    },
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://i.clarity.ms/collect",
+     "host": "i.clarity.ms",
+     "type": "ping",
+     "outcome": "failed"
+    },
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://i.clarity.ms/collect",
+     "host": "i.clarity.ms",
+     "type": "ping",
+     "outcome": "failed"
+    },
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://api.123formbuilder.com/v2/forms/836121/events",
+     "host": "api.123formbuilder.com",
+     "type": "xhr",
+     "outcome": "failed"
+    }
+   ],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   }
+  ],
+  "page_errors": [],
+  "violations": [
+   "write request(s) attempted during the walk (blocked)"
+  ],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "outbound_request_blocked",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [
+   {
+    "method": "POST",
+    "url": "https://i.clarity.ms/collect",
+    "type": "xhr",
+    "reason": null
+   },
+   {
+    "method": "POST",
+    "url": "https://i.clarity.ms/collect",
+    "type": "xhr",
+    "reason": null
+   },
+   {
+    "method": "POST",
+    "url": "https://i.clarity.ms/collect",
+    "type": "ping",
+    "reason": null
+   },
+   {
+    "method": "POST",
+    "url": "https://i.clarity.ms/collect",
+    "type": "ping",
+    "reason": null
+   },
+   {
+    "method": "POST",
+    "url": "https://api.123formbuilder.com/v2/forms/836121/events",
+    "type": "xhr",
+    "reason": null
+   },
+   {
+    "method": "GET",
+    "url": "https://cdn.marketing123.123formbuilder.com/wp-content/themes/marketing123/assets/images/burger-menu.svg",
+    "type": "image",
+    "reason": null
+   }
+  ],
+  "notes": [
+   "outbound_request_blocked",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "5 network request(s) from the page were blocked and not sent (first: POST https://i.clarity.ms/collect); the browser stays blocked until release_wizard_network_guard(page) is called after review",
+   "navigation stopped early (outbound_request_blocked); later steps were not filled and the form was not submitted",
+   "6 control(s) stayed hidden and were not asked",
+   "3 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Manufacturer (aria_radio); Distributor (aria_radio); Service provider (aria_radio); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radio",
+    "label": "Manufacturer",
+    "required": false
+   },
+   {
+    "kind": "aria_radio",
+    "label": "Distributor",
+    "required": false
+   },
+   {
+    "kind": "aria_radio",
+    "label": "Service provider",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 13,
+   "verified": 3
+  }
+ },
+ {
+  "form": "formbuilder123_vendor",
+  "source": "tricky",
+  "url": "https://www.123formbuilder.com/free-form-templates/Vendor-Registration-Form-836121/",
+  "crashed": null,
+  "loaded_url": "https://www.123formbuilder.com/free-form-templates/Vendor-Registration-Form-836121/",
+  "title": "Vendor Registration Form Template | FREE | 123FormBuilder",
+  "elapsed_s": 18.9,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 110,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 3,
+   "during_walk_failed": 3,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://api.123formbuilder.com/v2/forms/836121/events",
+     "host": "api.123formbuilder.com",
+     "type": "xhr",
+     "outcome": "failed"
+    },
+    {
+     "phase": "walk",
+     "method": "POST",
+     "url": "https://www.snapengage.com/visitorjs/errors",
+     "host": "www.snapengage.com",
+     "type": "xhr",
+     "outcome": "failed"
+    }
+   ],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Error: XHR received status code 0 - Please update your Content-Security-Policy to allow https://www.snapengage.com for a better experience.\n    at u.onerror (https://storage.googleapis.com/code.snapen",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   },
+   {
+    "type": "error",
+    "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+    "phase": "walk"
+   }
+  ],
+  "page_errors": [],
+  "violations": [
+   "write request(s) attempted during the walk (blocked)"
+  ],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "outbound_request_blocked",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [
+   {
+    "method": "POST",
+    "url": "https://api.123formbuilder.com/v2/forms/836121/events",
+    "type": "xhr",
+    "reason": null
+   },
+   {
+    "method": "POST",
+    "url": "https://www.snapengage.com/visitorjs/errors",
+    "type": "xhr",
+    "reason": null
+   },
+   {
+    "method": "GET",
+    "url": "https://cdn.marketing123.123formbuilder.com/wp-content/themes/marketing123/assets/images/burger-menu.svg",
+    "type": "image",
+    "reason": null
+   }
+  ],
+  "notes": [
+   "outbound_request_blocked",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "2 network request(s) from the page were blocked and not sent (first: POST https://api.123formbuilder.com/v2/forms/836121/events); the browser stays blocked until release_wizard_network_guard(page) is called after review",
+   "navigation stopped early (outbound_request_blocked); later steps were not filled and the form was not submitted",
+   "6 control(s) stayed hidden and were not asked",
+   "3 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Manufacturer (aria_radio); Distributor (aria_radio); Service provider (aria_radio); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radio",
+    "label": "Manufacturer",
+    "required": false
+   },
+   {
+    "kind": "aria_radio",
+    "label": "Distributor",
+    "required": false
+   },
+   {
+    "kind": "aria_radio",
+    "label": "Service provider",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 15,
+   "verified": 1
+  }
+ },
+ {
+  "form": "formio_wizard",
+  "source": "full",
+  "url": "https://formio.github.io/formio.js/app/examples/wizard.html",
+  "crashed": null,
+  "loaded_url": "https://formio.github.io/formio.js/app/examples/wizard.html",
+  "title": "JavaScript Powered Forms and Form.io SDK",
+  "elapsed_s": 6.4,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 24,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 4
+  }
+ },
+ {
+  "form": "formio_wizard",
+  "source": "tricky",
+  "url": "https://formio.github.io/formio.js/app/examples/wizard.html",
+  "crashed": null,
+  "loaded_url": "https://formio.github.io/formio.js/app/examples/wizard.html",
+  "title": "JavaScript Powered Forms and Form.io SDK",
+  "elapsed_s": 5.7,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 24,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 4
+  }
+ },
+ {
+  "form": "opnform_credit",
+  "source": "full",
+  "url": "https://opnform.com/templates/business-credit-application-form-template",
+  "crashed": null,
+  "loaded_url": "https://opnform.com/templates/business-credit-application-form-template",
+  "title": "Free Form Builder with Unlimited Submissions - OpnForm",
+  "elapsed_s": 12.9,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 146,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Business Type (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "Business Type",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 9
+  }
+ },
+ {
+  "form": "opnform_credit",
+  "source": "tricky",
+  "url": "https://opnform.com/templates/business-credit-application-form-template",
+  "crashed": null,
+  "loaded_url": "https://opnform.com/templates/business-credit-application-form-template",
+  "title": "Free Form Builder with Unlimited Submissions - OpnForm",
+  "elapsed_s": 13.9,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 146,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Business Type (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "Business Type",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "verified": 2,
+   "needs_review": 7
+  }
+ },
+ {
+  "form": "opnform_scholarship",
+  "source": "full",
+  "url": "https://opnform.com/templates/scholarship-application-form-template",
+  "crashed": null,
+  "loaded_url": "https://opnform.com/templates/scholarship-application-form-template",
+  "title": "Free Form Builder with Unlimited Submissions - OpnForm",
+  "elapsed_s": 12.8,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 153,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 1,
+   "texts": [
+    "Next"
+   ],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 2,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Grade/Year Level (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "Grade/Year Level",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 8
+  }
+ },
+ {
+  "form": "opnform_scholarship",
+  "source": "tricky",
+  "url": "https://opnform.com/templates/scholarship-application-form-template",
+  "crashed": null,
+  "loaded_url": "https://opnform.com/templates/scholarship-application-form-template",
+  "title": "Free Form Builder with Unlimited Submissions - OpnForm",
+  "elapsed_s": 13.1,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 158,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 1,
+   "texts": [
+    "Next"
+   ],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 2,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Grade/Year Level (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "Grade/Year Level",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 8
+  }
+ },
+ {
+  "form": "opnform_vendor",
+  "source": "full",
+  "url": "https://opnform.com/templates/vendor-registration-form-template",
+  "crashed": null,
+  "loaded_url": "https://opnform.com/templates/vendor-registration-form-template",
+  "title": "Free Form Builder with Unlimited Submissions - OpnForm",
+  "elapsed_s": 19.4,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 148,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Business Type (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "Business Type",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 8,
+   "verified": 3
+  }
+ },
+ {
+  "form": "opnform_vendor",
+  "source": "tricky",
+  "url": "https://opnform.com/templates/vendor-registration-form-template",
+  "crashed": null,
+  "loaded_url": "https://opnform.com/templates/vendor-registration-form-template",
+  "title": "Free Form Builder with Unlimited Submissions - OpnForm",
+  "elapsed_s": 13.4,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 148,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Business Type (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "Business Type",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "verified": 1,
+   "needs_review": 10
+  }
+ },
+ {
+  "form": "selenium_webform",
+  "source": "full",
+  "url": "https://www.selenium.dev/selenium/web/web-form.html",
+  "crashed": null,
+  "loaded_url": "https://www.selenium.dev/selenium/web/web-form.html",
+  "title": "Web form",
+  "elapsed_s": 3.5,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 6,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "control_stayed_disabled",
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "2 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Password (password); File input (file_upload); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "password",
+    "label": "Password",
+    "required": false
+   },
+   {
+    "kind": "file_upload",
+    "label": "File input",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 10
+  }
+ },
+ {
+  "form": "selenium_webform",
+  "source": "tricky",
+  "url": "https://www.selenium.dev/selenium/web/web-form.html",
+  "crashed": null,
+  "loaded_url": "https://www.selenium.dev/selenium/web/web-form.html",
+  "title": "Web form",
+  "elapsed_s": 3.5,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 6,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "control_stayed_disabled",
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "2 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Password (password); File input (file_upload); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "password",
+    "label": "Password",
+    "required": false
+   },
+   {
+    "kind": "file_upload",
+    "label": "File input",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 10
+  }
+ },
+ {
+  "form": "surveyjs_conditional",
+  "source": "full",
+  "url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+  "crashed": null,
+  "loaded_url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+  "title": "Add Conditional Logic to Change Question Visibility | Form Builder for JavaScrip",
+  "elapsed_s": 8.1,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 50,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "6 control(s) stayed hidden and were not asked",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague? (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "On a scale from 0 to 10, how likely are you to rec",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 1
+  }
+ },
+ {
+  "form": "surveyjs_conditional",
+  "source": "tricky",
+  "url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+  "crashed": null,
+  "loaded_url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+  "title": "Add Conditional Logic to Change Question Visibility | Form Builder for JavaScrip",
+  "elapsed_s": 8.4,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 50,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "6 control(s) stayed hidden and were not asked",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague? (aria_radiogroup); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "aria_radiogroup",
+    "label": "On a scale from 0 to 10, how likely are you to rec",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 1
+  }
+ },
+ {
+  "form": "surveyjs_dropdown",
+  "source": "full",
+  "url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+  "crashed": null,
+  "loaded_url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+  "title": "Add a Dropdown Menu to a Form | Free JavaScript Example",
+  "elapsed_s": 7.8,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 48,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted",
+   "9 control(s) stayed hidden and were not asked"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 1
+  }
+ },
+ {
+  "form": "surveyjs_dropdown",
+  "source": "tricky",
+  "url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+  "crashed": null,
+  "loaded_url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+  "title": "Add a Dropdown Menu to a Form | Free JavaScript Example",
+  "elapsed_s": 8.3,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 48,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted",
+   "9 control(s) stayed hidden and were not asked"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 1
+  }
+ },
+ {
+  "form": "surveyjs_wizard",
+  "source": "full",
+  "url": "https://surveyjs.io/form-library/examples/multi-step-form-wizard/reactjs",
+  "crashed": null,
+  "loaded_url": "https://surveyjs.io/form-library/examples/multi-step-form-wizard/reactjs",
+  "title": "Multi-Step Form Wizard Builder for JavaScript Apps - SurveyJS",
+  "elapsed_s": 14.1,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 49,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "next_click_failed",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "next_click_failed",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (next_click_failed); later steps were not filled and the form was not submitted",
+   "6 control(s) stayed hidden and were not asked"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 1
+  }
+ },
+ {
+  "form": "surveyjs_wizard",
+  "source": "tricky",
+  "url": "https://surveyjs.io/form-library/examples/multi-step-form-wizard/reactjs",
+  "crashed": null,
+  "loaded_url": "https://surveyjs.io/form-library/examples/multi-step-form-wizard/reactjs",
+  "title": "Multi-Step Form Wizard Builder for JavaScript Apps - SurveyJS",
+  "elapsed_s": 13.7,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 49,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "next_click_failed",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "next_click_failed",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (next_click_failed); later steps were not filled and the form was not submitted",
+   "6 control(s) stayed hidden and were not asked"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "needs_review": 1
+  }
+ }
+]

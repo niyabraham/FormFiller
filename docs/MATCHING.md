@@ -76,6 +76,9 @@ answer on the RFI dev benchmark is the known disputed label recorded before this
 * Confidence categories (RFI dev benchmark, recorded run): score 1.0 was right 56/56 (held-out 50/50), partial matches 43/45
   (held-out 57/57); both dev errors were partial. Finer bands did not differ. So: `high` = exact key match or a stated status,
   `medium` = partial match above the answer threshold, `low` = a proposal, never entered automatically.
+* One-word questions (RW-1): a question with a single effective word is not answered from a key whose leaf carries other words that
+  are not slot words (`tokens.SLOT_WORDS`: name, size, count, exist), so "Last" no longer takes `pen_test.last_date` and "Email" no longer
+  takes `ciso_email`; "Number of customers" still takes `Customer count`. Measured on both benchmarks with no answer lost.
 * The topic guard (`tokens.TOPICS`) and the "same fact stored twice" rule for conflicts were added after a dev-benchmark run
   showed a penetration-test date answering a disaster-recovery question, and different facts that share words being treated
   as contradictions.

@@ -100,10 +100,51 @@ fictional sources were used ("full" = heldout `h01_saas_security`, "tricky" = rf
 | Safety: 0 submit events, 0 final-action clicks, 0 walk requests completed outside one explicit read-only rule | DONE (all 28 runs) |
 | Precision 62% (10/16), coverage 59% (10/17) on the 10 main forms; 6 wrong fills from 2 root causes | MEASURED |
 | What-if for the main matching bug (rule A): precision 62% -> 77%, benchmarks -4 answers of 213 | MEASURED, not implemented |
-| Fixes RW-1 to RW-9 (see the report's section 11) | NOT STARTED, awaiting approval |
+| RW-1 (one-word matches) and RW-2 (page furniture) | DONE on branch `fix/rw1-rw2-matching-discovery`, not merged (see the next section); RW-3 to RW-9 not started |
 | Custom dropdown / date-picker / conditional *filling* | NOT ASSESSED: no matching facts in the approved sources; needs a mechanics-only probe source (approval) |
 | A real multi-page company questionnaire (needs a portal you are allowed to test) | NOT DONE |
 
 Remaining work, in order: approve and implement RW-1 and RW-2 (each starts with a failing test from the reproduction in the
 report); decide on RW-5 (tolerate-list) and RW-6 (guard for single-page runs); measure RW-3 on the benchmarks before changing the
 veto; re-run `tools/evaluate_realworld.py` after each fix and compare with `benchmarks/realworld/results/2026-10-30/`.
+
+## RW-1 and RW-2 fixes (30 Oct 2026, branch `fix/rw1-rw2-matching-discovery`, not merged)
+
+Method per fix: failing regression tests first, then the smallest change, then the full browser-required suite, the benchmarks and the
+original 10-form real-world evaluation (same sources, same pre-committed ground truth, new output folders; the baseline snapshot
+`benchmarks/realworld/results/2026-10-30/` is untouched).
+
+**RW-1** (`retrieve.assess_leaf`, `tokens.SLOT_WORDS`). A question with exactly one effective word that matches a key whose leaf
+also carries non-slot words ("last" vs `last_date`, "email" vs `ciso_email`) is capped to REVIEW. Slot words (`name`, `size`,
+`count`, `exist`) only say what kind of value a key holds, and the question implies them.
+The first version, without that exception, lost four correct benchmark answers: "Total staff headcount" and "Number of personnel"
+(-> `workforce_size`), "Do you have subsidiaries?" (-> `subsidiaries_exist`), and "Who is your Data Protection Officer?" (-> `dpo_name`),
+plus "Number of customers" (-> `Customer count`) on the held-out set. All were legitimate answers whose extra key word is a slot word;
+the exception keeps them. A stricter second candidate rule (cap any question with at most half its words explained) cost 18 dev and
+8 held-out answers and was rejected.
+
+**RW-2** (`discover._EXTRACT_JS`, `pageFurniture`). A control in a navigation landmark (nav, header, footer, aside, role search /
+navigation / banner / contentinfo / complementary), outside any form, that is a search-type box or the only fillable control in that
+landmark, is not a question. A questionnaire in a side panel keeps its form element or several controls and is still asked; a
+header/footer inside an article/section/main is not a page landmark.
+
+| measurement | before | after RW-1 | after RW-1 + RW-2 |
+|---|---|---|---|
+| RFI dev (192 questions): correct / precision / coverage | 104 / 98.1% / 55.2% | 105 / 98.1% / 55.7% | 105 / 98.1% / 55.7% (reproducible; see note) |
+| held-out (272): correct / precision / coverage | 109 / 100% / 40.1% | 109 / 100% / 40.1% | 109 / 100% / 40.1% |
+| matching sets, dev / eval: precision, coverage | 1.0 0.933 / 1.0 0.706 | unchanged | unchanged |
+| SPA fixtures (policy): discovery, safe stops, submissions | 77/82, 11/12, 0 | - | 77/82, 11/12, 0 |
+| widget fixtures | 12/12, 3/3 conditional | - | 12/12, 3/3 |
+| original 10 real-world forms x 2 sources: precision / coverage / wrong fills | 62% (10/16) / 59% (10/17) / 6 | 77% (10/13) / 59% / 3 | **100% (10/10) / 59% (10/17) / 0** |
+| full suite (browser required) | 1258 passed, 2 xfailed | 1274 passed, 2 xfailed | **1290 passed, 2 xfailed** |
+
+Notes. (1) The RW-1 gain on RFI dev (+1) is real: the DPO question was an ambiguity review between `dpo_name` and `dpo_email` and is
+now answered with the name. (2) One RW-2 run showed 106 on RFI dev; two repeats showed 105. The fixture `c16_dynamic_inputs`
+fills a `<select>` 600 ms after load, so its "Region" answer depends on timing (it was already missed by the original baseline with
+`allowed options []`); 105 is the reproducible figure and RW-2 changes no benchmark answer. (3) Coverage on the real-world forms stays
+59% because the remaining misses (RW-3: the foreign-entity veto, `Region`, `legal name`) were not part of these two fixes.
+(4) Harness: phases now follow the moment the guard engages. One earlier run reported two completed `GET`s (a chat widget's font and
+config script) in the window between `run_form` starting and the guard engaging; they are the documented pre-guard window
+(`docs/SECURITY_MODEL.md`), carried no answers, and did not recur in the final runs.
+
+Results snapshots: `benchmarks/realworld/results/after-rw1-2026-10-30/`, `.../after-rw2-2026-10-30/`.
