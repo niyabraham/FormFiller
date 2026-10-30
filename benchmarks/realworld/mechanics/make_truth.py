@@ -16,14 +16,26 @@ def a(m, accept, why="mechanics fact"):
 def r(m, why):
     return {"match": m, "expect": "review", "accept": [], "why": why}
 
+
+def chrome(m, why):
+    return {"match": m, "expect": "review", "accept": [], "why": why, "chrome": True}
+
 SPEC = {
  "mech_surveyjs_dropdown": [a("Which is the brand of your car?", ["Toyota"])],
- "mech_surveyjs_conditional": [a("On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague?", ["9"])],
+ "mech_surveyjs_conditional": [
+   a("On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague?", ["9"]),
+   # follow-up questions revealed by answering 9; labels added after the first run, from the question list only (no answers seen)
+   r("What can we do to make your experience more satisfying?", "revealed follow-up, no fact"),
+   *[r(x, "revealed follow-up checkbox (required group), no fact") for x in
+     ("Performance", "Stability", "User interface", "Complete functionality",
+      "Learning materials (documentation, demos, code examples)", "Quality support", "Other features")]],
  "mech_demoqa_practice": [
    a("First Name", ["Test"]), a("Last Name", ["User"]), a("name@example.com", ["test.user@example.test"]), a("gender", ["Other"]),
    a("Mobile Number", ["5551234567"]), a("dateOfBirthInput", ["15 Mar 1990"]), a("subjectsInput", ["Maths"]),
    a("Sports", ANY_TRUE + ["sports"]), a("Reading", ANY_TRUE + ["reading"]), r("Music", "no fact for it"),
-   a("Current Address", ["1 Example Street, Testville"]), a("react-select-3-input", ["NCR"]), a("react-select-4-input", ["Delhi"])],
+   a("Current Address", ["1 Example Street, Testville"]), a("react-select-3-input", ["NCR"]), a("react-select-4-input", ["Delhi"]),
+   # the date picker popup's month / year selects (widget internals); added after the first run, from the question list only
+   chrome("f0-c14", "date picker popup: month select"), chrome("f0-c15", "date picker popup: year select")],
  "mech_selenium_webform": [
    a("Text input", ["Mechanics text"]), a("Textarea", ["Mechanics notes"]), r("Readonly input", "read-only, no fact"),
    a("Dropdown (select)", ["Two", "2"]), a("Dropdown (datalist)", ["Seattle"]), r("my-check", "no fact"), r("my-radio", "no fact"),

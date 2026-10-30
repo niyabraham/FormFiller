@@ -101,7 +101,7 @@ fictional sources were used ("full" = heldout `h01_saas_security`, "tricky" = rf
 | Precision 62% (10/16), coverage 59% (10/17) on the 10 main forms; 6 wrong fills from 2 root causes | MEASURED |
 | What-if for the main matching bug (rule A): precision 62% -> 77%, benchmarks -4 answers of 213 | MEASURED, not implemented |
 | RW-1 (one-word matches) and RW-2 (page furniture) | DONE on branch `fix/rw1-rw2-matching-discovery`, not merged (see the next section); RW-3 to RW-9 not started |
-| Custom dropdown / date-picker / conditional *filling* | NOT ASSESSED: no matching facts in the approved sources; needs a mechanics-only probe source (approval) |
+| Custom dropdown / date-picker / conditional *filling* | MEASURED separately (mechanics-only, section below); never part of precision/coverage |
 | A real multi-page company questionnaire (needs a portal you are allowed to test) | NOT DONE |
 
 Remaining work, in order: approve and implement RW-1 and RW-2 (each starts with a failing test from the reproduction in the
@@ -148,3 +148,25 @@ config script) in the window between `run_form` starting and the guard engaging;
 (`docs/SECURITY_MODEL.md`), carried no answers, and did not recur in the final runs.
 
 Results snapshots: `benchmarks/realworld/results/after-rw1-2026-10-30/`, `.../after-rw2-2026-10-30/`.
+
+## Mechanics-only evaluation (30 Oct 2026, kept apart from matching metrics)
+
+Source `benchmarks/realworld/mechanics/source_mechanics.json` (fictional values keyed to each demo form's own wording; NOT company
+data; see its README), four forms, `python tools/evaluate_realworld.py run --mechanics`, an independent page-state oracle per form.
+Pre-registered in commit `faf6b90`; the labels of 10 revealed or widget-internal questions and the oracle expectations were added
+after the first run from question lists and source values only (disclosed in the report, section 13.2). Results:
+`benchmarks/realworld/results/mechanics-2026-10-30/`.
+
+| | expected fills | confirmed by FormFiller | right on the page, not confirmed | failed | blocked by design |
+|---|---|---|---|---|---|
+| all four forms | 21 | 14 | 3 | 2 | 2 |
+
+Page state by the oracle: 17 of 20 fields as expected. 0 wrong fills; 0 submit events; 0 final-action clicks; guard observed in 4/4.
+Worked: custom combobox, styled radio groups, conditional reveal (8 follow-up questions found and left in review), masked date text,
+multi-value tag input, dependent select. New findings: RW-10 react-select fills not confirmed (false `FAILED`), RW-11 styled
+checkboxes cannot be checked, RW-12 date-picker popup selects listed as questions, RW-13 a filled radio group also reported
+unsupported. The two Selenium misses are the documented parenthetical-ambiguity guard (my expectation was wrong, kept as misses).
+
+Remaining work: RW-3 to RW-13 are not implemented. Suggested next: RW-10 and RW-11 (small, each with a fixture test first), then RW-6
+(guard for single-page runs) and RW-4 (name the overlay), then RW-3 after measuring on the benchmarks. Nothing from this branch is
+merged or pushed; `main` is unchanged.

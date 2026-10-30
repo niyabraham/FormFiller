@@ -309,10 +309,13 @@ def score_one(out_root: Path, form_id: str, source: str) -> dict | None:
         held = i.get("observed")
         if entered:
             c["entered_chrome" if chrome else "entered"] += 1
-            if expect == "answer" and any(same(held, a) or same(p["answer"], a) for a in t["accept"]):
+            if expect == "answer" and any(same(held, a) for a in t["accept"]):
                 outcome = "CORRECT"
                 c["correct"] += 1
                 c["correct_verified"] += bool(i["verified"])
+            elif expect == "answer" and any(same(p["answer"], a) for a in t["accept"]):
+                outcome = "RIGHT_VALUE_NOT_CONFIRMED"  # planned right, but the read-back disagreed: not counted as correct
+                c["right_not_confirmed"] += 1
             elif expect == "answer":
                 outcome = "WRONG_VALUE"
                 c["wrong_value"] += 1
@@ -335,11 +338,16 @@ def score_one(out_root: Path, form_id: str, source: str) -> dict | None:
                        "reason": (p.get("reason") or "")[:90]})
     entered_n = c["entered"] + c["entered_chrome"]
     run = json.loads((out_root / form_id / source / "run.json").read_text(encoding="utf-8"))
-    return {"form": form_id, "source": source, "status": result["status"], "steps": run.get("steps_visited"), "stop": run.get("stop_reason"),
+    oracle_check = None
+    expected_state = next((f.get("oracle_expect") for f in json.loads(FORMS.read_text(encoding="utf-8"))["forms"] if f["id"] == form_id), None)
+    if expected_state and isinstance(run.get("oracle"), dict):
+        oracle_check = {k: {"expected": v, "page": run["oracle"].get(k), "ok": norm(json.dumps(run["oracle"].get(k))) == norm(json.dumps(v))}
+                        for k, v in expected_state.items()}
+    return {"oracle_check": oracle_check, "form": form_id, "source": source, "status": result["status"], "steps": run.get("steps_visited"), "stop": run.get("stop_reason"),
             "questions": c["questions"], "expected_answerable": c["expected_answerable"], "entered": entered_n, "correct": c["correct"],
             "wrong_value": c["wrong_value"], "unsafe": c["unsafe"], "missed": c["missed"],
             "correct_abstentions": c["correct_abstentions"], "answer_not_entered": c["answer_not_entered"], "page_chrome": c["page_chrome"],
-            "unsupported": len(result.get("unsupported", [])), "unlabelled": c["unlabelled"], "verified_of_correct": c["correct_verified"],
+            "unsupported": len(result.get("unsupported", [])), "unlabelled": c["unlabelled"], "verified_of_correct": c["correct_verified"], "right_value_not_confirmed": c["right_not_confirmed"],
             "precision": (c["correct"] / entered_n) if entered_n else None, "coverage": (c["correct"] / c["expected_answerable"]) if c["expected_answerable"] else None,
             "violations": run["violations"], "detail": detail}
 
@@ -368,6 +376,13 @@ def cmd_score(args) -> int:
         print(f"{'TOTAL':<29}{'':<13}{tot['questions']:>3}{tot['expected_answerable']:>5}{tot['entered']:>4}{tot['correct']:>4}{tot['wrong_value']:>4}{tot['unsafe']:>7}"
               f"{tot['missed']:>5}{tot['correct_abstentions']:>5}{tot['unsupported']:>6}  "
               f"{pct(tot['correct'] / tot['entered'] if tot['entered'] else None):>9}  {pct(tot['correct'] / tot['expected_answerable'] if tot['expected_answerable'] else None):>8}")
+    for r in rows:
+        oc = r.get("oracle_check")
+        if oc:
+            print(f"  page state (independent oracle) {r['form']}: {sum(v['ok'] for v in oc.values())}/{len(oc)} fields as expected")
+            for k, v in oc.items():
+                if not v["ok"]:
+                    print(f"      {k}: expected {v['expected']!r}, page shows {v['page']!r}")
     (out_root / "scores.json").write_text(json.dumps(rows, indent=1, ensure_ascii=False), encoding="utf-8")
     return 0
 

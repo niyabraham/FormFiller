@@ -111,6 +111,20 @@
     "Delhi"
    ],
    "why": "mechanics fact"
+  },
+  {
+   "match": "f0-c14",
+   "expect": "review",
+   "accept": [],
+   "why": "date picker popup: month select",
+   "chrome": true
+  },
+  {
+   "match": "f0-c15",
+   "expect": "review",
+   "accept": [],
+   "why": "date picker popup: year select",
+   "chrome": true
   }
  ]
 }

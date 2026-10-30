@@ -9,6 +9,54 @@
     "9"
    ],
    "why": "mechanics fact"
+  },
+  {
+   "match": "What can we do to make your experience more satisfying?",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up, no fact"
+  },
+  {
+   "match": "Performance",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
+  },
+  {
+   "match": "Stability",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
+  },
+  {
+   "match": "User interface",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
+  },
+  {
+   "match": "Complete functionality",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
+  },
+  {
+   "match": "Learning materials (documentation, demos, code examples)",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
+  },
+  {
+   "match": "Quality support",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
+  },
+  {
+   "match": "Other features",
+   "expect": "review",
+   "accept": [],
+   "why": "revealed follow-up checkbox (required group), no fact"
   }
  ]
 }
