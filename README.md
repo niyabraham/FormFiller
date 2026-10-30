@@ -26,7 +26,7 @@ It is a tested prototype. It has not been proven on real company RFI portals (se
 
 Everything below is implemented and covered by automated tests on local fixture pages (`docs/COMPATIBILITY.md` has the full matrix).
 
-- Supported controls: text, textarea, email, url, tel, number, date, colour, select, radio groups, checkbox, checkbox groups, and ARIA comboboxes (tested patterns only). Open shadow DOM, same-origin iframes, late-rendering pages, conditionally revealed fields.
+- Supported controls: text, textarea, email, url, tel, number, date, colour, select, radio groups, checkbox, checkbox groups, and ARIA comboboxes (tested patterns only). Styled radios and checkboxes (a hidden input under a clickable label) are set through their own label, never forced; a react-select-style dropdown is read back from the value it displays; an open date-picker popup is not mistaken for questions. Open shadow DOM, same-origin iframes, late-rendering pages, conditionally revealed fields.
 - Layered matching with provenance on every answer and proposal (`method`, `source`, `confidence_category`, `conflicts`, `validation`) and abstention instead of guessing.
 - Multi-step walks: client-side wizards, server-backed single-page apps and server-rendered (form POST) wizards, with every transition recorded; Back re-verification; loop, no-change, validation-error and redirect detection; required-field gate.
 - Network guard during walks, with an explicit allow-list policy for portals that must reach their server between steps; every relayed request is recorded, and requests carrying entered answers need explicit permission.
@@ -139,6 +139,10 @@ release_wizard_network_guard(page)                                  # after a pe
 
 `run_url(url, source_path, out_dir=..., trace=False)` launches Chromium itself.
 
+**Resuming an interrupted run.** Pass `progress_path` to a multi-step run and FormFiller writes a versioned progress file after every verified step (owner-only where the OS allows; it holds your answers, but no cookies, tokens or credentials, and the target is stored as origin and path only). To continue, open the same form on the same origin and call `run_form(..., progress_path=..., resume=True)` within 72 hours (the default limit). Nothing in the file is trusted blindly: the form is discovered again, every saved answer is read back from the page, a field that already holds the saved value is not typed again, an empty one is filled as normal, and one that now holds something else is left alone and goes to review. A file that is stale, from another origin, or ambiguous is refused or stops the walk for review. `run_form` will not overwrite an existing progress file unless `resume=True`.
+
+**Reporting and audit artifacts.** With `out_dir`, a run writes `result.json` (every question with its state, source path, method, confidence, validation, read-back and reason; unsupported controls; the navigation record; the review summary), `audit_report.md` (the same for a person, with `redact_report=True` hiding the answers), and a screenshot `filled.png`. A Playwright trace is written only on request and is scrubbed of cookies and authorization values. The review page writes `review.json`. Output folders are git-ignored; they contain your answers, so treat them as confidential.
+
 **Human review:**
 
 ```bash
@@ -161,16 +165,16 @@ Add keys only for facts you can stand behind. A certification is answered "Yes" 
 
 ## 9. Testing and Evaluation
 
-**Checked on 29 Oct 2026, on branch `feature/rfi-completion`.**
+**Last checked on 30 Oct 2026, code at commit `acaf2a0` (branch `feat/rw10-13-widget-compat`); earlier figures were re-measured on the dates in `docs/PROGRESS.md`.**
 
 ### Automated tests (local fixture pages)
 
-- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`: **1258 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, 10 to 15 minutes). Before this work: 1123 passed, 2 xfailed.
-- Linux (Ubuntu 24.04 under WSL), Python 3.11, Playwright 1.64.1, same strict mode: 1252 passed, 2 xfailed, 0 failed, 0 skipped. This run was made before the last six tests were added; those files were re-run on Linux afterwards and pass (`docs/PROGRESS.md`).
+- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`: **1352 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, 13 to 15 minutes). Before the RFI completion work: 1123 passed, 2 xfailed.
+- Linux (Ubuntu 24.04 under WSL), Python 3.11, Playwright 1.64.1, same strict mode: 1252 passed, 2 xfailed, 0 failed, 0 skipped. That run is from an earlier commit and was not repeated for the later changes; CI runs the suite on Python 3.11 and 3.12 for every pull request.
 - Playwright 1.48.0 (the oldest supported version), Linux: the network-guard, wizard, policy, progress and review tests pass.
 - `ruff check formfill tools tests benchmarks`: no findings. `mypy` (settings in `pyproject.toml`): no issues. `pip-audit`: no known vulnerabilities in the project's dependencies. No code formatter is configured.
 - The two expected failures are a disputed company-versus-subsidiary label in the benchmarks, kept as strict `xfail` (they fail the run if they start passing).
-- CI (`.github/workflows/tests.yml`) runs on pull requests and on pushes to `main`; it has not run on this branch yet.
+- CI (`.github/workflows/tests.yml`) runs on pull requests and on pushes to `main`; its result for a branch is shown on its pull request.
 
 ### Fixture-based evaluations (not real websites)
 
@@ -184,6 +188,8 @@ These use fictional forms written by the project. Results show behaviour on thos
 | Wizard navigation and safety (`tools/evaluate_wizards.py`, 16 scenarios) | 16 of 16 expected outcomes, 0 final submissions, 0 requests reaching the server without a relay record, 0 answers sent without permission |
 | Multi-step and SPA fixtures (`tools/evaluate_spa.py --policy`, 26 fixtures) | 0 crashes, 0 submit events, 0 submissions, 0 dialogs accepted, 11 of 12 expected safe stops, 1 of 3 planted resets detected, 77 of 82 controls discovered |
 | Widget fixtures (`tools/evaluate_widgets3d.py`) | 12 of 12 expected fields filled and read back, 3 of 3 conditional fields found |
+| Public demo and template forms, matching (`tools/evaluate_realworld.py`: 10 forms x 2 fictional sources, nothing submitted; `REAL_WORLD_TESTING_REPORT.md`) | precision 100 % (10 of 10), coverage 59 % (10 of 17), 0 wrong fills. Baseline before the RW-1 and RW-2 fixes: 62 % and 59 %, 6 wrong fills. A small sample on public demo forms, not company portals |
+| Public demo forms, mechanics only (custom dropdowns, styled checkboxes, date picker, conditional fields; its own source and scoring, never mixed with the row above) | 21 expected fills: 17 confirmed by read-back, 2 failed (see section 10), 2 blocked by design; the page held 17 of 20 expected values; 0 wrong fills |
 
 On both browser matching benchmarks every changed decision went from a missed answer to a correct one. The SPA row is unchanged since the network guard was added: three fixtures stop at their first network request or page reload (`outbound_request_blocked`), so their later steps and planted resets are not reached. That is the block working as designed; the expected results were not edited.
 
@@ -214,7 +220,9 @@ These show the pipeline running on public practice and template pages. They are 
 - **The network block has gaps** (`docs/SECURITY_MODEL.md`): connections the page opened before the walk are not closed, requests the page makes before the walk starts are not blocked, a `SharedWorker` made with a constructor the page kept from before the walk and a `blob:` script can send before it is noticed, the DevTools-based layers need Chromium, offline emulation is context-wide and can make a page stop the walk, and only Playwright 1.48.0 and 1.64.1 with their Chromium builds were measured.
 - **Matching is conservative by design.** Coverage is about half on the development set and 40 % on the second set; a correct fill is only as good as the source data, and untested wording can still be matched wrongly. Similarity proposals depend on spelling and the synonym table unless a local embedding model is configured.
 - **Attestation detection is wording-based.** A genuine attestation phrased in an unexpected way, on a free-text or number field, is answered like any other question; some factual yes/no questions with unusual wording go to review.
-- **Detection of unsupported controls is by markup.** A widget built from plain `div`s with no ARIA role is not seen; controls in cross-origin iframes or closed shadow roots are not inspected; datalist options are not read.
+- **Detection of unsupported controls is by markup.** A widget built from plain `div`s with no ARIA role is not seen; controls in cross-origin iframes or closed shadow roots are not inspected; datalist options are not read. `role=checkbox` and `role=switch` widgets are reported, not filled; a native input hidden with `display:none` is not discovered.
+- **Custom widgets are handled by structure, on few examples.** A react-select-style dropdown is recognised by the class names of its displayed value; a date-picker popup by its class names or a date/calendar dialog label (English month names). Other libraries are untested. A date popup that stays open after a date is typed can cover the controls below it: such a click is refused and reported as failed rather than forced (seen on DemoQA's Hobbies checkboxes, `REAL_WORLD_TESTING_REPORT.md` section 14).
+- **Compatibility is measured on public demo forms only.** The real-world evaluation covers 10 public demo and template forms (some of them multi-page) with fictional data. It shows what works and what does not on those pages; it does not show that any given website, or every website, is supported. Third-party trackers on a page can stop a guarded walk.
 - **Page behaviour is only partly handled.** Fields that appear well after an interaction can be missed, a reset after the confirmation window is not seen, and the single re-entry recovers React/Vue/Svelte patterns only. Next buttons inside shadow roots or iframes are not found.
 - **Saving is not confirmed.** A correct read-back does not prove the server stored the value.
 - **The review page is for one local reviewer.** It has no accounts, no audit of who decided, and no concurrent editing.

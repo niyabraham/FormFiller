@@ -73,6 +73,17 @@ def test_text_that_was_never_sampled_but_was_typed_is_a_reset_with_wide_bounds()
     assert got["reset_window_blocked_by"] == [[105, 1500]]
 
 
+def test_a_first_sample_taken_on_the_tick_that_follows_the_input_is_not_lost_to_rounding():
+    # the page logs a tick as whole ms and the sample on that same tick to 0.1 ms: 1233.4 vs 1233. If the field was first seen on
+    # the tick after the reset (the fill landed before any tick had found the field), that sample is the only one and must count.
+    got = probe.analyse([[1233.4, "", "", True, True, ""]], 20, events=[[33.2, "input", {"len": 22}]], ticks=[0, 1233, 1283])
+    assert got["verdict"] == "VALUE_RESET" and got["reset_before_first_observation"] is True
+
+
+def test_the_probe_logs_ticks_on_the_same_clock_value_as_samples():
+    assert "P.ticks.push(Math.round(now))" not in TOOL.read_text()
+
+
 def test_an_empty_input_event_is_not_a_fill():
     assert probe.analyse([S(0)], 90, events=[[100, "input", {"len": 0}]], ticks=[0, 200])["verdict"] == "MARKER_NEVER_OBSERVED"
 

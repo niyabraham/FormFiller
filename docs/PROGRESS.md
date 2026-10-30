@@ -100,7 +100,7 @@ fictional sources were used ("full" = heldout `h01_saas_security`, "tricky" = rf
 | Safety: 0 submit events, 0 final-action clicks, 0 walk requests completed outside one explicit read-only rule | DONE (all 28 runs) |
 | Precision 62% (10/16), coverage 59% (10/17) on the 10 main forms; 6 wrong fills from 2 root causes | MEASURED |
 | What-if for the main matching bug (rule A): precision 62% -> 77%, benchmarks -4 answers of 213 | MEASURED, not implemented |
-| RW-1 (one-word matches) and RW-2 (page furniture) | DONE on branch `fix/rw1-rw2-matching-discovery`, not merged (see the next section); RW-3 to RW-9 not started |
+| RW-1 (one-word matches) and RW-2 (page furniture) | DONE and merged (PR #23); RW-3 to RW-9 not started |
 | Custom dropdown / date-picker / conditional *filling* | MEASURED separately (mechanics-only, section below); never part of precision/coverage |
 | A real multi-page company questionnaire (needs a portal you are allowed to test) | NOT DONE |
 
@@ -108,7 +108,7 @@ Remaining work, in order: approve and implement RW-1 and RW-2 (each starts with 
 report); decide on RW-5 (tolerate-list) and RW-6 (guard for single-page runs); measure RW-3 on the benchmarks before changing the
 veto; re-run `tools/evaluate_realworld.py` after each fix and compare with `benchmarks/realworld/results/2026-10-30/`.
 
-## RW-1 and RW-2 fixes (30 Oct 2026, branch `fix/rw1-rw2-matching-discovery`, not merged)
+## RW-1 and RW-2 fixes (30 Oct 2026, branch `fix/rw1-rw2-matching-discovery`, merged as PR #23)
 
 Method per fix: failing regression tests first, then the smallest change, then the full browser-required suite, the benchmarks and the
 original 10-form real-world evaluation (same sources, same pre-committed ground truth, new output folders; the baseline snapshot
@@ -168,5 +168,39 @@ checkboxes cannot be checked, RW-12 date-picker popup selects listed as question
 unsupported. The two Selenium misses are the documented parenthetical-ambiguity guard (my expectation was wrong, kept as misses).
 
 Remaining work: RW-3 to RW-13 are not implemented. Suggested next: RW-10 and RW-11 (small, each with a fixture test first), then RW-6
-(guard for single-page runs) and RW-4 (name the overlay), then RW-3 after measuring on the benchmarks. Nothing from this branch is
-merged or pushed; `main` is unchanged.
+(guard for single-page runs) and RW-4 (name the overlay), then RW-3 after measuring on the benchmarks. (Written before RW-10 to RW-13
+were done; see the next section for their state.)
+
+## RW-10 to RW-13 (30 Oct 2026, branch `feat/rw10-13-widget-compat`, cut from `main` at `aaffff6`, not merged)
+
+Method per issue: reproduce against current code with a local page that has the DOM captured from the real site (read-only), tests
+first and seen failing, smallest change, neighbouring suites, commit. Full account, evidence and disclosures:
+`REAL_WORLD_TESTING_REPORT.md` section 14. Results: `benchmarks/realworld/results/after-rw10-13-2026-10-30/` and
+`.../mechanics-after-rw10-13-2026-10-30/`; earlier snapshots untouched.
+
+| id | status | what | tests |
+|---|---|---|---|
+| RW-10 react-select read-back | DONE | `execute._READ_JS` reads the chosen value from the widget's `singleValue` / `multiValue` element; the real DemoQA Subjects, State and City are now `verified` | `test_react_select_readback.py` (10) |
+| RW-11 styled checkbox | DONE for the reproduced structure; **not** end to end on DemoQA (see RW-14) | `execute._set_checkbox`: label click, state read back, never forced; refuses disabled boxes, labels with links or buttons, labels of another input | `test_styled_checkbox.py` (16) |
+| RW-12 date-picker UI | DONE | month / year selects and numbers inside a calendar popup are not questions; popup headings are ignored for sections, unsupported-control and step-title scans (`discover.PICKER_ROOT_JS`) | `test_date_picker_ui.py` (22) |
+| RW-13 radio-group reporting | DONE | a `role=radiogroup` around native radios is not also reported unsupported; its `aria-required` marks the radio control | `test_radiogroup_reporting.py` (14) |
+| RW-14 (new) popup left open covers later controls | OPEN, not implemented | DemoQA's date popup covers the Hobbies row, so the label cannot be clicked; reported `rejected`, nothing clicked through; closing it needs a key press after text entry, which needs a decision | pinned by `test_a_label_covered_by_an_open_popup_fails_safely_...` |
+
+| measurement | before (RW-1 + RW-2) | after |
+|---|---|---|
+| original 10 forms x 2 sources: precision / coverage / wrong fills | 100% (10/10) / 59% (10/17) / 0 | **100% (10/10) / 59% (10/17) / 0**; 0 question-level differences |
+| read-back verification failures on the 10 forms; unsupported controls reported | 0; 20 | 0; 18 (SurveyJS conditional's two) |
+| RFI dev / held-out benchmarks | 105, 98.1%, 55.7% / 109, 100%, 40.1% | unchanged |
+| matching sets, SPA, wizards, widget fixtures | 1.00/0.933 and 1.00/0.706; 77/82, 11/12; 16/16; 12/12, 3/3 | unchanged |
+| full suite (browser required) | 1290 passed, 2 xfailed | **1352 passed, 2 xfailed, 0 failed, 0 skipped** (+62) |
+| ruff, mypy | clean (33 source files) | clean (33 source files) |
+| mechanics-only (separate): expected / confirmed / right but unconfirmed / failed / blocked by design | 21 / 14 / 3 / 2 / 2 | 21 / **17 / 0** / 2 / 2; page holds 17 of 20, 0 wrong fills |
+| safety, 32 runs | 0 submit events, 0 final-action clicks, 0 walk requests completed | same; guard observed 32 of 32 |
+
+Notes. (1) The two failed mechanics fills are the two Hobbies checkboxes (RW-14); the two blocked are the documented bracketed-
+qualifier guard. (2) The first final evaluation was interrupted (a network outage on this machine, then an ad beacon stopping one
+walk); both were repeated, see report 14.5. (3) `docs/SECURITY_MODEL.md` was not changed: no documented guarantee or limitation
+moved.
+
+Remaining work: approve or decline RW-14; RW-3 to RW-9 and the technical debt in report 14.5 are untouched. Nothing from this branch
+is merged; `main` is unchanged.

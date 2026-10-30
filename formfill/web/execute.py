@@ -39,13 +39,32 @@ def framework_attached(page: Page, control: Control) -> bool | None:
         return None
 
 
+# A react-select-style combobox: its <input role=combobox> only holds the text being searched for and is emptied once an option is
+# chosen; the choice is drawn in a sibling element inside the same widget (a `...singleValue` element, or one `...multiValue` chip per
+# choice). That element is what the control holds. It is looked for only in the widget around the input: the search stops at the first
+# ancestor that also contains another form control, so one widget's selection is never read as another's. No selection element found:
+# null, and the input's own value is used, as for any other combobox (RW-10).
 _READ_JS = """
 els => {
   if (!els.length) return {found: false};
   const e = els[0]; const t = (e.type || '').toLowerCase(); const tag = e.tagName.toLowerCase();
+  const shown = c => {
+    const hits = Array.from(c.querySelectorAll('[class*="single-value" i],[class*="singlevalue" i],[class*="multi-value" i]:not([class*="remove" i]),[class*="multivalue" i]:not([class*="remove" i])'));
+    return hits.filter(h => !hits.some(o => o !== h && o.contains(h))).map(h => (h.textContent || '').replace(/\\s+/g, ' ').trim()).filter(Boolean);
+  };
+  const chosen = () => {
+    for (let c = e.parentElement, i = 0; c && i < 6; c = c.parentElement, i++) {
+      if (Array.from(c.querySelectorAll('input,select,textarea,[role=combobox]')).some(x => x !== e && x.type !== 'hidden')) return null;
+      const texts = shown(c);
+      if (texts.length) return texts.join(', ');
+    }
+    return null;
+  };
+  const picked = e.getAttribute('role') === 'combobox' && tag === 'input' ? chosen() : null;
   let value;
   if (e.getAttribute('role') === 'combobox' && tag !== 'input' && tag !== 'select') { value = (e.textContent || '').replace(/\\s+/g, ' ').trim(); return {found: true, value, valid: true, message: ''}; }
-  if (t === 'radio') { const c = els.find(x => x.checked); value = c ? c.value : null; }
+  if (picked !== null) { value = picked; }
+  else if (t === 'radio') { const c = els.find(x => x.checked); value = c ? c.value : null; }
   else if (t === 'checkbox') { value = els.length > 1 ? els.filter(x => x.checked).map(x => x.value) : e.checked; }
   else if (tag === 'select' && e.multiple) { value = Array.from(e.selectedOptions).map(o => o.value); }
   else { value = e.value; }
@@ -89,10 +108,10 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
                 return warnings
         raise ValueError(f"no radio option with value {answer!r}")
     elif kind == "checkbox":
-        loc.set_checked(bool(answer), timeout=timeout_ms)
+        _set_checkbox(member=loc, want=bool(answer), timeout_ms=timeout_ms)
     elif kind == "checkbox_group":
         for member in loc.all():
-            member.set_checked(member.get_attribute("value") in answer, timeout=timeout_ms)
+            _set_checkbox(member=member, want=member.get_attribute("value") in answer, timeout_ms=timeout_ms)
     else:
         raise ValueError(f"unsupported control kind {kind!r}")
     return warnings
@@ -154,6 +173,35 @@ def _select_radio(page: Page, control: Control, member, timeout_ms: int) -> None
     label.click(timeout=timeout_ms)
     if not member.is_checked():
         raise ValueError("styled radio: clicking its label did not select it (selection not confirmed)")
+
+
+# A label that holds something a click could activate other than its own checkbox (a link to the terms, a button): a click on the
+# label's centre could land on it and navigate or act. Such a label is never clicked.
+_LABEL_ACTIVE_JS = "l => !!l.querySelector('a[href],button,select,textarea,summary,[role=button],[role=link],input:not([type=checkbox])')"
+
+
+def _set_checkbox(member, want: bool, timeout_ms: int) -> None:
+    """Set one checkbox to `want`. One that already holds it is not touched. A native input that can be hit is set as before. A styled
+    checkbox (the input sits under a label that draws the box, so a click on the input is intercepted) is set through its accessible
+    label, the visible target a person clicks, exactly as `_select_radio` does for radios. The checked state is read back and a click
+    that did not produce it is an error; nothing is set through JavaScript, a disabled box is never changed, and a label that holds a
+    link or button is never clicked (RW-11)."""
+    if member.is_checked() == want:
+        return
+    if member.evaluate(_RADIO_HIT_JS):
+        member.set_checked(want, timeout=timeout_ms)
+        return
+    if member.is_disabled():
+        raise ValueError("styled checkbox is disabled: not changed")
+    # Only a label whose own control is this input: a label wrapping several inputs activates the first one, not this one.
+    label = member.evaluate_handle("e => { const l = (e.labels && e.labels[0]) || e.closest('label'); return l && l.control === e ? l : null; }").as_element()
+    if label is None:
+        raise ValueError("unsupported styled checkbox: the native input is covered and it has no label of its own to click")
+    if label.evaluate(_LABEL_ACTIVE_JS):
+        raise ValueError("unsupported styled checkbox: its label holds a link or button that a click could activate instead")
+    label.click(timeout=timeout_ms)
+    if member.is_checked() != want:
+        raise ValueError("styled checkbox: clicking its label did not change it (selection not confirmed)")
 
 
 _OPEN_TIMEOUT_MS = 1500
