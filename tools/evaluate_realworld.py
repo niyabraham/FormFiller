@@ -31,6 +31,7 @@ import sys
 import time
 import traceback
 from collections import Counter
+from fnmatch import fnmatch
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -47,7 +48,13 @@ TRIPWIRE_JS = r"""
   document.addEventListener('submit', e => log('submit', {action: (e.target && e.target.action) || ''}), true);
   document.addEventListener('click', e => {
     const t = e.target && e.target.closest ? e.target.closest('button, a, input, [role=button], label') : null;
-    if (t) log('click', {tag: t.tagName.toLowerCase(), type: t.type || '', text: (t.innerText || t.value || t.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 60)});
+    if (!t) return;
+    const attr = t.getAttribute('type');
+    const tag = t.tagName.toLowerCase();
+    // would this click activate a form's submission? (a <button> outside any form, or type=button, cannot)
+    const submits = !!t.form && (attr === 'submit' || attr === 'image' || (tag === 'button' && attr === null));
+    const text = (t.innerText || t.value || t.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 60);
+    log('click', {tag, type: t.type || '', submits, text});
   }, true);
 })();
 """
@@ -72,6 +79,7 @@ def norm(s) -> str:
 
 
 def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path) -> dict:
+    from formfill.web.netpolicy import NetworkPolicy
     from formfill.web.pipeline import run_form
     from formfill.web.steps import DiscoveryPolicy
 
@@ -113,6 +121,12 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
     ctx.on("requestfailed", on_failed)
     ctx.on("console", on_console)
     ctx.route("**/*", write_guard)
+    rules = form.get("network_rules") or []
+
+    def permitted(r: dict) -> bool:
+        return any(r["method"] in ru.get("methods", ["GET"]) and r["host"] == urlsplit(ru["origin"]).netloc
+                   and fnmatch(urlsplit(r["url"]).path, ru.get("path", "/*")) for ru in rules)
+
     page = ctx.new_page()
     page.on("pageerror", lambda e: st["page_errors"].append({"text": str(e)[:200], "phase": st["phase"]}))
     page.on("dialog", lambda d: (st["dialogs"].append({"type": d.type, "message": d.message[:80]}), d.dismiss()))
@@ -127,11 +141,16 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         except Exception:  # noqa: BLE001 - busy pages never go idle; the walk has its own readiness wait
             pass
         page.wait_for_timeout(1500)
+        if form.get("setup_js"):  # harness-side preparation only (e.g. remove a consent overlay); recorded in run.json
+            page.evaluate(form["setup_js"])
+            row["setup_js"] = form["setup_js"]
+            page.wait_for_timeout(500)
         row["loaded_url"] = short(page.url)
         row["title"] = page.title()[:80]
         st["phase"] = "walk"
-        result = run_form(page, source, policy=DiscoveryPolicy(revisit_with_back=bool(form.get("back"))), confirm_ms=1500,
-                          readiness_timeout_ms=15000, out_dir=out)
+        result = run_form(page, source, policy=DiscoveryPolicy(**{"revisit_with_back": bool(form.get("back")), **form.get("policy", {})}), confirm_ms=1500,
+                          readiness_timeout_ms=15000, out_dir=out,
+                          network_policy=NetworkPolicy.from_dict({"rules": rules}) if rules else None)
     except Exception as exc:  # noqa: BLE001 - a crash is a result
         row["crashed"] = f"{type(exc).__name__}: {str(exc).splitlines()[0][:200]}"
         (out / "crash.txt").write_text(traceback.format_exc(), encoding="utf-8")
@@ -150,11 +169,12 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         "before_walk_hosts": dict(Counter(r["host"] for r in reqs if r["phase"] == "load").most_common(8)),
         "during_walk": len(walk),
         "during_walk_failed": sum(1 for r in walk if r["outcome"] == "failed"),
-        "during_walk_completed": [r for r in walk if r["outcome"] == "finished"],
+        "during_walk_completed": [r for r in walk if r["outcome"] == "finished" and not permitted(r)],
+        "relayed_under_explicit_rules": [r for r in walk if r["outcome"] == "finished" and permitted(r)],
         "during_walk_writes": [r for r in walk if r["method"] not in ("GET", "HEAD", "OPTIONS")],
         "harness_blocked_writes": st["harness_blocked"],
     }
-    final_clicks = [c for c in st["clicks"] if FINAL_ACTION.search(c.get("text", "")) or c.get("type") == "submit"]
+    final_clicks = [c for c in st["clicks"] if FINAL_ACTION.search(c.get("text", "")) or c.get("submits")]
     row["clicks"] = {"total": len(st["clicks"]), "texts": [c["text"] for c in st["clicks"] if c.get("text")][:30], "final_action_like": final_clicks}
     row["submit_events"] = len(st["submits"])
     row["dialogs"] = st["dialogs"]
@@ -296,7 +316,7 @@ def score_one(out_root: Path, form_id: str, source: str) -> dict | None:
     run = json.loads((out_root / form_id / source / "run.json").read_text(encoding="utf-8"))
     return {"form": form_id, "source": source, "status": result["status"], "steps": run.get("steps_visited"), "stop": run.get("stop_reason"),
             "questions": c["questions"], "expected_answerable": c["expected_answerable"], "entered": entered_n, "correct": c["correct"],
-            "wrong_value": c["wrong_value"], "unsafe": c["unsafe"] + c["entered_chrome"], "missed": c["missed"],
+            "wrong_value": c["wrong_value"], "unsafe": c["unsafe"], "missed": c["missed"],
             "correct_abstentions": c["correct_abstentions"], "answer_not_entered": c["answer_not_entered"], "page_chrome": c["page_chrome"],
             "unsupported": len(result.get("unsupported", [])), "unlabelled": c["unlabelled"], "verified_of_correct": c["correct_verified"],
             "precision": (c["correct"] / entered_n) if entered_n else None, "coverage": (c["correct"] / c["expected_answerable"]) if c["expected_answerable"] else None,

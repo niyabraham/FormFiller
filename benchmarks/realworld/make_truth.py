@@ -219,6 +219,18 @@ SPEC = {
     },
 }
 
+# supplemental runs (same questions as a main form, or extra generic demo fields): written from their question lists only
+for _s in SPEC:
+    SPEC[_s]["opnform_scholarship_back"] = SPEC[_s]["opnform_scholarship"]
+    SPEC[_s]["surveyjs_wizard_nobanner"] = SPEC[_s]["surveyjs_wizard"]
+    SPEC[_s]["formio_wizard_advance"] = SPEC[_s]["formio_wizard"]
+    SPEC[_s]["formio_wizard_rules"] = SPEC[_s]["formio_wizard"] + [
+        r("Textfield on Page 2", "demo field, no matching fact"),
+        r("Customer", "demo select of the Form.io demo customers"),
+        r("autocomplete", "demo field"),
+        r("FieldSet Label Textfield", "demo field"),
+    ]
+
 n = 0
 for source, forms in SPEC.items():
     for form, rows in forms.items():
