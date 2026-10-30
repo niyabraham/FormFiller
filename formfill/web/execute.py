@@ -39,13 +39,32 @@ def framework_attached(page: Page, control: Control) -> bool | None:
         return None
 
 
+# A react-select-style combobox: its <input role=combobox> only holds the text being searched for and is emptied once an option is
+# chosen; the choice is drawn in a sibling element inside the same widget (a `...singleValue` element, or one `...multiValue` chip per
+# choice). That element is what the control holds. It is looked for only in the widget around the input: the search stops at the first
+# ancestor that also contains another form control, so one widget's selection is never read as another's. No selection element found:
+# null, and the input's own value is used, as for any other combobox (RW-10).
 _READ_JS = """
 els => {
   if (!els.length) return {found: false};
   const e = els[0]; const t = (e.type || '').toLowerCase(); const tag = e.tagName.toLowerCase();
+  const shown = c => {
+    const hits = Array.from(c.querySelectorAll('[class*="single-value" i],[class*="singlevalue" i],[class*="multi-value" i]:not([class*="remove" i]),[class*="multivalue" i]:not([class*="remove" i])'));
+    return hits.filter(h => !hits.some(o => o !== h && o.contains(h))).map(h => (h.textContent || '').replace(/\\s+/g, ' ').trim()).filter(Boolean);
+  };
+  const chosen = () => {
+    for (let c = e.parentElement, i = 0; c && i < 6; c = c.parentElement, i++) {
+      if (Array.from(c.querySelectorAll('input,select,textarea,[role=combobox]')).some(x => x !== e && x.type !== 'hidden')) return null;
+      const texts = shown(c);
+      if (texts.length) return texts.join(', ');
+    }
+    return null;
+  };
+  const picked = e.getAttribute('role') === 'combobox' && tag === 'input' ? chosen() : null;
   let value;
   if (e.getAttribute('role') === 'combobox' && tag !== 'input' && tag !== 'select') { value = (e.textContent || '').replace(/\\s+/g, ' ').trim(); return {found: true, value, valid: true, message: ''}; }
-  if (t === 'radio') { const c = els.find(x => x.checked); value = c ? c.value : null; }
+  if (picked !== null) { value = picked; }
+  else if (t === 'radio') { const c = els.find(x => x.checked); value = c ? c.value : null; }
   else if (t === 'checkbox') { value = els.length > 1 ? els.filter(x => x.checked).map(x => x.value) : e.checked; }
   else if (tag === 'select' && e.multiple) { value = Array.from(e.selectedOptions).map(o => o.value); }
   else { value = e.value; }
