@@ -60,6 +60,7 @@ from formfill.web.tokens import (
     ORGANISATION_WORDS,
     QUALIFIERS,
     SELF_REFERENCE,
+    SLOT_WORDS,
     TOPICS,
     period_markers,
     tokenize,
@@ -211,6 +212,12 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
     q_topics, key_topics = q_eff & TOPICS, (leaf.parent_tokens | leaf.leaf_tokens) & TOPICS
     if q_topics and key_topics and not q_topics & key_topics:
         flags.append(f"topic differs: the question is about {sorted(q_topics)}, the key about {sorted(key_topics)}")
+        score = min(score, UNEXPLAINED_CAP)
+    extra = leaf.leaf_tokens - q_eff - SLOT_WORDS
+    if len(q_eff) == 1 and extra:
+        # RW-1: a one-word question ("Last", "Email") that matches one word of a longer key answers a different question when the
+        # other words are qualifiers (`last_date`, `ciso_email`); both scored 0.667, just over the answer threshold
+        flags.append(f"a one-word question explains only part of the key (the key also says {sorted(extra)})")
         score = min(score, UNEXPLAINED_CAP)
     neg_q, neg_l = q_tokens & NEGATORS, explained_by & NEGATORS
     if neg_q != neg_l:

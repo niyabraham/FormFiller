@@ -45,6 +45,7 @@ FINAL_ACTION = re.compile(r"\b(submit|send|complete|finish|finali[sz]e|sign|cert
 TRIPWIRE_JS = r"""
 (() => {
   const log = (kind, data) => { try { console.log('__ff_' + kind + '__' + JSON.stringify(data)); } catch (e) {} };
+  window.addEventListener('offline', () => log('offline', {}));  // FormFiller's guard puts the context offline when it engages
   document.addEventListener('submit', e => log('submit', {action: (e.target && e.target.action) || ''}), true);
   document.addEventListener('click', e => {
     const t = e.target && e.target.closest ? e.target.closest('button, a, input, [role=button], label') : null;
@@ -105,13 +106,17 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         t = msg.text
         if t.startswith("__ff_click__"):
             st["clicks"].append(json.loads(t[len("__ff_click__"):]))
+        elif t.startswith("__ff_offline__"):
+            if st["phase"] == "prewalk":
+                st["phase"] = "walk"
+                st["guard_seen"] = True
         elif t.startswith("__ff_submit__"):
             st["submits"].append(json.loads(t[len("__ff_submit__"):]))
         elif msg.type in ("error", "warning"):
             st["console"].append({"type": msg.type, "text": t[:200], "phase": st["phase"]})
 
     def write_guard(route, request):  # the harness's own, stricter layer on top of FormFiller's guard
-        if st["phase"] == "walk" and request.method not in ("GET", "HEAD", "OPTIONS"):
+        if st["phase"] in ("prewalk", "walk") and request.method not in ("GET", "HEAD", "OPTIONS"):
             st["harness_blocked"].append({"method": request.method, "url": short(request.url)})
             return route.abort("blockedbyclient")
         return route.fallback()
@@ -147,7 +152,7 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
             page.wait_for_timeout(500)
         row["loaded_url"] = short(page.url)
         row["title"] = page.title()[:80]
-        st["phase"] = "walk"
+        st["phase"] = "prewalk"  # run_form has started; FormFiller's guard engages a little later (the page then sees `offline`)
         result = run_form(page, source, policy=DiscoveryPolicy(**{"revisit_with_back": bool(form.get("back")), **form.get("policy", {})}), confirm_ms=1500,
                           readiness_timeout_ms=15000, out_dir=out,
                           network_policy=NetworkPolicy.from_dict({"rules": rules}) if rules else None)
@@ -164,8 +169,12 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
 
     reqs = list(st["reqs"].values())
     walk = [r for r in reqs if r["phase"] == "walk"]
+    pre = [r for r in reqs if r["phase"] == "prewalk"]
+    row["guard_observed"] = bool(st.get("guard_seen"))
     row["requests"] = {
         "before_walk": sum(1 for r in reqs if r["phase"] == "load"),
+        "before_guard_in_run": len(pre),  # run_form started, guard not yet engaged: documented as outside the guard (SECURITY_MODEL.md)
+        "before_guard_completed": [{k: r[k] for k in ("method", "type", "url")} for r in pre if r["outcome"] == "finished"],
         "before_walk_hosts": dict(Counter(r["host"] for r in reqs if r["phase"] == "load").most_common(8)),
         "during_walk": len(walk),
         "during_walk_failed": sum(1 for r in walk if r["outcome"] == "failed"),
@@ -189,6 +198,9 @@ def run_one(browser, form: dict, source_name: str, source: dict, out_root: Path)
         row["violations"].append(f"{len(row['requests']['during_walk_completed'])} request(s) completed during the walk")
     # critical = something may have got out or been pressed: the batch stops. A blocked write attempt is recorded but is not critical.
     row["critical"] = list(row["violations"])
+    if result is not None and not row["guard_observed"]:
+        row["violations"].append("the page never saw the guard engage (no offline event): the walk cannot be treated as guarded")
+        row["critical"].append(row["violations"][-1])
     if row["requests"]["during_walk_writes"] or st["harness_blocked"]:
         row["violations"].append("write request(s) attempted during the walk (blocked)")
 
