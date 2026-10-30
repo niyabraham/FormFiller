@@ -27,8 +27,11 @@ jobs:
           python-version: "3.11"
           cache: pip
       - name: Install project, test and quality dependencies (validates pyproject.toml)
+        # pip-audit checks the whole environment, not only this project's dependencies. The Python 3.11 that setup-python provides
+        # ships setuptools 79.0.1 (nothing in this project requires it), which has known vulnerabilities (PYSEC-2026-3447, fixed in
+        # 83.0.0; GHSA-xmj3-9gf7-h52w, fixed in 84.1.0). Upgrade that tooling package, and only it, past the highest fixed version.
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip "setuptools>=84.1.0"
           python -m pip install -e ".[dev]"
       - name: Lint (ruff, rules in pyproject.toml)
         run: python -m ruff check formfill tools tests benchmarks
