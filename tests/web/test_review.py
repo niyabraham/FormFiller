@@ -189,8 +189,14 @@ def test_the_review_page_edits_validates_and_never_offers_to_submit(browser, tmp
         employees = page.locator('.item[data-qid="a"]')
         employees.locator("input.edit").fill("lots")
         employees.locator('button[data-action="edit"]').click()
-        page.wait_for_selector(".err")
-        assert "not a valid answer" in employees.locator(".msg").inner_text()
+        # Wait for THIS item's error, not for any ".err": the attestation item always shows a static ".err" notice, which made the
+        # old wait return before the server had answered, so the message was read while still empty (it failed on slower CI runners).
+        # `expect` retries until the message appears.
+        from playwright.sync_api import expect
+
+        expect(employees.locator(".msg.err")).to_contain_text("not a valid answer")
+        expect(employees.locator(".msg.err")).to_contain_text("'lots' is not a number")  # says what is wrong, not just that it is
+        assert [i["decision"]["action"] for i in load_review(path)["items"]] == ["pending", "pending"]  # the invalid edit was not saved
         employees.locator("input.edit").fill("120")
         employees.locator('button[data-action="edit"]').click()
         # Locator waits run in Playwright's isolated world: the page's CSP (no eval) blocks `wait_for_function` on Playwright 1.48.
