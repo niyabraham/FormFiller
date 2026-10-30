@@ -43,7 +43,7 @@ from playwright.sync_api import Page
 from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
 from formfill.web import steps as _steps
-from formfill.web.discover import discover, find_unsupported
+from formfill.web.discover import PICKER_ROOT_JS, discover, find_unsupported
 from formfill.web.guard import _activate_wizard_network_guard, _request_record
 from formfill.web.models import AnswerPlanItem, Control, FormSchema, Question
 from formfill.web.netpolicy import NetworkPolicy, origin_of, redact_url
@@ -82,7 +82,8 @@ _SNAPSHOT_JS = r"""
   const txt = n => (n && n.textContent || '').replace(/\s+/g, ' ').trim();
   const pick = sel => Array.from(document.querySelectorAll(sel)).filter(vis).map(txt).filter(Boolean);
   const indicator = pick('[aria-current="step"],[role=tab][aria-selected="true"],[aria-current="page"][role=tab],.step.active,.active-step,.current-step');
-  const headings = pick('h1,h2,h3');
+  /*PICKER_ROOT*/
+  const headings = Array.from(document.querySelectorAll('h1,h2,h3')).filter(vis).filter(h => !pickerRoot(h)).map(txt).filter(Boolean);  // an open date picker's "March 1990" is not a step title (RW-12)
   const legends = pick('legend');
   const errors = pick('[role=alert],[aria-live=assertive],.error,.errors,.field-error,.invalid-feedback,.error-message,[data-error]');
   const invalid = Array.from(document.querySelectorAll('[aria-invalid="true"]')).filter(vis)
@@ -93,6 +94,9 @@ _SNAPSHOT_JS = r"""
           invalid: invalid.slice(0, 10)};
 }
 """
+
+
+_SNAPSHOT_JS = _SNAPSHOT_JS.replace("/*PICKER_ROOT*/", PICKER_ROOT_JS)
 
 
 def _sig_key(c: Control) -> tuple[str, ...]:

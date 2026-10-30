@@ -29,7 +29,7 @@ from formfill.web.models import Control, FormSchema, Option
 
 # The calendar popup that an element is part of, or null (RW-12). Shared by the question scan and the unsupported-control scan so both
 # agree on what a date picker's own UI is.
-_PICKER_ROOT_JS = r"""const PICKER_CLASS = /(^|[\s_-])(date-?picker|calendar|flatpickr)/i;
+PICKER_ROOT_JS = r"""const PICKER_CLASS = /(^|[\s_-])(date-?picker|calendar|flatpickr)/i;
   const PICKER_ARIA = /\b(date|calendar)\b/i;
   const NOT_TEXT = new Set(['number', 'hidden', 'button', 'submit', 'reset', 'image', 'checkbox', 'radio']);
   const pickerRoot = n => {
@@ -190,7 +190,7 @@ _EXTRACT_JS = r"""
 }
 """
 
-_EXTRACT_JS = _EXTRACT_JS.replace("/*PICKER_ROOT*/", _PICKER_ROOT_JS)
+_EXTRACT_JS = _EXTRACT_JS.replace("/*PICKER_ROOT*/", PICKER_ROOT_JS)
 
 # Elements that look like encapsulated widgets whose inside we cannot read (a custom element with no open shadow
 # root and no light children: closed shadow root, or an empty component). Reported, never guessed at.
@@ -274,7 +274,7 @@ _UNSUPPORTED_JS = r"""
 """
 
 
-_UNSUPPORTED_JS = _UNSUPPORTED_JS.replace("/*PICKER_ROOT*/", _PICKER_ROOT_JS)
+_UNSUPPORTED_JS = _UNSUPPORTED_JS.replace("/*PICKER_ROOT*/", PICKER_ROOT_JS)
 
 
 def find_unsupported(page: Page) -> list[dict]:

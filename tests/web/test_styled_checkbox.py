@@ -185,3 +185,14 @@ def test_a_wrapping_label_that_belongs_to_another_checkbox_is_never_clicked(page
     with pytest.raises(ValueError, match="no label"):
         fill_control(page, second, True, 2000)
     assert checked(page, "a", "b") == [False, False] and page.evaluate("window.changes") == 0
+
+
+def test_a_label_covered_by_an_open_popup_fails_safely_and_clicks_what_covers_it_never(page):
+    """RW-14 (known limitation, see REAL_WORLD_TESTING_REPORT.md 14): DemoQA's date popup stays open after the date is typed and covers the
+    Hobbies row. The label cannot be reached, so the answer is not entered and is reported as failed; nothing is clicked through the
+    cover, and nothing is set through JavaScript. Closing such a popup is a separate decision."""
+    load(page, SINGLE_FOR + '<div id="popup" style="position:fixed;inset:0"></div>'
+               "<script>window.coverClicks = 0; document.getElementById('popup').addEventListener('click', () => window.coverClicks++);</script>")
+    with pytest.raises(Exception, match="Timeout"):
+        fill_control(page, control(page, "Subscribe to updates"), True, 600)
+    assert not page.is_checked("#n") and page.evaluate("window.coverClicks") == 0

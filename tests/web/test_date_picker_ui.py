@@ -156,3 +156,12 @@ def test_a_custom_listbox_that_is_not_part_of_a_picker_is_still_reported(page):
     load(page, REACT_POPUP, '<div role="listbox" aria-label="Pick a plan"><div role="option">Basic</div></div>')
     kinds = [(u["kind"], u["label"]) for u in run_form(page, SOURCE, confirm_ms=0).unsupported]
     assert kinds == [("aria_listbox", "Pick a plan")]
+
+
+@pytest.mark.parametrize("name", ["react-datepicker", "ARIA dialog only"])
+def test_the_popup_heading_is_not_the_title_of_the_step_in_a_walk(page, name):
+    """The walk titles a step with its last visible heading and fingerprints the step with its headings, so an open picker's "March 1990"
+    would have become the step's title and a month change would have looked like a new step."""
+    load(page, POPUPS[name])
+    result = run_form(page, SOURCE, policy=DiscoveryPolicy(), confirm_ms=0)
+    assert [s["heading"] for s in result.navigation["steps"]] == ["Student registration"], name
