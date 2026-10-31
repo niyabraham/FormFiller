@@ -1,0 +1,322 @@
+[
+ {
+  "form": "mech_surveyjs_dropdown",
+  "source": "mechanics",
+  "url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+  "crashed": null,
+  "setup_js": "document.querySelectorAll('[class*=banner--cookies]').forEach(e => e.remove())",
+  "loaded_url": "https://surveyjs.io/form-library/examples/create-dropdown-menu-in-javascript/reactjs",
+  "title": "Add a Dropdown Menu to a Form | Free JavaScript Example",
+  "oracle": {
+   "displayed": "",
+   "inputValue": "Toyota"
+  },
+  "elapsed_s": 9.7,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 48,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "before_walk_hosts": {
+    "surveyjs.io": 24,
+    "cdn.surveyjs.io": 6,
+    "unpkg.com": 3,
+    "fonts.gstatic.com": 3,
+    "fonts.googleapis.com": 2,
+    "www.googletagmanager.com": 2,
+    "www.google.com": 1,
+    "ad.doubleclick.net": 1
+   },
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "9 control(s) stayed hidden and were not asked"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "verified": 1
+  }
+ },
+ {
+  "form": "mech_surveyjs_conditional",
+  "source": "mechanics",
+  "url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+  "crashed": null,
+  "setup_js": "document.querySelectorAll('[class*=banner--cookies]').forEach(e => e.remove())",
+  "loaded_url": "https://surveyjs.io/form-library/examples/implement-conditional-logic-to-change-question-visibility/vue3js",
+  "title": "Add Conditional Logic to Change Question Visibility | Form Builder for JavaScrip",
+  "oracle": {
+   "checked": "9",
+   "questionTitles": [
+    "On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague?",
+    "What can we do to make your experience more satisfying?",
+    "Which of the following features do you value the most? *"
+   ]
+  },
+  "elapsed_s": 9.8,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 52,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "before_walk_hosts": {
+    "surveyjs.io": 27,
+    "cdn.surveyjs.io": 6,
+    "unpkg.com": 3,
+    "fonts.gstatic.com": 3,
+    "fonts.googleapis.com": 2,
+    "www.googletagmanager.com": 2,
+    "api.surveyjs.io": 1,
+    "www.google.com": 1
+   },
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 2,
+   "texts": [
+    "9",
+    "9"
+   ],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [
+   {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "phase": "load"
+   }
+  ],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "required_unresolved",
+  "completion": "incomplete",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "required_unresolved",
+   "network_guard_active"
+  ],
+  "warnings": [
+   "navigation stopped early (required_unresolved); later steps were not filled and the form was not submitted",
+   "6 control(s) stayed hidden and were not asked"
+  ],
+  "unsupported": [],
+  "revisit": null,
+  "field_states": {
+   "verified": 1,
+   "needs_review": 8
+  }
+ },
+ {
+  "form": "mech_demoqa_practice",
+  "source": "mechanics",
+  "url": "https://demoqa.com/automation-practice-form",
+  "crashed": null,
+  "loaded_url": "https://demoqa.com/automation-practice-form",
+  "title": "demosite",
+  "oracle": {
+   "first": "Test",
+   "last": "User",
+   "email": "test.user@example.test",
+   "gender": [
+    "Other"
+   ],
+   "mobile": "5551234567",
+   "dob": "15 Mar 1990",
+   "subjects": [
+    "Maths"
+   ],
+   "hobbies": [
+    "Sports",
+    "Reading"
+   ],
+   "address": "1 Example Street, Testville",
+   "state": "NCR",
+   "city": "Delhi"
+  },
+  "elapsed_s": 15.4,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 50,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "before_walk_hosts": {
+    "demoqa.com": 5,
+    "securepubads.g.doubleclick.net": 5,
+    "cm.g.doubleclick.net": 3,
+    "ep2.adtrafficquality.google": 3,
+    "www.googletagmanager.com": 2,
+    "www.google-analytics.com": 2,
+    "ep1.adtrafficquality.google": 2,
+    "rtb.openx.net": 2
+   },
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 3,
+   "texts": [
+    "Other",
+    "1",
+    "2"
+   ],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "1 visible control(s) cannot be filled by FormFiller and were not touched (0 required): uploadPicture (file_upload); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "file_upload",
+    "label": "uploadPicture",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "verified": 12,
+   "needs_review": 1
+  }
+ },
+ {
+  "form": "mech_selenium_webform",
+  "source": "mechanics",
+  "url": "https://www.selenium.dev/selenium/web/web-form.html",
+  "crashed": null,
+  "loaded_url": "https://www.selenium.dev/selenium/web/web-form.html",
+  "title": "Web form",
+  "oracle": {
+   "text": "Mechanics text",
+   "textarea": "Mechanics notes",
+   "select": "Open this select menu",
+   "datalist": "",
+   "color": "#336699",
+   "date": "03/14/2026",
+   "range": "7"
+  },
+  "elapsed_s": 6.2,
+  "guard_observed": true,
+  "requests": {
+   "before_walk": 6,
+   "before_guard_in_run": 0,
+   "before_guard_completed": [],
+   "before_walk_hosts": {
+    "cdn.jsdelivr.net": 2,
+    "unpkg.com": 2,
+    "www.selenium.dev": 1,
+    "code.jquery.com": 1
+   },
+   "during_walk": 0,
+   "during_walk_failed": 0,
+   "during_walk_completed": [],
+   "relayed_under_explicit_rules": [],
+   "during_walk_writes": [],
+   "harness_blocked_writes": []
+  },
+  "clicks": {
+   "total": 0,
+   "texts": [],
+   "final_action_like": []
+  },
+  "submit_events": 0,
+  "dialogs": [],
+  "console_errors": [],
+  "page_errors": [],
+  "violations": [],
+  "critical": [],
+  "status": "NEEDS_REVIEW",
+  "stop_reason": "no_safe_next_control",
+  "completion": "unconfirmed",
+  "steps_visited": 1,
+  "network_mode": "block_all",
+  "formfill_blocked_requests": [],
+  "notes": [
+   "control_stayed_disabled",
+   "no_safe_next_control",
+   "network_guard_active",
+   "completion_unconfirmed"
+  ],
+  "warnings": [
+   "could not confirm the last step was reached (no recognised next-step control); the form was not submitted - review before submitting",
+   "2 visible control(s) cannot be filled by FormFiller and were not touched (0 required): Password (password); File input (file_upload); a person must handle them"
+  ],
+  "unsupported": [
+   {
+    "kind": "password",
+    "label": "Password",
+    "required": false
+   },
+   {
+    "kind": "file_upload",
+    "label": "File input",
+    "required": false
+   }
+  ],
+  "revisit": null,
+  "field_states": {
+   "verified": 5,
+   "needs_review": 5
+  }
+ }
+]

@@ -171,7 +171,7 @@ Remaining work: RW-3 to RW-13 are not implemented. Suggested next: RW-10 and RW-
 (guard for single-page runs) and RW-4 (name the overlay), then RW-3 after measuring on the benchmarks. (Written before RW-10 to RW-13
 were done; see the next section for their state.)
 
-## RW-10 to RW-13 (30 Oct 2026, branch `feat/rw10-13-widget-compat`, cut from `main` at `aaffff6`, not merged)
+## RW-10 to RW-13 (30 Oct 2026, branch `feat/rw10-13-widget-compat`, cut from `main` at `aaffff6`, merged as PR #24)
 
 Method per issue: reproduce against current code with a local page that has the DOM captured from the real site (read-only), tests
 first and seen failing, smallest change, neighbouring suites, commit. Full account, evidence and disclosures:
@@ -181,10 +181,10 @@ first and seen failing, smallest change, neighbouring suites, commit. Full accou
 | id | status | what | tests |
 |---|---|---|---|
 | RW-10 react-select read-back | DONE | `execute._READ_JS` reads the chosen value from the widget's `singleValue` / `multiValue` element; the real DemoQA Subjects, State and City are now `verified` | `test_react_select_readback.py` (10) |
-| RW-11 styled checkbox | DONE for the reproduced structure; **not** end to end on DemoQA (see RW-14) | `execute._set_checkbox`: label click, state read back, never forced; refuses disabled boxes, labels with links or buttons, labels of another input | `test_styled_checkbox.py` (16) |
+| RW-11 styled checkbox | DONE for the reproduced structure; **not** end to end on DemoQA (see RW-14; end to end since, next section) | `execute._set_checkbox`: label click, state read back, never forced; refuses disabled boxes, labels with links or buttons, labels of another input | `test_styled_checkbox.py` (16) |
 | RW-12 date-picker UI | DONE | month / year selects and numbers inside a calendar popup are not questions; popup headings are ignored for sections, unsupported-control and step-title scans (`discover.PICKER_ROOT_JS`) | `test_date_picker_ui.py` (22) |
 | RW-13 radio-group reporting | DONE | a `role=radiogroup` around native radios is not also reported unsupported; its `aria-required` marks the radio control | `test_radiogroup_reporting.py` (14) |
-| RW-14 (new) popup left open covers later controls | OPEN, not implemented | DemoQA's date popup covers the Hobbies row, so the label cannot be clicked; reported `rejected`, nothing clicked through; closing it needs a key press after text entry, which needs a decision | pinned by `test_a_label_covered_by_an_open_popup_fails_safely_...` |
+| RW-14 (new) popup left open covers later controls | OPEN when written; DONE for react-datepicker on branch `fix/rw14-date-popup-dismissal` (next section) | DemoQA's date popup covers the Hobbies row, so the label cannot be clicked; reported `rejected`, nothing clicked through; closing it needs a key press after text entry, which needs a decision | pinned by `test_a_label_covered_by_an_open_popup_fails_safely_...` |
 
 | measurement | before (RW-1 + RW-2) | after |
 |---|---|---|
@@ -202,5 +202,36 @@ qualifier guard. (2) The first final evaluation was interrupted (a network outag
 walk); both were repeated, see report 14.5. (3) `docs/SECURITY_MODEL.md` was not changed: no documented guarantee or limitation
 moved.
 
-Remaining work: approve or decline RW-14; RW-3 to RW-9 and the technical debt in report 14.5 are untouched. Nothing from this branch
-is merged; `main` is unchanged.
+Remaining work (when written): approve or decline RW-14; RW-3 to RW-9 and the technical debt in report 14.5 are untouched. This
+branch was merged as PR #24; RW-14 is the next section.
+
+## RW-14 (31 Oct 2026, branch `fix/rw14-date-popup-dismissal`, cut from `main` at `4032bd6`, not merged)
+
+First a post-merge baseline on `main` (report 15.1: 1354 passed, 2 xfailed; every benchmark as before). Then the live DemoQA page was
+inspected read only (report 15.2, 15.3), the tests were written first and seen failing, and the smallest change was made. Full
+account, evidence and disclosures: `REAL_WORLD_TESTING_REPORT.md` section 15. Results: `benchmarks/realworld/results/after-rw14-2026-10-31/`
+and `.../mechanics-after-rw14-2026-10-31/`; earlier snapshots untouched.
+
+| id | status | what | tests |
+|---|---|---|---|
+| RW-14 popup left open by a date entry covers later controls | DONE for react-datepicker | root cause: react-datepicker's blur handler does not close the popup, and the library then moves the focus into its day grid. After the normal entry, `execute._close_date_popup` presses one Escape in the field when a react-datepicker popup that this entry opened is still open, the field is not in a dialog or a fixed layer, no other dialog is open and the focus is on the field; otherwise nothing. Never a click | `test_date_popup_dismissal.py` (21) |
+| RW-14b (found by the regression run) Escape empties bootstrap-datepicker's typed date | handled by scope | the first, generic version emptied the date on Selenium's web form (caught by the read-back, reported, not verified); the close is limited to react-datepicker, and every other picker is left as on `main` | `test_other_picker_families_get_no_key_and_keep_the_typed_date` (4), `test_the_bootstrap_model_really_clears_on_escape` |
+
+| measurement | after RW-10 to RW-13 | after RW-14 |
+|---|---|---|
+| original 10 forms x 2 sources: precision / coverage / wrong fills | 100% (10/10) / 59% (10/17) / 0 | **100% (10/10) / 59% (10/17) / 0**; no question-level change (only DemoQA's own default date, on a question left for review) |
+| read-back verification failures on the 10 forms; unsupported controls reported | 0; 18 | 0; 18 |
+| RFI dev / held-out benchmarks | 105, 98.1%, 55.7% / 109, 100%, 40.1% | unchanged |
+| matching sets, SPA, wizards, widget fixtures | 1.00/0.933 and 1.00/0.706; 77/82, 11/12; 16/16; 12/12, 3/3 | unchanged |
+| full suite (browser required) | 1354 passed, 2 xfailed (on `main` at `4032bd6`) | **1375 passed, 2 xfailed, 0 failed, 0 skipped** (+21) |
+| ruff, mypy, pip-audit | clean (33 source files), no known vulnerabilities | same |
+| mechanics-only (separate): expected / confirmed / right but unconfirmed / failed / blocked by design | 21 / 17 / 0 / 2 / 2 | 21 / **19** / 0 / **0** / 2; page holds 18 of 20, 0 wrong fills |
+| safety, 32 runs | 0 submit events, 0 final-action clicks, 0 walk requests completed | same; guard observed 32 of 32 |
+
+Notes. (1) Live checks of the final code: DemoQA 5 of 5 (popup closed, date kept, Hobbies checked), Selenium's form 3 of 3 (no key,
+date kept). (2) The first regression run (generic version) is not a result: it found RW-14b. The real-world step of the second run
+failed on name resolution (machine offline) and was repeated on the same code; see report 15.6. (3) `docs/SECURITY_MODEL.md` was not
+changed: no documented guarantee or limitation moved.
+
+Remaining work: other picker libraries are not closed (each needs its own behaviour checked first); RW-3 to RW-9 and the technical debt
+in report 14.5 are untouched. Nothing from this branch is merged; `main` is unchanged.

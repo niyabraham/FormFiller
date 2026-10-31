@@ -1,6 +1,6 @@
 # Real-world compatibility testing report
 
-> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation). Section 14 records fixes RW-10 to RW-13 and a new finding, RW-14.
+> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation). Section 14 records fixes RW-10 to RW-13 and a new finding, RW-14. Section 15 records RW-14.
 
 Date: 30 Oct 2026. Code under test: `main` at `bc193c3` (PRs #19, #20 and #21 merged), Windows 11, Python 3.12, Playwright 1.64.1,
 Chromium 156. Branch `test/real-world-compat`. **No implementation file was changed**; this branch adds a test harness, test
@@ -425,3 +425,172 @@ limitation was altered, and absolute network isolation is still not claimed.
 * **Limits of the evidence.** The fixtures model DOM structure captured from DemoQA and SurveyJS and the documented structure of flatpickr and jQuery UI pickers; the real libraries were exercised only on the two public demo pages. RW-10 relies on a class-name convention (`...singleValue`, `...multiValue`) and reads several chips as one comma-joined value. RW-12 recognises pickers by class or ARIA label and month names in English only.
 * **Still open from before:** RW-3 to RW-9 (matching veto, overlay error text, tracking pixels, guard for single-page runs, unassociated labels, step headings from page chrome, disabled controls in walk mode). Not part of this work.
 * **Technical debt:** `_select_radio` clicks `labels[0] or closest('label')` without the "label's own control" check that checkboxes now have; `role=checkbox` / `switch` widgets are reported but not handled; native inputs hidden with `display:none` are not discovered; `Control.value` for a combobox still reads the input, not the displayed selection.
+
+## 15. Follow-up (31 Oct 2026): RW-14, the date popup left open by a date entry
+
+Branch `fix/rw14-date-popup-dismissal`, cut from `main` at `4032bd6` (after PR #24). **Not merged.** Sections 1 to 14 and every earlier
+result folder are unchanged; new results are in `benchmarks/realworld/results/after-rw14-2026-10-31/` (the 10 main forms and the 4
+supplemental ones, 28 runs) and `.../mechanics-after-rw14-2026-10-31/` (4 runs). The forms, sources, ground truth and scoring rules are
+the pre-committed ones, untouched.
+
+### 15.1 Post-merge baseline (`main` at `4032bd6`, before any change)
+
+Windows 11, Python 3.12.8, Playwright 1.64.1, Chromium 156.0.8078.4, `FORMFILL_REQUIRE_BROWSER=1`, the commands of
+`.github/workflows/tests.yml`.
+
+| check | result |
+|---|---|
+| full suite (`python -m pytest -q -rfEs`) | 1354 passed, 2 xfailed, 0 failed, 0 skipped |
+| ruff (`ruff check formfill tools tests benchmarks`), mypy | clean; no issues in 33 source files |
+| pip-audit (`--skip-editable`) | no known vulnerabilities (the first run flagged only the evaluation environment's own `pip` 24.3.1; upgraded, as CI does) |
+| matching sets (`tools/evaluate_matching.py`) | 1.00 / 0.933 and 1.00 / 0.706; proposals 1 of 1 and 4 of 4 right; 0 unsafe |
+| RFI development / held-out benchmarks | 105 correct, 98.1 %, 55.7 % (1 known disputed unsafe) / 109 correct, 100 %, 40.1 % |
+| SPA fixtures / wizard scenarios / widget fixtures | 77 of 82, 11 of 12 safe stops, 0 submit events / 16 of 16, 0 safety violations, 0 final submissions / 12 of 12, 3 of 3 |
+
+### 15.2 Root cause, from the live page (read only)
+
+A probe kept outside the repository opened the public page with FormFiller's own `discover` and `fill_control`, the harness's click
+and submit tripwire, every non-GET request aborted and dialogs dismissed. It typed only the fictional date and, in some variants,
+pressed one key in the date field and clicked the Hobbies labels. Nothing was submitted.
+
+* **Owner.** react-datepicker's popper (`div.react-datepicker-popper`, `position: absolute`, `z-index: 1`) inside
+  `div.react-datepicker__tab-loop`, rendered next to the input inside `div#dateOfBirth` in `form#userForm` (no portal). Its dialog has
+  `role=dialog`, `aria-label="Choose Date"`, `aria-modal="true"`; the input has no ARIA popup attributes. While it is open, the centres
+  of the Sports and Reading labels hit `div.react-datepicker__day-name`; Music lies outside it.
+* **State.** The DatePicker instance, read through React's fiber: after FormFiller's entry `open: true`, `focused: false`,
+  `inputValue: null`, `selected: 1990-03-15`, `dateFormat: "dd MMM yyyy"`. The date is committed: the library parses the typed text
+  as it changes and stores it.
+* **Why it stays open.** The library's own `handleBlur`, as the page ships it, only resets the typed text, and closes the popup only
+  when the page controls `open` itself; DemoQA does not. The popup closes on a day click, on Escape, Tab or Enter in the input
+  (`onInputKeyDown`), on Escape or Enter in the day grid (`onDayKeyDown`), or on a click outside (`handleCalendarClickOutside`).
+  FormFiller leaves a field with a blur, which is none of these.
+* **Focus.** With the field left, the library moves the keyboard focus into the day grid (`div.react-datepicker__day--015`). A key
+  pressed then acts on the calendar: Enter picks the focused day and the arrow keys move the selection.
+* **Escape in the input** calls `preventDefault`, blurs the field and closes the popup (`setOpen(false)`); it does not touch
+  `selected`, so it cannot change the date. Closing redraws the field from `selected`.
+
+### 15.3 Interactions tried on the live page (a fresh page each run)
+
+| after FormFiller's entry | runs | popup closed | date afterwards | Sports, Reading / Music | other boxes changed | submits, final-action clicks, dialogs |
+|---|---|---|---|---|---|---|
+| nothing (the behaviour on `main`) | 3 | 0 of 3 | `15 Mar 1990`, committed | click refused (timeout) / unchanged | none | 0, 0, 0 |
+| focus the field again, one Escape, leave it (chosen) | 8 | 8 of 8 | unchanged, committed | checked / unchanged | none | 0, 0, 0 |
+| one Escape before leaving the field | 2 | 2 of 2 | unchanged | checked / unchanged | none | 0, 0, 0 |
+| Tab | 2 | 2 of 2, but the focus moved into the Subjects combobox | unchanged | checked / unchanged | none | 0, 0, 0 |
+
+Tab was rejected: it moves the focus into the next control, which elsewhere could open a menu or a second picker. Escape before
+leaving the field was rejected in favour of the narrower variant, which leaves every field as before unless a popup survives the
+normal exit. Not tried, on purpose: a click "outside" (the point would have to be chosen on a page with ads and other controls), a
+forced click (it lands on the popup, i.e. on a day) and events dispatched from script (state set without a person's action).
+
+### 15.4 A second finding during the regression run: Escape is not a safe close key in general
+
+The first version pressed Escape for any calendar popup that `discover.PICKER_ROOT_JS` recognises. The mechanics evaluation on that
+version (kept outside the repository, not reported as a result) showed a regression on Selenium's web form: its date field, which
+held `03/14/2026` before, was **empty** afterwards, and the item was reported "right value, not confirmed" with the run `FAILED`.
+The read-back caught it (nothing was reported verified), but a correct entry had been destroyed. A step-by-step probe (3 runs)
+showed why: the page uses **bootstrap-datepicker 1.9.0**; after FormFiller's entry its popup is open and the field holds the date;
+one Escape in the field closes the popup **and empties the field**, in 3 of 3 runs. That library parses typed text on key events,
+which a programmatic fill does not send, so it held no date, and its Escape wrote that empty state back.
+
+So the close step is limited to react-datepicker, the one library whose Escape was read from its shipped code and checked on a live
+page. Every other picker is left exactly as on `main`: popup open, no key, the covered controls failing safely. With that change, on
+the live pages: Selenium's form, 3 runs: no key pressed, `03/14/2026` read back, popup left open; DemoQA, 5 runs: popup closed, date
+kept, Sports and Reading checked.
+
+### 15.5 The change
+
+`execute.fill_control`, for a text field only: before typing, note whether a react-datepicker popup is showing; after the normal entry
+(type, leave the field, wait for the page to settle) `_close_date_popup` presses **one** Escape, in the field, only when all of these
+hold:
+
+* the field is react-datepicker's (it sits in the library's `react-datepicker__input-container`) and a plain `<input type=text>` in
+  the page's own tree (not a search box, where Escape clears the text; not in a shadow root);
+* no react-datepicker popup was showing before the entry and one is showing, drawn over the page (`position: absolute` or
+  `fixed`), after the field was left;
+* the field is not inside a dialog (`dialog`, `role=dialog|alertdialog`, `aria-modal`) or a fixed-position layer, and no other dialog
+  is open: an Escape there could close the form's container or another window;
+* after the field is focused again, the focus is on the field itself, not in the popup.
+
+Then the field is left again as before and the popup is checked. Nothing is clicked and nothing is set by script. A popup still open
+is left so; what it covers fails safely, as before. Each outcome is recorded on the date item ("a date picker popup left open by this
+entry was closed with Escape in the field", "... was not closed: <why>", "... did not close on Escape"). The final read-back sees what
+the widget shows once closed, so a typed date the widget did not accept is no longer reported verified (before, the raw text in the
+open field was read back).
+
+Tests, written first (the fix ones seen failing): `tests/web/test_date_popup_dismissal.py`, 21 tests on a model of the widgets written
+for this project. They pin: the popup stays open without the fix and covers the boxes; it is closed and the boxes are set and read
+back, with one key only and the date kept; the close is recorded; the same in a guarded walk; a typed date the widget did not accept
+is reported, not verified; no key in a modal dialog, a native modal `<dialog>`, a fixed layer, or with another dialog open; a popup
+that ignores Escape gets one key and is left; no key when focusing the field moves the focus into the popup; no key when the popup
+closes on blur, was open before the entry, or never opens; a calendar drawn in the page neither blocks the close nor is closed; no
+key at all for flatpickr-, jQuery UI-, bootstrap-datepicker- and ARIA-dialog-style popups, whose typed date is kept (the
+bootstrap-datepicker model clears its field on Escape, as the real one did); no submit, no final-action click, no day clicked. The
+existing `test_a_label_covered_by_an_open_popup_fails_safely_...` (a cover FormFiller did not open) is unchanged apart from its
+docstring.
+
+### 15.6 Results (all on the final code)
+
+On the live pages with the final code (probe, a fresh page each run): **DemoQA, 5 runs**: FormFiller's own entry closed the popup;
+`15 Mar 1990` kept and committed (`selected: 1990-03-15`); Sports and Reading checked and read back; Music and every other box,
+the URL and the form unchanged; 0 submits, 0 final-action clicks, 0 dialogs (10 runs with the first version behaved the same on this
+page). **Selenium's web form, 3 runs**: no key pressed, `03/14/2026` read back, popup left open as on `main`.
+
+| check, final code | result |
+|---|---|
+| full suite (`FORMFILL_REQUIRE_BROWSER=1 python -m pytest -q -rfEs`) | **1375 passed, 2 xfailed, 0 failed, 0 skipped** (1354 + 21 new) |
+| ruff, mypy, pip-audit | clean; no issues in 33 source files; no known vulnerabilities |
+| matching sets, RFI development / held-out, SPA fixtures, wizard scenarios, widget fixtures | identical to 15.1 |
+
+The original 10 forms x 2 sources (same forms, sources, ground truth and scoring rules; the matching evaluation):
+
+| measurement | after RW-1 + RW-2 | after RW-10 to RW-13 | after RW-14 |
+|---|---|---|---|
+| precision | 100% (10/10) | 100% (10/10) | **100% (10/10)** |
+| coverage | 59% (10/17) | 59% (10/17) | **59% (10/17)** |
+| wrong fills (unsafe) | 0 | 0 | **0** |
+| correct abstentions | 129 | 129 | 129 |
+| read-back verification failures (right value, not confirmed) | 0 | 0 | 0 |
+| unsupported controls reported | 20 | 18 | 18 |
+
+Question by question, the 28 runs are identical to the RW-10 to RW-13 run except that DemoQA's date field, which FormFiller correctly
+leaves for review in both sources, holds the page's own default, today's date (30 Oct then, 31 Oct now). That date is never entered
+in this evaluation, so the change cannot act there.
+
+**Mechanics-only evaluation (kept apart; never part of the precision and coverage above).** Same four forms, source and oracle:
+
+| | expected fills | confirmed | right on the page, not confirmed | failed | blocked by design | page holds | wrong fills | unsupported |
+|---|---|---|---|---|---|---|---|---|
+| after RW-10 to RW-13 (14.2) | 21 | 17 | 0 | 2 | 2 | 17 of 20 | 0 | 3 |
+| after RW-14 | 21 | **19** | 0 | **0** | 2 | **18 of 20** | 0 | 3 |
+
+DemoQA's Sports and Reading checkboxes are now entered and verified, and its date item records "a date picker popup left open by this
+entry was closed with Escape in the field". The two left are the bracketed-qualifier guard on Selenium's form (by design). Selenium's
+date, which the first version emptied (15.4), is held as before.
+
+**Safety, 32 runs (28 + 4):** 0 submit events, 0 clicks on final-action controls, 0 requests completed during a guarded walk, 0
+dialogs, 0 critical flags, 0 crashes, the guard observed in 32 of 32. The only violation rows are 123FormBuilder's own beacons: 7 write
+attempts in this run, every one blocked (11 in the RW-10 to RW-13 run; the count follows the page's timing). `docs/SECURITY_MODEL.md`
+was not changed: no documented guarantee or limitation moved. The new interaction is one Escape in a text field FormFiller has just
+typed into: never on a button or other control, never Enter, never a click; it cannot submit a form.
+
+Disclosures. (1) The first regression run was made on the first, broader version and found the Selenium regression (15.4); it is not
+a result. (2) In the second run the suite and benchmarks completed, but the real-world step failed within 27 seconds: every page gave
+`ERR_NAME_NOT_RESOLVED` (this machine's name resolution was down; all 32 runs stopped at `Page.goto`, before anything was typed). It is
+reported as unavailable, not as a result. Once the sites resolved again, the real-world and mechanics evaluations were repeated on the
+same code (`formfill/web/execute.py` blob `dd924f8`), and that repeat is the result above.
+
+### 15.7 Limits and what is still open
+
+* **One library.** The close step was verified against react-datepicker as DemoQA ships it, in 23 probe runs and one mechanics evaluation run. Other
+  builds of the library, and its `customInput`, `withPortal` or `inline` modes, were not tried on a real page.
+* **Other pickers are not closed.** flatpickr, jQuery UI, bootstrap-datepicker, ARIA-only and unknown popups are left open as on
+  `main`; a control they cover is refused and reported, never forced. Closing them would need each library's own behaviour checked
+  first: bootstrap-datepicker shows that a generic Escape can destroy an entry.
+* **Where the key is never pressed** (the field in a dialog, a fixed-position layer, a shadow root, with another dialog open, or when
+  focusing the field moves the focus into the popup), the popup stays open and what it covers fails safely.
+* **Residual risk.** A page-level Escape handler that is neither a dialog nor a fixed layer (for example one that leaves a full-screen
+  view) could still react to the key. None was seen; it is not detectable in general.
+* **Read-back is a string comparison.** A widget that redraws the committed date in another format when it closes would have its date
+  reported for review rather than verified. Conservative; it can lower coverage.
+* RW-3 to RW-9 and the technical debt in section 14.5 are untouched.

@@ -17,6 +17,7 @@ from typing import Any
 from playwright.sync_api import Page
 from playwright.sync_api import TimeoutError as PlaywrightTimeout
 
+from formfill.web.discover import PICKER_ROOT_JS
 from formfill.web.models import Control
 from formfill.web.netpolicy import redact_url
 
@@ -87,14 +88,18 @@ def _locator(page: Page, control: Control):
 
 
 def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 5000) -> list[str]:
-    """Enter one validated answer. Raises on any failure; the caller records it. Returns warnings (normally empty):
-    currently only UNSETTLED, when the page was still changing after the field was left."""
+    """Enter one validated answer. Raises on any failure; the caller records it. Returns notes for the item (normally empty):
+    UNSETTLED when the page was still changing after the field was left, and a note when a date picker popup that a text entry
+    left open was closed, or could not be (RW-14, _close_date_popup)."""
     loc = _locator(page, control)
     kind = control.kind
     warnings: list[str] = []
     if kind in _TEXTLIKE:
+        before = _popup_state(loc) if kind == "text" else None
         loc.fill(str(answer), timeout=timeout_ms)
         warnings += _commit(page, control, loc, timeout_ms)
+        if before is not None and not before["open"]:
+            warnings += [w for w in _close_date_popup(page, control, loc, timeout_ms) if w not in warnings]
     elif kind == "combobox":
         _fill_combobox(page, control, loc, answer, timeout_ms)
     elif kind == "select":
@@ -151,6 +156,80 @@ def _commit(page: Page, control: Control, loc, timeout_ms: int) -> list[str]:
     if st.get("settled", True):
         return []
     return [f"{UNSETTLED} within {_SETTLE_MAX_MS} ms after leaving the field; questions that depend on this answer may not have appeared yet"]
+
+
+# RW-14. A date entry can open a calendar popup that leaving the field does not close: react-datepicker (DemoQA) closes it on a day
+# click, Escape, Tab, Enter or a click outside, not on blur, and then moves the keyboard focus into its day grid. The popup covers the
+# controls under it, so a later click on them is refused. A person closes it with Escape in the field, and so does FormFiller: once, and
+# only when every one of these holds, so that the key cannot close or change anything else:
+#   * the widget is react-datepicker (its input sits in `react-datepicker__input-container`, its popup is `react-datepicker-popper`):
+#     its Escape closes the popup without touching the chosen date (read from its shipped handlers). Escape is NOT a safe close key in
+#     general: bootstrap-datepicker (Selenium's web form) clears a typed date on Escape, so every other picker is left as it is;
+#   * the field is a plain <input type=text> in the page's own tree (not a search box, where Escape clears the text);
+#   * no such popup (also recognised by discover.PICKER_ROOT_JS, drawn over the page) was showing before the entry, and one is after
+#     the field was left;
+#   * the field is not inside a dialog or a fixed-position layer, and no other dialog is open: Escape could close those instead;
+#   * once the field is focused again, the focus is on the field itself, never in the popup (a key in a day grid can pick a day).
+# Nothing is clicked. A popup still open afterwards is left so: a click it covers is refused and reported, never forced. The date read
+# back afterwards is what the widget shows once closed, so a typed date the widget did not accept is not reported verified.
+_DATE_POPUP_JS = r"""
+e => {
+  /*PICKER_ROOT*/
+  const doc = e.ownerDocument;
+  const vis = n => { const r = n.getBoundingClientRect(); if (!(r.width > 0 && r.height > 0)) return false;
+    const s = getComputedStyle(n); return s.visibility !== 'hidden' && s.display !== 'none'; };
+  const own = a => pickerRoot(a) === a;
+  const floating = c => { for (let a = c; a && a.nodeType === 1 && own(a); a = a.parentElement) {
+    const p = getComputedStyle(a).position; if (p === 'absolute' || p === 'fixed') return true; } return false; };
+  const open = Array.from(doc.querySelectorAll('.react-datepicker-popper, .react-datepicker')).filter(c => vis(c) && floating(c)).length;
+  let why = '';
+  if (!e.closest('.react-datepicker__input-container')) why = 'the field is not a react-datepicker input';
+  else if (e.tagName !== 'INPUT' || (e.type || '').toLowerCase() !== 'text' || e.readOnly || e.disabled) why = 'not a plain text input';
+  else if (e.getRootNode() !== doc) why = 'the field is in a shadow root';
+  else if (e.closest('dialog,[role=dialog],[role=alertdialog],[aria-modal=true]')) why = 'the field is inside a dialog';
+  else {
+    for (let a = e.parentElement; a && !why; a = a.parentElement) if (getComputedStyle(a).position === 'fixed') why = 'the field is inside a fixed-position layer';
+    if (!why && Array.from(doc.querySelectorAll('dialog[open],[role=dialog],[role=alertdialog],[aria-modal=true]')).some(d => vis(d) && !pickerRoot(d)))
+      why = 'another dialog is open';
+  }
+  return {open, why, focused: doc.activeElement === e};
+}
+""".replace("/*PICKER_ROOT*/", PICKER_ROOT_JS)
+DATE_POPUP = "a date picker popup left open by this entry"  # start of every note _close_date_popup records
+DATE_POPUP_CLOSED = f"{DATE_POPUP} was closed with Escape in the field"
+
+
+def _popup_state(loc) -> dict | None:
+    try:
+        return loc.evaluate(_DATE_POPUP_JS)
+    except Exception:  # noqa: BLE001 - an optional step: a field that cannot be inspected is left exactly as before
+        return None
+
+
+def _close_date_popup(page: Page, control: Control, loc, timeout_ms: int) -> list[str]:
+    """RW-14 (see _DATE_POPUP_JS). Called after a text entry and its commit, when no popup was showing before the entry. Returns
+    the notes for the item: the warnings of leaving the field again, then one note on the popup; [] when no popup is open."""
+    st = _popup_state(loc)
+    if not st or not st["open"]:
+        return []
+    if st["why"]:
+        return [f"{DATE_POPUP} was not closed: {st['why']}, where Escape could close something else"]
+    try:
+        loc.focus(timeout=timeout_ms)
+        st = _popup_state(loc)
+        if not st or not st["open"]:
+            return _commit(page, control, loc, timeout_ms)
+        if st["why"] or not st["focused"]:
+            return _commit(page, control, loc, timeout_ms) + [
+                f"{DATE_POPUP} was not closed: {st['why'] or 'focusing the field moved the focus into the popup'}"]
+        loc.press("Escape", timeout=timeout_ms)
+        notes = _commit(page, control, loc, timeout_ms)
+    except Exception as exc:  # noqa: BLE001 - the entry itself succeeded; its read-back decides, and what the popup covers fails safely
+        return [f"{DATE_POPUP} was not closed: {(str(exc).splitlines() or [type(exc).__name__])[0][:160]}"]
+    st = _popup_state(loc)
+    if st and not st["open"]:
+        return notes + [DATE_POPUP_CLOSED]
+    return notes + [f"{DATE_POPUP} did not close on Escape; controls under it cannot be clicked"]
 
 
 _RADIO_HIT_JS = """

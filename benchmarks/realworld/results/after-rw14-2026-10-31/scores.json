@@ -1,0 +1,2270 @@
+[
+ {
+  "oracle_check": null,
+  "form": "opnform_vendor",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 11,
+  "expected_answerable": 5,
+  "entered": 3,
+  "correct": 3,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 2,
+  "correct_abstentions": 6,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 3,
+  "right_value_not_confirmed": 0,
+  "precision": 1.0,
+  "coverage": 0.6,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Company Name",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "the best matching fact 'company.parent_company.name' belongs to a parent, which the questi"
+   },
+   {
+    "question": "Contact Person",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.incident_contact_phone' is too weak (score 0.40 < 0.6); semantic "
+   },
+   {
+    "question": "Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.ciso_email' is too weak (score 0.50 < 0.6) -- a one-word question"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "City",
+    "expect": "answer",
+    "entered": true,
+    "held": "Austin",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "State",
+    "expect": "answer",
+    "entered": true,
+    "held": "TX",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Zip Code",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Country",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "ambiguous: 'company.hq.country' and 'company.parent_company.country' are about equally rel"
+   },
+   {
+    "question": "Website",
+    "expect": "answer",
+    "entered": true,
+    "held": "https://www.brightloop.io",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Additional Information",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_vendor",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 11,
+  "expected_answerable": 1,
+  "entered": 1,
+  "correct": 1,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 10,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 1,
+  "right_value_not_confirmed": 0,
+  "precision": 1.0,
+  "coverage": 1.0,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Company Name",
+    "expect": "answer",
+    "entered": true,
+    "held": "Acme Corp",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Contact Person",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'contact_email' is too weak (score 0.50 < 0.6); semantic proposal for a rev"
+   },
+   {
+    "question": "Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "ambiguous: 'applicant.email' and 'company.email' are about equally relevant but disagree"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'address.billing' "
+   },
+   {
+    "question": "City",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "State",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Zip Code",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Country",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Website",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Additional Information",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_credit",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 9,
+  "expected_answerable": 1,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 1,
+  "correct_abstentions": 8,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": 0.0,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Business Name",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "the best matching fact 'company.parent_company.name' belongs to a parent, which the questi"
+   },
+   {
+    "question": "Business Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.founded' "
+   },
+   {
+    "question": "Contact Person",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.incident_contact_phone' is too weak (score 0.40 < 0.6); semantic "
+   },
+   {
+    "question": "Contact Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.ciso_email' is too weak (score 0.50 < 0.6); semantic proposal for"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Years in Business",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Annual Revenue",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Business Description",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.founded' "
+   },
+   {
+    "question": "Agree to Terms and Conditions",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "attestation/consent: a human must confirm it, never auto-filled"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_credit",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 9,
+  "expected_answerable": 2,
+  "entered": 2,
+  "correct": 2,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 7,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 2,
+  "right_value_not_confirmed": 0,
+  "precision": 1.0,
+  "coverage": 1.0,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Business Name",
+    "expect": "answer",
+    "entered": true,
+    "held": "Acme Corp",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Business Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'address.billing' "
+   },
+   {
+    "question": "Contact Person",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'contact_email' is too weak (score 0.50 < 0.6); semantic proposal for a rev"
+   },
+   {
+    "question": "Contact Email",
+    "expect": "answer",
+    "entered": true,
+    "held": "ops@acme.example",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Years in Business",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Annual Revenue",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'revenue.2023' is too weak (score 0.40 < 0.6) -- question scope ['annual'] "
+   },
+   {
+    "question": "Business Description",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.name' = '"
+   },
+   {
+    "question": "Agree to Terms and Conditions",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "attestation/consent: a human must confirm it, never auto-filled"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_scholarship",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 2,
+  "stop": "no_safe_next_control",
+  "questions": 8,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 8,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full Name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'company.legal_name' is too weak (score 0.50 < 0.6) -- ambiguous: the quest"
+   },
+   {
+    "question": "Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.ciso_email' is too weak (score 0.50 < 0.6) -- a one-word question"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Current School/University",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "GPA",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Major/Area of Study",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Why do you deserve this scholarship?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Agree to Terms and Conditions",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "attestation/consent: a human must confirm it, never auto-filled"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_scholarship",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 2,
+  "stop": "no_safe_next_control",
+  "questions": 8,
+  "expected_answerable": 1,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 1,
+  "correct_abstentions": 7,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": 0.0,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full Name",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "best candidate 'applicant.name' is too weak (score 0.50 < 0.6) -- ambiguous: the question "
+   },
+   {
+    "question": "Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "ambiguous: 'applicant.email' and 'company.email' are about equally relevant but disagree"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Current School/University",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "GPA",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Major/Area of Study",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Why do you deserve this scholarship?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Agree to Terms and Conditions",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "attestation/consent: a human must confirm it, never auto-filled"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formbuilder123_vendor",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "outbound_request_blocked",
+  "questions": 15,
+  "expected_answerable": 5,
+  "entered": 3,
+  "correct": 3,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 2,
+  "correct_abstentions": 11,
+  "answer_not_entered": 0,
+  "page_chrome": 1,
+  "unsupported": 3,
+  "unlabelled": 0,
+  "verified_of_correct": 3,
+  "right_value_not_confirmed": 0,
+  "precision": 1.0,
+  "coverage": 0.6,
+  "violations": [
+   "write request(s) attempted during the walk (blocked)"
+  ],
+  "detail": [
+   {
+    "question": "Search Templates...",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Your company's legal name",
+    "expect": "answer",
+    "entered": true,
+    "held": "Brightloop Software Inc.",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "c_0000000a",
+    "expect": "review",
+    "entered": false,
+    "held": null,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "What kind of products / services does your company offer?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.founded' "
+   },
+   {
+    "question": "Company website",
+    "expect": "answer",
+    "entered": true,
+    "held": "https://www.brightloop.io",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Street Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Street Address Line 2",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "City",
+    "expect": "answer",
+    "entered": true,
+    "held": "Austin",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Region",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "best candidate 'security.data_residency_regions' is too weak (score 0.50 < 0.6) -- a one-w"
+   },
+   {
+    "question": "Postal / Zip Code",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Country",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "ambiguous: 'company.hq.country' and 'company.parent_company.country' are about equally rel"
+   },
+   {
+    "question": "Please provide information on the following: company founding year, company size, company audience, geographical target.",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.founded' "
+   },
+   {
+    "question": "First",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Last",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.pen_test.last_date' is too weak (score 0.50 < 0.6) -- a one-word "
+   },
+   {
+    "question": "Contact email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.ciso_email' is too weak (score 0.50 < 0.6); semantic proposal for"
+   },
+   {
+    "question": "Contact phone Format 3 3 4",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.incident_contact_phone' is too weak (score 0.50 < 0.6) -- only 2 "
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formbuilder123_vendor",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "outbound_request_blocked",
+  "questions": 15,
+  "expected_answerable": 2,
+  "entered": 1,
+  "correct": 1,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 1,
+  "correct_abstentions": 14,
+  "answer_not_entered": 0,
+  "page_chrome": 1,
+  "unsupported": 3,
+  "unlabelled": 0,
+  "verified_of_correct": 1,
+  "right_value_not_confirmed": 0,
+  "precision": 1.0,
+  "coverage": 0.5,
+  "violations": [
+   "write request(s) attempted during the walk (blocked)"
+  ],
+  "detail": [
+   {
+    "question": "Search Templates...",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Your company's legal name",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "best candidate 'company.name' is too weak (score 0.33 < 0.6) -- question scope ['legal'] i"
+   },
+   {
+    "question": "c_0000000a",
+    "expect": "review",
+    "entered": false,
+    "held": null,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "What kind of products / services does your company offer?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.name' = '"
+   },
+   {
+    "question": "Company website",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.name' = '"
+   },
+   {
+    "question": "Street Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'address.billing' "
+   },
+   {
+    "question": "Street Address Line 2",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'address.billing' "
+   },
+   {
+    "question": "City",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Region",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Postal / Zip Code",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Country",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Please provide information on the following: company founding year, company size, company audience, geographical target.",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'company.name' = '"
+   },
+   {
+    "question": "First",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Last",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Contact email",
+    "expect": "answer",
+    "entered": true,
+    "held": "ops@acme.example",
+    "outcome": "CORRECT",
+    "reason": ""
+   },
+   {
+    "question": "Contact phone Format 3 3 4",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'contact_email' is too weak (score 0.29 < 0.6) -- only 1 of 5 question word"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_wizard",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "next_click_failed",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'company.legal_name' is too weak (score 0.50 < 0.6) -- ambiguous: the quest"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_wizard",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "next_click_failed",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'applicant.name' is too weak (score 0.50 < 0.6) -- ambiguous: the question "
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_conditional",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague?",
+    "expect": "review",
+    "entered": false,
+    "held": null,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_conditional",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "On a scale from 0 to 10, how likely are you to recommend us to a friend or colleague?",
+    "expect": "review",
+    "entered": false,
+    "held": null,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_dropdown",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "required_unresolved",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Which is the brand of your car?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_dropdown",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "required_unresolved",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Which is the brand of your car?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formio_wizard",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "required_unresolved",
+  "questions": 4,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 4,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formio_wizard",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "required_unresolved",
+  "questions": 4,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 4,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "demoqa_practice",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "required_unresolved",
+  "questions": 12,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 12,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "First Name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Last Name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "name@example.com",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "the best matching fact 'company.parent_company.name' belongs to a parent, which the questi"
+   },
+   {
+    "question": "gender",
+    "expect": "review",
+    "entered": false,
+    "held": null,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Mobile Number",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.incident_contact_phone' is too weak (score 0.50 < 0.6) -- a one-w"
+   },
+   {
+    "question": "dateOfBirthInput",
+    "expect": "review",
+    "entered": false,
+    "held": "31 Oct 2026",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.pen_test.last_date' is too weak (score 0.40 < 0.6) -- only 1 of 3"
+   },
+   {
+    "question": "subjectsInput",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Sports",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Reading",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Music",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Current Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "react-select-3-input",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "demoqa_practice",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "required_unresolved",
+  "questions": 12,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 12,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "First Name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Last Name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "name@example.com",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'applicant.name' is too weak (score 0.50 < 0.6) -- only 1 of 3 question wor"
+   },
+   {
+    "question": "gender",
+    "expect": "review",
+    "entered": false,
+    "held": null,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Mobile Number",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "dateOfBirthInput",
+    "expect": "review",
+    "entered": false,
+    "held": "31 Oct 2026",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "subjectsInput",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Sports",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Reading",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Music",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Current Address",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data; semantic proposal for a reviewer: 'address.billing' "
+   },
+   {
+    "question": "react-select-3-input",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "selenium_webform",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 10,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 10,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 2,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Text input",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textarea",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Readonly input",
+    "expect": "review",
+    "entered": false,
+    "held": "Readonly input",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Dropdown (select)",
+    "expect": "review",
+    "entered": false,
+    "held": "Open this select menu",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Dropdown (datalist)",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "my-check",
+    "expect": "review",
+    "entered": false,
+    "held": [
+     "on"
+    ],
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "my-radio",
+    "expect": "review",
+    "entered": false,
+    "held": "on",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Color picker",
+    "expect": "review",
+    "entered": false,
+    "held": "#563d7c",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Date picker",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.pen_test.last_date' is too weak (score 0.50 < 0.6); semantic prop"
+   },
+   {
+    "question": "Example range",
+    "expect": "review",
+    "entered": false,
+    "held": "5",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "selenium_webform",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "no_safe_next_control",
+  "questions": 10,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 10,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 2,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Text input",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textarea",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Readonly input",
+    "expect": "review",
+    "entered": false,
+    "held": "Readonly input",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Dropdown (select)",
+    "expect": "review",
+    "entered": false,
+    "held": "Open this select menu",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Dropdown (datalist)",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "my-check",
+    "expect": "review",
+    "entered": false,
+    "held": [
+     "on"
+    ],
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "my-radio",
+    "expect": "review",
+    "entered": false,
+    "held": "on",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Color picker",
+    "expect": "review",
+    "entered": false,
+    "held": "#563d7c",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Date picker",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Example range",
+    "expect": "review",
+    "entered": false,
+    "held": "5",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_scholarship_back",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 2,
+  "stop": "no_safe_next_control",
+  "questions": 8,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 8,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full Name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'company.legal_name' is too weak (score 0.50 < 0.6) -- ambiguous: the quest"
+   },
+   {
+    "question": "Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'security.ciso_email' is too weak (score 0.50 < 0.6) -- a one-word question"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Current School/University",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "GPA",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Major/Area of Study",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Why do you deserve this scholarship?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Agree to Terms and Conditions",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "attestation/consent: a human must confirm it, never auto-filled"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "opnform_scholarship_back",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 2,
+  "stop": "no_safe_next_control",
+  "questions": 8,
+  "expected_answerable": 1,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 1,
+  "correct_abstentions": 7,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 1,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": 0.0,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full Name",
+    "expect": "answer",
+    "entered": false,
+    "held": "",
+    "outcome": "MISSED (review, answer expected)",
+    "reason": "best candidate 'applicant.name' is too weak (score 0.50 < 0.6) -- ambiguous: the question "
+   },
+   {
+    "question": "Email",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "ambiguous: 'applicant.email' and 'company.email' are about equally relevant but disagree"
+   },
+   {
+    "question": "123-456-7890",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Current School/University",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "GPA",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Major/Area of Study",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Why do you deserve this scholarship?",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Agree to Terms and Conditions",
+    "expect": "review",
+    "entered": false,
+    "held": false,
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "attestation/consent: a human must confirm it, never auto-filled"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_wizard_nobanner",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "outbound_request_blocked",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'company.legal_name' is too weak (score 0.50 < 0.6) -- ambiguous: the quest"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "surveyjs_wizard_nobanner",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "outbound_request_blocked",
+  "questions": 1,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 1,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Full name",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "best candidate 'applicant.name' is too weak (score 0.50 < 0.6) -- ambiguous: the question "
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formio_wizard_advance",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "outbound_request_blocked",
+  "questions": 4,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 4,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formio_wizard_advance",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 1,
+  "stop": "outbound_request_blocked",
+  "questions": 4,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 4,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formio_wizard_rules",
+  "source": "full",
+  "status": "NEEDS_REVIEW",
+  "steps": 2,
+  "stop": "validation_error_after_next",
+  "questions": 8,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 8,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on Page 2",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Customer",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "autocomplete",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "FieldSet Label Textfield",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ },
+ {
+  "oracle_check": null,
+  "form": "formio_wizard_rules",
+  "source": "tricky",
+  "status": "NEEDS_REVIEW",
+  "steps": 2,
+  "stop": "validation_error_after_next",
+  "questions": 8,
+  "expected_answerable": 0,
+  "entered": 0,
+  "correct": 0,
+  "wrong_value": 0,
+  "unsafe": 0,
+  "missed": 0,
+  "correct_abstentions": 8,
+  "answer_not_entered": 0,
+  "page_chrome": 0,
+  "unsupported": 0,
+  "unlabelled": 0,
+  "verified_of_correct": 0,
+  "right_value_not_confirmed": 0,
+  "precision": null,
+  "coverage": null,
+  "violations": [],
+  "detail": [
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on page 1",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Number Field * , numeric only,",
+    "expect": "review",
+    "entered": false,
+    "held": "0",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Textfield on Page 2",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "Customer",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "autocomplete",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   },
+   {
+    "question": "FieldSet Label Textfield",
+    "expect": "review",
+    "entered": false,
+    "held": "",
+    "outcome": "CORRECT_ABSTENTION",
+    "reason": "no matching value in the source data"
+   }
+  ]
+ }
+]
