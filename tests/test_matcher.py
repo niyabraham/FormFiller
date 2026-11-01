@@ -32,3 +32,15 @@ def test_date_format_hint_does_not_break_matching():
     fields = [FormField(name="dob", label="Date of Birth (DD/MM/YYYY)", kind="date")]
     mappings = match_fields(fields, {"date_of_birth": "1998-04-15"})
     assert mappings[0].status == "APPROVED"
+
+
+def test_one_mapping_per_field_in_the_same_order():
+    """Callers (demo.py, the end-to-end test) pair mappings with fields by position: matched, unmatched and repeated names alike."""
+    fields = [
+        FormField(name="email", label="Email", kind="text"),
+        FormField(name="gender", label="Gender", kind="radio", options=["/Male", "/Female"]),
+        FormField(name="email_2", label="Email", kind="text"),
+    ]
+    mappings = match_fields(fields, {"email": "jane@example.com"})
+    assert [m.field_name for m in mappings] == ["email", "gender", "email_2"]
+    assert match_fields([], {"email": "jane@example.com"}) == []
