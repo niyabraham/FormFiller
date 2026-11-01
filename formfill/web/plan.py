@@ -28,7 +28,7 @@ from typing import Any
 from formfill.web.evidence import assess_claim, find_conflicts
 from formfill.web.matching import DEFAULT_MATCHER, MatcherConfig, confidence_category
 from formfill.web.models import AnswerPlanItem, Candidate, Question
-from formfill.web.retrieve import Leaf, foreign_entity, retrieve
+from formfill.web.retrieve import Leaf, contact_kind_conflict, foreign_entity, neighbouring_concept, retrieve
 from formfill.web.semantic import rank as semantic_rank
 from formfill.web.tokens import tokenize
 from formfill.web.validate import is_placeholder, validate_answer
@@ -350,15 +350,17 @@ def plan_question(question: Question, leaves: list[Leaf], config: MatcherConfig 
 
 
 def _gated_candidates(question: Question, leaves: list[Leaf], config: MatcherConfig, limit: int = 5) -> list[dict]:
-    """The most similar keys whose value could be offered at all: not another entity's fact, valid for this control, not a
-    placeholder, and (with evidence checks) not contradicted elsewhere in the source. Contradicted ones are returned separately."""
+    """The most similar keys whose value could be offered at all: not another entity's fact, not a neighbouring concept's (the RTO
+    value for an RPO question), valid for this control, not a placeholder, and (with evidence checks) not contradicted elsewhere in
+    the source. Contradicted ones are returned separately."""
     q = set(question.concept_tokens)
     section = set(tokenize(question.control.section))
     out: list[dict] = []
     for leaf, sim in semantic_rank(question.text, leaves, config.backend)[: limit * 3]:
         if len(out) >= limit or sim <= 0:
             break
-        if foreign_entity(leaf, q, section) or is_placeholder(leaf.value):
+        if (foreign_entity(leaf, q, section) or is_placeholder(leaf.value)
+                or neighbouring_concept(q, leaf) or contact_kind_conflict(q, leaf)):
             continue
         result = validate_answer(leaf.value, question.control)
         if not result.ok:

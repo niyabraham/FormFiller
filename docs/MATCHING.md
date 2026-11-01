@@ -83,7 +83,38 @@ answer on the RFI dev benchmark is the known disputed label recorded before this
   showed a penetration-test date answering a disaster-recovery question, and different facts that share words being treated
   as contradictions.
 
+### Neighbouring concepts (RPO is not RTO)
+
+Two different facts can share most of their words: "recovery point objective" and `rto_hours` (recovery time objective), "encrypted
+in transit" and `data_at_rest`, "authentication method" and `authorization_method`. Overlap plus the section bonus used to pass
+`MIN_CONFIDENCE`, so a question about a fact the source lacks was answered with the neighbour's value (RPO answered with the RTO).
+
+`retrieve.sibling_words` detects the pattern structurally, with no list of concept pairs: after removing words the question and key
+explain (or that are not concepts), exactly one word is left on each side and at least one word is shared. The candidate is then capped
+at `UNEXPLAINED_CAP`, so it stays visible to the reviewer but is never auto-answered, and `plan._gated_candidates` does not offer the
+neighbour's value as a semantic proposal either. A word is *not* a difference when it is a form of the same word (`related`: prefix,
+abbreviation, shared stem), the acronym a question repeats in brackets, the company referring to itself, a unit or "period", a time
+word (the period guard's job), a question auxiliary or interrogative, a number, or part of a `SAME_CONCEPT` group (words that name one
+thing but are not in `SYNONYMS`; each group exists because the guard blocked a valid match). Several differing words on a side is a
+paraphrase and is left to the other guards. Tests: `tests/web/test_concept_confusion.py`. Before/after evidence is in
+`benchmarks/results/2026-11-01_*`. The held-out set was consulted while refining the exclusions, so it is not an untouched evaluation of this
+guard; the 62 related-concept probes were written for this change and are a regression check, not a benchmark.
+
+Two follow-up rules came out of the review of this guard (second iteration, see `benchmarks/results/`):
+
+* **A key about a topic the question never names** (`retention`, `deletion`, `backup`, ... in `TOPICS`) needs MORE than half of the question's words explained, not half. "How long after termination is customer data deleted (days)?" is exactly half explained by `retention_days_after_termination`, which is a retention statement; the same holds the other way round.
+* **A proposal is the kind of contact detail the question asks for.** With the CISO's email gated off, "Contact Email" was offered the incident contact's phone number because both keys say "contact". `CONTACT_KIND_WORDS` (email, phone, address, website) filters proposals only; answers were already protected by the scorer.
+
 ### Known gaps (found on the eval set, deliberately not tuned)
+
+* "Readonly input" (a generic widget label) is now offered `dateOfBirthInput`'s value as a proposal once `Text input` is gated off: the lexical
+  semantic backend ranks on the shared word "input". Dropping widget words from the ranking fixed it but made a date-of-birth field
+  receive a pen-test date, so it was reverted. Still review-only, still a poor proposal.
+* A generic question ("Contact email") no longer receives a role-specific key (`ciso_email`) as a proposal; the guard cannot tell a
+  generic word from a sibling one.
+* The neighbouring-concept guard only sees a swap of exactly one word per side. "How long after termination is customer data
+  deleted (days)?" is still answered from `retention_days_after_termination` (judged a fair paraphrase), and a swap that also
+  changes a second word is left to the other guards. `SAME_CONCEPT` is a short, evidence-based list, not a thesaurus.
 
 * "Is your subsidiary Acme Cloud GmbH SOC 2 Type II certified?" stays in review: the claim check also reads the company's own
   readiness assessment (in progress) instead of only the named subsidiary's status. Safe direction; not fixed, so the eval set
