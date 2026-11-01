@@ -34,7 +34,7 @@ HUMAN_REVIEW_ANSWERS = {"gender": "Female"}
 
 def map_and_validate(fields, source):
     mappings = match_fields(fields, source)
-    return [validate_and_transform(m, f) for m, f in zip(mappings, fields)]
+    return [validate_and_transform(m, f) for m, f in zip(mappings, fields, strict=True)]
 
 
 def print_mapping_table(mappings: list[Mapping]) -> None:

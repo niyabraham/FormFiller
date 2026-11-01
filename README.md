@@ -165,11 +165,11 @@ Add keys only for facts you can stand behind. A certification is answered "Yes" 
 
 ## 9. Testing and Evaluation
 
-**Last checked on 31 Oct 2026, code at commit `bad108b` (branch `fix/rw14-date-popup-dismissal`); earlier figures were re-measured on the dates in `docs/PROGRESS.md`.**
+**Last checked on 1 Nov 2026, code at `main` `1257b1a` plus the changes on branch `chore/release-stabilization`; earlier figures were re-measured on the dates in `docs/PROGRESS.md`.**
 
 ### Automated tests (local fixture pages)
 
-- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`: **1375 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, 13 to 15 minutes). Before the RFI completion work: 1123 passed, 2 xfailed.
+- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`: **1378 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, 13 to 15 minutes). Before the RFI completion work: 1123 passed, 2 xfailed.
 - Linux (Ubuntu 24.04 under WSL), Python 3.11, Playwright 1.64.1, same strict mode: 1252 passed, 2 xfailed, 0 failed, 0 skipped. That run is from an earlier commit and was not repeated for the later changes; CI runs the suite on Python 3.11 and 3.12 for every pull request.
 - Playwright 1.48.0 (the oldest supported version), Linux: the network-guard, wizard, policy, progress and review tests pass.
 - `ruff check formfill tools tests benchmarks`: no findings. `mypy` (settings in `pyproject.toml`): no issues. `pip-audit`: no known vulnerabilities in the project's dependencies. No code formatter is configured.
@@ -182,7 +182,7 @@ These use fictional forms written by the project. Results show behaviour on thos
 
 | Evaluation | Result |
 |---|---|
-| Matching, development set (`benchmarks/rfi`, 192 questions, browser) | precision 98.1 %, coverage 55.2 % (before this work: 98.0 %, 52.6 %) |
+| Matching, development set (`benchmarks/rfi`, 192 questions, browser) | precision 98.1 %, coverage 55.7 %, 105 correct (before this work: 98.0 %, 52.6 %) |
 | Matching, second set (`benchmarks/heldout`, 272 questions, browser) | precision 100 %, coverage 40.1 % (before: 100 %, 39.3 %) |
 | Matching layers, `benchmarks/semantic` eval set (30 cases, written and hashed before the layers existed) | precision 1.00, coverage 0.71, 0 unsafe answers, 4 of 4 proposals right (before: 0.78, 0.41, 2 unsafe) |
 | Wizard navigation and safety (`tools/evaluate_wizards.py`, 16 scenarios) | 16 of 16 expected outcomes, 0 final submissions, 0 requests reaching the server without a relay record, 0 answers sent without permission |
