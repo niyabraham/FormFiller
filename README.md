@@ -165,11 +165,11 @@ Add keys only for facts you can stand behind. A certification is answered "Yes" 
 
 ## 9. Testing and Evaluation
 
-**Last checked on 30 Oct 2026, code at commit `acaf2a0` (branch `feat/rw10-13-widget-compat`); earlier figures were re-measured on the dates in `docs/PROGRESS.md`.**
+**Last checked on 31 Oct 2026, code at commit `bad108b` (branch `fix/rw14-date-popup-dismissal`); earlier figures were re-measured on the dates in `docs/PROGRESS.md`.**
 
 ### Automated tests (local fixture pages)
 
-- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`: **1352 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, 13 to 15 minutes). Before the RFI completion work: 1123 passed, 2 xfailed.
+- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`: **1375 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, 13 to 15 minutes). Before the RFI completion work: 1123 passed, 2 xfailed.
 - Linux (Ubuntu 24.04 under WSL), Python 3.11, Playwright 1.64.1, same strict mode: 1252 passed, 2 xfailed, 0 failed, 0 skipped. That run is from an earlier commit and was not repeated for the later changes; CI runs the suite on Python 3.11 and 3.12 for every pull request.
 - Playwright 1.48.0 (the oldest supported version), Linux: the network-guard, wizard, policy, progress and review tests pass.
 - `ruff check formfill tools tests benchmarks`: no findings. `mypy` (settings in `pyproject.toml`): no issues. `pip-audit`: no known vulnerabilities in the project's dependencies. No code formatter is configured.
@@ -189,7 +189,7 @@ These use fictional forms written by the project. Results show behaviour on thos
 | Multi-step and SPA fixtures (`tools/evaluate_spa.py --policy`, 26 fixtures) | 0 crashes, 0 submit events, 0 submissions, 0 dialogs accepted, 11 of 12 expected safe stops, 1 of 3 planted resets detected, 77 of 82 controls discovered |
 | Widget fixtures (`tools/evaluate_widgets3d.py`) | 12 of 12 expected fields filled and read back, 3 of 3 conditional fields found |
 | Public demo and template forms, matching (`tools/evaluate_realworld.py`: 10 forms x 2 fictional sources, nothing submitted; `REAL_WORLD_TESTING_REPORT.md`) | precision 100 % (10 of 10), coverage 59 % (10 of 17), 0 wrong fills. Baseline before the RW-1 and RW-2 fixes: 62 % and 59 %, 6 wrong fills. A small sample on public demo forms, not company portals |
-| Public demo forms, mechanics only (custom dropdowns, styled checkboxes, date picker, conditional fields; its own source and scoring, never mixed with the row above) | 21 expected fills: 17 confirmed by read-back, 2 failed (see section 10), 2 blocked by design; the page held 17 of 20 expected values; 0 wrong fills |
+| Public demo forms, mechanics only (custom dropdowns, styled checkboxes, date picker, conditional fields; its own source and scoring, never mixed with the row above) | 21 expected fills: 19 confirmed by read-back, 0 failed, 2 blocked by design; the page held 18 of 20 expected values; 0 wrong fills |
 
 On both browser matching benchmarks every changed decision went from a missed answer to a correct one. The SPA row is unchanged since the network guard was added: three fixtures stop at their first network request or page reload (`outbound_request_blocked`), so their later steps and planted resets are not reached. That is the block working as designed; the expected results were not edited.
 
@@ -221,7 +221,7 @@ These show the pipeline running on public practice and template pages. They are 
 - **Matching is conservative by design.** Coverage is about half on the development set and 40 % on the second set; a correct fill is only as good as the source data, and untested wording can still be matched wrongly. Similarity proposals depend on spelling and the synonym table unless a local embedding model is configured.
 - **Attestation detection is wording-based.** A genuine attestation phrased in an unexpected way, on a free-text or number field, is answered like any other question; some factual yes/no questions with unusual wording go to review.
 - **Detection of unsupported controls is by markup.** A widget built from plain `div`s with no ARIA role is not seen; controls in cross-origin iframes or closed shadow roots are not inspected; datalist options are not read. `role=checkbox` and `role=switch` widgets are reported, not filled; a native input hidden with `display:none` is not discovered.
-- **Custom widgets are handled by structure, on few examples.** A react-select-style dropdown is recognised by the class names of its displayed value; a date-picker popup by its class names or a date/calendar dialog label (English month names). Other libraries are untested. A date popup that stays open after a date is typed can cover the controls below it: such a click is refused and reported as failed rather than forced (seen on DemoQA's Hobbies checkboxes, `REAL_WORLD_TESTING_REPORT.md` section 14).
+- **Custom widgets are handled by structure, on few examples.** A react-select-style dropdown is recognised by the class names of its displayed value; a date-picker popup by its class names or a date/calendar dialog label (English month names). Other libraries are untested. A react-datepicker popup left open by a typed date is closed with one Escape in the field when that cannot close anything else; other pickers' popups are left open, and a control they cover is refused and reported (see REAL_WORLD_TESTING_REPORT.md, section 15).
 - **Compatibility is measured on public demo forms only.** The real-world evaluation covers 10 public demo and template forms (some of them multi-page) with fictional data. It shows what works and what does not on those pages; it does not show that any given website, or every website, is supported. Third-party trackers on a page can stop a guarded walk.
 - **Page behaviour is only partly handled.** Fields that appear well after an interaction can be missed, a reset after the confirmation window is not seen, and the single re-entry recovers React/Vue/Svelte patterns only. Next buttons inside shadow roots or iframes are not found.
 - **Saving is not confirmed.** A correct read-back does not prove the server stored the value.

@@ -188,9 +188,9 @@ def test_a_wrapping_label_that_belongs_to_another_checkbox_is_never_clicked(page
 
 
 def test_a_label_covered_by_an_open_popup_fails_safely_and_clicks_what_covers_it_never(page):
-    """RW-14 (known limitation, see REAL_WORLD_TESTING_REPORT.md 14): DemoQA's date popup stays open after the date is typed and covers the
-    Hobbies row. The label cannot be reached, so the answer is not entered and is reported as failed; nothing is clicked through the
-    cover, and nothing is set through JavaScript. Closing such a popup is a separate decision."""
+    """A label covered by something FormFiller did not open and does not close (here a plain overlay; RW-14's date popup is closed when it
+    is safe to, see test_date_popup_dismissal.py). The label cannot be reached, so the answer is not entered and is reported as failed;
+    nothing is clicked through the cover, and nothing is set through JavaScript."""
     load(page, SINGLE_FOR + '<div id="popup" style="position:fixed;inset:0"></div>'
                "<script>window.coverClicks = 0; document.getElementById('popup').addEventListener('click', () => window.coverClicks++);</script>")
     with pytest.raises(Exception, match="Timeout"):
