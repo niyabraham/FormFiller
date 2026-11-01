@@ -25,6 +25,10 @@ plan.MIN_CONFIDENCE:
   * period (3B-A)       -- the question names a point in time ("two financial years ago", "2023") that the
                            key path does not carry, or carries differently -> score <= 0.3. "last"/"current"
                            year may rely on a key that names no period.
+  * neighbouring concept -- the question and the key say the same phrase except for ONE word on each side
+                           ("recovery POINT objective" vs `rto_hours`, "encrypted in TRANSIT" vs `data_at_rest`) -> score <= 0.5.
+                           Related forms, acronym echoes, units, time words, auxiliaries and a few same-concept groups are not
+                           a swap (`sibling_words`); the semantic proposal layer applies the same test.
 
 Phase 3B-B parent/sibling context (applied after scoring, in `retrieve`). The same field name under
 different parents (`franchisor.year_founded` / `franchisee.year_founded`) or in different list items
@@ -53,16 +57,22 @@ from typing import Any
 
 from formfill.web.models import Candidate, Question
 from formfill.web.tokens import (
+    AUXILIARY_WORDS,
+    CONTACT_KIND_WORDS,
     ENTITY_SCOPE,
     IMPLICIT_NOUNS,
+    MEASURE_WORDS,
     NEGATORS,
     NEUTRAL,
     ORGANISATION_WORDS,
     QUALIFIERS,
     SELF_REFERENCE,
     SLOT_WORDS,
+    TEMPORAL_WORDS,
     TOPICS,
+    acronym_echoes,
     period_markers,
+    related,
     tokenize,
 )
 
@@ -76,6 +86,7 @@ PERIOD_CAP = 0.3
 CONTEXT_PENALTY = 0.6  # Phase 3B-B: score multiplier for a rival of a candidate the question names
 CONTEXT_RULES = frozenset({"path", "item", "ancestor", "count_recheck"})  # switchable one by one for ablation runs
 SIBLING_CREDIT = True  # words citing a sibling value of the list item count as explained
+SIBLING_GUARD = True  # neighbouring concepts (see sibling_words); switchable for ablation runs
 _NOT_EVIDENCE = {"yes", "no", "true", "false", "none", "unknown", "null", "tbd", "tba"}
 # a question may name these periods and rely on a key that says nothing about time (the latest/current value);
 # any other period ("two years ago", "2023", "next year") must be carried by the key.
@@ -162,6 +173,56 @@ def sibling_evidence(q_tokens: set[str], leaf: Leaf) -> frozenset[str]:
     return frozenset().union(*sibling_matches(q_tokens, leaf))
 
 
+def sibling_words(q_eff: set[str], leaf: Leaf, explained_by: frozenset[str] | set[str]) -> tuple[set[str], set[str]]:
+    """Neighbouring concepts. When the question and the key say the SAME phrase except for one word on each side, they name different
+    things that merely overlap: "recovery POINT objective" against `rto_hours` (recovery TIME objective), "encrypted in TRANSIT" against
+    `data_at_rest`, "AUTHENTICATION method" against `authorization_method`. The overlap must not be read as a match.
+
+    Returns the question's one differing word and the key's one differing word, or two empty sets. Not a difference: a different form
+    of the same word ("apply" / "applicable", "min" / "minimum"), the acronym a question repeats in brackets, the company referring to
+    itself, a key's kind-of-value word (`name`, `count`), a unit or "period", a word that places the value in time (the period guard's
+    job) and a bare number. Several differing words on a side is a paraphrase, not a swap, and is left to the other guards."""
+    skip = SELF_REFERENCE | MEASURE_WORDS | TEMPORAL_WORDS | AUXILIARY_WORDS | acronym_echoes(q_eff)
+    q_only = {w for w in set(q_eff) - set(explained_by) - skip if not w.isdigit()}
+    k_only = {w for w in set(leaf.leaf_tokens) - set(q_eff) - SLOT_WORDS - skip if not w.isdigit()}
+    near = leaf.leaf_tokens | leaf.parent_tokens
+    q_only = {w for w in q_only if not any(related(w, k) for k in near)}
+    k_only = {k for k in k_only if not any(related(k, w) for w in q_eff)}
+    shared = (set(q_eff) & set(near)) - skip
+    if len(q_only) == 1 and len(k_only) == 1 and shared:
+        return q_only, k_only
+    return set(), set()
+
+
+def contact_kind_conflict(q_tokens: set[str], leaf: Leaf) -> bool:
+    """The question asks for one kind of contact detail ("Contact Email") and the key holds another (`incident_contact_phone`)."""
+    asked, held = q_tokens & CONTACT_KIND_WORDS, leaf.leaf_tokens & CONTACT_KIND_WORDS
+    return bool(asked and held and not asked & held)
+
+
+def neighbouring_concept(q_tokens: set[str], leaf: Leaf) -> bool:
+    """True when the key names a neighbouring concept of the question's (see `sibling_words`). Used to keep such a fact out of the
+    proposals a reviewer is offered: a value of the wrong concept is one click from "Approve"."""
+    q_eff = q_tokens - (NEUTRAL - leaf.leaf_tokens - leaf.parent_tokens)
+    explained_by = leaf.leaf_tokens | leaf.parent_tokens | (sibling_evidence(q_eff, leaf) if SIBLING_CREDIT else frozenset())
+    q_only, k_only = sibling_words(q_eff, leaf, explained_by)
+    return bool(SIBLING_GUARD and q_only and k_only)
+
+
+def topic_not_asked(q_eff: set[str], leaf: Leaf) -> bool:
+    """The key is about a specific topic ("retention", "backup") that no word of the question names. With such a key, a question that
+    is only half explained is a looser paraphrase onto a different subject, not the same fact in other words."""
+    return any(not any(related(t, w) for w in q_eff) for t in leaf.leaf_tokens & TOPICS)
+
+
+def enough_explained(q_eff: set[str], unexplained: set[str], leaf: Leaf) -> bool:
+    """At least MIN_EXPLAINED_FRACTION of the question's words are explained by the key or its path -- and MORE than that when the key is
+    about a topic the question never names: "How long after termination is customer data deleted" is exactly half explained by
+    `retention_days_after_termination`, which is a statement about retention, not about deletion."""
+    share = (len(q_eff) - len(unexplained)) / len(q_eff)
+    return share > MIN_EXPLAINED_FRACTION if topic_not_asked(q_eff, leaf) else share >= MIN_EXPLAINED_FRACTION
+
+
 def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
                 q_period: frozenset[str] = frozenset(), is_count: bool = False) -> tuple[float, list[str]]:
     """Score one leaf and say why it was capped, if it was."""
@@ -202,7 +263,7 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
             flags.append(f"counting question: only {explained} of {base} words are explained by the key or its path "
                          f"(unexplained modifier: {sorted(modifiers)})")
             score = min(score, UNEXPLAINED_CAP)
-    elif unexplained and (len(q_eff) - len(unexplained)) / len(q_eff) < MIN_EXPLAINED_FRACTION:
+    elif unexplained and not enough_explained(q_eff, unexplained, leaf):
         flags.append(f"only {len(q_eff) - len(unexplained)} of {len(q_eff)} question words are explained by the key or its path "
                      f"(unexplained: {sorted(unexplained)})")
         score = min(score, UNEXPLAINED_CAP)
@@ -219,6 +280,11 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
         # other words are qualifiers (`last_date`, `ciso_email`); both scored 0.667, just over the answer threshold
         flags.append(f"a one-word question explains only part of the key (the key also says {sorted(extra)})")
         score = min(score, UNEXPLAINED_CAP)
+    if SIBLING_GUARD:
+        q_only, k_only = sibling_words(q_eff, leaf, explained_by)
+        if q_only and k_only:
+            flags.append(f"different concept: the question says {sorted(q_only)} where the key says {sorted(k_only)}")
+            score = min(score, UNEXPLAINED_CAP)
     neg_q, neg_l = q_tokens & NEGATORS, explained_by & NEGATORS
     if neg_q != neg_l:
         flags.append(f"polarity differs: question has {sorted(neg_q) or 'none'}, key path has {sorted(neg_l) or 'none'}")

@@ -10,6 +10,7 @@ every miss it causes lands in REVIEW rather than in a wrong answer.
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 
 # Words that carry no meaning for matching (dropped on both sides).
 STOPWORDS = {
@@ -57,6 +58,30 @@ IMPLICIT_NOUNS = {"employee"}
 # word in the key ("ciso" in `ciso_email`, "date" in `last_date`) is a qualifier the question does not carry (retrieve.assess_leaf).
 SLOT_WORDS = {"name", "size", "count", "exist"}
 
+# Words that only say how a quantity is expressed: a unit, "period" / "duration", or a "format" hint ("Contact phone Format 3 3 4"). "Backup retention period (days)" and
+# `backup.retention_days` say the same thing; neither word is a different concept (retrieve.sibling_words).
+MEASURE_WORDS = {"second", "minute", "hour", "day", "week", "month", "year", "percent", "period", "duration", "format"}
+
+# Words that name WHAT KIND of contact detail a value is. A proposal for "Contact Email" must not be a phone number, whatever else the
+# two keys share ("contact").
+CONTACT_KIND_WORDS = {"email", "phone", "address", "website"}
+
+# Words that name the same thing without being in SYNONYMS (adding them there would change the score of every other match that uses them).
+# The neighbouring-concept guard (retrieve.sibling_words) must not read them as a swap: "Link to your list of subprocessors" and the key
+# `subprocessors_list_url` (url -> website) are one fact. Each group was added because the guard blocked a valid match.
+SAME_CONCEPT = (frozenset({"link", "website"}), frozenset({"limit", "coverage"}), frozenset({"run", "performed", "conducted"}))
+
+# Words that place a value in time. Which period a question means is decided by the period guard (period_markers); "previous" against
+# "last", "one year ago" against "last financial year" are the same job done in different words, not different concepts.
+TEMPORAL_WORDS = {"last", "previou", "prior", "preceding", "current", "this", "next", "ago", "financial", "fiscal", "calendar", "tax",
+                  "trading", "accounting", "quarter", "one", "two", "three", "four", "five", "six", "seven", "eight",
+                  "nine", "ten", "currently", "active"}
+
+# Question auxiliaries and interrogatives carry no concept: "What WAS your annual revenue?" against `annual_revenue_usd`, "WHEN was your
+# last pentest?" against `penetration_test_last_date`.
+AUXILIARY_WORDS = {"was", "were", "is", "are", "be", "been", "did", "does", "has", "have", "had",
+                   "when", "where", "who", "whom", "which", "what", "how", "why"}
+
 # "in total" widens a question: it is dropped unless the key carries "total" itself (customers.total).
 NEUTRAL = {"total"}
 # "your organization" / "company" is the form-filler referring to itself. It still scores (a key under
@@ -74,7 +99,7 @@ ENTITY_SCOPE = {"subsidiary", "affiliate", "parent", "holding", "sister"}
 # different things even if other words match ("Date of last disaster recovery test" is not `pentest.last_date`). Found on the
 # development benchmark once "pentest" was expanded to "penetration test" (docs/MATCHING.md).
 TOPICS = {"penetration", "vulnerability", "disaster", "continuity", "incident", "encryption", "backup", "audit", "training",
-          "insurance", "malware", "phishing", "patch", "firewall", "logging", "retention"}
+          "insurance", "malware", "phishing", "patch", "firewall", "logging", "retention", "deletion"}
 
 # Words that say a question (or the form section it sits in) is about an organisation. A generic `name` key under an
 # organisation key (`company.name`, `vendor.name`) answers only such a question: "Name", "Full name" or "Contact name"
@@ -172,6 +197,47 @@ def period_markers(text: str) -> frozenset[str]:
         out.add(f"-{n}{m.group(2)[0]}")
     out |= set(_YEAR.findall(t))
     return frozenset(out)
+
+
+def _is_subsequence(short: str, long_: str) -> bool:
+    letters = iter(long_)
+    return all(c in letters for c in short)
+
+
+def related(a: str, b: str) -> bool:
+    """True when two tokens are forms of one word: one is the start of the other ("min" / "minimum", "own" / "owner", "test" /
+    "tested"), or they share a prefix of at least four letters that covers at least 60 % of the shorter one ("apply" / "applicable",
+    "notify" / "notification"). "authentication" / "authorization" (four shared letters of thirteen), "point" / "time",
+    "rest" / "transit" and "minimum" / "maximum" are different words."""
+    if any(a in group and b in group for group in SAME_CONCEPT):
+        return True
+    short, long_ = sorted((a, b), key=len)
+    if len(short) >= 3 and long_.startswith(short):
+        return True
+    if len(short) >= 4 and short[0] == long_[0] and _is_subsequence(short, long_):
+        return True  # an abbreviation: "dept" / "department", "qty" / "quantity"
+    n = 0
+    for x, y in zip(a, b, strict=False):
+        if x != y:
+            break
+        n += 1
+    return n >= 4 and n >= 0.6 * len(short)
+
+
+@lru_cache(maxsize=None)
+def _acronym_table() -> dict[str, frozenset[str]]:
+    """Acronyms that the phrase table spells out ("rpo" -> recovery point objective), with the tokens of their expansion."""
+    table: dict[str, frozenset[str]] = {}
+    for pattern, repl in _PHRASES:
+        m = re.fullmatch(r"\\b([a-z]+)\\b", pattern.pattern)
+        if m and " " in repl:
+            table[m.group(1)] = frozenset(tokenize(repl))
+    return table
+
+
+def acronym_echoes(tokens: set[str] | frozenset[str]) -> set[str]:
+    """Acronym tokens that the same text already spells out ("Recovery point objective (RPO)"): the question says it twice."""
+    return {acr for acr, expansion in _acronym_table().items() if acr in tokens and expansion <= tokens}
 
 
 def _stem(token: str) -> str:

@@ -1,0 +1,64 @@
+ok            rpo-1           Recovery point objective (RPO) in hours         REVIEW                                          top: business_continuity.rto_hours 0.50
+ok            rpo-2           Recovery point objective (RPO) in hours         REVIEW                                          top: business_continuity.rto_hours 0.50
+ok            rpo-3           Recovery point objective (RPO) in hours         REVIEW                                          top: rto_hours 0.50
+ok            rpo-4           RPO (hours)                                     REVIEW                                          top: business_continuity.rto_hours 0.50
+ok            rpo-5           What is your recovery point objective?          REVIEW                                          top: business_continuity.recovery_time_objective 0.50
+ok            rpo-6           Recovery point objective                        REVIEW                                          top: disaster_recovery.rto 0.50
+ok            rpo-7           RPO                                             REVIEW                                          top: dr.rto_hours 0.50
+ok            rpo-8           Recovery point objective (RPO) in hours         REVIEW                                          top: business_continuity.rto_hours 0.50
+ok            rto-1           Recovery time objective (RTO) in hours          REVIEW                                          top: business_continuity.rpo_hours 0.50
+ok            rto-2           Recovery time objective (RTO) in hours          REVIEW                                          top: business_continuity.rpo_hours 0.50
+ok            rto-3           RTO (hours)                                     REVIEW                                          top: business_continuity.rpo_hours 0.50
+ok            rto-4           What is your recovery time objective?           REVIEW                                          top: business_continuity.recovery_point_objective 0.50
+ok            rto-5           Recovery time objective                         REVIEW                                          top: disaster_recovery.rpo 0.50
+ok            both-rpo        Recovery point objective (RPO) in hours         ANSWER 1 <- business_continuity.rpo_hours       top: business_continuity.rpo_hours 1.09
+ok            both-rto        Recovery time objective (RTO) in hours          ANSWER 8 <- business_continuity.rto_hours       top: business_continuity.rto_hours 1.09
+ok            only-rpo        Recovery point objective (RPO) in hours         ANSWER 1 <- business_continuity.rpo_hours       top: business_continuity.rpo_hours 1.09
+ok            only-rto        Recovery time objective (RTO) in hours          ANSWER 8 <- business_continuity.rto_hours       top: business_continuity.rto_hours 1.09
+ok            both-rpo-words  What is your recovery point objective?          ANSWER 1 <- business_continuity.recovery_point  top: business_continuity.recovery_point_objective 1.20
+ok            both-rto-words  What is your recovery time objective?           ANSWER 8 <- business_continuity.recovery_time_  top: business_continuity.recovery_time_objective 1.20
+ok            dr-rto          Recovery time objective (RTO) in hours          ANSWER 8 <- dr.rto_hours                        top: dr.rto_hours 0.89
+ok            enc-1           Is data encrypted in transit?                   REVIEW                                          top: encryption.data_at_rest 0.50
+ok            enc-2           Is data encrypted at rest?                      REVIEW                                          top: encryption.data_in_transit 0.50
+ok            enc-3           Is customer data encrypted in transit?          REVIEW                                          top: encryption.customer_data_encrypted_at_rest 0.50
+ok            enc-4           Is customer data encrypted at rest?             REVIEW                                          top: encryption.customer_data_encrypted_in_transit 0.50
+ok            enc-5           Encryption in transit                           REVIEW                                          top: security.encryption_at_rest 0.50
+ok            enc-6           Encryption at rest                              REVIEW                                          top: security.encryption_in_transit 0.50
+ok            enc-ok-1        Is data encrypted in transit?                   ANSWER 'no' <- encryption.data_in_transit       top: encryption.data_in_transit 1.11
+ok            enc-ok-2        Is data encrypted at rest?                      ANSWER 'yes' <- encryption.data_at_rest         top: encryption.data_at_rest 1.11
+ok            auth-1          Authentication method                           REVIEW                                          top: access_control.authorization_method 0.50
+ok            auth-2          Authorization model                             REVIEW                                          top: -
+ok            auth-3          Is strong authentication enforced?              REVIEW                                          top: access_control.strong_authorization_enforced 0.50
+ok            auth-4          Is role-based authorization enforced?           REVIEW                                          top: access_control.role_based_authentication_enforced 0.50
+ok            auth-ok-1       Authentication method                           ANSWER 'SAML SSO' <- access_control.authentica  top: access_control.authentication_method 1.20
+ok            auth-ok-2       Authorization model                             ANSWER 'RBAC' <- access_control.authorization_  top: access_control.authorization_model 1.20
+ok            bak-1           Backup frequency                                REVIEW                                          top: -
+ok            bak-2           How often are backups performed?                REVIEW                                          top: -
+ok            bak-3           Backup retention period (days)                  REVIEW                                          top: -
+ok            bak-4           Backup frequency                                REVIEW                                          top: backup_retention_days 0.40
+ok            bak-5           Backup retention period (days)                  REVIEW                                          top: backup_frequency 0.40
+ok            bak-6           Backup frequency                                REVIEW                                          top: operations.backup_retention 0.50
+ok            bak-ok-1        Backup frequency                                ANSWER 'daily' <- backup.frequency              top: backup.frequency 1.06
+ok            bak-ok-2        Backup retention period (days)                  ANSWER 30 <- backup.retention_days              top: backup.retention_days 0.70
+ok            del-1           Data retention period (days)                    REVIEW                                          top: -
+WRONG ANSWER  del-2           How long after termination is customer data de  ANSWER 90 <- data_protection.retention_days_af  top: data_protection.retention_days_after_termination 0.65
+ok            del-3           Data retention period (days)                    REVIEW                                          top: data_deletion_days 0.33
+ok            del-4           Data deletion period (days)                     REVIEW                                          top: data_retention_days 0.33
+ok            del-5           Customer data deletion after contract end (day  REVIEW                                          top: data_protection.retention_days_after_termination 0.45
+ok            del-6           Data retention period (days)                    REVIEW                                          top: data_protection.data_deletion_sla_days 0.49
+ok            del-ok-1        Data retention period (days)                    ANSWER 90 <- data_protection.retention_days     top: data_protection.retention_days 0.70
+ok            del-ok-2        Data deletion period (days)                     ANSWER 30 <- data_protection.deletion_days      top: data_protection.deletion_days 0.70
+ok            inc-1           Incident response time (hours)                  REVIEW                                          top: -
+ok            inc-2           Customer breach notification time (hours)       REVIEW                                          top: incident_response.response_time_hours 0.49
+ok            inc-3           Security incident response time                 REVIEW                                          top: incident_response.notification_time_hours 0.40
+ok            inc-4           Customer notification time after a security br  REVIEW                                          top: incident_response.response_time_hours 0.42
+ok            inc-5           Incident response time (hours)                  REVIEW                                          top: -
+ok            inc-6           Time to respond to a security incident (hours)  REVIEW                                          top: -
+ok            inc-ok-1        Incident response time (hours)                  ANSWER 4 <- incident_response.response_time_ho  top: incident_response.response_time_hours 0.94
+lost (REVIEW) inc-ok-2        Customer notification time after a security br  REVIEW                                          top: incident_response.customer_notification_hours 0.50
+ok            x-minmax-1      Minimum password length                         REVIEW                                          top: access_control.maximum_password_length 0.50
+ok            x-minmax-2      Maximum password age (days)                     REVIEW                                          top: access_control.minimum_password_age_days 0.50
+ok            x-pen-1         Penetration test frequency                      REVIEW                                          top: security_testing.penetration_test_scope 0.50
+ok            x-rest-1        Do you encrypt backups?                         REVIEW                                          top: -
+
+62 probes, 2 not as a person would expect
