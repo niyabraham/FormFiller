@@ -1,6 +1,6 @@
 # Real-world compatibility testing report
 
-> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation). Section 14 records fixes RW-10 to RW-13 and a new finding, RW-14. Section 15 records RW-14.
+> Sections 1 to 12 are the **baseline** measured on `main` at `bc193c3` and are unchanged. Section 13 records what was done afterwards (fixes RW-1 and RW-2, and the separate mechanics-only evaluation). Section 14 records fixes RW-10 to RW-13 and a new finding, RW-14. Section 15 records RW-14. Section 16 records the effect of the neighbouring-concept fix (PR #27) on these runs, measured by offline replay, not by new browser runs.
 
 Date: 30 Oct 2026. Code under test: `main` at `bc193c3` (PRs #19, #20 and #21 merged), Windows 11, Python 3.12, Playwright 1.64.1,
 Chromium 156. Branch `test/real-world-compat`. **No implementation file was changed**; this branch adds a test harness, test
@@ -249,7 +249,7 @@ Files: `tools/evaluate_realworld.py`, `benchmarks/realworld/{forms.json,make_tru
 
 ## 13. Follow-up (30 Oct 2026): RW-1, RW-2 and the mechanics-only evaluation
 
-Branch `fix/rw1-rw2-matching-discovery`, **not merged**. Baseline numbers above were not edited; new results are in separate folders
+Branch `fix/rw1-rw2-matching-discovery`, **merged as PR #23**. Baseline numbers above were not edited; new results are in separate folders
 (`benchmarks/realworld/results/after-rw1-2026-10-30/`, `after-rw2-2026-10-30/`, `mechanics-2026-10-30/`).
 
 ### 13.1 RW-1 and RW-2 implemented
@@ -325,7 +325,7 @@ None of RW-3 to RW-13 is implemented. Mechanics results do not enter any precisi
 
 ## 14. Follow-up (30 Oct 2026): RW-10 to RW-13 and a new finding, RW-14
 
-Branch `feat/rw10-13-widget-compat`, cut from `main` at `aaffff6` (after PR #23). **Not merged.** Sections 1 to 13 and every earlier result
+Branch `feat/rw10-13-widget-compat`, cut from `main` at `aaffff6` (after PR #23). **Merged as PR #24.** Sections 1 to 13 and every earlier result
 folder are unchanged; new results are in `benchmarks/realworld/results/after-rw10-13-2026-10-30/` (the 10 main forms and the 4
 supplemental ones, 28 runs) and `.../mechanics-after-rw10-13-2026-10-30/` (4 runs). The forms, sources, ground truth and scoring
 rules are the pre-committed ones, untouched; nothing under `benchmarks/realworld/truth/`, `forms.json` or `mechanics/` changed.
@@ -428,7 +428,7 @@ limitation was altered, and absolute network isolation is still not claimed.
 
 ## 15. Follow-up (31 Oct 2026): RW-14, the date popup left open by a date entry
 
-Branch `fix/rw14-date-popup-dismissal`, cut from `main` at `4032bd6` (after PR #24). **Not merged.** Sections 1 to 14 and every earlier
+Branch `fix/rw14-date-popup-dismissal`, cut from `main` at `4032bd6` (after PR #24). **Merged as PR #25.** Sections 1 to 14 and every earlier
 result folder are unchanged; new results are in `benchmarks/realworld/results/after-rw14-2026-10-31/` (the 10 main forms and the 4
 supplemental ones, 28 runs) and `.../mechanics-after-rw14-2026-10-31/` (4 runs). The forms, sources, ground truth and scoring rules are
 the pre-committed ones, untouched.
@@ -594,3 +594,15 @@ same code (`formfill/web/execute.py` blob `dd924f8`), and that repeat is the res
 * **Read-back is a string comparison.** A widget that redraws the committed date in another format when it closes would have its date
   reported for review rather than verified. Conservative; it can lower coverage.
 * RW-3 to RW-9 and the technical debt in section 14.5 are untouched.
+
+
+## 16. Follow-up (1 Nov 2026): effect of the neighbouring-concept fix (PR #27)
+
+PR #27 changed matching after the runs above. **No new browser run was made.** The controls recorded in the 28 main and 4 mechanics-only runs (32 control sets, 221 questions) were re-planned offline, with the same two fictional sources and the code before and after the fix.
+
+| measure | before PR #27 | after |
+|---|---|---|
+| answered fields (automatic) | 29 | 29, with identical answers and sources |
+| reviewer proposals that changed (review items only; never entered) | - | 11 |
+
+The precision and coverage in sections 6 and 13 are therefore unchanged for these forms. Of the 11 changed proposals: 8 removals were right (a company name was no longer offered for a person's "Full name", an e-mail address no longer for "Contact Person" or for a phone question); 2 plausible proposals were removed (the CISO's address for "Contact Email"); 1 became worse ("Readonly input" on Selenium's form is now offered a date-of-birth value). Proposal quality is separate from fill precision. This replay says nothing about the open findings RW-3 to RW-9. Data: `benchmarks/results/2026-11-01_neighbouring_concept_guard/` and `.../2026-11-01_iteration2_review_followup/`.

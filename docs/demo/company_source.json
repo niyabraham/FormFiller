@@ -1,0 +1,49 @@
+{
+  "company": {
+    "legal_name": "Brightwave Systems Ltd",
+    "founded": "2014-06-02",
+    "employees": 180,
+    "full_time_employees": 156,
+    "headquarters_country": "United Kingdom",
+    "website": "https://brightwave.example"
+  },
+  "contact": {
+    "security_email": "security@brightwave.example"
+  },
+  "data_protection": {
+    "gdpr_applies": true,
+    "dpo_name": "R. Okafor",
+    "hosting_region": "EU",
+    "retention_days_after_termination": 90
+  },
+  "encryption": {
+    "customer_data_encrypted_at_rest": true,
+    "customer_data_encrypted_in_transit": true,
+    "minimum_tls_version": "TLS 1.2",
+    "at_rest_algorithm": "AES-256"
+  },
+  "access_control": {
+    "mfa_enforced_all_staff": true,
+    "password_min_length": 12,
+    "password_policy": { "min_length": 8 },
+    "access_review_frequency": "quarterly"
+  },
+  "incident_response": {
+    "documented_plan": true,
+    "customer_notification_hours": 72
+  },
+  "business_continuity": {
+    "plan_exists": true,
+    "rto_hours": 8,
+    "rpo_hours": 1,
+    "dr_test_frequency": "annually"
+  },
+  "certifications": {
+    "iso_27001": { "status": "certified" },
+    "soc2": { "status": "in progress" }
+  },
+  "vendor_management": {
+    "supplier_security_assessments": true,
+    "subprocessors_list_url": "https://brightwave.example/subprocessors"
+  }
+}
