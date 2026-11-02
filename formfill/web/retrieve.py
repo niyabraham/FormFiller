@@ -292,11 +292,6 @@ def assess_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf,
     return score, flags
 
 
-def score_leaf(q_tokens: set[str], section_tokens: set[str], leaf: Leaf, q_period: frozenset[str] = frozenset(),
-               is_count: bool = False) -> float:
-    return assess_leaf(q_tokens, section_tokens, leaf, q_period, is_count)[0]
-
-
 def _count_modifiers_ignoring_entity(q: set[str], leaf: Leaf) -> set[str]:
     """Unexplained modifiers of a counting question when words explained only by the parent path (which
     entity is counted) are not allowed to dilute them. Empty when the leaf explains more than half of the rest."""

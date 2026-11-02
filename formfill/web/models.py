@@ -15,9 +15,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 # Control kinds produced by discovery.
-TEXT_KINDS = {"text", "textarea", "email", "url", "tel", "number", "date"}
 CHOICE_KINDS = {"select", "radio"}
-MULTI_KINDS = {"multiselect", "checkbox_group"}
 
 
 @dataclass
@@ -71,7 +69,6 @@ class Question:
     concept_tokens: list[str] = field(default_factory=list)
     is_count: bool = False  # asks for the size of a population ("Number of ...", "How many ...", "headcount")
     period: frozenset[str] = frozenset()  # points in time the question names ("-2y" = two years ago), see tokens.period_markers
-    semantic_type: str | None = None  # reserved for a later classifier/LLM stage
 
 
 @dataclass

@@ -34,11 +34,6 @@ _NETWORK_GUARDS: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 _REDIRECTS = {301, 302, 303, 307, 308}
 
 
-def guard_state(page: Page) -> dict | None:
-    """The guard's state for this page's context, or None when no guard was ever installed."""
-    return _NETWORK_GUARDS.get(page.context)
-
-
 def guard_active(page: Page) -> bool:
     state = _NETWORK_GUARDS.get(page.context)
     return bool(state and state["active"])
