@@ -4,9 +4,7 @@ what is being asked, what type of answer is expected, and what shape it has.
 MVP approach is deterministic: the expected type comes from the control
 itself (an <input type=date> asks for a date no matter how the label is
 worded), and the "concept" is the normalised token set of the label.
-`semantic_type` is deliberately left empty: inventing a hand-written
-ontology (employee_count, ...) is not justified until retrieval is shown to
-need it; a classifier or LLM can fill it later without changing callers.
+The `semantic_type` field that was reserved here for a future classifier has been removed: it was never populated.
 """
 
 from __future__ import annotations
