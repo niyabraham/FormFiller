@@ -1,7 +1,7 @@
 # Interview guide
 
 How to explain FormFiller accurately in an internship or placement interview. Everything here was checked against the source and the
-documentation at `main` `f463eb4` (PR #27 merged); where a number comes from a document, the document is named. If the code and this
+documentation at `main` `873d1c9` (PR #28 merged); where a number comes from a document, the document is named. If the code and this
 guide ever disagree, the code is right: open the file named next to the claim.
 
 **Ground rules for the conversation.** It is a *tested prototype*: measured on local fixtures, on pre-written ground truth, and on ten
