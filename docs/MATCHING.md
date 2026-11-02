@@ -64,7 +64,7 @@ answer entered where review was expected; proposals = review items whose offered
 | RFI dev benchmark (192, browser) | before -> layered | 98.0% -> 98.1% | 52.6% -> 55.2% | 1 -> 1 | - |
 | held-out benchmark (272, browser) | before -> layered | 100% -> 100% | 39.3% -> 40.1% | 0 -> 0 | - |
 
-On both browser benchmarks every changed decision went from a missed answer to a correct one; none regressed. The one unsafe
+On both browser benchmarks every changed decision went from a missed answer to a correct one; none regressed. The neighbouring-concept guard (below) changed no decision on either benchmark. The one unsafe
 answer on the RFI dev benchmark is the known disputed label recorded before this work.
 
 ### Thresholds and calibration (development data only)

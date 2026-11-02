@@ -205,7 +205,7 @@ moved.
 Remaining work (when written): approve or decline RW-14; RW-3 to RW-9 and the technical debt in report 14.5 are untouched. This
 branch was merged as PR #24; RW-14 is the next section.
 
-## RW-14 (31 Oct 2026, branch `fix/rw14-date-popup-dismissal`, cut from `main` at `4032bd6`, not merged)
+## RW-14 (31 Oct 2026, branch `fix/rw14-date-popup-dismissal`, cut from `main` at `4032bd6`, merged as PR #25)
 
 First a post-merge baseline on `main` (report 15.1: 1354 passed, 2 xfailed; every benchmark as before). Then the live DemoQA page was
 inspected read only (report 15.2, 15.3), the tests were written first and seen failing, and the smallest change was made. Full
@@ -234,4 +234,89 @@ failed on name resolution (machine offline) and was repeated on the same code; s
 changed: no documented guarantee or limitation moved.
 
 Remaining work: other picker libraries are not closed (each needs its own behaviour checked first); RW-3 to RW-9 and the technical debt
-in report 14.5 are untouched. Nothing from this branch is merged; `main` is unchanged.
+in report 14.5 are untouched. This branch was merged as PR #25.
+
+## Portfolio readiness (1 Nov 2026, built on `main` at `b354d58`)
+
+Presentation work, not a development phase: no change to matching, safety, browser execution or submission behaviour.
+
+| item | what |
+|---|---|
+| `docs/demo/` | A fictional eight-section vendor security questionnaire (33 questions) and company source, a step-by-step guide with real output, and a 3-minute recording script |
+| `demo_web.py` | Optional `--form`, `--source`, `--out`, `--review`, `--trace` arguments, a per-section report with proposals shown as "proposal, not entered", ASCII-only output; with no arguments it gives the same outcome on the example page (9 verified / 2 review) but no longer records a trace unless `--trace` is given |
+| `docs/ARCHITECTURE.md` | Components, data flow, decision points, what is not implemented; diagrams drawn from the modules' real imports |
+| `docs/assets/` | Six real screenshots from the demo (FormFiller's own `filled.png`, two crops of it, three captures of the running review page) |
+| `README.md` | Restructured for a first read; every figure and caveat carried over; evaluation tables kept separate (matching, fixtures, mechanics) |
+| `tests/web/test_demo_rfi.py` | 25 tests that pin what the guide says: which questions are answered, which go to review and why, what stays untouched, that nothing is submitted, what a person's decisions change |
+| status lines | `REAL_WORLD_TESTING_REPORT.md` sections 13 to 15 and this file said "not merged" for work merged as PRs #23, #24, #25: corrected |
+
+Baseline on `main` at `b354d58` before any change: 1378 passed, 2 xfailed; ruff, mypy clean; pip-audit clean in a fresh environment; matching
+sets 1.00 / 0.933 and 1.00 / 0.706; RFI dev 105 correct, 98.1 %, 55.7 %; held-out 109, 100 %, 40.1 %; SPA 77 of 82, 11 of 12; wizards 16 of 16;
+widgets 12 of 12.
+
+**Findings made while writing the demo, not fixed here (matching is out of scope for this work):**
+
+1. **Neighbouring concepts were confused -- fixed afterwards in PR #27 (next section).** With no `rpo_hours` fact in the source, "Recovery point objective (RPO) in hours" was answered with the
+   `rto_hours` value (`8`, score 0.867, category `medium`): the two questions share most of their words, and the tokeniser expands RPO and RTO as
+   domain terms but the scorer treated `point` against `time` as a partial match. Found here and deliberately not fixed in this presentation work, because a fix had to touch matching and re-run every benchmark.
+2. **Similarity proposals can be irrelevant** (three of the six in the demo's first run). They are never entered, which is the point of the
+   review step, but a reviewer can still approve one by mistake.
+3. **Wording sensitivity**: `notify` / `notification`, `apply` / `applicable`, and a hyphenated `sub-processor` are different words to the
+   matcher. They fail safe (review) and lower coverage.
+4. `python demo.py` (the legacy PDF demo) raises `UnicodeEncodeError` on Windows when its output is redirected (it prints non-ASCII characters);
+   `PYTHONUTF8=1` avoids it. Predates this work and is untouched.
+5. The repository has no `LICENSE` file.
+6. **An intermittent Windows write failure when a trace is recorded.** One `demo_web.py` run (of about 25, while the demo was being verified) ended
+   with `PermissionError: [WinError 5]` in `artifacts.write_bytes_atomic`, called from `scrub_trace`: the `os.replace` of the scrubbed zip over the trace
+   Playwright had just written was refused, most likely because another process (antivirus) briefly held the new file. Twelve repeats of the same
+   command did not reproduce it. The demo no longer records a trace by default, which removes it from the documented path. The underlying
+   race remains for `run_url(trace=True)` and `validate_public_form.py --trace`; a bounded retry around `os.replace` would fix it and needs its own change
+   and test, because that helper is the owner-only atomic writer.
+
+
+## Neighbouring-concept fix (PR #27, merged 1 Nov 2026; branch `fix/rpo-rto-matching`, commit `cde2726`, merge `f463eb4`, cut from `b354d58`)
+
+Fixes the weakness found while preparing the demo, as a separate, tested change. Matching only; no change to the security model, browser execution, network guard, submission or review UI.
+
+**Root cause.** `rto_hours` (recovery, time, objective, hours) and the question (recovery, point, objective, hours) differ by one word each. Partial overlap plus the +0.2 section bonus passed the 0.6 answer threshold, no guard treated a one-word swap between sibling concepts as a difference, and the semantic proposal layer offered the neighbour's value too. The same shape affected encrypted in transit / at rest, authentication / authorization and retention / deletion.
+
+**Change.** `retrieve.sibling_words`: when a question and a key differ by exactly one word on each side and share at least one word, the candidate is capped at `UNEXPLAINED_CAP` (0.5, below the answer threshold): visible to the reviewer, never auto-answered, and not offered as a proposal (`plan._gated_candidates`). Not a swap: related word forms and abbreviations (`tokens.related`), acronym echoes, units / "period" / "format", time words, question auxiliaries and interrogatives, numbers, and a short `SAME_CONCEPT` list. Follow-ups from the review: a key about a topic the question never names needs more than half of the question explained (retention vs deletion), and a proposal is never a different kind of contact detail (`CONTACT_KIND_WORDS`). No concept-pair list, no model, no external service. Tests: `tests/web/test_concept_confusion.py`, 130 tests (47 of the first 121 failed on the old code).
+
+**Iterations, disclosed.** The first version passed every earlier non-browser test but lost 5 correct answers on the browser benchmarks (1 development, 4 second set); each was a paraphrase read as a swap ("was", "dept" / "department", "currently" / "active", "run" / "performed", "limit" / "coverage") and was excluded with a narrow rule. After that no decision changed on either set. The review then found one wrong answer left on the probes (retention vs deletion) and a phone number proposed for "Contact Email"; both were fixed with the rules above and a regression test each.
+
+| measurement (automatic answers unless stated) | before | after |
+|---|---|---|
+| RFI development set (192) | 105 correct, 1 wrong, 98.1 % / 55.7 % | identical; no decision changed |
+| Second set (272) | 109 correct, 0 wrong, 100 % / 40.1 % | identical; no decision changed |
+| Semantic dev / eval, SPA, wizards, widgets | 1.00 / 0.933, 1.00 / 0.706, 77 of 82 and 11 of 12, 16 of 16, 12 of 12 | identical |
+| 62 related-concept probes written for this change (wrong automatic answers) | 23 | 0 |
+| 32 recorded real-world control sets (221 questions), offline replay: answered fields | 29 | 29, same answers |
+| Reviewer proposals in that replay (not fill precision) | - | 11 changed: 8 removals right, 2 plausible proposals removed, 1 became worse |
+
+**Disclosures.** The second set was used while refining the exclusion rules, so it is not an untouched evaluation of this change. The probes were written by the author of the fix and cover only the pairs thought of; one is still a lost match that was already lost before. Two review-only regressions were accepted and are documented in `docs/MATCHING.md` (known gaps). The before/after data is in `benchmarks/results/2026-11-01_*`; the probe script was a scratch tool and is not committed. Branch validation: 1508 passed, 2 xfailed with the browser required; ruff, mypy and pip-audit clean.
+
+
+## Final portfolio release (1 Nov 2026, on `main` at `f463eb4`, PR #27 merged)
+
+Release readiness, not a development phase: no product code changed. Documentation brought up to date with PR #27; one demo test added; a technical interview guide written; the demo run from scratch.
+
+| item | what |
+|---|---|
+| Documentation | README (evaluation section now separates development, second set, real-world replay and the 62 probes; held-out disclosure; the RPO/RTO limitation replaced by an honest "guarded, not solved"), `docs/PROGRESS.md`, `docs/ARCHITECTURE.md`, `docs/MATCHING.md`, `REAL_WORLD_TESTING_REPORT.md` (section 16), `docs/demo/DEMO_GUIDE.md` (section 7 and troubleshooting), `docs/demo/RECORDING_SCRIPT.md` (rewritten as a 4 to 5 minute plan) |
+| `docs/INTERVIEW_GUIDE.md` | New: introduction, 2-minute explanation, architecture walkthrough, 15 likely and 5 challenging questions, numbers with their caveats, code map. Written from the source, not from the docs |
+| `tests/web/test_demo_rfi.py` | One test added (26 in all): with `rpo_hours` removed from the demo source the RPO question goes to review, the RTO value is not proposed, 21 answers are verified |
+
+**Clean-room verification** (a fresh `git worktree` of `origin/main` with the portfolio files laid over it, a brand-new virtual environment, the README's own commands, Windows 11, Python 3.12.8, Playwright 1.64.1):
+
+| step | result |
+|---|---|
+| `pip install -e ".[web]"`, `playwright install chromium` | no missing dependency; Playwright 1.64.1 |
+| first demo run | 22 verified, 11 needs review, 1 unsupported; `NEEDS_REVIEW`; submission not attempted; about 12 s; output identical line for line to the guide's table (51 of 51 lines) |
+| review page driven with the guide's 11 decisions (the real page's own buttons) | summary `pending 22, edit 4, approve 3, reject 3, acknowledge 1` |
+| rerun with `--review` | 29 verified, 4 needs review, 1 unsupported; the changed rows match the guide (16 of 16 lines) |
+| `--submit` | refused: `attempted: False, outcome: SKIPPED`, reasons as in the guide (3 of 3 lines) |
+| RPO fact removed from a copy of the source (guide section 7) | 21 verified, 12 needs review; RPO row `NEEDS_REVIEW`, score 0.50, `different concept: the question says ['point'] where the key says ['time']`; RTO row still verified |
+
+Findings, all documentation or environment, none a product change: (1) the loader reads plain UTF-8, so a source copy written by Windows PowerShell 5.1 (`Set-Content -Encoding utf8` adds a byte-order mark) fails with `JSONDecodeError: Unexpected UTF-8 BOM`; the guide now says so and uses a Python one-liner. (2) `pip-audit` in a brand-new virtual environment reported 12 known vulnerabilities, all in `pip` 24.3.1 (the pip bundled by Python 3.12.8), none in a FormFiller dependency; after `python -m pip install --upgrade pip` it reports none, and the README setup now includes that step.
+
+**Validation on the final tree** (clean room, fresh virtual environment, `FORMFILL_REQUIRE_BROWSER=1`): full suite **1534 passed, 2 xfailed, 0 failed, 0 skipped** in about 15 minutes (1508 on `main` plus 26 demo tests; baseline before PR #27 and the demo tests: 1378 passed, 2 xfailed); `ruff check formfill tools tests benchmarks` clean; `mypy` clean (33 source files); `pip-audit --skip-editable` clean after the pip upgrade; the 156 focused tests (concept confusion and demo) pass; 86 relative links, images and anchors in 13 Markdown files resolve; 5 Mermaid diagrams parse and render. Not done: no screen recording was made (the script is the plan), no real portal was tested, and the 62-probe script is still not in the repository.

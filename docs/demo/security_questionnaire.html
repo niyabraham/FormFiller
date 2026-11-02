@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor security questionnaire (fictional demo)</title>
+<style>
+  body { font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: #1d2733; background: #f4f6f9; margin: 0; padding: 24px 12px 48px; }
+  main { max-width: 820px; margin: 0 auto; }
+  .demo-banner { background: #fff3cd; border: 1px solid #d6b656; border-radius: 6px; padding: 8px 12px; font-size: 13px; margin: 0 0 16px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .lead { margin: 0 0 20px; color: #4a5a6a; }
+  h2 { font-size: 17px; margin: 0 0 12px; padding-bottom: 6px; border-bottom: 2px solid #2f6fdb; }
+  section.card { background: #fff; border: 1px solid #d9e0e8; border-radius: 8px; padding: 16px 18px; margin: 0 0 16px; }
+  .row { margin: 0 0 14px; }
+  label.q, legend { display: block; font-weight: 600; margin: 0 0 4px; padding: 0; }
+  fieldset { border: 0; margin: 0 0 14px; padding: 0; }
+  label.opt { display: inline-block; font-weight: 400; margin-right: 18px; }
+  input[type=text], input[type=email], input[type=url], input[type=number], input[type=date], select, textarea {
+    width: 100%; box-sizing: border-box; padding: 7px 9px; border: 1px solid #b6c2cf; border-radius: 5px; font: inherit; background: #fff; }
+  textarea { min-height: 78px; }
+  .help { color: #5b6b7b; font-size: 13px; margin-top: 3px; }
+  button { font: inherit; font-weight: 600; padding: 9px 18px; border: 0; border-radius: 6px; background: #2f6fdb; color: #fff; cursor: pointer; }
+  #done { margin-top: 14px; padding: 10px 12px; background: #e3f4e6; border: 1px solid #7fbf8a; border-radius: 6px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <p class="demo-banner">Fictional demo page for FormFiller. No real company, customer or data. The form never sends anything anywhere.</p>
+  <h1>Vendor security and compliance questionnaire</h1>
+  <p class="lead">Issued by Fictional Retail Group to prospective suppliers. Please answer every question; fields marked * are required.</p>
+
+  <form id="rfi" novalidate>
+
+    <section class="card">
+      <h2>Company profile</h2>
+      <div class="row"><label class="q" for="legal_name">Legal company name *</label>
+        <input id="legal_name" name="legal_name" type="text" required></div>
+      <div class="row"><label class="q" for="founded">Date founded</label>
+        <input id="founded" name="founded" type="date"></div>
+      <div class="row"><label class="q" for="employees">Number of employees</label>
+        <input id="employees" name="employees" type="number" min="0"></div>
+      <div class="row"><label class="q" for="full_time">Number of full-time employees</label>
+        <input id="full_time" name="full_time" type="number" min="0"></div>
+      <div class="row"><label class="q" for="remote">Number of employees working remotely</label>
+        <input id="remote" name="remote" type="number" min="0"></div>
+      <div class="row"><label class="q" for="hq_country">Headquarters country</label>
+        <select id="hq_country" name="hq_country">
+          <option value="">-- choose --</option>
+          <option value="GB">United Kingdom</option>
+          <option value="IE">Ireland</option>
+          <option value="DE">Germany</option>
+          <option value="US">United States</option>
+          <option value="IN">India</option>
+        </select></div>
+      <div class="row"><label class="q" for="website">Company website</label>
+        <input id="website" name="website" type="url"></div>
+      <div class="row"><label class="q" for="sec_email">Security contact email *</label>
+        <input id="sec_email" name="sec_email" type="email" required></div>
+    </section>
+
+    <section class="card">
+      <h2>Data protection</h2>
+      <fieldset>
+        <legend>Does GDPR apply to your organization?</legend>
+        <label class="opt"><input type="radio" name="gdpr" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="gdpr" value="no"> No</label>
+      </fieldset>
+      <div id="dpo-wrap" class="row" hidden>
+        <label class="q" for="dpo">Data Protection Officer name</label>
+        <input id="dpo" name="dpo" type="text">
+        <div class="help">Shown only when GDPR applies.</div>
+      </div>
+      <div class="row"><label class="q" for="hosting">Primary data hosting region</label>
+        <select id="hosting" name="hosting">
+          <option value="">-- choose --</option>
+          <option value="eu">EU</option>
+          <option value="uk">UK</option>
+          <option value="us">US</option>
+          <option value="apac">Asia-Pacific</option>
+        </select></div>
+      <div class="row"><label class="q" for="retention">Customer data retention after contract termination (days)</label>
+        <input id="retention" name="retention" type="number" min="0"></div>
+    </section>
+
+    <section class="card">
+      <h2>Encryption</h2>
+      <fieldset>
+        <legend>Is customer data encrypted at rest?</legend>
+        <label class="opt"><input type="radio" name="enc_rest" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="enc_rest" value="no"> No</label>
+      </fieldset>
+      <fieldset>
+        <legend>Is customer data encrypted in transit?</legend>
+        <label class="opt"><input type="radio" name="enc_transit" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="enc_transit" value="no"> No</label>
+      </fieldset>
+      <div class="row"><label class="q" for="tls">Minimum TLS version supported</label>
+        <select id="tls" name="tls">
+          <option value="">-- choose --</option>
+          <option value="tls10">TLS 1.0</option>
+          <option value="tls11">TLS 1.1</option>
+          <option value="tls12">TLS 1.2</option>
+          <option value="tls13">TLS 1.3</option>
+        </select></div>
+      <div class="row"><label class="q" for="keys">Who manages your encryption keys?</label>
+        <input id="keys" name="keys" type="text"></div>
+    </section>
+
+    <section class="card">
+      <h2>Access control</h2>
+      <fieldset>
+        <legend>Is multi-factor authentication enforced for all staff?</legend>
+        <label class="opt"><input type="radio" name="mfa" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="mfa" value="no"> No</label>
+      </fieldset>
+      <div class="row"><label class="q" for="pw_len">Minimum password length (characters)</label>
+        <input id="pw_len" name="pw_len" type="number" min="0"></div>
+      <div class="row"><label class="q" for="access_review">How often are user access rights reviewed?</label>
+        <select id="access_review" name="access_review">
+          <option value="">-- choose --</option>
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="annually">Annually</option>
+          <option value="never">Never</option>
+        </select></div>
+    </section>
+
+    <section class="card">
+      <h2>Incident response</h2>
+      <fieldset>
+        <legend>Do you have a documented incident response plan?</legend>
+        <label class="opt"><input type="radio" name="ir_plan" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="ir_plan" value="no"> No</label>
+      </fieldset>
+      <div class="row"><label class="q" for="notify">Customer notification time after a security breach (hours)</label>
+        <input id="notify" name="notify" type="number" min="0"></div>
+      <div class="row"><label class="q" for="ir_process">Describe your incident response process</label>
+        <textarea id="ir_process" name="ir_process"></textarea></div>
+      <div class="row"><label class="q" for="ir_exercise">Date of your last incident response exercise</label>
+        <input id="ir_exercise" name="ir_exercise" type="date"></div>
+    </section>
+
+    <section class="card">
+      <h2>Business continuity</h2>
+      <fieldset>
+        <legend>Do you maintain a business continuity plan?</legend>
+        <label class="opt"><input type="radio" name="bcp" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="bcp" value="no"> No</label>
+      </fieldset>
+      <div class="row"><label class="q" for="rto">Recovery time objective (RTO) in hours</label>
+        <input id="rto" name="rto" type="number" min="0"></div>
+      <div class="row"><label class="q" for="rpo">Recovery point objective (RPO) in hours</label>
+        <input id="rpo" name="rpo" type="number" min="0"></div>
+      <div class="row"><label class="q" for="dr_rehearsal">How often do you rehearse your disaster recovery procedures?</label>
+        <select id="dr_rehearsal" name="dr_rehearsal">
+          <option value="">-- choose --</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="semiannually">Every six months</option>
+          <option value="annually">Annually</option>
+          <option value="never">Never</option>
+        </select></div>
+    </section>
+
+    <section class="card">
+      <h2>Compliance</h2>
+      <fieldset>
+        <legend>Are you ISO 27001 certified?</legend>
+        <label class="opt"><input type="radio" name="iso" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="iso" value="no"> No</label>
+      </fieldset>
+      <fieldset>
+        <legend>Are you SOC 2 Type II certified?</legend>
+        <label class="opt"><input type="radio" name="soc2" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="soc2" value="no"> No</label>
+      </fieldset>
+      <fieldset>
+        <legend>Are you PCI DSS compliant?</legend>
+        <label class="opt"><input type="radio" name="pci" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="pci" value="no"> No</label>
+      </fieldset>
+    </section>
+
+    <section class="card">
+      <h2>Vendor management</h2>
+      <fieldset>
+        <legend>Do you perform security assessments of your suppliers?</legend>
+        <label class="opt"><input type="radio" name="supplier_assess" value="yes"> Yes</label>
+        <label class="opt"><input type="radio" name="supplier_assess" value="no"> No</label>
+      </fieldset>
+      <div class="row"><label class="q" for="subproc">Link to your list of subprocessors</label>
+        <input id="subproc" name="subproc" type="url"></div>
+    </section>
+
+    <section class="card">
+      <h2>Evidence and declaration</h2>
+      <div class="row"><label class="q" for="audit_report">Upload your latest independent audit report (PDF)</label>
+        <input id="audit_report" name="audit_report" type="file" accept="application/pdf"></div>
+      <div class="row"><label class="opt"><input type="checkbox" name="accurate"> I confirm that the information provided is accurate and complete</label></div>
+    </section>
+
+    <button type="submit">Submit questionnaire</button>
+  </form>
+  <div id="done" hidden>Thank you, your response was received</div>
+</main>
+<script>
+  // Local demo behaviour only: nothing is sent anywhere.
+  document.getElementById('rfi').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!e.target.checkValidity()) { e.target.reportValidity(); return; }
+    document.getElementById('done').hidden = false;
+  });
+  document.querySelectorAll('input[name=gdpr]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      var chosen = document.querySelector('input[name=gdpr]:checked');
+      document.getElementById('dpo-wrap').hidden = !chosen || chosen.value !== 'yes';
+    });
+  });
+</script>
+</body>
+</html>

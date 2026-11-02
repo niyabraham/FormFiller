@@ -21,9 +21,11 @@ TWO TIERS OF INSTRUMENTATION
     - capture-phase, passive listeners for beforeinput/input/change/focusin/focusout/reset;
     - a MutationObserver (the field's value/disabled/readonly attributes; removal of the field or an ancestor);
     - PerformanceObservers: longtask, long-animation-frame (which scripts ran), resource (fetch/XHR/beacon, script count), paint;
-    - a 50 ms sampler that READS the field (value, value attribute, attached, same node) and page signals (readyState, the
-      TanStack Router bootstrap flag `self.$_TSR`, framework keys on the element such as React's `__reactProps$...`, focus,
-      plus any `--signal NAME=EXPR`). It logs a row only when a value changes.
+    - a 50 ms sampler (`--sample-ms`) that READS the field (value, value attribute, attached, same node) and page signals
+      (readyState, the TanStack Router bootstrap flag `self.$_TSR`, framework keys on the element such as React's
+      `__reactProps$...`, focus, plus any `--signal NAME=EXPR`). It logs a row only when a value changes. The signals are also
+      read when the text lands (the field's `beforeinput`/`input`), so a long task started by the typing cannot leave a stale
+      reading as the "start of the reset window".
   Setter hook (opt-in `--trace-setters`, INTRUSIVE). Wraps `HTMLInputElement.prototype.value/defaultValue` setters so that when
   page code assigns the probed field it records the caller's stack. It passes every call straight through, but it is a patched
   page object: results are written to a separate file (`..._setters.json`) and flagged, so run it AFTER the observation-only
@@ -98,6 +100,12 @@ _INIT = r"""
 
   const onEvent = e => {
     const cur = el || document.querySelector(CFG.selector), t = e.target;
+    // The first sampler tick runs in this init script, before the page's own scripts, and a long task started by the typing
+    // starves the next ones: a signal last read on a tick can describe a page that did not exist yet (`self.$_TSR` is "absent"
+    // until the page defines it). Reading the signals when the text lands (capture phase, before the page's own listeners)
+    // makes "its value when the reset window began" the state at the window's lower boundary: the typing itself when no tick
+    // fell inside the window, otherwise the last tick that still held the text. Either way, not a stale pre-page reading.
+    if (cur && t === cur && (e.type === 'beforeinput' || e.type === 'input')) readSignals();
     if (cur && t === cur) P.events.push([T(), e.type, {trusted: e.isTrusted, inputType: e.inputType || null, len: String(t.value || '').length}]);
     else if (e.type === 'reset') P.events.push([T(), 'form-reset', {target: short((t && (t.id || t.tagName)) || '', 30), containsField: !!(cur && t.contains && t.contains(cur))}]);
   };
@@ -125,10 +133,12 @@ _INIT = r"""
   for (const [name, expr] of CFG.signals) { try { const f = new Function('return (' + expr + ')'); SIGNALS[name] = () => f(); } catch (e) { SIGNALS[name] = () => 'bad-expression'; } }
   const sig = (name, v) => { v = short(v, 120); if (P.sigLast[name] !== v) { P.sigLast[name] = v; P.signals.push([T(), name, v]); } };
 
+  const readSignals = () => { for (const name in SIGNALS) { try { sig(name, SIGNALS[name]()); } catch (e) { sig(name, 'error:' + short(e && e.message, 40)); } } };
+
   const tick = () => {
     const now = T();
     P.ticks.push(now);  // the same value a sample logged on this tick carries (a rounded tick could sort before its own sample)
-    for (const name in SIGNALS) { try { sig(name, SIGNALS[name]()); } catch (e) { sig(name, 'error:' + short(e && e.message, 40)); } }
+    readSignals();
     if (!el) { const f = document.querySelector(CFG.selector); if (f) { el = f; P.events.push([now, 'field-found', {connected: f.isConnected}]); } }
     if (el) {
       const cur = document.querySelector(CFG.selector);
@@ -338,9 +348,9 @@ def build_timeline(data: dict, nav: dict | None, analyses: list[tuple[str, dict]
 
 
 def probe(url: str, selector: str, delay_ms: int = 0, duration_ms: int = 25000, second_fill: bool = True, headed: bool = False, *,
-          trace_setters: bool = False, signals: list | tuple = (), collect: str | None = None, ready_js: str | None = None,
+          sample_ms: int = SAMPLE_MS, trace_setters: bool = False, signals: list | tuple = (), collect: str | None = None, ready_js: str | None = None,
           ready_timeout_ms: int = 60000, second_wait_ms: int = 3000) -> dict:
-    cfg = {"selector": selector, "sampleMs": SAMPLE_MS, "traceSetters": bool(trace_setters), "signals": [list(s) for s in signals]}
+    cfg = {"selector": selector, "sampleMs": sample_ms, "traceSetters": bool(trace_setters), "signals": [list(s) for s in signals]}
     init = _INIT.replace("__CFG__", json.dumps(cfg))
     exe = os.environ.get("FORMFILL_CHROMIUM") or None
     with sync_playwright() as p:
@@ -382,7 +392,7 @@ def probe(url: str, selector: str, delay_ms: int = 0, duration_ms: int = 25000, 
         "url": url, "selector": selector, "delay_ms": delay_ms, "load_event_ms": loaded_ms, "ready": ready,
         "instrumentation": {
             "observation_only": ["input/change/focus/reset listeners (capture, passive)", "MutationObserver", "PerformanceObserver",
-                                 f"{SAMPLE_MS} ms read-only sampler"],
+                                 f"{sample_ms} ms read-only sampler"],
             "setter_hook": bool(trace_setters),
             "setter_hook_note": "INTRUSIVE: patches HTMLInputElement.prototype value/defaultValue setters (pass-through); compare with an "
                                 "observation-only run" if trace_setters else None,
@@ -459,12 +469,16 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--ready-js", help="JS expression that must be truthy before typing (bounded by --ready-timeout-ms); "
                                        "the probe types anyway on timeout and records ready.met=false")
     ap.add_argument("--ready-timeout-ms", type=int, default=60000)
-    ap.add_argument("--signal", action="append", default=[], metavar="NAME=EXPR", help="sample a JS expression every 50 ms (repeatable)")
+    ap.add_argument("--signal", action="append", default=[], metavar="NAME=EXPR",
+                    help="sample a JS expression on every sampler tick (see --sample-ms) and when the text lands (repeatable)")
+    ap.add_argument("--sample-ms", type=int, default=SAMPLE_MS, help="period of the read-only sampler (default %(default)s)")
     ap.add_argument("--collect", help="JS expression evaluated at the end and stored under `collected` (e.g. a page-side log)")
     ap.add_argument("--trace-setters", action="store_true", help="INTRUSIVE: record the stack of page code that assigns the field's value")
     ap.add_argument("--out-dir", default="output/hydration_probe")
     ap.add_argument("--headed", action="store_true")
     a = ap.parse_args(argv)
+    if a.sample_ms < 1:
+        ap.error("--sample-ms must be at least 1")
 
     signals = []
     for s in a.signal:
@@ -473,7 +487,7 @@ def main(argv: list[str] | None = None) -> int:
             ap.error(f"--signal expects NAME=EXPR, got {s!r}")
         signals.append((name.strip(), expr.strip()))
 
-    res = probe(a.url, a.selector, a.delay_ms, a.duration_ms, not a.no_second_fill, a.headed, trace_setters=a.trace_setters,
+    res = probe(a.url, a.selector, a.delay_ms, a.duration_ms, not a.no_second_fill, a.headed, sample_ms=a.sample_ms, trace_setters=a.trace_setters,
                 signals=signals, collect=a.collect, ready_js=a.ready_js, ready_timeout_ms=a.ready_timeout_ms,
                 second_wait_ms=a.second_wait_ms)
     out = Path(a.out_dir)

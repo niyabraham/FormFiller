@@ -200,6 +200,30 @@ def test_interval_bounds_contain_the_pages_own_true_interval(browser, tmp_path):
 
 
 @pytest.mark.browser
+def test_readiness_is_read_when_the_text_lands_not_only_on_sampler_ticks(browser, tmp_path):
+    """The CI failure of the test above (`at_start_of_reset_window` was "absent"), made deterministic. The sampler's first tick runs in
+    the init script, before the page defines `self.$_TSR` ("absent"); if the typing lands before the next tick, the long task the
+    typing starts keeps the sampler from ticking until after the reset, and the last reading before the window is that stale
+    "absent". With an 800 ms sampler the typing (about 70 ms after navigation) comes first, so the flag must have been read at the
+    typing itself. (The default 50 ms sampler wins this race by only 10 to 20 ms on a quiet machine, which is why it flapped.)"""
+    res, _ = run_probe(tmp_path, "diag_boot.html", "block=1200&gap=250", "--collect", "window.__bootLog", "--sample-ms", "800")
+    first = res["first_fill"]
+    assert first["verdict"] == "VALUE_RESET" and first["value_set_source"] == "input-event"
+    boot = res["readiness"]["tanstack_bootstrap"]
+    assert boot["at_start_of_reset_window"].startswith("present"), boot  # the page had defined the bootstrap flag when the text landed
+    present = [t for t, name, value in res["signals"] if name == "tanstack_bootstrap" and value.startswith("present")]
+    assert present and min(present) <= first["value_set_ms"], (present, first["value_set_ms"])  # read at the typing, not on a later tick
+    assert boot["changes_after"] and boot["changes_after"][-1][1] == "absent"  # and the flag still disappears afterwards
+
+
+def test_sample_ms_below_one_is_rejected():
+    done = subprocess.run([sys.executable, str(TOOL), "--url", "about:blank", "--sample-ms", "0"],
+                          capture_output=True, text=True, timeout=60, cwd=ROOT, check=False)
+    assert done.returncode == 2, (done.returncode, done.stderr)
+    assert "--sample-ms must be at least 1" in done.stderr, done.stderr
+
+
+@pytest.mark.browser
 def test_the_legacy_calculation_under_reports_a_starved_window(browser, tmp_path):
     res, _ = run_probe(tmp_path, "diag_boot.html", "block=1200&gap=250&order=ready-then-reset", "--collect", "window.__bootLog")
     log = {e["e"]: e["t"] for e in res["collected"]}
