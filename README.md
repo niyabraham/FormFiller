@@ -109,7 +109,7 @@ The components, the data flowing between them, where each abstention decision is
 
 ## Evaluation results
 
-**Last checked on 1 Nov 2026, code at `main` `f463eb4` (PR #27, the neighbouring-concept fix, merged) plus the portfolio changes; earlier figures were re-measured on the dates in [`docs/PROGRESS.md`](docs/PROGRESS.md).**
+**Last checked on 2 Nov 2026, code at `main` `873d1c9` (PR #28 merged, all three CI checks passed); earlier figures were re-measured on the dates in [`docs/PROGRESS.md`](docs/PROGRESS.md).**
 
 Each table below is a separate evaluation on a separate set. They are **not** combined into one score. Definitions: *precision* is correct answers divided by answers entered; *coverage* is correct answers divided by the questions that have a correct answer in the source; a *wrong answer* (wrong fill, "unsafe") is an answer that was entered and was wrong; an *abstention* is a question left for a person, which is *correct* when the source holds no answer and a *missed answer* when it did; *verified* means entered and read back from the page.
 
@@ -157,7 +157,7 @@ The SPA row is unchanged since the network guard was added: three fixtures stop 
 
 ### Automated tests (local fixture pages)
 
-- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`, in a fresh virtual environment on a clean checkout of `main` `f463eb4` plus the portfolio files: **1534 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, about 15 minutes). That is 1508 on `main` itself plus 26 in `tests/web/test_demo_rfi.py`. Before PR #27 and the demo tests: 1378 passed, 2 xfailed; before the RFI completion work: 1123 passed, 2 xfailed.
+- Windows 11, Python 3.12, Playwright 1.64.1 with its Chromium, `FORMFILL_REQUIRE_BROWSER=1`, in a fresh virtual environment on a clean checkout of `main` `873d1c9`: **1536 passed, 2 expected failures (xfail), 0 failed, 0 skipped** (`python -m pytest -q`, about 15 minutes). That is 1508 on `main` at `f463eb4`, plus 26 in `tests/web/test_demo_rfi.py`, plus 2 in `tests/web/test_probe_hydration.py` (PR #28). Before PR #27 and the demo tests: 1378 passed, 2 xfailed; before the RFI completion work: 1123 passed, 2 xfailed.
 - Linux (Ubuntu 24.04 under WSL), Python 3.11, Playwright 1.64.1, same strict mode: 1252 passed, 2 xfailed, 0 failed, 0 skipped. That run is from an earlier commit and was not repeated for the later changes; CI runs the suite on Python 3.11 and 3.12 for every pull request.
 - Playwright 1.48.0 (the oldest supported version), Linux: the network-guard, wizard, policy, progress and review tests pass.
 - `ruff check formfill tools tests benchmarks`: no findings. `mypy` (settings in `pyproject.toml`): no issues. `pip-audit --skip-editable` in a fresh environment built from `pip install -e ".[dev]"`, **after `python -m pip install --upgrade pip`**: no known vulnerabilities. (pip-audit checks every package in the environment it runs in, pip included: the pip 24.3.1 that Python 3.12.8 bundles into a new virtual environment is reported with 12 known vulnerabilities until it is upgraded, and an older, long-lived global Python reported findings in out-of-date packages. None is a FormFiller dependency.) No code formatter is configured.

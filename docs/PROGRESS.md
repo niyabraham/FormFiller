@@ -21,7 +21,7 @@ in 533.6 s**.
 | F1 | Review workflow + local-only token-protected review UI | `review.py`, `review_server.py` | DONE |
 | B1 | Network guard: download gate, WebTransport fence, cross-origin iframe and relay-redirect tests, security model doc | `guard.py`, `sharedworkers.py`, `docs/SECURITY_MODEL.md` | DONE |
 | D1 | Compatibility fixtures + matrix (fixtures and real pages kept apart) | `tests/web/fixtures/compat/`, `docs/COMPATIBILITY.md` | DONE |
-| H1 | CI: strict browser mode, lint, types, dependency audit, launch check, summaries, separate matching and wizard reports | workflow, conftest, pyproject, `tools/evaluate_wizards.py` | DONE (not yet run on GitHub) |
+| H1 | CI: strict browser mode, lint, types, dependency audit, launch check, summaries, separate matching and wizard reports | workflow, conftest, pyproject, `tools/evaluate_wizards.py` | DONE |
 | G3 | Traces opt-in and scrubbed of cookies; proposals marked in the audit report; artifact names git-ignored | `artifacts.py`, `pipeline.py`, `report.py`, `.gitignore` | DONE |
 | Docs | README, OUTPUT_DESIGN, MATCHING, SECURITY_MODEL, COMPATIBILITY | `docs/` | DONE |
 
@@ -320,3 +320,21 @@ Release readiness, not a development phase: no product code changed. Documentati
 Findings, all documentation or environment, none a product change: (1) the loader reads plain UTF-8, so a source copy written by Windows PowerShell 5.1 (`Set-Content -Encoding utf8` adds a byte-order mark) fails with `JSONDecodeError: Unexpected UTF-8 BOM`; the guide now says so and uses a Python one-liner. (2) `pip-audit` in a brand-new virtual environment reported 12 known vulnerabilities, all in `pip` 24.3.1 (the pip bundled by Python 3.12.8), none in a FormFiller dependency; after `python -m pip install --upgrade pip` it reports none, and the README setup now includes that step.
 
 **Validation on the final tree** (clean room, fresh virtual environment, `FORMFILL_REQUIRE_BROWSER=1`): full suite **1534 passed, 2 xfailed, 0 failed, 0 skipped** in about 15 minutes (1508 on `main` plus 26 demo tests; baseline before PR #27 and the demo tests: 1378 passed, 2 xfailed); `ruff check formfill tools tests benchmarks` clean; `mypy` clean (33 source files); `pip-audit --skip-editable` clean after the pip upgrade; the 156 focused tests (concept confusion and demo) pass; 86 relative links, images and anchors in 13 Markdown files resolve; 5 Mermaid diagrams parse and render. Not done: no screen recording was made (the script is the plan), no real portal was tested, and the 62-probe script is still not in the repository.
+
+
+## CI hydration probe timing fix (2 Nov 2026, branch `docs/portfolio-release`, commit `354946e`, merge `873d1c9`)
+
+Diagnostic tooling fix only. No change to matching, safety, browser execution, submission, or review UI.
+
+Single CI failure on PR #28: `test_interval_bounds_contain_the_pages_own_true_interval` on Python 3.11 Chromium. The probe's first sampler tick runs in the injected init script, before the page's own scripts define `self.$_TSR`, logging "absent"; if the typing lands before the next 50 ms tick, the 1,200 ms busy block started by typing starves the sampler, leaving that stale "absent" as `at_start_of_reset_window`. Not reproducible on a quiet machine (the timing margin is ~8–17 ms), which is why it only appeared in CI.
+
+**Change** (`tools/probe_hydration.py`, `tests/web/test_probe_hydration.py` only): read the page signals in the field's capture-phase `beforeinput`/`input` event before the page's own handlers fire. The state at the lower boundary of the reset window is now the page state at the moment of typing, not a stale pre-page reading. Also: `--sample-ms` option (default 50 ms, no behaviour change), a regression test using an 800 ms sampler (so the first tick always comes after the typing), a `--sample-ms 0` CLI validation test, and a corrected code comment.
+
+| measurement | result |
+|---|---|
+| All three GitHub Actions checks (Python 3.11 Chromium, Python 3.12 Chromium, lint/types/audit) on commit `354946e` | **passed** |
+| Full suite, Windows, Python 3.12, `FORMFILL_REQUIRE_BROWSER=1` | **1,536 passed, 2 xfailed, 0 failed, 0 skipped**, 868 s |
+| Full suite, Linux (WSL), Python 3.11, Playwright 1.64.1 | **1,535 passed, 2 xfailed, 0 failed, 0 skipped** (run before `test_sample_ms_below_one_is_rejected` was added; the same file rerun adds 1) |
+| ruff, mypy, pip-audit | clean (33 source files, no known vulnerabilities) |
+
+Final repository state: `main` at `873d1c9`; 1,536 tests pass on Python 3.12 (Windows) and CI confirms both Python 3.11 and 3.12.
