@@ -46,8 +46,12 @@ def framework_attached(page: Page, control: Control) -> bool | None:
 # ancestor that also contains another form control, so one widget's selection is never read as another's. No selection element found:
 # null, and the input's own value is used, as for any other combobox (RW-10).
 _READ_JS = """
-els => {
+(els, byLabel) => {
   if (!els.length) return {found: false};
+  // a group told apart by label (Control.selects_by_label): its options are named by the text of their own label, as _LABEL_OF_JS
+  const lab = m => { const l = (m.labels && m.labels[0]) || m.closest('label'); if (!l) return m.value;
+    const c = l.cloneNode(true); c.querySelectorAll('input,select,textarea,button').forEach(x => x.remove());
+    return (c.textContent || '').replace(/\\s+/g, ' ').trim(); };
   const e = els[0]; const t = (e.type || '').toLowerCase(); const tag = e.tagName.toLowerCase();
   const shown = c => {
     const hits = Array.from(c.querySelectorAll('[class*="single-value" i],[class*="singlevalue" i],[class*="multi-value" i]:not([class*="remove" i]),[class*="multivalue" i]:not([class*="remove" i])'));
@@ -63,10 +67,13 @@ els => {
   };
   const picked = e.getAttribute('role') === 'combobox' && tag === 'input' ? chosen() : null;
   let value;
-  if (e.getAttribute('role') === 'combobox' && tag !== 'input' && tag !== 'select') { value = (e.textContent || '').replace(/\\s+/g, ' ').trim(); return {found: true, value, valid: true, message: ''}; }
+  if (e.getAttribute('role') === 'combobox' && tag !== 'input' && tag !== 'select') {
+    // a Select2-style widget draws a clear ("x") button inside the element that shows the choice: it is not part of the value
+    const c = e.cloneNode(true); c.querySelectorAll('[class*="clear" i],[class*="remove" i]').forEach(x => x.remove());
+    value = (c.textContent || '').replace(/\\s+/g, ' ').trim(); return {found: true, value, valid: true, message: ''}; }
   if (picked !== null) { value = picked; }
-  else if (t === 'radio') { const c = els.find(x => x.checked); value = c ? c.value : null; }
-  else if (t === 'checkbox') { value = els.length > 1 ? els.filter(x => x.checked).map(x => x.value) : e.checked; }
+  else if (t === 'radio') { const c = els.find(x => x.checked); value = c ? (byLabel ? lab(c) : c.value) : null; }
+  else if (t === 'checkbox') { value = els.length > 1 ? els.filter(x => x.checked).map(x => byLabel ? lab(x) : x.value) : e.checked; }
   else if (tag === 'select' && e.multiple) { value = Array.from(e.selectedOptions).map(o => o.value); }
   else { value = e.value; }
   return {found: true, value, valid: els.every(x => x.checkValidity()),
@@ -85,6 +92,17 @@ class Observed:
 
 def _locator(page: Page, control: Control):
     return page.frames[control.frame_index].locator(f'[data-ff-id="{control.control_id}"]')
+
+
+# The text of a member's own label, normalised the way discovery builds Option.label (the member's inputs are left out).
+_MEMBER_LABEL_JS = r"""e => { const l = (e.labels && e.labels[0]) || e.closest('label'); if (!l) return e.value;
+  const c = l.cloneNode(true); c.querySelectorAll('input,select,textarea,button').forEach(x => x.remove());
+  return (c.textContent || '').replace(/\s+/g, ' ').trim(); }"""
+
+
+def _member_key(member, control: Control) -> str | None:
+    """What names this radio/checkbox in the answer: its value, or its label text for a group told apart by label."""
+    return member.evaluate(_MEMBER_LABEL_JS) if control.selects_by_label else member.get_attribute("value")
 
 
 def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 5000) -> list[str]:
@@ -108,15 +126,15 @@ def fill_control(page: Page, control: Control, answer: Any, timeout_ms: int = 50
         loc.select_option(value=list(answer), timeout=timeout_ms)
     elif kind == "radio":
         for member in loc.all():
-            if member.get_attribute("value") == answer:
+            if _member_key(member, control) == answer:
                 _select_radio(page, control, member, timeout_ms)
                 return warnings
-        raise ValueError(f"no radio option with value {answer!r}")
+        raise ValueError(f"no radio option {'labelled' if control.selects_by_label else 'with value'} {answer!r}")
     elif kind == "checkbox":
         _set_checkbox(member=loc, want=bool(answer), timeout_ms=timeout_ms)
     elif kind == "checkbox_group":
         for member in loc.all():
-            _set_checkbox(member=member, want=member.get_attribute("value") in answer, timeout_ms=timeout_ms)
+            _set_checkbox(member=member, want=_member_key(member, control) in answer, timeout_ms=timeout_ms)
     else:
         raise ValueError(f"unsupported control kind {kind!r}")
     return warnings
@@ -378,7 +396,7 @@ def _fill_combobox(page: Page, control: Control, loc, answer: Any, timeout_ms: i
 
 
 def read_back(page: Page, control: Control) -> Observed:
-    data = _locator(page, control).evaluate_all(_READ_JS)
+    data = _locator(page, control).evaluate_all(_READ_JS, control.selects_by_label)
     return Observed(data["found"], data.get("value"), data.get("valid", True), data.get("message", ""))
 
 

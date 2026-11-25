@@ -112,6 +112,23 @@ _EXTRACT_JS = r"""
     const fs = el.closest('fieldset'); const lg = fs && fs.querySelector('legend');
     return lg ? txt(lg) : '';
   };
+  // Last resort for a radio/checkbox group with no fieldset, ARIA group or label of its own: many form builders put the question
+  // in a plain <span>/<div>/<p> heading just before the choices. Walk up while the container holds no controls other than this
+  // group's own members, and take the nearest short text element before the first member that is not itself a choice label.
+  const precedingTitle = (members) => {
+    const first = members[0]; const set = new Set(members);
+    for (let c = first.parentElement, i = 0; c && i < 4; c = c.parentElement, i++) {
+      if (Array.from(c.querySelectorAll('input,select,textarea')).some(x => !set.has(x) && x.type !== 'hidden')) return '';
+      let best = '';
+      for (const t of c.querySelectorAll('span,div,p,strong,b,h1,h2,h3,h4,h5,h6,dt')) {
+        if (t.querySelector('input,select,textarea,label') || t.closest('label')) continue;
+        if (!(t.compareDocumentPosition(first) & Node.DOCUMENT_POSITION_FOLLOWING) || t.contains(first)) continue;
+        const s = txt(t); if (s && s.length <= 160) best = s;
+      }
+      if (best) return best;
+    }
+    return '';
+  };
   const headings = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6')).filter(h => !pickerRoot(h));
   const sectionOf = el => {
     const fs = el.closest('fieldset'); const lg = fs && fs.querySelector('legend');
@@ -155,12 +172,12 @@ _EXTRACT_JS = r"""
       options = Array.from(el.options).filter(o => !o.disabled && o.value !== '').map(o => ({ value: o.value, label: txt(o) }));
       value = el.multiple ? Array.from(el.selectedOptions).map(o => o.value) : el.value;
     } else if (type === 'radio') {
-      kind = 'radio'; label = groupLabel(el) || '';
+      kind = 'radio'; label = groupLabel(el) || (members.length > 1 ? precedingTitle(members) : '') || '';
       options = members.map(m => ({ value: m.value, label: labelOf(m) || m.value }));
       const c = members.find(m => m.checked); value = c ? c.value : null;
     } else if (type === 'checkbox') {
       if (members.length > 1) {
-        kind = 'checkbox_group'; label = groupLabel(el) || '';
+        kind = 'checkbox_group'; label = groupLabel(el) || precedingTitle(members) || '';
         options = members.map(m => ({ value: m.value, label: labelOf(m) || m.value }));
         value = members.filter(m => m.checked).map(m => m.value);
       } else { kind = 'checkbox'; label = labelOf(el); value = el.checked; }

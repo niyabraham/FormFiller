@@ -47,6 +47,17 @@ class Control:
     value: Any = None  # value present on the page at discovery time
     frame_index: int = 0
 
+    @property
+    def selects_by_label(self) -> bool:
+        """A radio or checkbox group whose options cannot be told apart by value (several carry the same one, e.g. inputs with no
+        value attribute, which all read "on") but can by their visible label (non-empty and all different). For such a group the
+        answer, the fill and the read-back all use the option label instead of the value. Any other control keeps using values."""
+        if self.kind not in ("radio", "checkbox_group") or len(self.options) < 2:
+            return False
+        values = [o.value for o in self.options]
+        labels = [(o.label or "").strip().casefold() for o in self.options]
+        return len(set(values)) < len(values) and all(labels) and len(set(labels)) == len(labels)
+
 
 @dataclass
 class FormSchema:

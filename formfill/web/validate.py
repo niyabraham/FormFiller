@@ -78,6 +78,14 @@ def _match_option(value: Any, control: Control) -> str | None:
     return None
 
 
+def _match_label(value: Any, control: Control) -> str | None:
+    """For a group that is told apart by label (`Control.selects_by_label`): the label of the one option whose label equals `value`
+    (case-insensitive). A value that is not a label, including the shared value itself ("on"), matches nothing."""
+    want = str(value).strip().casefold()
+    hits = [o.label for o in control.options if o.label.strip().casefold() == want]
+    return hits[0] if len(hits) == 1 else None
+
+
 def _shared_value(matched: str, control: Control) -> str | None:
     """Why `matched` cannot identify one option: several options carry the same value (e.g. radios that all submit "on"), so entering
     that value would pick the first of them whatever the source meant. None when the value is unique."""
@@ -167,6 +175,10 @@ def validate_answer(value: Any, control: Control) -> Validated:
     if kind in ("select", "radio"):
         if isinstance(value, (list, dict)):
             return _fail("a single value is required but the source has a list")
+        if control.selects_by_label:
+            by_label = _match_label(value, control)
+            if by_label is not None:
+                return Validated(True, by_label)
         matched = _match_option(value, control)
         if matched is None:
             return _fail(f"{value!r} is not one of the allowed options {[o.value for o in control.options]}")
@@ -178,6 +190,10 @@ def validate_answer(value: Any, control: Control) -> Validated:
         items = value if isinstance(value, list) else [value]
         chosen: list[str] = []
         for item in items:
+            if control.selects_by_label and (lab := _match_label(item, control)) is not None:
+                if lab not in chosen:
+                    chosen.append(lab)
+                continue
             picked = _match_option(item, control)
             if picked is None:
                 return _fail(f"{item!r} is not one of the allowed options {[o.value for o in control.options]}")
