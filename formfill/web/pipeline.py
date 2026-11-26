@@ -310,7 +310,8 @@ def run_form(
     interfering = [i for i in items.values() if INTERFERENCE in i.detail]
     if interfering:
         warnings.append(f"{len(interfering)} answer(s) were undone by the page when a later choice was entered "
-                        "(the controls behave as one choice); see each item's detail - a human must decide the answer")
+                        "(the page may link these controls, or may have reset itself while being filled; cause not determined); "
+                        "see each item's detail - a human must decide the answer")
     unsettled = [i for i in items.values() if i.detail.startswith(UNSETTLED)]
     if unsettled:
         warnings.append(f"{len(unsettled)} answer(s) were entered while the page was still changing ({UNSETTLED} after leaving the field); "

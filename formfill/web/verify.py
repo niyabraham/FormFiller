@@ -88,7 +88,9 @@ def signature(c: Control) -> tuple:
 # Choice controls that are not grouped by the browser (different or missing `name`) can still be one choice to the
 # application: selecting one clears another. Left alone, the earlier answer is simply lost and the report says only that
 # the page "holds None". After each choice is entered, the earlier choice answers are read back so the report can say
-# which fill undid which answer. Detection only: nothing is re-entered and nothing is chosen between them.
+# which fill undid which answer. Detection only: nothing is re-entered and nothing is chosen between them. The cause is NOT
+# known at this point: linked controls and a page that reset itself mid-fill (seen once on a public demo, not on a re-run)
+# look the same, so the messages describe what was observed and name both possibilities.
 CHOICE_KINDS = {"radio", "checkbox", "checkbox_group", "select", "multiselect"}
 INTERFERENCE = "overwritten by the page when"  # appears in the detail recorded on the earlier answer
 
@@ -110,7 +112,8 @@ def note_interference(page: Page, controls: dict[str, Control], items: dict[str,
             obs = None
         if obs is not None and obs.found and not matches(earlier.plan.answer, obs.value):
             earlier.detail = (f"{earlier.detail} {INTERFERENCE} '{item.plan.question}' was entered (page now holds {obs.value!r}, "
-                              f"expected {earlier.plan.answer!r}): the page treats these controls as one choice; a human must decide").strip()
+                              f"expected {earlier.plan.answer!r}): the page cleared the earlier answer after this one was entered. Either the page "
+                              "links these controls, or it reset itself while being filled (a second run tells them apart); a human must decide").strip()
             item.detail = f"{item.detail} entering this answer changed the earlier answer for '{earlier.plan.question}'".strip()
 
 

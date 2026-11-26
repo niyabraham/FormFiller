@@ -155,7 +155,7 @@ def review_summary(result: RunResult) -> dict:
                        "section": "", "why": f"unsupported control: {u.get('reason')}"} for u in result.unsupported if u.get("required")]
     attestations = [brief(i) for i, _, _ in rows if (i.plan.reason or "").startswith("attestation/consent")]
     conflicts = [{**brief(i), "conflicts": i.plan.conflicts} for i, _, _ in rows if i.plan.conflicts]
-    conflicts += [brief(i, "the page treats this and another control as one choice") for i, _, _ in rows
+    conflicts += [brief(i, "the page cleared this answer when another control was entered (linked controls or a page reset; cause not determined)") for i, _, _ in rows
                   if "overwritten by the page when" in i.detail]
     by_text: dict[str, list[ItemResult]] = {}
     for i, _, _ in rows:
