@@ -99,6 +99,48 @@ def _wait_for_form_controls(page: Page, readiness_timeout_ms: int) -> bool:
             return False
 
 
+# A server-rendered page whose JavaScript framework has not yet taken over its controls ("hydrated" them): an answer entered
+# before that is not recorded by the framework, which can overwrite it from its own state at its next re-render, i.e. when a LATER
+# answer is entered (measured on a public template: an early radio click survived on its own and was cleared once a second question
+# was answered; the same two answers entered after hydration both stayed). The gate waits for that, but only when the page shows
+# a sign of such a framework still booting, so pages without one (and every static page) are not delayed at all.
+_HYDRATION_PENDING_JS = """
+() => {
+  const hint = typeof self.$_TSR !== 'undefined' || typeof window.__NEXT_DATA__ !== 'undefined' || typeof window.__NUXT__ !== 'undefined'
+    || typeof window.__remixContext !== 'undefined'
+    || !!document.querySelector('[data-reactroot],#__next,#__nuxt,[data-server-rendered],astro-island');
+  if (!hint) return 'none';
+  const taken = Array.from(document.querySelectorAll('input,select,textarea'))
+    .some(el => Object.getOwnPropertyNames(el).some(k => /^__(react|vue|svelte)/.test(k)));
+  return taken ? 'done' : 'pending';
+}
+"""
+
+
+def _wait_for_hydration(page: Page, hydration_timeout_ms: int) -> str | None:
+    """Wait (bounded) until a framework that is still booting has taken over the page's controls. Returns None when there was
+    nothing to wait for or the wait succeeded, and a warning when the cap was reached first. Never clicks or types."""
+    if hydration_timeout_ms <= 0:
+        return None
+    deadline = time.monotonic() + hydration_timeout_ms / 1000
+    while True:
+        try:
+            state = page.evaluate(_HYDRATION_PENDING_JS)
+        except Exception:  # noqa: BLE001 - page navigating or closed: nothing to wait for
+            return None
+        if state != "pending":
+            return None
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return (f"the page looks like a JavaScript framework app, but none of its controls had been taken over by the framework "
+                    f"after {hydration_timeout_ms} ms; answers entered before it finishes loading may be wiped by a later re-render, "
+                    "so check the read-back")
+        try:
+            page.wait_for_timeout(min(50, max(1, int(remaining * 1000))))
+        except Exception:  # noqa: BLE001
+            return None
+
+
 def _report_active_guard(run):
     """An exception that escapes `run_form` after the guard started leaves it active on purpose (the page's state is
     unknown, so nothing is let out). Say so on the exception, so it is not a silent state: the context stays offline until
@@ -131,6 +173,7 @@ def run_form(
     max_rounds: int = 3,
     timeout_ms: int = 5000,
     readiness_timeout_ms: int = 5000,
+    hydration_timeout_ms: int = 3000,
     confirm_ms: int = DEFAULT_CONFIRM_MS,
     policy: _steps.DiscoveryPolicy | None = None,
     acknowledge_unsupported: Iterable[str] = (),
@@ -143,7 +186,11 @@ def run_form(
     redact_report: bool = False,
     matcher: MatcherConfig | None = None,
 ) -> RunResult:
-    """...`acknowledge_unsupported`: identifiers (the `ack_id` shown in `result.json`: html id, else name, else label, and only when unique) of OPTIONAL unsupported controls a person has
+    """...`hydration_timeout_ms`: how long to wait, before the first answer, for a JavaScript framework that is still booting to take
+    over the page's controls (0 disables). Only waits when the page shows a sign of such a framework (e.g. TanStack Router, Next,
+    Nuxt, Remix); other pages are not delayed. A cap reached first becomes a run warning.
+
+    `acknowledge_unsupported`: identifiers (the `ack_id` shown in `result.json`: html id, else name, else label, and only when unique) of OPTIONAL unsupported controls a person has
     explicitly decided to leave unfilled. With submit=True, any unsupported control not listed refuses submission; a REQUIRED
     unsupported control refuses it even when listed (it cannot be answered by this tool).
 
@@ -208,6 +255,8 @@ def run_form(
                 "no form controls appeared before the readiness timeout; "
                 "the page may still be loading or may not contain a supported form"
             )
+    if controls_ready and (hydration_warning := _wait_for_hydration(page, hydration_timeout_ms)):
+        warnings.append(hydration_warning)
 
     if policy is None:
         # Rounds handle conditional fields: answering one question can reveal more.
