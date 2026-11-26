@@ -18,14 +18,32 @@ HTML = ('<form onsubmit="return false">'
 STATE = "()=>['c1','c2','r1','r2'].map(i=>document.getElementById(i).checked)"
 
 
-@pytest.mark.parametrize("src", [{"my_radio": "Default radio"}, {"my_check": ["Default checkbox"]}, {"my_radio": "on", "my_check": ["on"]}])
-def test_options_with_a_shared_value_go_to_review_and_the_page_is_untouched(page, src):
+@pytest.mark.parametrize("src", [{"my_radio": "on"}, {"my_check": ["on"]}, {"my_radio": "Some other text"}])
+def test_a_shared_value_or_unknown_text_goes_to_review_and_the_page_is_untouched(page, src):
+    """The shared value itself ("on") names no single option, so it is still refused; only a visible option label identifies one."""
     page.set_content(HTML)
     res = run_form(page, src, confirm_ms=0)
     group = {"my_radio": "my-radio", "my_check": "my-check"}[next(iter(src))]
     item = next(i for i in res.items if i.plan.question == group)
-    assert item.plan.status == "REVIEW" and "share the value" in item.plan.reason
+    assert item.plan.status == "REVIEW"
     assert res.status == "NEEDS_REVIEW" and page.evaluate(STATE) == [True, False, True, False]
+
+
+def test_options_with_a_shared_value_are_selected_by_their_label_and_read_back_by_label(page):
+    page.set_content(HTML)
+    res = run_form(page, {"my_radio": "Default radio", "my_check": ["Default checkbox"]}, confirm_ms=0)
+    items = {i.plan.question: i for i in res.items}
+    assert items["my-radio"].plan.status == "ANSWER" and items["my-radio"].verified is True
+    assert items["my-check"].plan.status == "ANSWER" and items["my-check"].verified is True
+    assert items["my-radio"].observed == "Default radio" and items["my-check"].observed == ["Default checkbox"]
+    assert page.evaluate(STATE) == [False, True, False, True]  # c1 unchecked, c2 checked; r1 unchecked, r2 checked
+
+
+def test_shared_values_with_duplicate_labels_still_go_to_review(page):
+    page.set_content('<form onsubmit="return false"><label><input type=radio name=r> Same</label>'
+                     '<label><input type=radio name=r> Same</label></form>')
+    res = run_form(page, {"r": "Same"}, confirm_ms=0)
+    assert res.items[0].plan.status == "REVIEW" and "share the value" in res.items[0].plan.reason
 
 
 def test_options_with_distinct_values_are_still_selected(page):

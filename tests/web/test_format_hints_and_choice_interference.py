@@ -142,7 +142,10 @@ def test_choice_undone_by_the_page_is_reported_with_its_cause_and_never_verified
     assert email.verified is False and email.observed is None  # an unchecked option is not verified
     assert "overwritten by the page when 'forms-comm-phone'" in email.detail and "human must decide" in email.detail
     assert phone.verified is True and "changed the earlier answer for 'forms-comm-email'" in phone.detail
-    assert res.status == "FAILED" and any("behave as one choice" in w for w in res.warnings)
+    assert res.status == "FAILED" and any("cause not determined" in w for w in res.warnings)
+    # the cause is not known (linked controls and a page that reset itself look alike), so no message may state "one choice" as fact
+    assert "one choice" not in email.detail and not any("one choice" in w for w in res.warnings)
+    assert "links these controls" in email.detail and "reset itself" in email.detail
     assert page.is_checked("#forms-comm-phone") and not page.is_checked("#forms-comm-email")
 
 
